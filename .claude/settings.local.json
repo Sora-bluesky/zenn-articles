@@ -5,7 +5,10 @@
       "WebFetch(domain:docs.anthropic.com)",
       "WebFetch(domain:github.com)",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nRename article files to new slugs for Zenn deployment\n\n- claude-code-windows-setup.md → claude-code-windows-install-guide.md\n- claude-code-tips.md → claude-code-tips-and-features.md\n- claude-code-troubleshooting-windows.md → claude-code-windows-troubleshoot.md\n- dual-agent-claude-codex.md → claude-code-ai-review-workflow.md\n\nAlso updated all internal links to match new filenames.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRename article files to new slugs for Zenn deployment\n\n- claude-code-windows-setup.md → claude-code-windows-install-guide.md\n- claude-code-tips.md → claude-code-tips-and-features.md\n- claude-code-troubleshooting-windows.md → claude-code-windows-troubleshoot.md\n- dual-agent-claude-codex.md → claude-code-ai-review-workflow.md\n\nAlso updated all internal links to match new filenames.\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git push:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)"
     ]
   }
 }

@@ -17,7 +17,7 @@ published: true
 でも、**Claude Code だけで同じことができる**とわかったので、この記事ではそちらを中心に説明する。
 
 :::message
-Codex CLI との組み合わせ方法に興味がある方は「[参考：Codex CLI方式](#参考codex-cli方式)」をご覧ください。
+Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CLI方式](#参考-codex-cli方式)」をご覧ください。
 :::
 
 :::message
@@ -386,7 +386,7 @@ Claude Code のサブエージェント機能を使えば、追加契約なし�
 
 ---
 
-## 参考：Codex CLI方式
+## 参考 Codex CLI方式
 
 :::details Codex CLI 方式の詳細（クリックで展開）
 
