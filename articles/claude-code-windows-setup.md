@@ -4,6 +4,7 @@ emoji: "🚀"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "生成ai", "初心者"]
 published: true
+slug: aece6ef26ce61d
 ---
 
 ## 経緯
