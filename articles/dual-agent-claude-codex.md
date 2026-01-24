@@ -4,6 +4,7 @@ emoji: "🤖"
 type: "tech"
 topics: ["claudecode", "ai", "llm", "codex", "個人開発"]
 published: true
+slug: 641736cdc579fa
 ---
 
 ## はじめに
