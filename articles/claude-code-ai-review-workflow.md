@@ -4,7 +4,6 @@ emoji: "🤖"
 type: "tech"
 topics: ["claudecode", "ai", "llm", "codex", "個人開発"]
 published: true
-slug: 641736cdc579fa
 ---
 
 ## はじめに
@@ -23,9 +22,9 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考：Codex 
 
 :::message
 **シリーズ構成**
-1. [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-setup)
-2. [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips)
-3. [Claude Codeが動かない時に見るページ（Windows編）](claude-code-troubleshooting-windows)
+1. [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+2. [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+3. [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 4. **AIにコードを書かせてAIにレビューさせる開発スタイル**（この記事）
 :::
 
@@ -93,7 +92,7 @@ Claude Code には「サブエージェント」という機能がある。
 
 | 項目 | 要件 |
 |------|------|
-| Claude Code | インストール済み（[記事1](claude-code-windows-setup)参照） |
+| Claude Code | インストール済み（[記事1](claude-code-windows-install-guide)参照） |
 | 契約 | Claude Pro または Max |
 
 #### Step 1: フォルダを作成
@@ -361,7 +360,7 @@ AIが変な変更をした時に戻れるよう、CLAUDE.md に以下を追記�
 
 | 問題 | 解決策 |
 |------|--------|
-| GitHub認証でエラー | Personal Access Token で対応（[記事3](claude-code-troubleshooting-windows)参照） |
+| GitHub認証でエラー | Personal Access Token で対応（[記事3](claude-code-windows-troubleshoot)参照） |
 | ビルドエラー | エラーメッセージをそのまま Claude Code に渡して修正 |
 | 指示が細かすぎた | 要件だけ伝えて任せる方がうまくいく |
 
@@ -483,6 +482,6 @@ codex
 
 ## 関連記事
 
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-setup)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips)
-- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-troubleshooting-windows)
+- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)

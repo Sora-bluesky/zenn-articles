@@ -4,7 +4,6 @@ emoji: "🚀"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "生成ai", "初心者"]
 published: true
-slug: aece6ef26ce61d
 ---
 
 ## 経緯
@@ -15,9 +14,9 @@ Windows環境でClaude Codeをセットアップした時の手順をまとめ�
 :::message
 **シリーズ構成**
 - **非エンジニアがWindowsでClaude Codeを使えるようになるまで**（この記事）
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips)
-- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-troubleshooting-windows)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](dual-agent-claude-codex)
+- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
 :::
 
 ---
@@ -437,6 +436,6 @@ Remove-Item -Path "$env:USERPROFILE\.claude.json" -Force
 
 ## 次のステップ
 
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips)
-- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-troubleshooting-windows)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](dual-agent-claude-codex)
+- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)

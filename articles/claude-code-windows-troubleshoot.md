@@ -4,7 +4,6 @@ emoji: "🔧"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "初心者", "トラブルシューティング"]
 published: true
-slug: 098fcde7616182
 ---
 
 ## 経緯
@@ -14,10 +13,10 @@ Windows環境でClaude Codeを使っていてハマったポイントと解決�
 
 :::message
 **シリーズ構成**
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-setup)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips)
+- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - **Claude Codeが動かない時に見るページ（Windows編）**（この記事）
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](dual-agent-claude-codex)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
 :::
 
 ---
@@ -417,6 +416,6 @@ Claude Code がエラーを解析して、自動的に修正してくれる。
 
 ## 関連記事
 
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-setup)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](dual-agent-claude-codex)
+- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)

@@ -4,7 +4,6 @@ emoji: "⚡"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
 published: true
-slug: f2260aa9006dd3
 ---
 
 ## 経緯
@@ -14,10 +13,10 @@ Subagents（サブエージェント）や並列開発など、知っておく�
 
 :::message
 **シリーズ構成**
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-setup)
+- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - **Claude Codeを使いこなす！知っておきたい便利機能まとめ**（この記事）
-- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-troubleshooting-windows)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](dual-agent-claude-codex)
+- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
 :::
 
 :::message alert
@@ -495,6 +494,6 @@ Claude Code に頼んで作成する：
 
 ## 関連記事
 
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-setup)
-- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-troubleshooting-windows)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](dual-agent-claude-codex)
+- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
