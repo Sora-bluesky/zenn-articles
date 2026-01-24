@@ -4,6 +4,7 @@ emoji: "🔧"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "初心者", "トラブルシューティング"]
 published: true
+slug: 098fcde7616182
 ---
 
 ## 経緯
