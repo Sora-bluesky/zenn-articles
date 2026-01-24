@@ -3,7 +3,7 @@ title: "非エンジニアがWindowsでClaude Codeを使えるようになるま
 emoji: "🚀"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "生成ai", "初心者"]
-published: false
+published: true
 ---
 
 ## 経緯
