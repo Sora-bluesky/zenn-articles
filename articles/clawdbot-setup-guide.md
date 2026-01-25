@@ -124,6 +124,24 @@ ClawdBotの内部構造を理解しておくと、トラブル時に役立つ。
 - 依存関係（Baileys, grammY等）がLinux前提の設計
 - 将来のアップデートでも安定動作が期待できる
 
+:::message alert
+**重要：ClawdBotはWSL2内で実行する**
+
+ClawdBotはLinux環境で動作するため、PowerShell（Windows側）からは直接実行できません。
+
+```powershell
+# ❌ PowerShellから直接実行 → エラーになる
+clawdbot --version
+
+# ✅ WSL2に入ってから実行
+wsl
+clawdbot --version
+
+# ✅ または一行で
+wsl clawdbot --version
+```
+:::
+
 ---
 
 ## 環境構築
