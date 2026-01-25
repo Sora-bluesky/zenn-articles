@@ -3,7 +3,7 @@ title: "[検証] ClawdBotを導入してみた：Windows(WSL2)で動く個人AI�
 emoji: "🦞"
 type: "tech"
 topics: ["ai", "claudecode", "wsl2", "個人開発", "生成ai"]
-published: true
+published: false
 ---
 
 ## はじめに

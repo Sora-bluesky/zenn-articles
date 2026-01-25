@@ -3,7 +3,7 @@ title: "非エンジニア向け WSL2 インストールガイド（Windows 10/1
 emoji: "🐧"
 type: "tech"
 topics: ["wsl2", "windows", "claudecode", "linux", "初心者"]
-published: true
+published: false
 ---
 
 ## はじめに
