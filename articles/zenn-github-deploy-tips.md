@@ -26,10 +26,10 @@ Claude Code シリーズの番外編として、Zenn × GitHub連携でハマっ
 
 :::message
 **関連記事：Claude Codeシリーズ**
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](/sora_biz/articles/claude-code-windows-install-guide)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](/sora_biz/articles/claude-code-tips-and-features)
-- [Claude Codeが動かない時に見るページ（Windows編）](/sora_biz/articles/claude-code-windows-troubleshoot)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](/sora_biz/articles/claude-code-ai-review-workflow)
+- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
 :::
 
 ---
