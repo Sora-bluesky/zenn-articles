@@ -407,6 +407,9 @@ ClawdBotを使えば、Discord・Telegramがそのまま「AIアシスタント�
 
 - [ClawdBot 公式ドキュメント - Telegram](https://docs.clawd.bot/channels/telegram)
 - [ClawdBot 公式ドキュメント - Discord](https://docs.clawd.bot/channels/discord)
+- [ClawdBot Gateway](https://docs.clawd.bot/gateway)
+- [ClawdBot Authentication](https://docs.clawd.bot/gateway/authentication)
+- [ClawdBot Troubleshooting](https://docs.clawd.bot/help/troubleshooting)
 - [Discord Developer Portal](https://discord.com/developers/applications)
 - [Telegram BotFather](https://t.me/BotFather)
 

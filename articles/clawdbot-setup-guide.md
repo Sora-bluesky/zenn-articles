@@ -340,16 +340,26 @@ TUI（clawdbot tui）で「Bridge: missing」と表示されるのは、Discord/
 
 ClawdBotはAI APIを使用するため、利用量に応じた料金が発生する場合がある。**ただし、Claude サブスクリプション契約者は追加料金なしで利用できる**。
 
-### Claude サブスクリプション契約者の場合（追加料金なし）
+### Claude サブスクリプション契約者の場合
 
-Claude Pro（$20/月）または Claude Max（$100/月）を契約している場合、ClawdBotはその認証情報を使用できる。追加のAPIキー取得は不要。
+Claude Pro（$20/月）または Claude Max（$100〜$200/月）を契約し、**Claude Codeを使用している場合**、ClawdBotはその認証情報を共有できる。
+
+**設定方法：**
+1. 別のターミナルで `claude setup-token` を実行
+2. 表示された長期トークンをコピー
+3. `clawdbot configure` → Model → Anthropic → 「Anthropic token」を選択
+4. トークンを貼り付け
 
 :::message
 **Claude の契約プラン**
-- **Claude Pro** ($20/月): 一般的な個人利用向け
-- **Claude Max** ($100/月): ヘビーユーザー向け、利用枠が大きい
+- **Claude Pro** ($20/月): 一般的な個人利用向け、5倍の利用制限
+- **Claude Max 5x** ($100/月): ヘビーユーザー向け、Proの5倍の利用制限
+- **Claude Max 20x** ($200/月): 超ヘビーユーザー向け、Proの20倍の利用制限
 
-契約プランには利用制限（レートリミット）がある。頻繁に使いすぎると一時的に制限がかかる場合がある。
+**注意点：**
+- 契約プランには利用制限（レートリミット）があり、Claude.aiとClaude Codeで共有される
+- ClawdBotでの使用もこの制限にカウントされる
+- 頻繁に使いすぎると一時的に制限がかかる場合がある
 :::
 
 ### 料金の仕組み
@@ -557,6 +567,9 @@ ClawdBotの基本インストールが完了した。次の記事では、実際
 
 - [ClawdBot GitHub](https://github.com/clawdbot/clawdbot)
 - [ClawdBot 公式ドキュメント](https://docs.clawd.bot/)
+- [ClawdBot Gateway](https://docs.clawd.bot/gateway)
+- [ClawdBot Authentication](https://docs.clawd.bot/gateway/authentication)
+- [ClawdBot Troubleshooting](https://docs.clawd.bot/help/troubleshooting)
 - [ClawdBot Setup Guide (addROM)](https://addrom.com/clawdbot-your-personal-ai-assistant-for-windows-macos-and-linux/)
 
 ---
