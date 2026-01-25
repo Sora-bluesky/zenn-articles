@@ -28,6 +28,10 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CL
 4. **AIにコードを書かせてAIにレビューさせる開発スタイル**（この記事）
 :::
 
+:::message
+**検証環境**: Windows 11 / Claude Code（2025年1月時点）
+:::
+
 ---
 
 ## 用語説明
@@ -49,7 +53,7 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CL
 
 | 項目 | サブエージェント方式 | Codex CLI方式 |
 |------|----------------------|---------------|
-| 追加契約 | **不要**（Claude Pro/Maxのみ） | ChatGPT Plus/Pro が必要 |
+| 追加契約 | **不要**（Claude Pro/Maxのみ） | ChatGPT Plus（$20/月）または Pro（$200/月）が必要 |
 | セットアップ | ファイルを作るだけ | WSL + Node.js + 認証が必要 |
 | 操作 | 同じ画面で完結 | 2つのターミナルを行き来 |
 | 再利用 | 一度作れば全プロジェクトで使える | プロジェクトごとに設定が必要 |
@@ -189,7 +193,7 @@ mkdir -p .claude/skills/review
 ```markdown
 ---
 name: review
-description: コードレビューを実行
+description: コードレビューを実行。「レビューして」「このコード見て」「PRチェックして」「品質確認して」で呼び出される
 context: fork
 agent: code-auditor
 ---
@@ -202,6 +206,12 @@ agent: code-auditor
 ## 変更内容
 !`git diff HEAD~1 2>/dev/null || git diff`
 ```
+
+:::message
+**`!` 記法とは**
+`!` で始まる行は、コマンドの実行結果をその場所に埋め込む記法。
+上の例では、`git diff` の結果（変更内容）が自動的に挿入される。
+:::
 
 #### Step 4: グローバルに配置（他のプロジェクトでも使えるようにする）
 
@@ -250,17 +260,22 @@ cp .claude/skills/review/SKILL.md ~/.claude/skills/review/
 
 #### Step 2: レビューを依頼
 
-実装が終わったら、レビューを依頼する。方法は2つ。
+実装が終わったら、レビューを依頼する。
 
-**方法A：スキルを使う（簡単）**
 ```
 /review
 ```
 
-**方法B：直接サブエージェントを呼ぶ**
+これだけでOK。スキルが呼び出されて、レビュー結果が返ってくる。
+
+:::message
+**もう一つの方法**
+スキルを使わず、直接指示することもできる：
 ```
 code-auditorサブエージェントを使って、直近の変更をレビューして
 ```
+ただし、`/review` の方が簡単なのでおすすめ。
+:::
 
 #### Step 3: レビュー結果を確認
 
@@ -301,8 +316,21 @@ code-auditorのレビュー結果に基づいて、問題を修正して
 | コマンド | 用途 |
 |----------|------|
 | `/review` | 直近の変更をレビュー |
+| `/review 123` | PR #123 をレビュー（カスタムコマンド設定時） |
 | `〇〇ファイルをレビューして` | 特定ファイルをレビュー |
 | `プロジェクト全体をレビューして` | 全体をチェック |
+
+:::message
+**PR（Pull Request）とは**
+GitHub でコードの変更を提案・レビューする仕組み。チーム開発でよく使われる。
+個人開発では使わないこともあるので、知らなくても問題なし。
+:::
+
+:::message
+**カスタムコマンドの設定**
+`/review {PR番号}` を使うには、`.claude/commands/review.md` を作成する必要がある。
+詳細は「[発展編：GitHub Actions連携](#発展編github-actions連携)」を参照。
+:::
 
 ---
 
@@ -346,6 +374,40 @@ AIが変な変更をした時に戻れるよう、CLAUDE.md に以下を追記�
 
 ---
 
+### うまく動かないときのチェックポイント
+
+レビューが期待通りに動かない場合、以下を確認する。
+
+#### descriptionが曖昧
+
+SKILL.md の description が曖昧だと、Claude がスキルを呼び出さないことがある。
+
+| 問題のある書き方 | 改善例 |
+|-----------------|--------|
+| `description: レビュー` | `description: コードレビューを実行。「レビューして」「このコード見て」で呼び出される` |
+
+**具体的なトリガーワードを明記する**と、意図したタイミングで呼び出されやすくなる。
+
+#### SKILL.mdが長すぎる
+
+SKILL.md が長すぎると、Claude のコンテキスト（記憶領域）を圧迫してパフォーマンスが低下する。
+
+**目安**: 500行以下に収める
+
+長くなる場合は、詳細な例やテンプレートを `examples.md` に分離し、SKILL.md から参照する形にする。
+
+#### コンテキストがいっぱい
+
+長時間の作業でコンテキストが埋まってきたら、以下のコマンドで圧縮できる。
+
+```
+/compact
+```
+
+これでコンテキストが整理され、動作が改善することがある。
+
+---
+
 ## やってみてわかったこと
 
 ### うまくいったポイント
@@ -383,6 +445,44 @@ AIが変な変更をした時に戻れるよう、CLAUDE.md に以下を追記�
 
 **「作る人」と「チェックする人」を分けると、1人（1つのAI）でやるより品質が上がる。**
 Claude Code のサブエージェント機能を使えば、追加契約なしでこの体制が作れる。
+
+---
+
+## 発展編：GitHub Actions連携
+
+:::details GitHub Actions連携の詳細（クリックで展開）
+
+### 自動レビューの仕組み
+
+GitHub Actions と連携すると、PR を作成するたびに自動で Claude Code がレビューを実行してくれる。
+
+- PR 作成 → 自動でレビューコメントが付く
+- `@claude` とメンションすると追加の指示ができる
+- レビュー完了まで 3〜4 分程度
+
+### カスタムコマンド /review の作成
+
+`.claude/commands/review.md` を作成すると、`/review 123` で PR #123 をレビューできるようになる。
+
+```markdown
+PR #$ARGUMENTS をレビューしてください。
+
+1. `gh pr view $ARGUMENTS` で PR の概要を確認
+2. `gh pr diff $ARGUMENTS` で差分を取得
+3. code-review スキルを使ってレビュー
+4. 結果を出力
+```
+
+**補足：$ARGUMENTS とは**
+`/review 123` と入力すると、`$ARGUMENTS` の部分が `123` に置き換わる。
+
+### 詳細な設定方法
+
+GitHub Actions 連携の詳細な設定手順は、以下の記事が参考になる。
+
+- [Claude Code "skills"でレビュー自動化を仕組み化してみた - Zenn](https://zenn.dev/neurostack_0001/articles/claude-code-skills-review-automation)
+
+:::
 
 ---
 
@@ -471,6 +571,7 @@ codex
 
 - [Claude Code 公式ドキュメント](https://docs.anthropic.com/en/docs/claude-code)
 - [OpenAI Codex CLI](https://github.com/openai/codex)
+- [Claude Code "skills"でレビュー自動化を仕組み化してみた - Zenn](https://zenn.dev/neurostack_0001/articles/claude-code-skills-review-automation)
 
 :::message
 リンク切れの場合は各公式サイトで検索してください。
