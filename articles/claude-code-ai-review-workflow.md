@@ -483,3 +483,4 @@ codex
 - [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [Google Antigravity × Codex CLI で始めるデュアルエージェント開発](antigravity-codex-dual-agent-guide)（Google AI + OpenAI の組み合わせ）
