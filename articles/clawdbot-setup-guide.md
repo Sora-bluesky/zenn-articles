@@ -304,7 +304,14 @@ clawdbot doctor --fix
 ### Step 4: 設定ファイルの確認
 
 ```bash
+# 現在の設定を確認
 cat ~/.clawdbot/clawdbot.json
+
+# モデル設定だけ確認
+cat ~/.clawdbot/clawdbot.json | grep -i model
+
+# APIキー設定を確認（Google）
+cat ~/.clawdbot/clawdbot.json | grep -i google
 ```
 
 **出力例:**
@@ -321,6 +328,11 @@ cat ~/.clawdbot/clawdbot.json
   "commands": { "native": "auto", "nativeSkills": "auto" }
 }
 ```
+
+:::message
+**Canvas UI の「Bridge: missing」について**
+TUI（clawdbot tui）で「Bridge: missing」と表示されるのは、Discord/Telegram等のチャンネルが未設定の状態では正常。チャンネル設定後に接続される。
+:::
 
 ---
 
@@ -392,7 +404,22 @@ clawdbot config get agents
 clawdbot configure
 ```
 
-対応プロバイダー：Claude、GPT-4、Bedrock、Ollama、LM Studio 等
+対応プロバイダー：Claude、GPT-4、Bedrock、Ollama、LM Studio、Gemini 等
+
+:::message alert
+**Gemini利用時のクォータ（使用量制限）に注意**
+
+Google Geminiを使う場合、以下の点に注意が必要：
+
+- **クォータは共有される**: 同じGoogle APIキー/プロジェクトを使う全てのアプリ（Google AI Studio、Google Antigravity、ClawdBot等）でクォータが共有される
+- **Gemini 3 Proの無料枠は非常に限られている**: 他のアプリで使い切っている場合、429エラー（RESOURCE_EXHAUSTED）が発生する
+- **2025年12月にレート制限が強化された**: 無料枠が50-80%削減されたとの報告あり
+
+**推奨対処法：**
+- すでに429エラーが出る場合は `gemini-3-flash-preview` や `gemini-2.0-flash` に変更
+- クォータは毎日リセットされるので、翌日まで待つ
+- 本格利用する場合は課金を有効化
+:::
 
 ---
 
@@ -469,6 +496,52 @@ bash -lc "clawdbot --version"
 :::message
 恒久的に解決したい場合は `/etc/wsl.conf` に `appendWindowsPath = false` を追加する方法もあるが、設定ファイルの編集に慣れていない場合は上記コマンドで十分。
 :::
+
+### 4. 429エラー（RESOURCE_EXHAUSTED）
+
+**エラー:**
+```
+LLM error: {"error": {"code": 429, "message": "Resource has been exhausted..."}}
+```
+
+**原因:** APIのレート制限（クォータ）を超過
+
+**解決策:**
+1. **別のモデルに変更**: `gemini-3-flash-preview` や `gemini-2.0-flash` はクォータに余裕がある場合が多い
+2. **翌日まで待つ**: 日次クォータは太平洋時間の深夜にリセット
+3. **課金を有効化**: Google Cloud で課金を有効にするとクォータが大幅に増加
+
+### 5. モデル変更が反映されない
+
+**症状:** `clawdbot configure` でモデルを変更したのに反映されない
+
+**解決策:** 設定ファイルを直接編集
+```bash
+# sedで一括置換（例：gemini-3-pro を gemini-3-flash に変更）
+sed -i 's/gemini-3-pro-preview/gemini-3-flash-preview/g' ~/.clawdbot/clawdbot.json
+
+# 変更を確認
+cat ~/.clawdbot/clawdbot.json | grep -i gemini
+
+# Gatewayを再起動
+systemctl --user restart clawdbot-gateway.service
+```
+
+### 6. 設定変更後も古いエラーが出る
+
+**症状:** 設定を変更したのに古いエラーが出続ける、TUIに古いモデル名が表示される
+
+**解決策:** セッションをクリアする
+```bash
+# セッションをクリア
+rm -rf ~/.clawdbot/agents/main/sessions/*
+
+# Gatewayを再起動
+systemctl --user restart clawdbot-gateway.service
+
+# TUIを再起動
+clawdbot tui
+```
 
 ---
 
