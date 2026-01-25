@@ -365,8 +365,8 @@ cat ~/.clawdbot/clawdbot.json
 # モデル設定だけ確認
 cat ~/.clawdbot/clawdbot.json | grep -i model
 
-# APIキー設定を確認（Google）
-cat ~/.clawdbot/clawdbot.json | grep -i google
+# 認証情報を確認
+cat ~/.clawdbot/clawdbot.json | grep -i anthropic
 ```
 
 **出力例:**
@@ -457,33 +457,32 @@ AIが文章を処理する単位。日本語の場合、1文字あたり約1〜3
 料金は利用パターンで大きく変動する。月末に請求を確認する習慣をつけると安心。
 :::
 
-### エージェント（AIプロバイダー）の変更
+### エージェント（AIプロバイダー）の選択
 
-デフォルトではClaude（Anthropic）が使われる。他のプロバイダーに変更したい場合：
+ClawdBotは複数のAIプロバイダーに対応している。**この記事シリーズはClaude Codeユーザー向けのため、Claudeの使用を推奨**。
 
 ```bash
 # 設定を確認
 clawdbot config get agents
 
-# 設定を変更（例）
+# 設定を変更
 clawdbot configure
 ```
 
-対応プロバイダー：Claude、GPT-4、Bedrock、Ollama、LM Studio、Gemini 等
+**対応プロバイダー：**
 
-:::message alert
-**Gemini利用時のクォータ（使用量制限）に注意**
+| プロバイダー | おすすめ度 | 備考 |
+|-------------|-----------|------|
+| **Claude（Anthropic）** | ★★★ | 推奨。Claude サブスクリプション契約者は追加料金なし |
+| GPT-4（OpenAI） | ★★☆ | APIキーが必要、従量課金 |
+| Gemini（Google） | ★★☆ | 無料枠あるが制限厳しめ |
+| Ollama, LM Studio | ★★☆ | ローカルLLM。無料だがPCスペック必要 |
 
-Google Geminiを使う場合、以下の点に注意が必要：
-
-- **クォータは共有される**: 同じGoogle APIキー/プロジェクトを使う全てのアプリ（Google AI Studio、Google Antigravity、ClawdBot等）でクォータが共有される
-- **Gemini 3 Proの無料枠は非常に限られている**: 他のアプリで使い切っている場合、429エラー（RESOURCE_EXHAUSTED）が発生する
-- **2025年12月にレート制限が強化された**: 無料枠が50-80%削減されたとの報告あり
-
-**推奨対処法：**
-- すでに429エラーが出る場合は `gemini-3-flash-preview` や `gemini-2.0-flash` に変更
-- クォータは毎日リセットされるので、翌日まで待つ
-- 本格利用する場合は課金を有効化
+:::message
+**Claude推奨の理由**
+- Claude Pro/Max契約者は `setup-token` で追加料金なしで利用可能
+- Claude Codeとの連携がスムーズ
+- このシリーズの他の記事との整合性
 :::
 
 ---
@@ -562,35 +561,41 @@ bash -lc "clawdbot --version"
 恒久的に解決したい場合は `/etc/wsl.conf` に `appendWindowsPath = false` を追加する方法もあるが、設定ファイルの編集に慣れていない場合は上記コマンドで十分。
 :::
 
-### 4. 429エラー（RESOURCE_EXHAUSTED）
+### 4. 429エラー（レート制限）
 
 **エラー:**
 ```
 LLM error: {"error": {"code": 429, "message": "Resource has been exhausted..."}}
 ```
 
-**原因:** APIのレート制限（クォータ）を超過
+**原因:** APIのレート制限（利用枠）を超過
 
-**解決策:**
-1. **別のモデルに変更**: `gemini-3-flash-preview` や `gemini-2.0-flash` はクォータに余裕がある場合が多い
-2. **翌日まで待つ**: 日次クォータは太平洋時間の深夜にリセット
-3. **課金を有効化**: Google Cloud で課金を有効にするとクォータが大幅に増加
+**解決策（Claude利用時）:**
+1. **しばらく待つ**: Claude Pro/Maxの利用制限は時間経過でリセット
+2. **Claude.aiやClaude Codeの使用を控える**: 利用枠はClaude.ai、Claude Code、ClawdBotで共有される
+3. **上位プランを検討**: Max 5x（$100/月）やMax 20x（$200/月）は利用枠が大きい
+
+**解決策（他のプロバイダー利用時）:**
+1. **別のモデルに変更**: 軽量モデルは制限に余裕がある場合が多い
+2. **翌日まで待つ**: 日次クォータは毎日リセット
+3. **課金を有効化**: 無料枠を超えて利用する場合
 
 ### 5. モデル変更が反映されない
 
 **症状:** `clawdbot configure` でモデルを変更したのに反映されない
 
-**解決策:** 設定ファイルを直接編集
+**解決策:** Gatewayを再起動する
 ```bash
-# sedで一括置換（例：gemini-3-pro を gemini-3-flash に変更）
-sed -i 's/gemini-3-pro-preview/gemini-3-flash-preview/g' ~/.clawdbot/clawdbot.json
-
-# 変更を確認
-cat ~/.clawdbot/clawdbot.json | grep -i gemini
-
 # Gatewayを再起動
 systemctl --user restart clawdbot-gateway.service
+
+# 設定を確認
+cat ~/.clawdbot/clawdbot.json | grep -i model
 ```
+
+:::message
+設定ファイル（`~/.clawdbot/clawdbot.json`）を直接編集することも可能。編集後は必ずGatewayを再起動する。
+:::
 
 ### 6. 設定変更後も古いエラーが出る
 
