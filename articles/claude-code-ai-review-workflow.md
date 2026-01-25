@@ -414,20 +414,18 @@ Claude Code（Builder）と OpenAI Codex CLI（Auditor）を2つのターミナ�
 
 ### セットアップの流れ
 
-1. WSL2 をインストール（PowerShell 管理者で `wsl --install`）
-2. PC を再起動
-3. WSL 内で Node.js をインストール
-4. Codex CLI をインストール
-5. ChatGPT アカウントで認証
+1. WSL2 をインストール
+2. WSL 内で Node.js をインストール
+3. Codex CLI をインストール
+4. ChatGPT アカウントで認証
 
 ### WSL2 のインストール
 
-**PowerShell（管理者として実行）:**
-```powershell
-wsl --install
-```
+WSL2のセットアップが済んでいない場合は、以下の記事を参照：
 
-完了したらPCを再起動。
+- [非エンジニア向け WSL2 インストールガイド](wsl2-windows-install-guide)
+
+WSL2のセットアップ完了後、以下に進む。
 
 ### Codex CLI のインストール
 
