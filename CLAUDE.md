@@ -95,3 +95,44 @@ npx zenn preview
 # 新規記事作成
 npx zenn new:article
 ```
+
+## 記事公開チェックリスト（重要）
+
+記事を公開する際は、以下を必ず確認する：
+
+### 1. 記事の準備
+- [ ] `published: true` に設定
+- [ ] シリーズ構成が他記事と一致
+- [ ] 関連記事リンクが正しい
+
+### 2. Git 操作
+- [ ] `git status` で未コミットファイルを確認
+- [ ] `git add` で対象ファイルをステージング
+- [ ] `git commit` でコミット作成
+- [ ] `git push origin main` でプッシュ
+
+### 3. デプロイ確認
+- [ ] Zenn のデプロイ完了を待つ（数分）
+- [ ] Zenn 管理画面で記事が表示されることを確認
+- [ ] 公開 URL で記事が閲覧できることを確認
+
+:::message alert
+**過去の失敗事例**
+記事ファイルを作成し `published: true` に設定したが、Git にコミット・プッシュし忘れて公開されなかった。
+「ファイル作成完了」≠「記事公開完了」であることを忘れない。
+:::
+
+### 確認コマンド
+
+```bash
+# 未コミットファイルの確認
+git status
+
+# コミット・プッシュ
+git add articles/*.md
+git commit -m "Publish: {記事タイトル}"
+git push origin main
+
+# プッシュ完了後、Zenn管理画面で確認
+# https://zenn.dev/dashboard
+```
