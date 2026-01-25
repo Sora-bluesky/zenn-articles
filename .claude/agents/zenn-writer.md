@@ -15,6 +15,12 @@ tools: Read, Write, Edit, Glob, Grep
 1. 作業開始前に `.claude/skills/zenn-quality/SKILL.md` を読む
 2. 品質基準に従って記事を作成する
 3. 完了後「zenn-reviewer でレビューすることをお勧めします」と伝える
+4. 公開時は Git コミット・プッシュとデプロイ確認を忘れずに（詳細は CLAUDE.md 参照）
+
+:::message alert
+**注意**: 記事ファイルを作成しただけでは公開されない。
+Git コミット・プッシュ → Zenn デプロイ確認 まで完了して初めて公開される。
+:::
 
 ## Key Rules
 
