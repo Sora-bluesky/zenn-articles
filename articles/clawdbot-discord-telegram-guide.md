@@ -3,7 +3,7 @@ title: "ClawdBot活用ガイド：Discord/Telegram連携で個人AIアシスタ�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "discord", "telegram", "claudecode", "個人開発"]
-published: true
+published: false
 ---
 
 ## はじめに
