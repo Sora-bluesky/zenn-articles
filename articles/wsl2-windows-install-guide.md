@@ -202,6 +202,64 @@ ls
 
 ---
 
+## 別の PC に環境を構築する場合
+
+### Q: 他の PC ですでに WSL2 を使っています。同じユーザー名・パスワードにしても大丈夫？
+
+**A: 全く問題ありません。**
+
+WSL2 の Linux ユーザーは、各 PC・各ディストリビューションで完全に独立している。Windows アカウントや他 PC の WSL 環境との紐付けは一切ない。
+
+つまり：
+- 会社 PC：`taro` / パスワード A
+- 自宅 PC：`taro` / パスワード A
+
+これで全く問題なく動作する。むしろ同じにしておいた方が、複数 PC 間で作業するときに混乱しない。
+
+### Q: 旧 PC の環境をそのまま移行したい場合は？
+
+WSL の Export / Import 機能を使う。
+
+**旧 PC でエクスポート：**
+
+```powershell
+wsl --export Ubuntu-24.04 ubuntu-backup.tar
+```
+
+**新 PC でインポート：**
+
+```powershell
+wsl --import Ubuntu-24.04 C:\WSL\Ubuntu ubuntu-backup.tar
+```
+
+:::message alert
+**インポート後の注意**
+インポート後はデフォルトユーザーが root になる。以下の手順でデフォルトユーザーを設定し直す必要がある。
+:::
+
+Ubuntu 内で設定ファイルを編集する：
+
+```bash
+sudo nano /etc/wsl.conf
+```
+
+以下を追加：
+
+```
+[user]
+default=あなたのユーザー名
+```
+
+保存後、PowerShell で `wsl --shutdown` を実行し、再度 Ubuntu を起動すると反映される。
+
+:::message
+**nano エディタの操作方法**
+- 内容を入力したら `Ctrl + O` → `Enter` で保存
+- `Ctrl + X` で終了
+:::
+
+---
+
 ## よくあるエラーと解決策
 
 ### エラー 0x80370102
