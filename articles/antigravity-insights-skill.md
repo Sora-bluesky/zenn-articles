@@ -50,6 +50,7 @@ published: false
 ## 前提条件
 
 - Google Antigravity インストール済み
+  - まだの場合 → [Antigravityインストールガイド](antigravity-windows-install-guide)
 - 基本編のワークフロー・スキルを導入済み
 - **2つ以上のプロジェクトを完了している**（振り返りデータが必要）
 
