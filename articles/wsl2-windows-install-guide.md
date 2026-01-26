@@ -17,7 +17,6 @@ WSL2 を入れると、Windows 上で Linux（Ubuntu）が使えるようにな�
 - **WSL2 インストールガイド**（この記事）
 - [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
-- [ClawdBotを導入してみた](clawdbot-setup-guide)
 :::
 
 ---
@@ -279,7 +278,6 @@ WSL2 のインストールが完了したら、以下の記事に進む。
 | やりたいこと | 次に読む記事 |
 |-------------|-------------|
 | Claude Code を使いたい | [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide) |
-| ClawdBot を使いたい | [ClawdBotを導入してみた](clawdbot-setup-guide) |
 | トラブルが発生した | [Claude Codeが動かない時に見るページ](claude-code-windows-troubleshoot) |
 
 ---
