@@ -24,8 +24,8 @@ published: false
 
 :::message
 **シリーズ構成**
-- [非エンジニア向け Google Antigravity インストールガイド](antigravity-windows-install-guide)
-- **Google Antigravity × Codex CLI で始めるデュアルエージェント開発**（この記事）
+- [【非エンジニア×AI開発】Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
+- **Google Antigravity × Codex CLI でデュアルエージェント開発**（この記事）
 :::
 
 :::message
@@ -539,6 +539,6 @@ Rate limit exceeded
 
 ## 関連記事
 
-- [非エンジニア向け Google Antigravity インストールガイド](antigravity-windows-install-guide)
+- [【非エンジニア×AI開発】Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
 - [非エンジニア向け WSL2 インストールガイド](wsl2-windows-install-guide)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)（Claude Code 版）

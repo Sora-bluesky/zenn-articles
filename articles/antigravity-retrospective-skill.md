@@ -36,7 +36,7 @@ published: false
 
 :::message
 本記事は「非エンジニアのためのAIチーム開発」シリーズの詳細編（最終回）。
-- 全体像: [「AIへの指示が難しい」を解決する](antigravity-noneng-workflow-overview)
+- 全体像: [「AIへの指示が伝わらない」を解決する](antigravity-noneng-workflow-overview)
 - 前回: [ドキュメントスキル](antigravity-documentation-skill)
 :::
 

@@ -43,7 +43,7 @@ published: false
 :::message
 本記事は「非エンジニアのためのAIチーム開発」シリーズの発展編。
 基本編（00-05）を完了してから読むことを推奨。
-- 基本編: [「AIへの指示が難しい」を解決する](antigravity-noneng-workflow-overview)
+- 基本編: [「AIへの指示が伝わらない」を解決する](antigravity-noneng-workflow-overview)
 - 前提: [振り返りスキル](antigravity-retrospective-skill)
 :::
 
