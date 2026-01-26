@@ -1,5 +1,5 @@
 ---
-title: "Google Antigravity × Codex CLI で始めるデュアルエージェント開発"
+title: "【非エンジニア×AI開発】Google Antigravity × Codex CLI でデュアルエージェント開発"
 emoji: "🤝"
 type: "tech"
 topics: ["ai", "windows", "生成ai", "個人開発", "llm"]
