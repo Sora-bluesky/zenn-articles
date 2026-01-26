@@ -3,7 +3,7 @@ title: "【非エンジニア×AI開発】過去の学びを自動で次に活�
 emoji: "📊"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
-published: false
+published: true
 ---
 
 ## Before：基本編だけだと「やりっぱなし」
