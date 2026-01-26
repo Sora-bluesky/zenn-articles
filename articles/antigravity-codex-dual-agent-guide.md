@@ -376,12 +376,28 @@ Codex CLI がレビュー結果を出力する。例えば以下のような形�
 
 **作るもの**: Qiita のトレンド記事タイトルを取得して表示するスクリプト
 
-### Step 1: プロジェクト初期化
+### Step 1: Antigravity でプロジェクトを作成
+
+1. Windows で Antigravity を起動
+2. `C:\Users\あなたのユーザー名\Documents\Projects` フォルダを開く
+3. 以下のように指示する：
+
+```
+qiita-trend というフォルダを作成して、その中に Qiita API でトレンド記事を取得する Node.js スクリプトを作って
+```
+
+Antigravity がフォルダ作成からコード生成まで行う。生成が完了したら確認を求められるので、内容を確認して承認する。
+
+:::message
+Antigravity がフォルダ名を変更した場合（例: `qiita-trend-node`）は、そのフォルダ名に読み替えて作業を続けてください。
+:::
+
+### Step 2: デュアルエージェント環境を初期化
+
+WSL を開き、Antigravity が作成したフォルダに移動して初期化する。
 
 ```bash
-# プロジェクトフォルダを作成
-mkdir -p /mnt/c/Users/あなたのユーザー名/Documents/qiita-trend
-cd /mnt/c/Users/あなたのユーザー名/Documents/qiita-trend
+cd /mnt/c/Users/あなたのユーザー名/Documents/Projects/qiita-trend
 
 # Git を初期化
 git init
@@ -390,26 +406,7 @@ git init
 bash ~/init-dual-agent.sh
 ```
 
-### Step 2: Antigravity でプロジェクトを開く
-
-Windows で Antigravity を起動し、プロジェクトフォルダを開く。
-
-```
-Documents/qiita-trend フォルダで作業して
-```
-
-### Step 3: Agent に実装を依頼
-
-Antigravity に以下のように指示する。
-
-```
-Qiita のトレンド記事のタイトルを10件取得して表示する Node.js スクリプトを作って。
-fetch を使って、Qiita API からデータを取得して。
-```
-
-Antigravity がコードを生成する。生成が完了したら確認を求められるので、内容を確認して承認する。
-
-### Step 4: 自動レビューを見守る
+### Step 3: 自動レビューを見守る
 
 生成されたコードをコミットしてから、Codex CLI でレビューする。
 
@@ -443,7 +440,7 @@ Codex CLI のレビューで以下の問題が指摘されました。修正し�
 
 修正後、再度コミットしてレビューを実行。問題がなくなるまで繰り返す。
 
-### Step 5: 実行
+### Step 4: 実行
 
 問題がなくなったら、スクリプトを実行する。
 
