@@ -262,9 +262,8 @@ cat > AGENTS.md << 'EOF'
 1. Antigravity で実装
 2. `git add . && git commit -m "実装内容"` でコミット
 3. 以下を実行してレビュー:
-   ```
-   codex exec "このプロジェクトのコードをレビューして。セキュリティ、バグ、パフォーマンスの観点でチェックし、問題があれば指摘して。" --sandbox danger-full-access
-   ```
+
+    codex exec "このプロジェクトのコードをレビューして。セキュリティ、バグ、パフォーマンスの観点でチェックし、問題があれば指摘して。" --sandbox danger-full-access
 4. 問題があれば Antigravity で修正
 5. 問題がなくなるまで 2-4 を繰り返す
 
