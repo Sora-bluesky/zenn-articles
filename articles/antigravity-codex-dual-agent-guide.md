@@ -457,6 +457,44 @@ Qiita のトレンド記事タイトルが表示されれば成功。
 
 ## トラブルシューティング
 
+### git init が「Operation not permitted」で失敗する
+
+**症状**: `/mnt/c/` 以下のフォルダで `git init` を実行すると、以下のエラーが出る
+```
+error: chmod on .git/config.lock failed: Operation not permitted
+fatal: could not set 'core.filemode' to 'false'
+```
+
+**原因**: WSL2 から Windows のフォルダ（`/mnt/c/` 以下）にアクセスする際、ファイルの権限操作が制限されることがある
+
+**対策1: WSL2 の設定を変更する**
+```bash
+sudo nano /etc/wsl.conf
+```
+
+以下を追加：
+```
+[automount]
+options = "metadata"
+```
+
+保存後（`Ctrl + O` → `Enter` → `Ctrl + X`）、PowerShell で WSL を再起動：
+```powershell
+wsl --shutdown
+```
+
+再度 Ubuntu を起動して `git init` を実行する。
+
+**対策2: PowerShell から実行する（簡単）**
+
+設定変更が面倒な場合は、PowerShell または コマンドプロンプトから `git init` を実行：
+```powershell
+cd C:\Users\あなたのユーザー名\Documents\Projects\プロジェクト名
+git init
+```
+
+その後、WSL2 に戻って作業を続けられる。
+
 ### codex exec がタイムアウトする
 
 **症状**: レビューが途中で止まる、またはタイムアウトエラーが出る
