@@ -263,9 +263,13 @@ cat > AGENTS.md << 'EOF'
 2. `git add . && git commit -m "実装内容"` でコミット
 3. 以下を実行してレビュー:
 
-    codex exec "このプロジェクトのコードをレビューして。セキュリティ、バグ、パフォーマンスの観点でチェックし、問題があれば指摘して。" --sandbox danger-full-access
+    codex exec "このプロジェクトのコードをレビューして。セキュリティ、バグ、パフォーマンスの観点でチェックし、問題があれば日本語で指摘して。" --sandbox danger-full-access
 4. 問題があれば Antigravity で修正
 5. 問題がなくなるまで 2-4 を繰り返す
+
+## 言語設定
+
+- レビュー結果は **日本語** で出力すること
 
 ## 注意事項
 
@@ -450,7 +454,7 @@ git add .
 git commit -m "Add Qiita trend fetcher"
 
 # レビューを実行
-codex exec "このプロジェクトの index.js をレビューして。セキュリティ、エラーハンドリング、パフォーマンスの観点でチェックし、問題があれば具体的に指摘して。" --sandbox danger-full-access
+codex exec "このプロジェクトの index.js をレビューして。セキュリティ、エラーハンドリング、パフォーマンスの観点でチェックし、問題があれば日本語で具体的に指摘して。" --sandbox danger-full-access
 ```
 
 レビュー結果を確認する。問題があれば、Antigravity に修正を依頼する。
