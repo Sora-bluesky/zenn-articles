@@ -2,7 +2,7 @@
 title: "過去の失敗を自動で次に活かす ── 振り返りを横断分析する「学びの継承」スキル"
 emoji: "📊"
 type: "tech"
-topics: ["GoogleAntigravity", "AI", "個人開発", "非エンジニア", "振り返り"]
+topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
 published: false
 ---
 

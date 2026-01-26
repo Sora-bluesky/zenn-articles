@@ -2,7 +2,7 @@
 title: "動くけど不安...を解決 ── AIダブルチェックで品質を担保するレビュースキル"
 emoji: "🔍"
 type: "tech"
-topics: ["GoogleAntigravity", "Codex", "個人開発", "非エンジニア", "コードレビュー"]
+topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
 published: false
 ---
 

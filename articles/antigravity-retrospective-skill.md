@@ -2,7 +2,7 @@
 title: "同じ失敗を繰り返さない ── AIと一緒に「良かった点・問題点・次やること」を整理する"
 emoji: "🔄"
 type: "tech"
-topics: ["GoogleAntigravity", "AI", "個人開発", "非エンジニア", "振り返り"]
+topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
 published: false
 ---
 

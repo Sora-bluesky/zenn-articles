@@ -29,7 +29,7 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CL
 :::
 
 :::message
-**検証環境**: Windows 11 / Claude Code（2025年1月時点）
+**検証環境**: Windows 11 / Claude Code（2026年1月時点）
 :::
 
 ---

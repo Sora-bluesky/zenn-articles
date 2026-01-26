@@ -2,7 +2,7 @@
 title: "曖昧な指示でもAIが理解してくれる ── 5つの質問で要件を引き出すスキル"
 emoji: "🤖"
 type: "tech"
-topics: ["GoogleAntigravity", "AI", "個人開発", "非エンジニア", "要件定義"]
+topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
 published: false
 ---
 

@@ -2,7 +2,7 @@
 title: "「GAS？Python？」選べない問題 ── AIが選択肢を出してくれる設計スキル"
 emoji: "🏗️"
 type: "tech"
-topics: ["GoogleAntigravity", "AI", "個人開発", "非エンジニア", "設計"]
+topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
 published: false
 ---
 
