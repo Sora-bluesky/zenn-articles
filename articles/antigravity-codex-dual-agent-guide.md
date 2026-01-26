@@ -406,6 +406,30 @@ git init
 bash ~/init-dual-agent.sh
 ```
 
+### Git の初期設定（初回のみ）
+
+初めて Git を使う場合、コミット時に「誰がコミットしたか」を記録するための設定が必要。
+
+```bash
+git config --global user.email "あなたのメールアドレス"
+git config --global user.name "あなたの名前"
+```
+
+**何を設定すればいい？**
+
+- **GitHub アカウントがある場合**: GitHub に登録しているメールアドレスとユーザー名を設定（コミット履歴が GitHub アカウントと紐付く）
+- **GitHub アカウントがない場合**: 任意のメールアドレスと名前で OK（後から変更も可能）
+
+例：
+```bash
+git config --global user.email "example@gmail.com"
+git config --global user.name "Taro Yamada"
+```
+
+:::message
+この設定は PC ごとに一度だけ行えば OK です。
+:::
+
 ### Step 3: 自動レビューを見守る
 
 生成されたコードをコミットしてから、Codex CLI でレビューする。
