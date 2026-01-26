@@ -168,13 +168,21 @@ sudo apt update && sudo apt install -y wslu
 
 :::
 
-認証が成功すると、以下のようなプロンプトが表示される。
+認証が成功すると、以下のような起動画面が表示される。
 
-```
-codex v1.x.x
+![Codex CLI 起動画面（gpt-5.2-codex モデル使用時）](/images/codex-cli-startup.png)
+*Codex CLI を起動すると、使用モデルとコマンド一覧が表示される*
 
->
-```
+画面に表示されるコマンドの意味は以下の通り。
+
+| コマンド | 意味 |
+|---------|------|
+| `/init` | AGENTS.md（AI への指示書）を作成する |
+| `/status` | 現在の設定を表示する |
+| `/approvals` | AI が自動で実行できる操作を選ぶ |
+| `/permissions` | AI に許可する操作を選ぶ |
+| `/model` | 使用するモデルを変更する |
+| `/review` | コードの変更点をレビューする |
 
 `/exit` または `Ctrl + C` で終了できる。
 
