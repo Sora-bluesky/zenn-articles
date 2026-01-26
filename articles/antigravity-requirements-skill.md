@@ -34,7 +34,7 @@ AIはスマホアプリを作り始めた。
 
 :::message
 本記事は「非エンジニアのためのAIチーム開発」シリーズの詳細編。
-- 全体像: [「AIへの指示が難しい」を解決する](antigravity-noneng-workflow-overview)
+- 全体像: [「AIへの指示が伝わらない」を解決する](antigravity-noneng-workflow-overview)
 - 次回: [設計スキル](antigravity-design-skill)
 :::
 
