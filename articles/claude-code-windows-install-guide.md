@@ -47,7 +47,7 @@ Claude Code を Windows で使うには、**Git for Windows** が必要。
 1. [Git for Windows ダウンロードページ](https://git-scm.com/downloads/win) にアクセス
 2. 「**Click here to download**」をクリック
 3. ダウンロードしたファイル（`Git-〇〇-64-bit.exe`）をダブルクリック
-4. インストーラーが起動したら、**すべて「Next」を押し続けて**最後に「Install」
+4. インストーラーが起動したら、 **すべて「Next」を押し続けて** 最後に「Install」
 5. 完了したら「Finish」
 
 :::message
@@ -62,7 +62,7 @@ Claude Code を Windows で使うには、**Git for Windows** が必要。
 
 1. キーボードの **Windows キー** を押す（または画面左下のスタートボタンをクリック）
 2. 「**powershell**」と入力
-3. 「**Windows PowerShell**」が表示されたら、**右クリック** → 「**管理者として実行**」を選択
+3. 「**Windows PowerShell**」が表示されたら、 **右クリック** → 「**管理者として実行**」を選択
 4. 「このアプリがデバイスに変更を加えることを許可しますか？」と聞かれたら「**はい**」
 
 :::message
@@ -99,7 +99,7 @@ irm https://claude.ai/install.ps1 | iex
 
 ### ステップ3：PowerShell を再起動
 
-インストールが完了したら、**PowerShell を一度閉じて、もう一度開く**。
+インストールが完了したら、 **PowerShell を一度閉じて、もう一度開く**。
 
 これをやらないと、`claude` コマンドが使えない。
 
@@ -209,8 +209,8 @@ Select login method:
 
 ブラウザが自動的に開き、Claude のログイン画面が表示される。
 
-- **Googleアカウント**でログインしている場合 → 「Continue with Google」
-- **メールアドレス**で登録している場合 → 「Continue with email」
+- **Googleアカウント** でログインしている場合 → 「Continue with Google」
+- **メールアドレス** で登録している場合 → 「Continue with email」
 
 ログインが完了すると、ブラウザに以下のメッセージが表示される：
 

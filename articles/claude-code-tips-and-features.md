@@ -73,7 +73,7 @@ Claude が変な変更をしてしまった時に使う。
 
 :::message alert
 **注意**
-ここで紹介するキー操作は **Claude Code 内**での操作です。
+ここで紹介するキー操作は **Claude Code 内** での操作です。
 PowerShell 自体の操作とは異なります（後述）。
 :::
 
@@ -109,7 +109,7 @@ Claude がタスクを完了すると、次にやりそうなことがグレー�
 
 ### 参考：PowerShell でのキー操作
 
-Claude Code を**起動する前**の PowerShell 画面では、キー操作の意味が異なる。
+Claude Code を **起動する前** の PowerShell 画面では、キー操作の意味が異なる。
 
 | キー | PowerShell での動作 |
 |------|---------------------|
