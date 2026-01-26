@@ -18,7 +18,6 @@ ClawdBotは、Discord・Telegram・WhatsAppなど複数のメッセージング�
 - [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - **ClawdBotを導入してみた**（この記事）
-- [ClawdBot活用ガイド：Discord/Telegram連携](clawdbot-discord-telegram-guide)
 :::
 
 ---
@@ -617,9 +616,7 @@ clawdbot tui
 
 ## 次のステップ
 
-ClawdBotの基本インストールが完了した。次の記事では、実際にDiscordやTelegramと連携して使う方法を解説する。
-
-- [ClawdBot活用ガイド：Discord/Telegram連携](clawdbot-discord-telegram-guide)
+ClawdBotの基本インストールが完了した。
 
 ---
 
