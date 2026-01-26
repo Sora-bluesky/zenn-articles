@@ -34,7 +34,7 @@ AIに作ってもらったコードが動いた。嬉しい。
 
 :::message
 本記事は「非エンジニアのためのAIチーム開発」シリーズの詳細編。
-- 全体像: [「AIへの指示が難しい」を解決する](antigravity-noneng-workflow-overview)
+- 全体像: [「AIへの指示が伝わらない」を解決する](antigravity-noneng-workflow-overview)
 - 前回: [設計スキル](antigravity-design-skill)
 - 次回: [ドキュメントスキル](antigravity-documentation-skill)
 :::
