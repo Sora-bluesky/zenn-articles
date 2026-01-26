@@ -1,5 +1,5 @@
 ---
-title: "曖昧な指示でもAIが理解してくれる ── 5つの質問で要件を引き出すスキル"
+title: "【非エンジニア×AI開発】何を伝えればいいかわからない → AIが5つ質問してくれるだけでいい"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]

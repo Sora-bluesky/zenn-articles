@@ -1,5 +1,5 @@
 ---
-title: "動くけど不安...を解決 ── AIダブルチェックで品質を担保するレビュースキル"
+title: "【非エンジニア×AI開発】動くけど大丈夫？ → 2つのAIでダブルチェック"
 emoji: "🔍"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
