@@ -1,5 +1,5 @@
 ---
-title: "「README？何それ？」を解決 ── 上司報告資料まで自動生成するドキュメントスキル"
+title: "【非エンジニア×AI開発】READMEも上司報告も：5つの質問で資料を自動生成"
 emoji: "📝"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
