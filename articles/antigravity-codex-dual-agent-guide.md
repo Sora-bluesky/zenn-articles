@@ -236,9 +236,9 @@ nano ~/init-dual-agent.sh
 # デュアルエージェント開発 初期化スクリプト
 # 使い方: bash ~/init-dual-agent.sh
 
-set -e
+set -e  # エラーが発生したら即座にスクリプトを停止する
 
-# AGENTS.md を作成
+# AGENTS.md を作成（ヒアドキュメントで一括書き込み）
 cat > AGENTS.md << 'EOF'
 # デュアルエージェント開発ガイド
 
@@ -291,7 +291,7 @@ echo "  2. AGENTS.md を参照して開発を進める"
 **4. 実行権限を付与**
 
 ```bash
-chmod +x ~/init-dual-agent.sh
+chmod +x ~/init-dual-agent.sh  # このファイルをプログラムとして実行できるようにする
 ```
 
 ### 使い方

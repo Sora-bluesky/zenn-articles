@@ -2,7 +2,7 @@
 title: "「AIへの指示が難しい」を解決する ── 非エンジニアのための個人開発ワークフロー"
 emoji: "🚀"
 type: "tech"
-topics: ["GoogleAntigravity", "AI", "個人開発", "非エンジニア", "バイブコーディング"]
+topics: ["ai", "生成ai", "個人開発", "googleantigravity", "バイブコーディング"]
 published: false
 ---
 
@@ -27,7 +27,7 @@ expense_tool？ExpenseManager？keihi_seisan？
 
 「レシート撮影できるようにして」と言ったら、スマホアプリを作り始めた。
 
-違う違う、そうじゃない。GASでいいのに...
+違う違う、そうじゃない。GAS（Google Apps Script: Googleの無料プログラミング環境）でいいのに...
 
 ---
 
@@ -363,8 +363,6 @@ Step 6: 振り返り
 ## デモ：請求書作成ツールを /team で開発
 
 実際に `/team` を使って「請求書作成ツール」を開発する流れを見てみよう。
-
-![デモ画面](/images/00-overview/demo-invoice.png)
 
 ```
 ユーザー: /team
