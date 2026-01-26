@@ -1,5 +1,5 @@
 ---
-title: "過去の失敗を自動で次に活かす ── 振り返りを横断分析する「学びの継承」スキル"
+title: "【非エンジニア×AI開発】過去の学びを自動で次に活かす：振り返りの横断分析"
 emoji: "📊"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]

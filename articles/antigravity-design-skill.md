@@ -1,5 +1,5 @@
 ---
-title: "「GAS？Python？」選べない問題 ── AIが選択肢を出してくれる設計スキル"
+title: "【非エンジニア×AI開発】GASかPythonか選べない → AIが選択肢を4つに絞ってくれる"
 emoji: "🏗️"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]

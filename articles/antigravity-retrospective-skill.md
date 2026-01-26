@@ -1,5 +1,5 @@
 ---
-title: "同じ失敗を繰り返さない ── AIと一緒に「良かった点・問題点・次やること」を整理する"
+title: "【非エンジニア×AI開発】同じ失敗を繰り返さない：AIが振り返りを質問してくれる"
 emoji: "🔄"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
