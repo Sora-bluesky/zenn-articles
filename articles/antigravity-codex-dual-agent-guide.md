@@ -310,8 +310,8 @@ cd /mnt/c/Users/あなたのユーザー名/Documents/my-project
 bash ~/init-dual-agent.sh
 ```
 
-![初期化スクリプト実行結果](/images/dual-agent-init-result.png)
-*スクリプトを実行すると、AGENTS.mdが作成され、次のステップが表示されます*
+![git init と初期化スクリプトの実行結果](/images/dual-agent-init-flow.png)
+*git init 後に初期化スクリプトを実行すると、AGENTS.md が作成されます*
 
 :::message
 **`/mnt/c/` とは**
