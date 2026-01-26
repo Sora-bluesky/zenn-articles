@@ -73,7 +73,7 @@ claude: The term 'claude' is not recognized as a name of a cmdlet, function, scr
 
 #### Step 1: PowerShell を完全に閉じて再起動
 
-「新しいタブを開く」ではダメ。**ウィンドウごと閉じる**。
+「新しいタブを開く」ではダメ。 **ウィンドウごと閉じる**。
 
 それでもダメな場合、PCを再起動。
 
@@ -377,7 +377,7 @@ error: 'username' is declared but never used
 
 ### 解決策
 
-**エラーメッセージをそのまま Claude Code に渡す**のが一番早い。
+**エラーメッセージをそのまま Claude Code に渡す** のが一番早い。
 
 ```
 > 以下のエラーが出た。直して：
