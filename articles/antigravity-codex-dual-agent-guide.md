@@ -334,8 +334,12 @@ Qiita API でトレンド記事を取得するスクリプトを作って、自�
 ![自動レビューサイクル実行中](/images/dual-agent-review-cycle.png)
 *Antigravity が自動で review.ps1 を実行し、レビュー結果を取得*
 
+Codex が 🔴 重大 の指摘を出した場合、Antigravity は自動的に修正を行い、再度レビューを実行する。
+
 ![修正と再レビューのループ](/images/dual-agent-fix-loop.png)
-*🔴 や 🟡 の指摘を受けて自動修正し、再レビュー*
+*🔴 重大 の指摘があると、Antigravity が自動修正して再レビュー*
+
+このサイクルは最大5回まで繰り返され、🔴 重大 がゼロになるまで続く。
 
 ![レビュー通過](/images/dual-agent-review-passed.png)
 *問題がなくなると「レビュー通過」と表示される*
@@ -362,6 +366,38 @@ Codex CLI のレビュー結果は、緊急度別に整理されて出力され�
 | 💡 改善提案 | より良くするアイデア | 任意（無視しても OK） |
 
 🔴 と 🟡 が **ゼロになるまで** 自動で修正→再レビューが繰り返される。🟢 と 💡 は参考情報として表示されるだけで、修正対象にはならない。
+
+---
+
+## フォルダ構成
+
+自動レビューサイクルを使うためのファイル配置：
+
+```
+C:\Users\<ユーザー名>\Documents\Projects\
+├── review.ps1                    # 自動レビュースクリプト（共通）
+│
+├── qiita-trend\                  # プロジェクトA
+│   ├── .agent\
+│   │   └── workflows\
+│   │       └── review-cycle.md   # ワークフロー定義
+│   ├── AGENTS.md                 # Antigravity 用の指示書（任意）
+│   ├── index.js
+│   └── ...
+│
+├── another-project\              # プロジェクトB
+│   ├── .agent\
+│   │   └── workflows\
+│   │       └── review-cycle.md
+│   └── ...
+│
+└── ...
+```
+
+**ポイント**:
+- `review.ps1` は Projects フォルダ直下に1つだけ配置（全プロジェクト共通）
+- `.agent/workflows/review-cycle.md` は各プロジェクトごとに配置
+- これにより、どのプロジェクトでも自動レビューサイクルが使える
 
 ---
 
