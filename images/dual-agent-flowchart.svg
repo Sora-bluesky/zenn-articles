@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 720" width="520" height="720">
+  <defs>
+    <style>
+      text { font-family: 'Segoe UI', 'Meiryo', sans-serif; fill: #ffffff; }
+      .label { font-size: 13px; font-weight: bold; }
+      .sublabel { font-size: 11px; fill: #cccccc; }
+      .arrow-label { font-size: 12px; font-weight: bold; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#aaaaaa"/>
+    </marker>
+    <marker id="arrowhead-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e67e22"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="520" height="720" rx="12" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="260" y="32" text-anchor="middle" font-size="15" font-weight="bold" fill="#ffffff">自動レビューサイクル</text>
+
+  <!-- 1. Start: User instruction -->
+  <rect x="140" y="50" width="240" height="44" rx="22" fill="#27ae60"/>
+  <text x="260" y="70" text-anchor="middle" class="label">ユーザー</text>
+  <text x="260" y="86" text-anchor="middle" class="sublabel">「機能Xを作って」</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="260" y1="94" x2="260" y2="120" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- 2. Process: Antigravity creates code -->
+  <rect x="140" y="120" width="240" height="44" rx="8" fill="#2980b9"/>
+  <text x="260" y="147" text-anchor="middle" class="label">Antigravity: コード作成</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="260" y1="164" x2="260" y2="190" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- 3. Process: git commit -->
+  <rect x="140" y="190" width="240" height="44" rx="8" fill="#2980b9" id="git-commit"/>
+  <text x="260" y="217" text-anchor="middle" class="label">git commit</text>
+
+  <!-- Arrow 3→4 -->
+  <line x1="260" y1="234" x2="260" y2="260" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- 4. Process: review.ps1 -->
+  <rect x="140" y="260" width="240" height="44" rx="8" fill="#2980b9"/>
+  <text x="260" y="287" text-anchor="middle" class="label">review.ps1 実行</text>
+
+  <!-- Arrow 4→5 -->
+  <line x1="260" y1="304" x2="260" y2="330" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- 5. Process: Codex review -->
+  <rect x="110" y="330" width="300" height="44" rx="8" fill="#8e44ad"/>
+  <text x="260" y="357" text-anchor="middle" class="label">Codex: レビュー結果（🔴🟡🟢💡）</text>
+
+  <!-- Arrow 5→6 -->
+  <line x1="260" y1="374" x2="260" y2="410" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- 6. Decision: Critical issues? -->
+  <polygon points="260,410 380,460 260,510 140,460" fill="#f39c12" stroke="#e67e22" stroke-width="2"/>
+  <text x="260" y="455" text-anchor="middle" class="label" fill="#1a1a2e">🔴 重大 あり？</text>
+  <text x="260" y="472" text-anchor="middle" font-size="10" fill="#1a1a2e">（または 🟡 注意）</text>
+
+  <!-- Arrow: Yes (left) → Fix -->
+  <line x1="140" y1="460" x2="70" y2="460" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="108" y="450" text-anchor="middle" class="arrow-label" fill="#e74c3c">Yes</text>
+
+  <!-- Arrow: No (right) → Done -->
+  <line x1="380" y1="460" x2="448" y2="460" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="412" y="450" text-anchor="middle" class="arrow-label" fill="#27ae60">No</text>
+
+  <!-- 7a. Fix (left) -->
+  <rect x="10" y="490" width="120" height="56" rx="8" fill="#e67e22"/>
+  <text x="70" y="515" text-anchor="middle" class="label">修正</text>
+  <text x="70" y="534" text-anchor="middle" class="sublabel">（最大5回）</text>
+
+  <!-- 7b. Done (right) -->
+  <rect x="398" y="438" width="110" height="44" rx="22" fill="#27ae60"/>
+  <text x="453" y="465" text-anchor="middle" class="label">✅ 完了報告</text>
+
+  <!-- Loop arrow: Fix → git commit -->
+  <line x1="70" y1="490" x2="70" y2="212" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,3"/>
+  <line x1="70" y1="212" x2="138" y2="212" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrowhead-orange)"/>
+  <text x="82" y="350" class="sublabel" fill="#e67e22" font-size="11" font-weight="bold">ループ</text>
+
+  <!-- Legend -->
+  <rect x="30" y="590" width="460" height="110" rx="8" fill="#252545" stroke="#3a3a5e" stroke-width="1"/>
+  <text x="260" y="614" text-anchor="middle" font-size="12" font-weight="bold" fill="#cccccc">凡例</text>
+  <rect x="50" y="626" width="16" height="12" rx="6" fill="#27ae60"/>
+  <text x="74" y="637" font-size="11" fill="#cccccc">開始 / 終了</text>
+  <rect x="180" y="626" width="16" height="12" rx="3" fill="#2980b9"/>
+  <text x="204" y="637" font-size="11" fill="#cccccc">処理</text>
+  <rect x="280" y="626" width="16" height="12" rx="3" fill="#8e44ad"/>
+  <text x="304" y="637" font-size="11" fill="#cccccc">AI レビュー</text>
+  <polygon points="58,660 66,654 74,660 66,666" fill="#f39c12"/>
+  <text x="84" y="664" font-size="11" fill="#cccccc">判定</text>
+  <rect x="180" y="654" width="16" height="12" rx="3" fill="#e67e22"/>
+  <text x="204" y="664" font-size="11" fill="#cccccc">修正ループ</text>
+  <line x1="290" y1="660" x2="320" y2="660" stroke="#e67e22" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="328" y="664" font-size="11" fill="#cccccc">ループ矢印</text>
+  <text x="260" y="690" text-anchor="middle" font-size="10" fill="#888888">🔴 重大 と 🟡 注意 がゼロになるまで自動で繰り返す</text>
+</svg>
