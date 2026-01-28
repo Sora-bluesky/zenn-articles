@@ -56,6 +56,17 @@ RMOS: 「MCPでファイルシステムを操作するツール」 / Windows / Z
 | `zenn-quality` | 記事品質基準とチェックリスト |
 | `buzz-post` | Xバズポスト作成・「さらに表示」位置最適化 |
 | `fact-check` | 調査結果を公式ドキュメント・公式ベストプラクティスと照合 |
+| `new-series-workflow` | 新シリーズ作成時のDeep Research + メタ認知レビューワークフロー |
+
+## Reference Sources
+
+公式ドキュメント・ベストプラクティスの参照先：
+
+| ツール | URL |
+|--------|-----|
+| Claude Code Best Practices | https://code.claude.com/docs/en/best-practices |
+| Anthropic Engineering Blog | https://www.anthropic.com/engineering/claude-code-best-practices |
+| Google Antigravity Docs | https://antigravity.google/docs |
 
 ## Article Guidelines
 
@@ -66,6 +77,37 @@ RMOS: 「MCPでファイルシステムを操作するツール」 / Windows / Z
 - 具体例は初心者向け（タイマー、電卓など）
 - 暗黙の前提を説明する
 - コマンドや記号（irm, iex, ~, PATH）には説明を追加
+
+## Title Conventions
+
+記事タイトルの統一ルール：
+
+| ルール | 理由 |
+|--------|------|
+| 「【非エンジニア×AI開発】」プレフィックスは使わない | 冗長。Zenn一覧で切れる |
+| 「非エンジニア向け」は使わない | 記事内容で示す |
+| 「Antigravity」→「Google Antigravity」 | 正式名称で統一 |
+| 「（Windows 10/11）」→「（Windows）」 | 冗長。現行Windowsは基本10/11 |
+| 「WSL2」→「Linux（Ubuntu）」 | 非エンジニアに伝わりやすい |
+
+**タイトルパターン**：
+- Claude Code: `Claude Code [カテゴリ]：[ベネフィット]`
+- Google Antigravity: `Google Antigravity [スキル名]スキル：[ベネフィット]`
+- 実践Tips: `Claude Code 実践Tips [#]：[テーマ]`
+
+## Series Structure
+
+| シリーズ | ターゲット | 概要 |
+|---------|-----------|------|
+| Claude Code シリーズ | 非エンジニア・初心者 | インストール、基本操作、トラブルシューティング |
+| Claude Code 実践Tips | 中級者 | 公式ベストプラクティス解説 |
+| Google Antigravity シリーズ | 非エンジニア | Skills、Workflows、セキュリティ |
+
+**棲み分け**：
+- 既存シリーズ：機能の紹介（How）
+- 実践Tips：ベストプラクティスの理解（Why & When）
+
+新シリーズ作成時は、既存記事との重複を確認し、観点の違いで棲み分ける。
 
 ## Zenn Specifics
 
