@@ -14,9 +14,9 @@ published: false
 
 :::message
 **シリーズ構成**
-- [WSL2インストールガイド（Windows）](wsl2-windows-install-guide)
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ](claude-code-tips-and-features)
 - **ClawdBot活用ガイド：Discord/Telegram連携**（この記事）
 :::
 
@@ -452,5 +452,5 @@ ClawdBotを使えば、Discord・Telegramがそのまま「AIアシスタント�
 
 ## 関連記事
 
-- [WSL2インストールガイド（Windows）](wsl2-windows-install-guide)
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
+- [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)

@@ -1,5 +1,5 @@
 ---
-title: "WSL2 インストールガイド（Windows）"
+title: "Linux（Ubuntu）インストールガイド（Windows）"
 emoji: "🐧"
 type: "tech"
 topics: ["wsl2", "windows", "claudecode", "linux", "初心者"]
@@ -14,7 +14,7 @@ WSL2 を入れると、Windows 上で Linux（Ubuntu）が使えるようにな�
 
 :::message
 **シリーズ構成**
-- **WSL2 インストールガイド**（この記事）
+- **Linux（Ubuntu）インストールガイド**（この記事）
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
 - [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 :::
