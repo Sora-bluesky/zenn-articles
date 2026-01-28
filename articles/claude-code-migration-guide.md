@@ -1,5 +1,5 @@
 ---
-title: "Claude（Web版）で積み上げた知識、Claude Codeに引っ越せます"
+title: "Claude Code への引っ越しガイド：Web版の知識を移行する"
 emoji: "📦"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]

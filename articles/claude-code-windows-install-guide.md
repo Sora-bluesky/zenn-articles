@@ -1,5 +1,5 @@
 ---
-title: "非エンジニアがWindowsでClaude Codeを使えるようになるまで"
+title: "Claude Code インストールガイド（Windows）"
 emoji: "🚀"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "生成ai", "初心者"]
