@@ -867,7 +867,7 @@ paths:
 :::message
 **モデルについて**
 
-Claude Codeは **デフォルトでSonnet 4.5を使用** します。特別な設定は不要です。
+Claude Codeは **Proプランの場合、デフォルトでSonnet 4.5を使用** します。特別な設定は不要です。Maxプランの場合はOpus系モデルが優先的に使用されます。
 
 > *"If you're unsure which model to use, we recommend starting with Claude Sonnet 4.5. It offers the best balance of intelligence, speed, and cost for most use cases, with exceptional performance in coding and agentic tasks."*
 > （どのモデルを使うか迷ったら、Claude Sonnet 4.5から始めることをお勧めします。ほとんどのユースケースでインテリジェンス、スピード、コストの最良のバランスを提供し、コーディングとエージェントタスクで卓越したパフォーマンスを発揮します）
