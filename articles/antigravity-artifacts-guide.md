@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】AIが何をしたか一目でわかる — Antigravity Artifacts ガイド"
+title: "Google Antigravity Artifacts ガイド：AIの作業が一目でわかる"
 emoji: "👁️"
 type: "tech"
 topics: ["ai", "生成ai", "googleantigravity", "個人開発", "llm"]

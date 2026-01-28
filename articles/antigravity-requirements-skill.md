@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】何を伝えればいいかわからない → AIが5つ質問してくれるだけでいい"
+title: "Google Antigravity 要件定義スキル：何を伝えればいいか、AIが質問してくれる"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]

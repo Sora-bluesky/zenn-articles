@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】動くけど大丈夫？ → 2つのAIでダブルチェック"
+title: "Google Antigravity レビュースキル：動くけど大丈夫？を2つのAIでチェック"
 emoji: "🔍"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
