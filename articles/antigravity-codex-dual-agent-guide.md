@@ -31,6 +31,7 @@ published: true
 **シリーズ構成**
 - [【非エンジニア×AI開発】Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
 - **Google Antigravity × Codex CLI でデュアルエージェント開発**（この記事）
+- [Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
 :::
 
 :::message

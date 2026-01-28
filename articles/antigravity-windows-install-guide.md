@@ -15,6 +15,7 @@ Windows環境でGoogle Antigravityをセットアップする手順をまとめ�
 **シリーズ構成**
 - **非エンジニア向け Google Antigravity インストールガイド**（この記事）
 - [【非エンジニア×AI開発】Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)
+- [Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
 :::
 
 ---
