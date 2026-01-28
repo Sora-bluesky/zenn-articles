@@ -524,7 +524,7 @@ Claude Code（Builder）と OpenAI Codex CLI（Auditor）を2つのターミナ�
 
 WSL2のセットアップが済んでいない場合は、以下の記事を参照：
 
-- [非エンジニア向け WSL2 インストールガイド](wsl2-windows-install-guide)
+- [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide)
 
 WSL2のセットアップ完了後、以下に進む。
 

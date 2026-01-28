@@ -24,12 +24,12 @@ published: true
 
 :::message alert
 **WSL2 が必須**
-この記事の手順は **WSL2（Windows Subsystem for Linux 2）** 上で実行する。WSL2 をまだセットアップしていない場合は、先に [WSL2 インストールガイド](wsl2-windows-install-guide) を参照。
+この記事の手順は **WSL2（Windows Subsystem for Linux 2）** 上で実行する。WSL2 をまだセットアップしていない場合は、先に [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide) を参照。
 :::
 
 :::message
 **シリーズ構成**
-- [【非エンジニア×AI開発】Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
+- [Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
 - **Google Antigravity × Codex CLI でデュアルエージェント開発**（この記事）
 - [Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
 :::
@@ -71,7 +71,7 @@ Claude Code には「サブエージェント」という機能があり、Claud
 | 項目 | 準備 |
 |------|------|
 | **Google Antigravity** | [インストールガイド](antigravity-windows-install-guide) 参照 |
-| **WSL2 + Ubuntu** | [WSL2 インストールガイド](wsl2-windows-install-guide) 参照 |
+| **WSL2 + Ubuntu** | [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide) 参照 |
 | **Node.js 22以上** | この記事で説明 |
 | **Codex CLI** | この記事で説明 |
 | **ChatGPT Plus または Pro** | OpenAI の有料プラン（月額 $20〜） |
@@ -527,6 +527,6 @@ Rate limit exceeded
 
 ## 関連記事
 
-- [【非エンジニア×AI開発】Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
-- [非エンジニア向け WSL2 インストールガイド](wsl2-windows-install-guide)
+- [Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
+- [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)（Claude Code 版）
