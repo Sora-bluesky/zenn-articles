@@ -14,9 +14,9 @@ ClawdBotは、Discord・Telegram・WhatsAppなど複数のメッセージング�
 
 :::message
 **シリーズ構成**
-- [WSL2インストールガイド（Windows）](wsl2-windows-install-guide)
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ](claude-code-tips-and-features)
 - **ClawdBotを導入してみた**（この記事）
 :::
 
@@ -204,7 +204,7 @@ wsl clawdbot --version
 
 既にWSL2を使っている場合はスキップ。
 
-詳細な手順は [WSL2インストールガイド](wsl2-windows-install-guide) を参照。
+詳細な手順は [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide) を参照。
 
 **最小手順（管理者PowerShell）:**
 
@@ -633,6 +633,6 @@ ClawdBotの基本インストールが完了した。
 
 ## 関連記事
 
-- [WSL2インストールガイド（Windows）](wsl2-windows-install-guide)
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ](claude-code-tips-and-features)
