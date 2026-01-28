@@ -1,5 +1,5 @@
 ---
-title: "Claude Codeが動かない時に見るページ（Windows編）"
+title: "Claude Code が動かない時に見るページ（Windows）"
 emoji: "🔧"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "初心者", "トラブルシューティング"]

@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】AIへの指示が伝わらない → 6つのスキルで解決するワークフロー"
+title: "Google Antigravity Skills 入門：AIへの指示が伝わらない問題を解決"
 emoji: "🚀"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "バイブコーディング"]

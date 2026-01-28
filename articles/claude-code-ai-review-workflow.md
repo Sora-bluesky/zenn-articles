@@ -1,5 +1,5 @@
 ---
-title: "Claude Code でAIにコードを書かせてAIにレビューさせる開発スタイル"
+title: "Claude Code でAIにコードを書かせてAIにレビューさせる"
 emoji: "🤖"
 type: "tech"
 topics: ["claudecode", "ai", "llm", "codex", "個人開発"]

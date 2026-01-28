@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】過去の学びを自動で次に活かす：振り返りの横断分析"
+title: "Google Antigravity インサイトスキル：過去の学びを自動で次に活かす"
 emoji: "📊"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]

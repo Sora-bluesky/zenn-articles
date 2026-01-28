@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】同じ失敗を繰り返さない：AIが振り返りを質問してくれる"
+title: "Google Antigravity 振り返りスキル：同じ失敗を繰り返さない"
 emoji: "🔄"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]

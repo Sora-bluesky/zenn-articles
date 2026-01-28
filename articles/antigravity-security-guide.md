@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】Antigravityを安全に使うために知っておくべきこと"
+title: "Google Antigravity を安全に使うために知っておくべきこと"
 emoji: "🛡️"
 type: "tech"
 topics: ["ai", "生成ai", "セキュリティ", "llm", "個人開発"]

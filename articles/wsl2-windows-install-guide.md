@@ -1,5 +1,5 @@
 ---
-title: "非エンジニア向け WSL2 インストールガイド（Windows 10/11）"
+title: "WSL2 インストールガイド（Windows 10/11）"
 emoji: "🐧"
 type: "tech"
 topics: ["wsl2", "windows", "claudecode", "linux", "初心者"]
@@ -15,8 +15,8 @@ WSL2 を入れると、Windows 上で Linux（Ubuntu）が使えるようにな�
 :::message
 **シリーズ構成**
 - **WSL2 インストールガイド**（この記事）
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 :::
 
 ---

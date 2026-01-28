@@ -1,5 +1,5 @@
 ---
-title: "【非エンジニア×AI開発】Antigravityが動かない時に見るページ"
+title: "Google Antigravity が動かない時に見るページ"
 emoji: "🔧"
 type: "tech"
 topics: ["ai", "生成ai", "googleantigravity", "個人開発", "llm"]
