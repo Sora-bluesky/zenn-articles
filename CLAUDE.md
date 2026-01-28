@@ -54,6 +54,8 @@ RMOS: 「MCPでファイルシステムを操作するツール」 / Windows / Z
 | スキル | 役割 |
 |--------|------|
 | `zenn-quality` | 記事品質基準とチェックリスト |
+| `buzz-post` | Xバズポスト作成・「さらに表示」位置最適化 |
+| `fact-check` | 調査結果を公式ドキュメント・公式ベストプラクティスと照合 |
 
 ## Article Guidelines
 
@@ -95,6 +97,71 @@ npx zenn preview
 # 新規記事作成
 npx zenn new:article
 ```
+
+## X（Twitter）運用の知見
+
+### 文字数カウント（重要）
+
+X のすべての文字数制限は **UTF-16 code units** で計測される。
+
+| 制限 | 上限 |
+|------|------|
+| ポスト（ツイート） | 280 UTF-16 units |
+| プロフィール欄 | 160 UTF-16 units |
+
+```javascript
+// ✅ 正しい（UTF-16 = X と一致）
+text.length
+
+// ❌ 間違い（Unicode code points = 絵文字で1ずれる）
+[...text].length
+```
+
+絵文字（👉😀🔧等）は UTF-16 で **2 units** 消費する。`[...text].length` では 1 としてカウントされるため、絵文字1個につき1文字ずれる。
+
+### 「さらに表示」の発生条件
+
+| 条件 | 対象 |
+|------|------|
+| weighted length > 280 | 全端末（**Premium必須**。無料アカウントは280が投稿上限のため不可能） |
+| 11行以上（weighted ≤ 280） | PCブラウザのみ |
+
+weighted length の計算: 全角文字 = 2、半角英数・改行・スペース = 1、URL = 23固定。
+半角英単語（Claude, Code, AI, Zenn等）が多いと、見た目より weighted が大幅に小さくなる。
+
+### 外部リンクのインプレッション影響
+
+外部リンク付きポストはリーチが **最大94%低下** する（Buffer社 1,880万投稿分析、Jesse Colombo氏 A/Bテスト）。
+
+**対策**: URL はリプ欄に貼る（イーロン・マスク本人も推奨）。メイン投稿はテキストのみにする。
+
+### コピペ時の改行混入
+
+コードブロック（```）からコピーすると末尾に改行が付加され、文字数制限を超える場合がある。
+プロフィール等の文字数ぴったりのテキストは **テキストファイルに改行なしで書き出し**、そこからコピーする。
+
+```javascript
+// 改行なしでファイル書き出し
+fs.writeFileSync('output.txt', text, {encoding: 'utf8'});
+```
+
+## エラーと解決策
+
+### SVG → PNG 変換（Windows）
+
+Windows の `convert.exe` はディスク変換ツールであり ImageMagick ではない。
+
+```bash
+# ✅ 正しい方法
+npx sharp-cli -i input.svg -o output.png -f png --density 144
+```
+
+`--density 144` で 2x 解像度になる。
+
+### Python が使えない場合
+
+Windows 環境で `python3` コマンドが見つからない場合は `node -e` で代替する。
+文字数カウント等の簡易スクリプトは Node.js で実行可能。
 
 ## 記事公開チェックリスト（重要）
 

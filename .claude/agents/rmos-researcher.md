@@ -22,6 +22,12 @@ tools: Read, Bash, Glob, Grep, WebFetch, WebSearch
 | `fallback_repos` | 次点候補（カンマ区切り） | `https://..., https://...` |
 | `research_theme` | 元のテーマ（コンテキスト用） | `Browser Automation with AI` |
 
+## Available Skills（任意）
+
+調査の精度を高めたい場合、以下のスキルを任意で使用できる：
+
+- `.claude/skills/fact-check/SKILL.md` — 公式ドキュメントとの照合（最終的なファクトチェックは zenn-reviewer が実施）
+
 ## Process
 
 ### Phase 1: Deep Investigation（解析・計画）
@@ -120,6 +126,9 @@ Phase 2で失敗した場合に実行：
 - このツールの独自の強み:
 - 競合との差別化ポイント:
 - 読者に伝えたいハマりポイント:
+
+### ファクトチェックレポート
+{fact_check_report}
 ```
 
 ## Constraints
