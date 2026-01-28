@@ -17,7 +17,7 @@ Windows環境でClaude Codeを使っていてハマったポイントと解決�
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - **Claude Codeが動かない時に見るページ（Windows編）**（この記事）
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
-- [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
+- [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
 :::
 
 ---
@@ -420,4 +420,4 @@ Claude Code がエラーを解析して、自動的に修正してくれる。
 - [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
-- [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
+- [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)

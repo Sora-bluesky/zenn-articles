@@ -1,5 +1,5 @@
 ---
-title: "claude.ai（Web版）で積み上げた知識、Claude Codeに引っ越せます"
+title: "Claude（Web版）で積み上げた知識、Claude Codeに引っ越せます"
 emoji: "📦"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
@@ -12,7 +12,7 @@ published: false
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
-- **claude.aiの知識をClaude Codeに引っ越す方法**（この記事）
+- **Claude（Web版）の知識をClaude Codeに引っ越す方法**（この記事）
 :::
 
 ## 半信半疑だった過去の自分へ
@@ -307,12 +307,18 @@ my-project/
 ### ステップ4：設定ファイルを生成
 
 ```bash
-# プロジェクトディレクトリに移動
+# プロジェクトディレクトリに移動（my-project はあなたのフォルダ名に置き換えてください）
 cd my-project
 
 # Claude Codeを起動
 claude
 ```
+
+:::message alert
+**`my-project` は例です。** あなたのプロジェクトフォルダの名前に置き換えてください。
+たとえば `cd todo-app` や `cd C:\Users\自分の名前\Documents\my-app` など。
+「my-project」というフォルダが存在しないとエラーになります。
+:::
 
 **Claude Code起動後、`Shift + Tab` を2回押して Plan Mode に切り替えてから、以下を伝えます：**
 

@@ -17,7 +17,7 @@ Subagents（サブエージェント）や並列開発など、知っておく�
 - **Claude Codeを使いこなす！知っておきたい便利機能まとめ**（この記事）
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
-- [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
+- [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
 :::
 
 :::message alert
@@ -498,4 +498,4 @@ Claude Code に頼んで作成する：
 - [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
-- [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
+- [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
