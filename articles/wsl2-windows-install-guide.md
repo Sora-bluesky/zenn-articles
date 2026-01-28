@@ -1,5 +1,5 @@
 ---
-title: "WSL2 インストールガイド（Windows 10/11）"
+title: "WSL2 インストールガイド（Windows）"
 emoji: "🐧"
 type: "tech"
 topics: ["wsl2", "windows", "claudecode", "linux", "初心者"]
