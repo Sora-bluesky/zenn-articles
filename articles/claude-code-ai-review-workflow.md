@@ -26,6 +26,7 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CL
 2. [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 3. [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 4. **AIにコードを書かせてAIにレビューさせる開発スタイル**（この記事）
+5. [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
 :::
 
 :::message
@@ -584,4 +585,5 @@ codex
 - [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
+- [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
 - [【非エンジニア×AI開発】Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)（Google AI + OpenAI の組み合わせ）

@@ -17,6 +17,7 @@ Windows環境でClaude Codeをセットアップした時の手順をまとめ�
 - [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
+- [claude.aiの知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
 :::
 
 ---
