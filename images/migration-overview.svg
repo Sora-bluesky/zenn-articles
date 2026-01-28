@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" width="680" height="200">
+  <defs>
+    <style>
+      text { font-family: 'Noto Sans CJK JP', 'Segoe UI', 'Meiryo', sans-serif; fill: #ffffff; }
+      .box-title { font-size: 15px; font-weight: bold; }
+      .box-sub { font-size: 12px; fill: #cccccc; }
+      .arrow-label { font-size: 11px; fill: #aaaaaa; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#aaaaaa"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="680" height="200" rx="12" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="340" y="30" text-anchor="middle" font-size="14" font-weight="bold" fill="#888888">移行の全体像</text>
+
+  <!-- Box 1: claude.ai -->
+  <rect x="30" y="55" width="170" height="80" rx="10" fill="#2980b9"/>
+  <text x="115" y="88" text-anchor="middle" class="box-title">claude.ai</text>
+  <text x="115" y="108" text-anchor="middle" class="box-sub">設定をエクスポート</text>
+  <text x="115" y="125" text-anchor="middle" font-size="10" fill="#a0c4e8">(Web版)</text>
+
+  <!-- Arrow 1→2 -->
+  <line x1="200" y1="95" x2="240" y2="95" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="220" y="85" text-anchor="middle" class="arrow-label">ZIP</text>
+
+  <!-- Box 2: ローカルPC -->
+  <rect x="252" y="55" width="170" height="80" rx="10" fill="#e67e22"/>
+  <text x="337" y="88" text-anchor="middle" class="box-title">ローカルPC</text>
+  <text x="337" y="108" text-anchor="middle" class="box-sub">JSONファイルを保存</text>
+  <text x="337" y="125" text-anchor="middle" font-size="10" fill="#f5d5a8">(プロジェクトフォルダ)</text>
+
+  <!-- Arrow 2→3 -->
+  <line x1="422" y1="95" x2="462" y2="95" stroke="#aaaaaa" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="442" y="85" text-anchor="middle" class="arrow-label">分析</text>
+
+  <!-- Box 3: Claude Code -->
+  <rect x="474" y="55" width="176" height="80" rx="10" fill="#27ae60"/>
+  <text x="562" y="88" text-anchor="middle" class="box-title">Claude Code</text>
+  <text x="562" y="108" text-anchor="middle" class="box-sub">設定ファイルを自動生成</text>
+  <text x="562" y="125" text-anchor="middle" font-size="10" fill="#a8e6c4">(CLI版)</text>
+
+  <!-- Step numbers -->
+  <circle cx="52" cy="155" r="12" fill="#3a3a5e"/>
+  <text x="52" y="160" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">1</text>
+  <text x="72" y="160" text-anchor="start" font-size="11" fill="#888888">エクスポート</text>
+
+  <circle cx="235" cy="155" r="12" fill="#3a3a5e"/>
+  <text x="235" y="160" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">2</text>
+  <text x="255" y="160" text-anchor="start" font-size="11" fill="#888888">配置</text>
+
+  <circle cx="370" cy="155" r="12" fill="#3a3a5e"/>
+  <text x="370" y="160" text-anchor="middle" font-size="11" font-weight="bold" fill="#ffffff">3</text>
+  <text x="390" y="160" text-anchor="start" font-size="11" fill="#888888">Claude Codeで変換</text>
+
+  <!-- Bottom note -->
+  <text x="340" y="185" text-anchor="middle" font-size="10" fill="#666666">コードは1行も書かない。Claude Codeがすべて自動生成。</text>
+</svg>
