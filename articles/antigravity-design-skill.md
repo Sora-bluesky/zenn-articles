@@ -3,7 +3,7 @@ title: "Google Antigravity 設計スキル：GASかPythonか迷ったらAIに絞
 emoji: "🏗️"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
-published: false
+published: true
 ---
 
 ## はじめに
