@@ -280,3 +280,4 @@ AI: 設計書ドラフトを作成しました。
 | 4 | [ドキュメントスキル](antigravity-documentation-skill) | 上司報告資料まで自動生成 |
 | 5 | [振り返りスキル](antigravity-retrospective-skill) | 良かった点・問題点・次やることを整理 |
 | 6 | [学びの継承スキル](antigravity-insights-skill) | 過去の学びを自動で次に活かす（発展編） |
+
