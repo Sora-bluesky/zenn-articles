@@ -57,6 +57,7 @@ RMOS: 「MCPでファイルシステムを操作するツール」 / Windows / Z
 | `buzz-post` | Xバズポスト作成・「さらに表示」位置最適化 |
 | `fact-check` | 調査結果を公式ドキュメント・公式ベストプラクティスと照合 |
 | `new-series-workflow` | 新シリーズ作成時のDeep Research + メタ認知レビューワークフロー |
+| `mcp-setup` | MCP サーバー設定コマンド集（登録済みサーバーの情報含む） |
 
 ## Reference Sources
 
@@ -187,7 +188,172 @@ weighted length の計算: 全角文字 = 2、半角英数・改行・スペー�
 fs.writeFileSync('output.txt', text, {encoding: 'utf8'});
 ```
 
+## 参考ライター
+
+| ライター | プラットフォーム | 特徴 |
+|---------|----------------|------|
+| ユニコ氏 | note.com | 対話形式の導入、結論先出し、比較表多用、「使うべき人/使わなくていい人」の明確化 |
+
+技術ガイドを書く際は、このスタイルを参考にする。
+
+## Obsidian 記事作成の知見
+
+### iCloud同期のフォルダ構造（重要）
+
+| フォルダ | 作成元 | iOS認識 |
+|---------|--------|---------|
+| `iCloud~md~obsidian` | iOSアプリが自動作成 | ✅ |
+| 手動作成の「Obsidian」 | Windows | ❌ |
+
+**必ずiPhoneでVaultを先に作成すること。** WindowsでVaultを先に作成すると「your iCloud vault was not detected」エラーが発生する。
+
+iPhoneで作成したVaultのパス：
+```
+C:\Users\[ユーザー名]\iCloudDrive\iCloud~md~obsidian\[Vault名]
+```
+
+### iCloud同期の追加知見（2026-01-30）
+
+| 挙動 | 詳細 |
+|------|------|
+| 同期タイミング | リアルタイムではない |
+| Windows → iPhone | iPhoneのObsidian再起動またはプルリフレッシュで取得 |
+| iPhone → Windows | 数秒〜数分で自動同期 |
+
+**MCP接続確認:**
+```
+Obsidianのメモ一覧を取得して
+```
+
+**本文検索:**
+```
+本文も含めて探して
+```
+デフォルトはファイル名のみ検索。本文検索は明示的に指示が必要。
+
+### Windows + iCloud Drive の注意点
+
+| 問題 | 解決策 |
+|------|--------|
+| iCloud Driveのパスがエクスプローラーで見つからない | 左サイドバーの「iCloud Drive」をクリック。パス文字列はコピーできない |
+| mcp-server.exe のパスを確認したい | `Get-ChildItem -Path "$env:USERPROFILE\iCloudDrive\iCloud~md~obsidian" -Recurse -Filter "mcp-server.exe"` |
+| `.claude.json` が見つからない | PowerShellから: `notepad "$env:USERPROFILE\.claude.json"` |
+
+### Obsidian UI の注意点
+
+| 記事での表記 | 実際のUI |
+|-------------|----------|
+| 「制限モードをオフにする」 | 「コミュニティプラグインを有効化」ボタン |
+| 「Obsidianを再起動」 | 「Relaunch」ボタンをクリック |
+| 「Language設定」 | General → Language |
+| 「Vault切り替え」 | 左下のVault名をクリック → Manage vaults |
+
+## Claude Code MCP設定の知識
+
+### 正しい設定方法
+
+| 方法 | コマンド |
+|------|---------|
+| 登録 | `claude mcp add <name> <command> -e KEY=value --scope user` |
+| 一覧 | `claude mcp list` |
+| 削除 | `claude mcp remove <name>` |
+
+詳細なコマンド例: `.claude/skills/mcp-setup.md`
+
+### 設定ファイルの場所
+
+| ファイル | 用途 |
+|---------|------|
+| `~/.claude.json` | ✅ 正式な設定保存先（コマンドが自動で設定） |
+| `~/.claude/mcp_servers.json` | ❌ **読み込まれない**（非公式） |
+| `.mcp.json`（プロジェクトルート） | チーム共有用 |
+
+### 重要な挙動
+
+- **設定反映は起動時のみ**: セッション中に `claude mcp add` しても `/mcp` には反映されない → 再起動必要
+- **`claude mcp list` と `/mcp` の違い**: `list` は CLI 実行時に設定を読む。`/mcp` は現在のセッション状態を表示
+
+### スコープの違い
+
+| スコープ | オプション | 用途 |
+|---------|-----------|------|
+| User | `--scope user` | 全プロジェクト共通（推奨） |
+| Local | 省略 or `--scope local` | 現在のプロジェクトのみ |
+| Project | `.mcp.json` 作成 | チーム共有 |
+
+## Deep Research プロトコル
+
+表面的な対処ではなく根本原因を調査するときに使用：
+
+1. **rmos-researcher エージェント**で公式ドキュメント + GitHub issues を調査
+2. **メタ認知レビュー3回**で情報を検証
+3. 誤情報を発見したら CLAUDE.md と引き継ぎ資料を修正
+
+## 記事作成ワークフロー
+
+### セキュリティレビュー
+
+記事完成後、**code-auditor エージェント**でセキュリティレビューを実施する：
+
+```
+このZenn記事のセキュリティレビューを行ってください。
+ファイル: articles/[記事ファイル名].md
+```
+
+レビュー観点：
+- API Key、認証情報の取り扱い
+- プライバシーリスクの説明
+- プラグインのセキュリティリスク
+
+※ `/security-review` は公式コマンドではない（カスタムスキルとして定義が必要）
+
+### 非エンジニア向け活用法の書き方
+
+抽象的な説明ではなく、以下の構成で書く：
+
+1. **読者の悩み**（引用形式で生々しく）
+2. **解決策**（具体的な手順）
+3. **プロンプト例**（コードブロックで）
+
+### 導入部の書き方パターン
+
+読者の「あるある」から始め、共感→解決の流れを作る：
+
+1. **共感**（あるある）: 「〜していて、こんな経験ありませんか？」
+2. **痛み**（具体的な問題）: 「〜が面倒で続かない」
+3. **挫折**（試したけどダメ）: 「そう思って試したこともあります。でも…」
+4. **解決**（本題への導入）: 「そんな僕が今、〜と即答します」
+5. **メリット**（ベネフィット）: 「この一言で、AIが勝手に〜」
+
+**対象読者に刺さる例を使う:**
+- X/Zenn/Qiita読者 → AIツール情報整理、技術記事の専門用語翻訳
+- 非エンジニア → 会議メモ整理、アイデアの深掘り
+
+## コマンドのベストプラクティス
+
+### 長いコマンドは変数で分割
+
+コピペ時の改行混入を防ぐため、PowerShellでは変数を使って分割する：
+
+```powershell
+# NG: 長すぎてコピペ時に改行が混入する
+claude mcp add obsidian "長いパス" -e OBSIDIAN_API_KEY=長いキー --scope user
+
+# OK: 変数で分割
+$path = "長いパス"
+$apikey = "長いキー"
+claude mcp add obsidian $path -e OBSIDIAN_API_KEY=$apikey --scope user
+```
+
 ## エラーと解決策
+
+### MCP関連
+
+| 症状 | 原因 | 解決策 |
+|------|------|--------|
+| `/mcp` で「No MCP servers configured」 | 設定後に再起動していない | Claude Code を終了→再起動 |
+| `claude mcp list` で Connected なのに `/mcp` で認識されない | セッション中の設定変更 | 再起動必要 |
+| MCP設定が消える | `~/.claude/mcp_servers.json` に書いた | `claude mcp add` コマンドを使用 |
 
 ### SVG → PNG 変換（Windows）
 
@@ -204,6 +370,17 @@ npx sharp-cli -i input.svg -o output.png -f png --density 144
 
 Windows 環境で `python3` コマンドが見つからない場合は `node -e` で代替する。
 文字数カウント等の簡易スクリプトは Node.js で実行可能。
+
+## 並列セッション運用
+
+| プロジェクト | 役割 | 起動ディレクトリ |
+|-------------|------|-----------------|
+| zenn-articles | Zenn記事管理・公開 | `C:\Users\komei\Documents\Projects\zenn-articles` |
+| x-article | X記事作成・投稿 | `C:\Users\komei\Documents\Projects\x-article` |
+
+**引き継ぎ方法:**
+1. 調査結果を相手プロジェクトのCLAUDE.md/HANDOFF.mdに追記
+2. 新セッションで「HANDOFF.mdを読んで」と指示
 
 ## 記事公開チェックリスト（重要）
 
