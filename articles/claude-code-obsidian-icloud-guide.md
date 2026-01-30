@@ -3,7 +3,7 @@ title: "Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み�
 emoji: "🔗"
 type: "tech"
 topics: ["claudecode", "obsidian", "ai", "windows", "個人開発"]
-published: false
+published: true
 ---
 
 ## 経緯
