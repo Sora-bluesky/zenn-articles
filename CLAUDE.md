@@ -58,6 +58,7 @@ RMOS: 「MCPでファイルシステムを操作するツール」 / Windows / Z
 | `fact-check` | 調査結果を公式ドキュメント・公式ベストプラクティスと照合 |
 | `new-series-workflow` | 新シリーズ作成時のDeep Research + メタ認知レビューワークフロー |
 | `mcp-setup` | MCP サーバー設定コマンド集（登録済みサーバーの情報含む） |
+| `mermaid-diagram` | Mermaid図表作成（フローチャート、シーケンス図、アーキテクチャ図） |
 
 ## Reference Sources
 
