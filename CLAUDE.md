@@ -468,3 +468,49 @@ Zennには投稿数の上限があり、制限にかかると記事がデプロ�
    git commit --allow-empty -m "Trigger Zenn redeploy"
    git push origin main
    ```
+
+## GitHub公開リポジトリのプライバシーチェック（重要）
+
+### 背景（2026-01-31 発覚）
+
+zenn-articlesリポジトリがPublicのため、CLAUDE.mdに記載したローカルパス（`C:\Users\komei\`）が外部から閲覧可能な状態だった。
+
+### チェックリスト（push前に確認）
+
+| 項目 | 確認内容 |
+|------|---------|
+| ユーザー名 | `C:\Users\[実名]\` → `C:\Users\[USERNAME]\` に匿名化 |
+| APIキー | `.env` に記載、`.gitignore` で除外されているか |
+| 認証情報 | パスワード、トークンがハードコードされていないか |
+| 個人情報 | メールアドレス、電話番号が含まれていないか |
+
+### 匿名化すべきパターン
+
+```
+# NG（実名が露出）
+C:\Users\komei\Documents\Projects\
+/home/komei/.config/
+
+# OK（匿名化済み）
+C:\Users\[USERNAME]\Documents\Projects\
+/home/[USERNAME]/.config/
+$env:USERPROFILE\Documents\Projects\
+```
+
+### リポジトリの公開状態確認
+
+```bash
+# 認証なしでアクセス → 200ならPublic、404ならPrivate
+curl -s -o /dev/null -w "%{http_code}" https://api.github.com/repos/[OWNER]/[REPO]
+```
+
+### 対応済みリポジトリ
+
+| リポジトリ | 状態 | 対応 |
+|-----------|------|------|
+| zenn-articles | Public | CLAUDE.mdのパス情報を匿名化 |
+| publine | Private | プライベート化で対応 |
+
+:::message alert
+**教訓**: CLAUDE.md、HANDOFF.md、設定ファイルにローカルパスを書く際は、公開リポジトリかどうかを確認する。公開リポジトリの場合は匿名化必須。
+:::
