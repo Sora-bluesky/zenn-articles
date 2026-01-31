@@ -375,8 +375,8 @@ Windows 環境で `python3` コマンドが見つからない場合は `node -e`
 
 | プロジェクト | 役割 | 起動ディレクトリ |
 |-------------|------|-----------------|
-| zenn-articles | Zenn記事管理・公開 | `C:\Users\komei\Documents\Projects\zenn-articles` |
-| x-article | X記事作成・投稿 | `C:\Users\komei\Documents\Projects\x-article` |
+| zenn-articles | Zenn記事管理・公開 | `C:\Users\[USERNAME]\Documents\Projects\zenn-articles` |
+| x-article | X記事作成・投稿 | `C:\Users\[USERNAME]\Documents\Projects\x-article` |
 
 **引き継ぎ方法:**
 1. 調査結果を相手プロジェクトのCLAUDE.md/HANDOFF.mdに追記
