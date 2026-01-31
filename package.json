@@ -11,6 +11,6 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "zenn-cli": "^0.4.1"
+    "zenn-cli": "^0.4.4"
   }
 }

@@ -14,8 +14,23 @@ tools: Read, Write, Edit, Glob, Grep
 
 1. 作業開始前に `.claude/skills/zenn-quality/SKILL.md` を読む
 2. 品質基準に従って記事を作成する
-3. 完了後「zenn-reviewer でレビューすることをお勧めします」と伝える
-4. 公開時は Git コミット・プッシュとデプロイ確認を忘れずに（詳細は CLAUDE.md 参照）
+3. **図表が必要な場合**: `.claude/skills/mermaid-diagram.md` を参照してMermaid図を作成
+4. 完了後「zenn-reviewer でレビューすることをお勧めします」と伝える
+5. 公開時は Git コミット・プッシュとデプロイ確認を忘れずに（詳細は CLAUDE.md 参照）
+
+## 図表作成の判断基準
+
+以下の場合はMermaid図を作成する：
+
+| 内容 | 図の種類 |
+|------|---------|
+| 手順・プロセスの説明 | flowchart（シンプルフロー） |
+| 従来 vs 新方式の比較 | flowchart + subgraph（比較図） |
+| システム構成の説明 | flowchart（アーキテクチャ図） |
+| 処理の流れ・やり取り | sequenceDiagram |
+| 状態の変化 | stateDiagram-v2 |
+
+**例外**: ディレクトリ構造はテキストツリー（├──形式）を使用
 
 :::message alert
 **注意**: 記事ファイルを作成しただけでは公開されない。
