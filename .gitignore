@@ -1,15 +1,99 @@
-node_modules/
-.DS_Store
+# ============================================
+# zenn-articles (Public) - Security-First .gitignore
+# ============================================
+# このリポジトリはパブリック。記事とimages以外は除外。
+# 設定ファイルはzenn-articles-config (Private)で管理。
 
-# Private config (managed in zenn-articles-config repo)
+# ============================================
+# 許可するファイル（明示）
+# ============================================
+# articles/*.md - Zenn記事
+# images/* - 公開用画像
+# books/ - Zenn書籍
+# .gitignore - このファイル
+
+# ============================================
+# プロジェクト設定（プライベートで管理）
+# ============================================
 .claude/
 CLAUDE.md
 HANDOFF.md
 docs/
+package.json
+package-lock.json
+node_modules/
 
-# Sensitive files
-*.local.json
-*.secret*
+# ============================================
+# 機密情報パターン（包括的）
+# ============================================
+
+# 環境変数・設定ファイル
 .env
 .env.*
+*.local
+*.local.*
+*.secret
+*.secret.*
+
+# 認証情報
 credentials*
+*credentials*
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+id_rsa*
+id_ed25519*
+*.pub
+
+# APIキー・トークンを含む可能性のあるファイル
+config.json
+settings.json
+secrets.json
+auth.json
+token.json
+api_key*
+apikey*
+
+# ============================================
+# OS・エディタ
+# ============================================
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# ============================================
+# ログ・一時ファイル
+# ============================================
+*.log
+logs/
+tmp/
+temp/
+cache/
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# ============================================
+# ビルド・依存関係
+# ============================================
+dist/
+build/
+out/
+coverage/
+
+# ============================================
+# スクリーンショット・プライベート画像
+# ============================================
+# docs/は上で除外済み
+# スクリーンショットは個人情報を含む可能性
+screenshots/
+*screenshot*
+*スクリーンショット*
