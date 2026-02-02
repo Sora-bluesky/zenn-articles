@@ -1,3 +1,18 @@
 node_modules/
 .DS_Store
+
+# Claude Code sensitive files
 .claude/settings.local.json
+.claude/settings.json
+.claude/skills/mcp-setup.md
+
+# Sensitive files
+*.local.json
+*.secret*
+.env
+.env.*
+credentials*
+
+# Temporary docs (may contain screenshots with private info)
+docs/*.png
+docs/*.jpg

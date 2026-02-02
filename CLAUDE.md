@@ -474,7 +474,7 @@ Zennには投稿数の上限があり、制限にかかると記事がデプロ�
 
 ### 背景（2026-01-31 発覚）
 
-zenn-articlesリポジトリがPublicのため、CLAUDE.mdに記載したローカルパス（`C:\Users\komei\`）が外部から閲覧可能な状態だった。
+zenn-articlesリポジトリがPublicのため、CLAUDE.mdに記載したローカルパスが外部から閲覧可能な状態だった。
 
 ### チェックリスト（push前に確認）
 
@@ -489,8 +489,8 @@ zenn-articlesリポジトリがPublicのため、CLAUDE.mdに記載したロー�
 
 ```
 # NG（実名が露出）
-C:\Users\komei\Documents\Projects\
-/home/komei/.config/
+C:\Users\yourname\Documents\Projects\
+/home/yourname/.config/
 
 # OK（匿名化済み）
 C:\Users\[USERNAME]\Documents\Projects\
