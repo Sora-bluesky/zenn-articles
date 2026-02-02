@@ -13,8 +13,9 @@ Windows環境でGoogle Antigravityをセットアップする手順をまとめ�
 
 :::message
 **シリーズ構成**
-- **非エンジニア向け Google Antigravity インストールガイド**（この記事）
-- [【非エンジニア×AI開発】Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)
+- **Google Antigravity インストールガイド（Windows）**（この記事）
+- [Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)
+- [Google Antigravity × Codex CLI 協調開発：Orchestra方式でタスク自動振り分け](antigravity-orchestra-guide)
 - [Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
 :::
 
@@ -308,4 +309,5 @@ Antigravity を削除したい場合：
 
 インストールが完了したら、次は実際に使ってみよう。
 
-- [【非エンジニア×AI開発】Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)
+- [Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)
+- [Google Antigravity × Codex CLI 協調開発：Orchestra方式でタスク自動振り分け](antigravity-orchestra-guide)

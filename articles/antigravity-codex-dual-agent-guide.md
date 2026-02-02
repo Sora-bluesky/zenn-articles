@@ -31,6 +31,7 @@ published: true
 **シリーズ構成**
 - [Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
 - **Google Antigravity × Codex CLI でデュアルエージェント開発**（この記事）
+- [Google Antigravity × Codex CLI 協調開発：Orchestra方式でタスク自動振り分け](antigravity-orchestra-guide)
 - [Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
 :::
 
@@ -528,5 +529,6 @@ Rate limit exceeded
 ## 関連記事
 
 - [Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
+- [Google Antigravity × Codex CLI 協調開発：Orchestra方式でタスク自動振り分け](antigravity-orchestra-guide)
 - [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)（Claude Code 版）
