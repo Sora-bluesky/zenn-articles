@@ -16,6 +16,16 @@ published: false
 - [Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
 :::
 
+:::message alert
+**テンプレートを公開しています**
+
+この記事で紹介する Orchestra 環境は、すぐに使えるテンプレートとして GitHub で公開しています。
+
+**https://github.com/Sora-bluesky/antigravity-orchestra**
+
+`git clone` するだけで、6 Workflows + 5 Skills + 8 Rules がすべて揃った状態で開発を始められます。
+:::
+
 この記事は、**Claude Code Orchestra** の考え方を **[Google Antigravity](https://antigravity.google)** で再現する試みです。
 
 Claude Code Orchestra は、Claude Code をオーケストレーター（指揮者）として、複数の AI エージェントを協調させるマルチエージェント開発手法です。
@@ -142,6 +152,14 @@ flowchart TB
 ## セットアップ
 
 > ↑ [目次に戻る](#この記事の読み方)
+
+:::message
+**テンプレートリポジトリ**
+
+👉 **https://github.com/Sora-bluesky/antigravity-orchestra**
+
+このリポジトリをクローンして、パスを設定するだけで Orchestra 環境が使えます。
+:::
 
 :::message alert
 **所要時間**: 約10分（前提条件が揃っている場合）
@@ -577,6 +595,22 @@ sudo apt install git -y
 2. 慣れたら `/tdd` でテスト駆動開発を試す
 3. 自分のアイデアで本格的なプロジェクトを開始
 
+### テンプレートを取得
+
+:::message alert
+**今すぐ始める**
+
+👉 **https://github.com/Sora-bluesky/antigravity-orchestra**
+
+```bash
+git clone https://github.com/Sora-bluesky/antigravity-orchestra.git my-project
+```
+
+リポジトリをクローンして、[パスを設定](#step-2-パスの設定)すれば準備完了です。
+
+**Star をいただけると励みになります！**
+:::
+
 :::message
 **最新情報をキャッチアップ**
 
@@ -584,7 +618,7 @@ Antigravity はパブリックプレビュー版のため、仕様変更やバ�
 
 この記事も随時更新していきます。最新情報を逃さないために：
 
-- **GitHub**: [リポジトリをWatch/Star](https://github.com/Sora-bluesky/antigravity-orchestra)
+- **GitHub**: [Sora-bluesky/antigravity-orchestra](https://github.com/Sora-bluesky/antigravity-orchestra) を Watch / Star
 - **X (Twitter)**: [@sora_biz](https://x.com/sora_biz) をフォロー
 
 質問やフィードバックも大歓迎です！
