@@ -145,7 +145,7 @@ flowchart TB
 | **Debugger** | Codex CLI | 根本原因分析、複雑なバグ調査 |
 | **Auditor** | Codex CLI | コードレビュー、品質チェック、TDD設計 |
 
-> 役割分担の詳細なルールは [Rules の詳細 > role-boundaries.md](#role-boundariesmd役割境界) を参照してください。
+> 役割分担の詳細なルールは [Rules の詳細 > role-boundaries](#role-boundaries役割境界) を参照してください。
 
 ---
 
@@ -397,7 +397,7 @@ Antigravity が [Rules](#rules-の詳細) に基づいて判断し、必要に�
 
 デバッグが必要と判断された場合、Codex に根本原因分析を委譲します。
 
-> 自動判断のルールは [Rules の詳細 > delegation-triggers.md](#delegation-triggersmd最重要) を参照してください。
+> 自動判断のルールは [Rules の詳細 > delegation-triggers](#delegation-triggers最重要) を参照してください。
 
 ---
 
@@ -469,7 +469,7 @@ flowchart TB
 
 ルールは常時適用される制約や判断基準です。
 
-### delegation-triggers.md（最重要）
+### delegation-triggers（最重要）
 
 Claude Code Orchestra の 6つの Hooks を Rules で代替します。
 
@@ -500,7 +500,7 @@ flowchart TB
     Check4 -->|No| Direct
 ```
 
-### role-boundaries.md（役割境界）
+### role-boundaries（役割境界）
 
 Antigravity と Codex の役割分担を明確にし、役割侵犯を防ぎます。
 
