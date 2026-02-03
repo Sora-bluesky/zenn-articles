@@ -1,23 +1,30 @@
 ---
-title: "ClawdBot活用ガイド：Discord/Telegram連携で個人AIアシスタントを作る"
-emoji: "🤖"
+title: "OpenClaw（旧Clawdbot）でDiscord/Telegramを個人AIアシスタント化する"
+emoji: "🦞"
 type: "tech"
-topics: ["ai", "discord", "telegram", "claudecode", "個人開発"]
+topics: ["openclaw", "discord", "telegram", "ai", "security"]
 published: false
 ---
 
 ## はじめに
 
-この記事では、ClawdBotをDiscordやTelegramと連携して、メッセージアプリから操作できるAIアシスタントを作る方法を解説する。
+この記事では、OpenClaw（旧Clawdbot/Moltbot）をDiscordやTelegramと連携して、メッセージアプリから操作できるAIアシスタントを作る方法を解説する。
 
-前の記事でClawdBotのインストールは完了している前提で進める。
+:::message alert
+**前提条件**
+この記事は、OpenClawのインストールが完了している前提で進める。まだの場合は先に導入ガイドを参照：
+- [DigitalOceanで安全に動かす](openclaw-setup-guide)（VPS推奨）
+- [WSL2で無料で試してみた](openclaw-wsl2-setup-guide)（ローカル試用）
+:::
 
 :::message
 **シリーズ構成**
 - [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
-- [Claude Code 便利機能まとめ](claude-code-tips-and-features)
-- **ClawdBot活用ガイド：Discord/Telegram連携**（この記事）
+- **🦞OpenClaw導入ガイド**
+  - [DigitalOceanで安全に動かす](openclaw-setup-guide)
+  - [WSL2で無料で試してみた](openclaw-wsl2-setup-guide)
+- [🦞OpenClawでDiscord/Telegramを個人AIアシスタント化する](openclaw-discord-telegram-guide)（この記事）
 :::
 
 ---
@@ -42,7 +49,7 @@ published: false
 
 **シーン1: 外出先で急にファイルが必要になった**
 > 「デスクトップの企画書.docxの内容を教えて」
-> → ClawdBotがファイルを開いて内容を要約して返信
+> → OpenClawがファイルを開いて内容を要約して返信
 
 **シーン2: 毎朝の情報整理を自動化**
 > 毎朝9時に「今日のカレンダー + やることリスト」が自動でTelegramに届く
@@ -50,11 +57,11 @@ published: false
 
 **シーン3: 家計管理の効率化**
 > 「先月の食費はいくら？」
-> → ClawdBotが会計データを集計して回答
+> → OpenClawが会計データを集計して回答
 
 **シーン4: 開発者向け（Claude Code連携）**
 > 「プロジェクトXのテストを実行して結果を教えて」
-> → ClawdBotがClaude Codeと連携してテストを実行、結果をTelegramに報告
+> → OpenClawがClaude Codeと連携してテストを実行、結果をTelegramに報告
 
 ---
 
@@ -84,8 +91,8 @@ published: false
 
 1. Telegramアプリで **@BotFather** を検索してチャットを開始
 2. `/newbot` と入力
-3. ボットの名前を入力（例: `My ClawdBot`）
-4. ボットのユーザー名を入力（末尾は `bot` で終わる必要あり。例: `myclawdbot_bot`）
+3. ボットの名前を入力（例: `My OpenClaw`）
+4. ボットのユーザー名を入力（末尾は `bot` で終わる必要あり。例: `myopenclaw_bot`）
 
 **成功すると、トークンが表示される:**
 
@@ -101,12 +108,12 @@ Use this token to access the HTTP API:
 このトークンは「ボットのパスワード」のようなもの。他人に知られると、ボットを乗っ取られる可能性がある。
 :::
 
-### Step 2: ClawdBotに設定
+### Step 2: OpenClawに設定
 
 WSL2のUbuntu内で以下を実行（スタートメニューから「Ubuntu」を起動）。
 
 ```bash
-clawdbot channels add --channel telegram --token "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+openclaw channels add --channel telegram --token "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
 ```
 
 :::message
@@ -117,19 +124,19 @@ clawdbot channels add --channel telegram --token "123456789:ABCdefGHIjklMNOpqrsT
 ### Step 3: Gatewayを起動
 
 ```bash
-clawdbot gateway
+openclaw gateway
 ```
 
 **出力例:**
 
 ```
 🦞 Gateway started on ws://127.0.0.1:18789
-[telegram] Connected as @myclawdbot_bot
+[telegram] Connected as @myopenclaw_bot
 ```
 
 ### Step 4: 動作確認
 
-1. Telegramアプリで作成したボット（例: `@myclawdbot_bot`）を検索
+1. Telegramアプリで作成したボット（例: `@myopenclaw_bot`）を検索
 2. 「Start」または何かメッセージを送信
 3. ペアリングコードが求められた場合は、ターミナルに表示されるコードを入力
 4. AIから返信が来れば成功
@@ -138,7 +145,7 @@ clawdbot gateway
 
 ## Telegram セキュリティ設定
 
-セキュリティ設定は `~/.clawdbot/clawdbot.json`（`~` はホームディレクトリ）を編集して行う。
+セキュリティ設定は `~/.openclaw/openclaw.json`（`~` はホームディレクトリ）を編集して行う。
 
 ### 特定のユーザーだけ許可
 
@@ -198,7 +205,7 @@ Discord連携はTelegramより設定項目が多い。手順通りに進めれ�
 
 1. [Discord Developer Portal](https://discord.com/developers/applications) にアクセス
 2. 右上の「New Application」をクリック
-3. アプリケーション名を入力（例: `My ClawdBot`）
+3. アプリケーション名を入力（例: `My OpenClaw`）
 4. 左メニューの「Bot」をクリック
 5. 「Reset Token」をクリックしてトークンを取得
 
@@ -242,38 +249,38 @@ Intentを有効化しないと、ボットはメッセージの内容を読め�
 4. ページ下部に生成されたURLをコピー
 5. ブラウザで開き、ボットを追加するサーバーを選択
 
-### Step 4: ClawdBotに設定
+### Step 4: OpenClawに設定
 
 WSL2のUbuntu内で以下を実行。
 
 ```bash
-clawdbot channels add --channel discord --token "YOUR_BOT_TOKEN"
+openclaw channels add --channel discord --token "YOUR_BOT_TOKEN"
 ```
 
 ### Step 5: Gatewayを起動
 
 ```bash
-clawdbot gateway
+openclaw gateway
 ```
 
 **出力例:**
 
 ```
 🦞 Gateway started on ws://127.0.0.1:18789
-[discord] Logged in as MyClawdBot#1234
+[discord] Logged in as MyOpenClaw#1234
 ```
 
 ### Step 6: 動作確認
 
 1. Discordサーバーでボットがオンラインになっているか確認
-2. 任意のチャンネルでボットにメンション（例: `@MyClawdBot こんにちは`）
+2. 任意のチャンネルでボットにメンション（例: `@MyOpenClaw こんにちは`）
 3. AIから返信が来れば成功
 
 ---
 
 ## Discord セキュリティ設定
 
-セキュリティ設定は `~/.clawdbot/clawdbot.json` を編集して行う。
+セキュリティ設定は `~/.openclaw/openclaw.json` を編集して行う。
 
 ### DMを無効化
 
@@ -349,7 +356,7 @@ clawdbot gateway
 
 | 問題 | 原因 | 解決策 |
 |------|------|--------|
-| ボットが返信しない | Gatewayが起動していない | `clawdbot gateway` を実行 |
+| ボットが返信しない | Gatewayが起動していない | `openclaw gateway` を実行 |
 | 「認証エラー」 | トークンが間違っている | @BotFatherで確認・再発行 |
 | グループで反応しない | Privacy Modeが有効 | @BotFatherで `/setprivacy` → Disable |
 
@@ -357,7 +364,7 @@ clawdbot gateway
 
 | 問題 | 原因 | 解決策 |
 |------|------|--------|
-| ボットがオフラインのまま | Gatewayが起動していない | `clawdbot gateway` を実行 |
+| ボットがオフラインのまま | Gatewayが起動していない | `openclaw gateway` を実行 |
 | メッセージに反応しない | MESSAGE CONTENT INTENTが無効 | Developer Portalで有効化 |
 | 「Missing Permissions」 | 権限不足 | ボットの役割に必要な権限を追加 |
 | 招待URLが機能しない | スコープ/権限の選択漏れ | URL Generatorで再生成 |
@@ -366,13 +373,13 @@ clawdbot gateway
 
 ```bash
 # 状態確認
-clawdbot doctor
+openclaw doctor
 
 # チャンネル状態確認
-clawdbot channels status
+openclaw channels status
 
 # ログ確認
-clawdbot logs
+openclaw logs
 ```
 
 ---
@@ -393,10 +400,10 @@ clawdbot logs
 
 ### Claude Code との連携
 
-ClawdBotの「coding-agent」スキル（AIに追加機能を与える設定）を使えば、Discordからコード関連の指示も可能。
+OpenClawの「coding-agent」スキル（AIに追加機能を与える設定）を使えば、Discordからコード関連の指示も可能。
 
 ```
-@ClawdBot このプロジェクトのテストを実行して
+@OpenClaw このプロジェクトのテストを実行して
 ```
 
 → 内部でClaude CodeやCodex CLIが動く
@@ -405,10 +412,10 @@ ClawdBotの「coding-agent」スキル（AIに追加機能を与える設定）�
 
 ## Gatewayの常駐化
 
-PCを再起動してもClawdBotが自動で動くようにする。
+PCを再起動してもOpenClawが自動で動くようにする。
 
 ```bash
-clawdbot onboard --install-daemon
+openclaw onboard --install-daemon
 ```
 
 これでシステムサービスとして登録され、自動起動するようになる。
@@ -416,13 +423,13 @@ clawdbot onboard --install-daemon
 **サービスの状態確認:**
 
 ```bash
-clawdbot status
+openclaw status
 ```
 
 **サービスの停止:**
 
 ```bash
-clawdbot gateway stop
+openclaw gateway stop
 ```
 
 ---
@@ -434,17 +441,17 @@ clawdbot gateway stop
 | **Telegram** | 初心者向け | 個人利用、手軽に試したい時 |
 | **Discord** | 中級者向け | チーム利用、細かい権限制御が必要な時 |
 
-ClawdBotを使えば、Discord・Telegramがそのまま「AIアシスタントの窓口」になる。Claude Codeと組み合わせれば、外出先からでも開発環境を操作できる。
+OpenClawを使えば、Discord・Telegramがそのまま「AIアシスタントの窓口」になる。Claude Codeと組み合わせれば、外出先からでも開発環境を操作できる。
 
 ---
 
 ## 参考リンク
 
-- [ClawdBot 公式ドキュメント - Telegram](https://docs.clawd.bot/channels/telegram)
-- [ClawdBot 公式ドキュメント - Discord](https://docs.clawd.bot/channels/discord)
-- [ClawdBot Gateway](https://docs.clawd.bot/gateway)
-- [ClawdBot Authentication](https://docs.clawd.bot/gateway/authentication)
-- [ClawdBot Troubleshooting](https://docs.clawd.bot/help/troubleshooting)
+- [OpenClaw 公式ドキュメント - Telegram](https://docs.openclaw.ai/channels/telegram)
+- [OpenClaw 公式ドキュメント - Discord](https://docs.openclaw.ai/channels/discord)
+- [OpenClaw Gateway](https://docs.openclaw.ai/gateway)
+- [OpenClaw Authentication](https://docs.openclaw.ai/gateway/authentication)
+- [OpenClaw Troubleshooting](https://docs.openclaw.ai/help/troubleshooting)
 - [Discord Developer Portal](https://discord.com/developers/applications)
 - [Telegram BotFather](https://t.me/BotFather)
 
