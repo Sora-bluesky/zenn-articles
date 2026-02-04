@@ -3,7 +3,7 @@ title: "有料テーマを買わない選択肢：Google Stitch × Google Antigr
 emoji: "🎨"
 type: "tech"
 topics: ["wordpress", "ai", "googlestitch", "antigravity", "生成ai"]
-published: false
+published: true
 ---
 
 :::message
