@@ -88,10 +88,10 @@ Yahoo知恵袋に大量にあったのが、上司への報告が怖いという
 
 Google Workspace MCPサーバーは36個のツールで構成されている。6つのGoogleサービス（Docs、Drive、Sheets、Calendar、Tasks、Gmail）をClaude経由で操作できるMCPサーバーだ。今回追加した4ツールは、既存のGmail・Docsツールの上にGemini Flashの言語処理を載せたもの。
 
-- gmail-draft-reply: 受信メール → Gemini Flashで返信生成 → 下書き保存
-- gmail-keigo-check: メール文面 → Gemini Flashで敬語分析 → 問題箇所と修正案
-- docs-report-draft: 箇条書きメモ → Gemini Flashで構造化 → Googleドキュメントに書き込み
-- docs-minutes: 走り書きメモ → Gemini Flashで構造化 → Googleドキュメントに書き込み
+- gmail_draft_reply: 受信メール → Gemini Flashで返信生成 → 下書き保存
+- gmail_keigo_check: メール文面 → Gemini Flashで敬語分析 → 問題箇所と修正案
+- docs_report_draft: 箇条書きメモ → Gemini Flashで構造化 → Googleドキュメントに書き込み
+- docs_minutes: 走り書きメモ → Gemini Flashで構造化 → Googleドキュメントに書き込み
 
 Gemini FlashはGoogle AI Studioの無料枠で動く。1日1500リクエストまで使える。仕事で使う分には十分な量だ。
 
