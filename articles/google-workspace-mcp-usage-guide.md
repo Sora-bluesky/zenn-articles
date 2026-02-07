@@ -91,6 +91,26 @@ MCP Inspectorが起動する。Connect → Tools → List Toolsで36個のツー
 
 ---
 
+## 使う前に知っておくこと
+
+### サーバーの起動は自動
+
+settings.jsonにMCPサーバーを登録すると、Claude Codeを起動するたびに自動で立ち上がる。毎回 `npm run build` や `node build/index.js` を手動で実行する必要はない。Claude Codeを閉じればサーバーも止まる。
+
+### ファイルの認識はリクエスト型
+
+MCPサーバーはGoogleドライブの中身を常時監視しているわけではない。Claudeがツールを呼ぶたびに、その都度Google APIに問い合わせる仕組みだ。
+
+新しく作ったドキュメントでも、URLやファイルIDを渡せばすぐ操作できる。逆に言えば、何も指示しなければサーバーはGoogleに一切アクセスしない。
+
+### 認証は2系統ある
+
+Google Workspace（Docs、Drive、Gmail等）の認証はOAuth。セットアップ時に `npm run setup` で取得した `token.json` がこれにあたる。
+
+Gemini連携ツール（敬語チェック、返信下書き等）を使う場合は、別途Gemini APIキーが必要になる。Google AI Studioで無料で発行できる。Gemini連携を使わないなら、この設定は不要。
+
+---
+
 ## dryRunの使い方
 
 書き込み、更新、削除を行うツールは全てdryRunがデフォルトでONになっている。
