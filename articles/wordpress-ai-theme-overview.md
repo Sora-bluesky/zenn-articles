@@ -9,10 +9,10 @@ published: true
 :::message
 **シリーズ構成：AIでWordPressテーマを自作する**
 1. **有料テーマを買わない選択肢**（この記事）
-2. [デザインできなくてもOK：Google StitchでUIを生成](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
-3. [コードを書かずにPHPテンプレートを作る：Google Antigravity活用ガイド](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
-4. [プロ品質に仕上げる：Google Antigravityでセキュリティと品質管理を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
-5. [AIで記事を量産する：Google Antigravityで執筆→入稿を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
+2. [StitchでテーマのUIを作った](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
+3. [デザインからPHPテンプレートを自動生成した](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
+4. [AI生成コードのセキュリティを固めた](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
+5. [記事の執筆から投稿までを自動化した](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
 :::
 
 ## はじめに：1万5千円の有料テーマを買う前に読んでほしい

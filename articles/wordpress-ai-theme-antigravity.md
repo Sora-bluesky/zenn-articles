@@ -1,5 +1,5 @@
 ---
-title: "コードを書かずにPHPテンプレートを作る：Google Antigravity活用ガイド"
+title: "WordPress × Google Antigravity：デザインからPHPテンプレートを自動生成した"
 emoji: "🚀"
 type: "tech"
 topics: ["antigravity", "wordpress", "php", "ai", "mcp"]
@@ -9,17 +9,11 @@ published: false
 :::message
 **シリーズ構成：AIでWordPressテーマを自作する**
 1. [有料テーマを買わない選択肢：Google Stitch × Google AntigravityでWordPressテーマを自作する](https://zenn.dev/komei/articles/wordpress-ai-theme-overview)
-2. [デザインできなくてもOK：Google StitchでUIを生成](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
-3. **コードを書かずにPHPテンプレートを作る**（この記事）
-4. [プロ品質に仕上げる：Google Antigravityでセキュリティと品質管理を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
-5. [AIで記事を量産する：Google Antigravityで執筆→入稿を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
+2. [StitchでテーマのUIを作った](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
+3. **デザインからPHPテンプレートを自動生成した**（この記事）
+4. [AI生成コードのセキュリティを固めた](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
+5. [記事の執筆から投稿までを自動化した](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
 :::
-
-## はじめに
-
-前回の記事では、Google Stitchを使ってWordPressテーマに必要なUIデザインを生成しました。
-
-この記事では、**Google Antigravityを使って、デザインデータからWordPressのPHPテンプレートを自動生成する**方法を解説します。ここが本シリーズの核心部分です。
 
 ## 環境構築
 
@@ -28,20 +22,24 @@ published: false
 | ツール | 用途 |
 |---|---|
 | [Google Antigravity](https://antigravity.google/) | AIファーストIDE |
-| [Node.js](https://nodejs.org/) v18以上 | wp-nowの実行に必要 |
-| [wp-now](https://www.npmjs.com/package/@wp-now/wp-now) | ローカルWordPress環境（[GitHub](https://github.com/WordPress/playground-tools/tree/trunk/packages/wp-now)） |
+| [Node.js](https://nodejs.org/) v18以上 | Playground CLIの実行に必要 |
+| [@wp-playground/cli](https://www.npmjs.com/package/@wp-playground/cli) | ローカルWordPress環境（[GitHub](https://github.com/WordPress/wordpress-playground)） |
 
-### wp-now のインストール
+### Playground CLI でWordPressを起動
 
 ```bash
-npm install -g @wp-now/wp-now
+npx @wp-playground/cli@latest server --auto-mount --login
 ```
 
-wp-nowは、WordPressの公式プロジェクトが提供するローカル開発環境です。Docker不要で、コマンド一発でWordPressが起動します。デフォルトポートは**8881**です。
+WordPress Playground CLIは、WordPress公式プロジェクトが提供するローカル開発環境。Docker不要で、コマンド一発でWordPressが起動する。`--auto-mount` はカレントディレクトリのテーマやプラグインを自動検出してマウントし、`--login` は管理者として自動ログインした状態でブラウザが開く。
+
+:::message
+`wp-now`（`@wp-now/wp-now`）は非推奨（deprecated）になった。後継が`@wp-playground/cli`で、機能はほぼ同じだがバグ修正や新機能は今後こちらにのみ追加される。参考：[GitHub Issue #2224](https://github.com/WordPress/wordpress-playground/issues/2224)
+:::
 
 ## テーマのディレクトリ構成を準備
 
-テーマフォルダを作成し、wp-nowで起動できる状態にします。
+テーマフォルダを作成し、Playground CLIで起動できる状態にする。
 
 ```bash
 mkdir -p my-stitch-theme/assets/css
@@ -69,7 +67,7 @@ my-stitch-theme/
 
 ### style.css の作成
 
-`style.css` の先頭に必須のテーマヘッダーを記述します。これがないとWordPressがテーマとして認識しません（[Theme Handbook - Main Stylesheet](https://developer.wordpress.org/themes/basics/main-stylesheet-style-css/)）。
+`style.css` の先頭に必須のテーマヘッダーを記述する。これがないとWordPressがテーマとして認識しない（[Theme Handbook - Main Stylesheet](https://developer.wordpress.org/themes/basics/main-stylesheet-style-css/)）。
 
 ```css
 /*
@@ -85,7 +83,7 @@ Text Domain: my-stitch-theme
 
 ## PHPテンプレート生成
 
-**ここが自動化の本命です。** 以下のファイルをGoogle Antigravityに生成させます。
+以下のファイルをGoogle Antigravityに生成させる。
 
 | 生成するファイル | 対応するStitch画面 | 主要なWordPress関数 |
 |---|---|---|
@@ -94,7 +92,7 @@ Text Domain: my-stitch-theme
 | single.php | 物件詳細ページ | `the_title()`, `the_content()`, `get_post_meta()` |
 | page.php | 事業内容ページ | `the_title()`, `the_content()`, `wp_list_pages()` |
 
-Antigravityのチャットウィンドウに以下のプロンプトを順に入力します。
+Antigravityのチャットに以下のプロンプトを順に入力する。
 
 ### header.php を生成する
 
@@ -156,14 +154,14 @@ Stitch MCPから取得したデザインデータを参照して、WordPressの 
 ```
 
 :::message
-**Google Antigravityならではの強み**
-- **Agent Managerによる並列生成**：header.php、archive.php、single.php、page.phpなどの複数テンプレートを**同時生成**できます。テーマ全体の生成時間が大幅に短縮されます。
-- **ブラウザエージェントによる自動検証**：生成したテーマをwp-nowで起動した後、ブラウザエージェント機能でWordPressサイトを自動的に巡回し、レイアウト崩れや表示不具合を検出・修正できます。
+Antigravityならではの強みが2つある。
+- Agent Managerで複数テンプレートを並列生成できる（header.php、archive.php、single.php、page.phpを同時に走らせられる）
+- ブラウザエージェントでWordPressサイトを自動巡回し、レイアウト崩れを検出→修正できる
 :::
 
 ## functions.php の実装
 
-Antigravityに生成させることもできますが、バックエンドロジックはプロンプトで要件を明示するのがコツです。以下のコードをベースに、Antigravityで不足分を追加生成していきます。
+Antigravityに生成させることもできるが、バックエンドロジックはプロンプトで要件を明示するのがコツ。以下のコードをベースに、Antigravityで不足分を追加生成する。
 
 ```php
 <?php
@@ -245,30 +243,30 @@ add_action('widgets_init', 'my_stitch_theme_widgets');
 - CSSの読み込み
 - サイドバーウィジェットの登録
 
-## wp-nowでローカル検証
+## Playground CLIでローカル検証
 
-テーマフォルダ内で以下を実行すると、即座にWordPress環境が立ち上がります。
+テーマフォルダで以下を実行すると、WordPressが起動してブラウザが自動で開く。
 
 ```bash
-wp-now start
+npx @wp-playground/cli@latest server --auto-mount --login
 ```
 
-ブラウザで `http://localhost:8881` にアクセスし、テーマの表示を確認します。
+`--auto-mount` がテーマフォルダを自動検出し、`wp-content/themes/` にマウントする。
 
 ### 修正が必要な場合
 
-表示に問題があれば、Antigravityのチャットで追加の指示を出せます。
+表示に問題があれば、Antigravityのチャットで追加指示を出す。
 
 ```
 header.phpのナビゲーションが横並びになっていない。
-ブラウザで http://localhost:8881 を確認して、CSSのFlexboxで横並びレイアウトに修正してください。
+ブラウザでWordPressサイトを確認して、CSSのFlexboxで横並びレイアウトに修正してください。
 ```
 
-Google Antigravityのブラウザエージェントは、実際にWordPressサイトを開いて視覚的に確認しながら修正できます。
+Antigravityのブラウザエージェントは、実際にWordPressサイトを開いて視覚的に確認しながら修正する。人間が目で確認→指示→修正のループを回すより早い。
 
 ## 現実的な期待値
 
-AI生成コードは「80点のたたき台」と捉えてください。
+AI生成コードは「80点のたたき台」と捉える。
 
 | 項目 | 自動化できる割合 | 手動作業が必要な部分 |
 |---|---|---|
@@ -278,7 +276,7 @@ AI生成コードは「80点のたたき台」と捉えてください。
 | functions.php | 約30% | AI生成可能だが要検証 |
 | **全体** | **約55〜65%** | **残りは手動調整** |
 
-それでも、ゼロからコーディングするよりも**大幅に時間を短縮できる**のは事実です。
+ゼロから書くよりは圧倒的に早い。残りの調整は次の記事で扱うセキュリティ・品質チェックでカバーする。
 
 ### よくある修正ポイント
 
@@ -292,7 +290,7 @@ AI生成コードは「80点のたたき台」と捉えてください。
 
 ## footer.php と sidebar.php
 
-header.phpと同様に、footer.phpとsidebar.phpも生成させます。
+header.phpと同様に、footer.phpとsidebar.phpも生成させる。
 
 ### footer.php を生成する
 
@@ -320,27 +318,13 @@ header.phpと同様に、footer.phpとsidebar.phpも生成させます。
 - セマンティックHTML（<aside>）を使用
 ```
 
-## 次の記事へ
-
-PHPテンプレートが生成できたら、次はプロ品質に仕上げるための品質管理とセキュリティ対策に進みましょう。
-
-**次の記事**: [プロ品質に仕上げる：WordPressテーマのセキュリティと品質管理](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
-
-## まとめ
-
-- Google Antigravityを使えば、デザインデータからPHPテンプレートを自動生成できる
-- プロンプトでは、WordPress固有の関数（`wp_head()`, `the_title()`, `have_posts()`など）を明示的に指定する
-- `functions.php` はベースコードを用意し、Antigravityで不足分を追加生成
-- wp-nowで即座にローカル検証が可能
-- AI生成コードは約55〜65%の自動化率。残りは手動調整が必要
-
 ## 参考リンク
 
 **ツール**
 
 - [Google Antigravity IDE](https://antigravity.google/)
-- [wp-now（npm）](https://www.npmjs.com/package/@wp-now/wp-now)
-- [wp-now（GitHub）](https://github.com/WordPress/playground-tools/tree/trunk/packages/wp-now)
+- [@wp-playground/cli（npm）](https://www.npmjs.com/package/@wp-playground/cli)
+- [WordPress Playground（GitHub）](https://github.com/WordPress/wordpress-playground)
 
 **WordPress公式ドキュメント**
 

@@ -1,5 +1,5 @@
 ---
-title: "AIで記事を量産する：Google Antigravityで執筆→入稿を自動化"
+title: "WordPress × Google Antigravity：記事の執筆から投稿までを自動化した"
 emoji: "📝"
 type: "tech"
 topics: ["antigravity", "wordpress", "ai", "restapi", "automation"]
@@ -9,23 +9,17 @@ published: false
 :::message
 **シリーズ構成：AIでWordPressテーマを自作する**
 1. [有料テーマを買わない選択肢：Google Stitch × Google AntigravityでWordPressテーマを自作する](https://zenn.dev/komei/articles/wordpress-ai-theme-overview)
-2. [デザインできなくてもOK：Google StitchでUIを生成](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
-3. [コードを書かずにPHPテンプレートを作る：Google Antigravity活用ガイド](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
-4. [プロ品質に仕上げる：Google Antigravityでセキュリティと品質管理を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
-5. **AIで記事を量産する**（この記事）
+2. [StitchでテーマのUIを作った](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
+3. [デザインからPHPテンプレートを自動生成した](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
+4. [AI生成コードのセキュリティを固めた](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
+5. **記事の執筆から投稿までを自動化した**（この記事）
 :::
-
-## はじめに
-
-前回までの記事で、AIを使ったWordPressテーマの自作が完了しました。
-
-この記事では、テーマ制作の先にある**サイト運用の自動化**を解説します。Google Antigravityのチャット・ブラウザエージェント・ターミナル機能を組み合わせて、**記事の執筆から入稿までを一気通貫で自動化**するワークフローを構築します。
 
 ## 有料テーマでは不可能な「運用の自動化」
 
-有料テーマはあくまで「器」です。どんなに高機能なテーマを買っても、記事を書き、画像を用意し、WordPressに投稿する作業は毎回手動です。
+有料テーマはあくまで「器」だ。どんなに高機能なテーマを買っても、記事を書き、画像を用意し、WordPressに投稿する作業は毎回手動で残る。
 
-しかしGoogle Antigravityでテーマを自作した場合、**テーマのコード全体がAntigravityのコンテキストに入っている**ため、そのままコンテンツ制作に移行できます。
+Antigravityでテーマを自作した場合、テーマのコード全体がAntigravityのコンテキストに入っているため、そのままコンテンツ制作に移行できる。テーマとコンテンツを別々のツールで作る場合には得られない一貫性がここにある。
 
 ## ワークフロー構想：記事の量産パイプライン
 
@@ -53,9 +47,9 @@ graph TD
     G --> A
 ```
 
-## Step 1：チャットで記事ドラフトを生成
+## チャットで記事ドラフトを生成
 
-テーマを作ったあと、同じGoogle Antigravityのチャットでこう続けるだけです。
+テーマを作ったあと、同じAntigravityのチャットでこう続けるだけ。
 
 ```
 このWordPressテーマは不動産会社向けです。
@@ -68,15 +62,9 @@ graph TD
 - WordPress投稿用のHTMLブロックとして出力
 ```
 
-### ポイント：テーマとの整合性
+## アイキャッチ画像の生成
 
-Google Antigravityはテーマのコード全体をコンテキストとして保持しているため、テーマのデザイントーンやCSS命名規則と**整合性のある記事装飾**を自動で適用できます。
-
-テーマとコンテンツを別々のツールで作る場合には得られない一貫性です。
-
-## Step 2：アイキャッチ画像の生成
-
-Google Antigravity APIを経由したGemini 3 Proの画像生成機能で、記事のアイキャッチ画像も生成できます。
+Antigravity経由のGemini画像生成で、記事のアイキャッチ画像も作れる。
 
 ```
 上記5本の記事それぞれに合うアイキャッチ画像を生成してください。
@@ -85,15 +73,15 @@ Google Antigravity APIを経由したGemini 3 Proの画像生成機能で、記�
 - テキストオーバーレイなし（記事タイトルはWordPress側で表示する）
 ```
 
-生成された画像は、後のステップでWordPressのメディアライブラリにアップロードします。
+生成された画像は、次の投稿工程でメディアライブラリにアップロードする。
 
-## Step 3：WordPressへの投稿
+## WordPressへの投稿
 
-生成した記事と画像をWordPressに投稿する方法は3つあります。
+生成した記事と画像をWordPressに投稿する方法は3つある。
 
 ### 方法A：WordPress REST API（推奨）
 
-最も安定した方法です。[WordPress REST API](https://developer.wordpress.org/rest-api/)を使ってプログラム的に投稿を作成できます。
+[WordPress REST API](https://developer.wordpress.org/rest-api/)を使ってプログラム的に投稿を作成する。
 
 **アプリケーションパスワードの取得**
 
@@ -133,7 +121,7 @@ WordPress REST APIを使って、以下の記事を投稿してください。
 
 ### 方法B：WP-CLI（ローカル環境向け）
 
-[WP-CLI](https://developer.wordpress.org/cli/commands/)を使って、wp-nowで起動したローカル環境やSSH接続可能なサーバーで操作できます。
+[WP-CLI](https://developer.wordpress.org/cli/commands/)を使って、Playground CLIで起動したローカル環境やSSH接続可能なサーバーで操作する。
 
 ```bash
 # 投稿を作成
@@ -157,7 +145,7 @@ WP-CLIを使って、以下の記事をWordPressに投稿してください。
 
 ### 方法C：ブラウザエージェント（GUI操作）
 
-Google AntigravityのブラウザエージェントでWordPress管理画面を直接操作する方法です。
+AntigravityのブラウザエージェントでWordPress管理画面を直接操作する方法。
 
 ```
 ブラウザで https://example.com/wp-admin を開いてログインし、
@@ -185,11 +173,11 @@ Google AntigravityのブラウザエージェントでWordPress管理画面を�
 | WP-CLI | 高 | 向いている | 低（ローカル） | ローカル開発 |
 | ブラウザエージェント | 中 | 向かない | 低 | 少数の投稿、検証 |
 
-## Step 4：投稿管理とスケジュール
+## 投稿管理とスケジュール
 
 ### 公開スケジュールの設定
 
-REST APIで投稿日時を指定できます。
+REST APIで投稿日時を指定できる。
 
 ```bash
 curl -X POST "https://example.com/wp-json/wp/v2/posts" \
@@ -217,7 +205,7 @@ curl -X POST "https://example.com/wp-json/wp/v2/posts" \
 
 ### カテゴリ・タグの自動付与
 
-記事内容に基づいてカテゴリやタグを自動提案させることもできます。
+記事内容に基づいてカテゴリやタグを自動提案させることもできる。
 
 ```
 以下の記事本文を読んで、適切なカテゴリとタグを提案してください。
@@ -228,9 +216,9 @@ curl -X POST "https://example.com/wp-json/wp/v2/posts" \
 提案後、REST APIで投稿を更新してください。
 ```
 
-## Step 5：ワークフローのスキル化
+## ワークフローのスキル化
 
-ここまでの一連の流れをGoogle Antigravityのスキルファイルとして保存すれば、以降はコマンド一発で実行できます。
+ここまでの一連の流れをAntigravityのスキルファイルとして保存すれば、以降はコマンド一発で実行できる。
 
 ### スキルファイルの例
 
@@ -296,7 +284,7 @@ description: キーワードからWordPress記事を生成・投稿するパイ�
 
 ### AIが生成したコンテンツの品質管理
 
-AI生成コンテンツは必ず人間がレビューしてください。
+AI生成コンテンツは必ず人間がレビューする。
 
 | チェック項目 | 内容 |
 |---|---|
@@ -316,29 +304,6 @@ AI生成コンテンツは必ず人間がレビューしてください。
 - アプリケーションパスワードは安全に管理
 - 本番サイトへの投稿前にステージング環境でテスト
 - ログイン情報をスキルファイルにハードコードしない
-
-## まとめ
-
-- Google Antigravityでは、テーマ制作からコンテンツ制作まで同じ環境で継続できる
-- チャット → 画像生成 → REST API/WP-CLI → スケジュール投稿の一気通貫ワークフロー
-- スキルファイルに保存すれば、コマンド一発で量産可能
-- AI生成コンテンツは必ず人間がレビューすること
-
-## シリーズまとめ
-
-本シリーズ「AIでWordPressテーマを自作する」では、以下の内容を解説しました。
-
-| 記事 | 内容 |
-|---|---|
-| [概要編：有料テーマを買わない選択肢](https://zenn.dev/komei/articles/wordpress-ai-theme-overview) | なぜAIでテーマを作るのか、コスト比較、全体像 |
-| [Stitch編：デザインできなくてもOK](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch) | Google StitchでUIデザインを生成 |
-| [Antigravity編：コードを書かずにPHPテンプレートを作る](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity) | デザインからPHPテンプレートを自動生成 |
-| [品質編：プロ品質に仕上げる](https://zenn.dev/komei/articles/wordpress-ai-theme-quality) | セキュリティ、Coding Standards、ブロックテーマ |
-| [自動化編：AIで記事を量産する](https://zenn.dev/komei/articles/wordpress-ai-theme-automation) | 記事の量産パイプライン構築 |
-
-有料テーマを「選ぶ」のではなく「作る」時代。そしてテーマを作った先には**サイト運用そのものを自動化する**という、有料テーマでは到達できなかった地平が広がっています。
-
-ぜひ本シリーズを参考に、AIを活用したWordPress開発に挑戦してみてください。
 
 ## 参考リンク
 
