@@ -1,5 +1,5 @@
 ---
-title: "プロ品質に仕上げる：Google Antigravityでセキュリティと品質管理を自動化"
+title: "WordPress × Google Antigravity：AI生成コードのセキュリティを固めた"
 emoji: "🛡️"
 type: "tech"
 topics: ["wordpress", "security", "phpcs", "blocktheme", "ai"]
@@ -9,21 +9,15 @@ published: false
 :::message
 **シリーズ構成：AIでWordPressテーマを自作する**
 1. [有料テーマを買わない選択肢：Google Stitch × Google AntigravityでWordPressテーマを自作する](https://zenn.dev/komei/articles/wordpress-ai-theme-overview)
-2. [デザインできなくてもOK：Google StitchでUIを生成](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
-3. [コードを書かずにPHPテンプレートを作る：Google Antigravity活用ガイド](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
-4. **プロ品質に仕上げる**（この記事）
-5. [AIで記事を量産する：Google Antigravityで執筆→入稿を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
+2. [StitchでテーマのUIを作った](https://zenn.dev/komei/articles/wordpress-ai-theme-stitch)
+3. [デザインからPHPテンプレートを自動生成した](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
+4. **AI生成コードのセキュリティを固めた**（この記事）
+5. [記事の執筆から投稿までを自動化した](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
 :::
-
-## はじめに
-
-前回の記事では、Google Antigravityを使ってPHPテンプレートを自動生成しました。
-
-この記事では、AI生成コードを**プロ品質に仕上げる**ための品質管理とセキュリティ対策を解説します。AI生成は「80点のたたき台」であり、残りの20点を人間がチェック・修正することで、本番運用に耐えるテーマになります。
 
 ## 基本チェックリスト
 
-まず、WordPressテーマとして最低限必要な要素が揃っているかを確認します。
+AI生成コードは「80点のたたき台」。残りの20点をチェック・修正することで、本番運用に耐えるテーマになる。まずは最低限必要な要素が揃っているかを確認する。
 
 ### セマンティックHTMLチェック
 
@@ -42,7 +36,7 @@ published: false
 
 ## WordPress Coding Standards によるコード品質チェック
 
-WordPressには公式のコーディング規約（[WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/)）があります。AI生成コードがこの規約に準拠しているかを自動チェックできます。PHP_CodeSnifferと[WPCS（WordPress Coding Standards）](https://github.com/WordPress/WordPress-Coding-Standards)パッケージを使用します。
+WordPressには公式のコーディング規約（[WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/)）がある。AI生成コードがこの規約に準拠しているかを、PHP_CodeSnifferと[WPCS（WordPress Coding Standards）](https://github.com/WordPress/WordPress-Coding-Standards)パッケージで自動チェックできる。
 
 ### PHP_CodeSniffer のセットアップ
 
@@ -94,11 +88,11 @@ WordPress Coding Standards に準拠するように、以下のファイルを�
 
 ## セキュリティ対策
 
-AI生成コードはセキュリティ面で脆弱になりがちです。以下の対策を必ず確認してください。
+AI生成コードはセキュリティ面で脆弱になりがちだ。以下の対策を必ず確認する。
 
 ### 出力のエスケープ（Escaping）
 
-ユーザー入力やデータベースから取得した値を出力する際は、必ず[エスケープ関数](https://developer.wordpress.org/apis/security/escaping/)を使用します。
+ユーザー入力やデータベースから取得した値を出力する際は、必ず[エスケープ関数](https://developer.wordpress.org/apis/security/escaping/)を使用する。
 
 ```php
 // ❌ 危険：XSS脆弱性
@@ -115,7 +109,7 @@ echo wp_kses_post($content);     // 許可されたHTMLタグのみ
 
 ### 入力のサニタイズ（Sanitization）
 
-フォームやクエリパラメータから受け取った値は、保存前に[サニタイズ](https://developer.wordpress.org/apis/security/sanitizing/)します。
+フォームやクエリパラメータから受け取った値は、保存前に[サニタイズ](https://developer.wordpress.org/apis/security/sanitizing/)する。
 
 ```php
 // ❌ 危険：SQLインジェクション、XSSの可能性
@@ -130,7 +124,7 @@ update_post_meta($post_id, 'key', $value);
 
 ### Nonce検証（CSRF対策）
 
-フォーム送信やAjaxリクエストでは、Nonceを使用して正当なリクエストかを検証します。
+フォーム送信やAjaxリクエストでは、Nonceを使用して正当なリクエストかを検証する。
 
 ```php
 // フォームにNonceフィールドを追加
@@ -167,7 +161,7 @@ $query = $wpdb->prepare(
 
 ## Gutenberg（ブロックエディタ）対応
 
-Google Stitchが生成した「カード型レイアウト」や「CTAセクション」を、ブロックパターンとして再利用できるように登録しておくと運用が楽になります。
+Google Stitchが生成した「カード型レイアウト」や「CTAセクション」を、ブロックパターンとして登録しておくと運用が楽になる。
 
 ### ブロックパターンの登録
 
@@ -216,7 +210,7 @@ add_action('init', 'my_stitch_register_pattern_categories');
 
 ## ブロックテーマへの移行
 
-現在のクラシックテーマ（PHPテンプレート）から、WordPress 5.9以降で導入された**ブロックテーマ（フルサイト編集）**への移行も視野に入れておきましょう。
+現在のクラシックテーマ（PHPテンプレート）から、WordPress 5.9以降で導入されたブロックテーマ（フルサイト編集）への移行も視野に入れておく。
 
 ### ブロックテーマの構成
 
@@ -239,7 +233,7 @@ my-stitch-theme/
 
 ### theme.json の基本設定
 
-[theme.json](https://developer.wordpress.org/block-editor/reference-guides/theme-json-reference/)はブロックテーマのグローバルスタイル設定ファイルです。
+[theme.json](https://developer.wordpress.org/block-editor/reference-guides/theme-json-reference/)はブロックテーマのグローバルスタイル設定ファイルだ。
 
 ```json
 {
@@ -298,11 +292,11 @@ my-stitch-theme/
 
 ## SEO最適化
 
-テーマレベルでのSEO対策も重要です。
+テーマレベルでのSEO対策も重要だ。
 
 ### 構造化データの追加
 
-[Schema.org](https://schema.org/)の構造化データを追加することで、検索エンジンがコンテンツを理解しやすくなります。
+[Schema.org](https://schema.org/)の構造化データを追加すると、検索エンジンがコンテンツを理解しやすくなる。
 
 ```php
 // functions.php に追加
@@ -349,7 +343,7 @@ function my_stitch_breadcrumb() {
 
 ### 画像の遅延読み込み
 
-WordPress 5.5以降は自動で `loading="lazy"` が付与されますが、明示的に指定することもできます。
+WordPress 5.5以降は自動で `loading="lazy"` が付与されるが、明示的に指定することもできる。
 
 ```php
 // functions.php に追加
@@ -377,7 +371,7 @@ add_action('init', 'my_stitch_dequeue_scripts');
 
 ## 品質チェック自動化
 
-Google Antigravityに品質チェックを依頼するプロンプト例：
+Google Antigravityに品質チェックを依頼するプロンプト例。
 
 ```
 このWordPressテーマの品質チェックを行ってください。
@@ -392,20 +386,6 @@ Google Antigravityに品質チェックを依頼するプロンプト例：
 
 問題点を一覧で報告し、修正コードを提案してください。
 ```
-
-## 次の記事へ
-
-テーマの品質を確保したら、次はサイト運用の自動化に進みましょう。AIを使った記事の量産パイプラインを構築します。
-
-**次の記事**: [AIで記事を量産する：Google Antigravityで執筆→入稿を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
-
-## まとめ
-
-- WordPress Coding Standardsに準拠するコードを目指す（PHPCSで自動チェック）
-- セキュリティは最重要：エスケープ、サニタイズ、Nonce検証を徹底
-- ブロックパターンでGUIからのカスタマイズを容易に
-- ブロックテーマへの移行で将来性を確保
-- SEO・パフォーマンス最適化でプロ品質に
 
 ## 参考リンク
 

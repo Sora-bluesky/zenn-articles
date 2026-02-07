@@ -1,44 +1,87 @@
 ---
-title: "デザインできなくてもOK：Google StitchでWordPressのUIを生成する"
+title: "WordPress × Google Stitch：プロンプト5要素でテーマのUIを作った"
 emoji: "🧵"
 type: "tech"
-topics: ["googlestitch", "wordpress", "ai", "figma", "webdesign"]
+topics: ["googlestitch", "wordpress", "ai", "antigravity", "webdesign"]
 published: false
 ---
 
 :::message
 **シリーズ構成：AIでWordPressテーマを自作する**
 1. [有料テーマを買わない選択肢：Google Stitch × Google AntigravityでWordPressテーマを自作する](https://zenn.dev/komei/articles/wordpress-ai-theme-overview)
-2. **デザインできなくてもOK**（この記事）
-3. [コードを書かずにPHPテンプレートを作る：Google Antigravity活用ガイド](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
-4. [プロ品質に仕上げる：Google Antigravityでセキュリティと品質管理を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
-5. [AIで記事を量産する：Google Antigravityで執筆→入稿を自動化](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
+2. **StitchでテーマのUIを作った**（この記事）
+3. [デザインからPHPテンプレートを自動生成した](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
+4. [AI生成コードのセキュリティを固めた](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
+5. [記事の執筆から投稿までを自動化した](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
 :::
 
-## はじめに
+## Stitchを開いて固まった人へ
 
-前回の記事では、AIでWordPressテーマを自作するワークフローの全体像を解説しました。
+Google Stitchは、テキストで指示するとUIデザインが出てくるGoogleの無料ツールだ。
 
-この記事では、**Google Stitchを使ってWordPressテーマに必要なUIデザインを生成する**方法を解説します。デザインツールの経験がなくても、テキストプロンプトだけで本格的なUIが手に入ります。
+ただし、Stitchを開いて最初に表示されるのはプロンプト入力欄。ここで「何を書けばいいかわからない」と手が止まる人は多い。配色？レイアウト？雰囲気？ ——デザインの引き出しがないと、この3つが埋まらない。
 
-## なぜ「普通のプロンプト」ではダメなのか
+この記事では、**Stitchの前にAntigravityで「デザインの方向性」を決める**手順から始める。自分の頭の中にデザインの正解がなくても、AIに競合サイトを分析させれば方向性は出る。
 
-Google Stitchにただ「Webサイトを作って」と指示すると、単一のランディングページが生成されます。しかしWordPressテーマには複数のテンプレートファイルが必要です。
+## Antigravityにデザインの方向性を相談する
 
-| WordPressテンプレート | 役割 |
-|---|---|
-| `front-page.php` | トップページ |
-| `archive.php` | 一覧ページ（記事一覧、カテゴリ一覧など） |
-| `single.php` | 個別記事ページ |
-| `page.php` | 固定ページ |
-| `header.php` | 共通ヘッダー |
-| `footer.php` | 共通フッター |
+Google Antigravityにはブラウザエージェントが内蔵されている。指定したURLを実際に訪問し、ページ構造・配色・レイアウトを読み取れる。これを「デザインコンサルタント」として使う。
 
-**Google Stitchに生成させるべき画面は、WordPressのテンプレート階層に対応させる**のがポイントです。
+### 競合サイトを分析させる
 
-## プロンプトの基本型
+Antigravityのチャットに以下のように入力する。
 
-Google Stitchのプロンプトは、以下の5要素を埋めるだけで高品質なUIが生成できます。
+```
+私は地域密着型の不動産会社です。
+事業内容：不動産賃貸管理、駐車場運営、不動産仲介、空き家対策、リフォーム
+
+同業他社のWebサイトを3〜5件ブラウザで訪問し、以下の観点で分析してください：
+- 全体の配色（メインカラー、テキストカラー、アクセントカラー）
+- レイアウト構成（ヘッダー、ヒーロー、コンテンツ配置）
+- 雰囲気（信頼感重視？親しみやすさ重視？）
+- CTAボタンの文言と配置
+
+分析結果を表にまとめてください。
+```
+
+Antigravityのブラウザエージェントが実際にWebサイトを巡回し、DOM解析とスクリーンショット取得を行う。数分で「この業種のサイトは、ネイビー系の配色が多い」「ヒーローセクションには物件検索フォームを置くのが標準」といった分析結果がArtifactとして返ってくる。
+
+### 参考サイトのURLを直接渡す
+
+「ここが好き」というサイトが1つでもあるなら、それをAntigravityに渡す方が早い。
+
+```
+以下のサイトをブラウザで確認し、デザインの特徴を分析してください。
+https://example-realestate.com
+
+このサイトの以下の要素を、WordPressテーマの参考にしたい：
+- ナビゲーションメニューの配置とスタイル
+- ヒーローセクションのレイアウト
+- カラースキームとフォントの雰囲気
+```
+
+:::message alert
+既存サイトのデザインをそのまま複製すると著作権上の問題がある。レイアウトの構成やカラースキームの方向性など、抽象的な要素を参考にする程度にとどめること。
+:::
+
+### スクリーンショットからの分析も可能
+
+参考にしたいサイトのスクリーンショットをAntigravityのプロジェクトフォルダに置き、画像を渡して分析させることもできる。
+
+```bash
+mkdir -p my-stitch-theme/references
+# references/competitor-top.png などを配置
+```
+
+```
+references/competitor-top.png を見てください。
+このスクリーンショットの配色、レイアウト構成、雰囲気を分析し、
+WordPressテーマのデザイン方針としてまとめてください。
+```
+
+## Antigravityの分析結果をStitchの5要素に変換する
+
+Antigravityの分析が終わったら、その結果をStitchの入力形式に変換する。Stitchのプロンプトは以下の5要素で構成される。
 
 ```
 ① 用途：Web向け。[業種]の[ページ種別]。
@@ -48,11 +91,51 @@ Google Stitchのプロンプトは、以下の5要素を埋めるだけで高品
 ⑤ ターゲット：[想定ユーザー]
 ```
 
-この型を使って、WordPressの各テンプレートに対応するUIを順番に生成していきます。
+Antigravityにこう頼めば、5要素が自動で埋まる。
 
-## 実践：不動産会社サイトを例に
+```
+先ほどの競合分析の結果をもとに、Google Stitchに渡すプロンプトを作成してください。
 
-本記事では、地域密着型の不動産会社（賃貸管理・駐車場運営・仲介・空き家対策・リフォーム）を例に解説します。末尾の「業種カスタマイズテンプレート」で自分の業種に簡単に置き換えられます。
+以下の5要素の形式で出力してください：
+① 用途：Web向け。[業種]の[ページ種別]。
+② レイアウト：[配置する要素を箇条書き]
+③ 配色：[メインカラー（HEXコード付き）]に[テキストカラー]、アクセントカラーは[アクセント]
+④ 雰囲気：[2〜3語のキーワード]
+⑤ ターゲット：[想定ユーザー]
+
+WordPressテーマとして以下の4画面分を生成してください：
+- フロントページ（front-page.php 相当）
+- 一覧ページ（archive.php 相当）
+- 詳細ページ（single.php 相当）
+- 固定ページ（page.php 相当）
+```
+
+自分でデザインを考える必要はない。Antigravityが競合分析から導いた「この業種の標準」が、Stitchへの入力になる。
+
+## Stitchに渡すべき「画面」を知る
+
+Google Stitchに「Webサイトを作って」と指示すると、単一のランディングページが出てくる。WordPressテーマには複数のテンプレートが必要なので、画面ごとに分けて生成する。
+
+| WordPressテンプレート | 役割 | Stitchで生成する画面 |
+|---|---|---|
+| `front-page.php` | トップページ | フロントページ |
+| `archive.php` | 一覧ページ | 物件一覧・記事一覧など |
+| `single.php` | 個別記事ページ | 物件詳細・記事詳細など |
+| `page.php` | 固定ページ | 事業内容・会社概要など |
+| `header.php` | 共通ヘッダー | 各画面の上部に統一 |
+| `footer.php` | 共通フッター | 各画面の下部に統一 |
+
+:::message alert
+Google Stitchは1回の生成で2〜3画面が限度（2026年2月時点）。4画面はそれぞれ別セッションで生成し、「配色：前の画面と同じテーマカラーを維持」と明示してカラーを揃える。
+
+[Stitch 2.0](https://www.aifire.co/p/google-stitch-2-0-a-guide-to-the-free-ai-coding-design-agent)では標準モード（Gemini 2.5 Flash）が無制限、Experimentalモード（Gemini 2.5 Pro）が月400回。制限は変動するため、[公式サイト](https://stitch.withgoogle.com/)で最新情報を確認すること。
+:::
+
+## 実践：不動産会社サイトのプロンプト例
+
+以下は、Antigravityの競合分析から生成された不動産会社向けプロンプトの例。地域密着型の不動産会社（賃貸管理・駐車場運営・仲介・空き家対策・リフォーム）を想定している。
+
+末尾の「業種カスタマイズテンプレート」で自分の業種に置き換えられる。
 
 ### フロントページ（front-page.php 相当）
 
@@ -123,22 +206,13 @@ Web向け。不動産会社の事業内容紹介ページ。
 配色：同じテーマカラー
 ```
 
-:::message alert
-**Google Stitchの現在の制限事項（2026年2月時点）**
-Google Stitchは1回の生成で2〜3画面が限度です。上記の4画面はそれぞれ別セッションで生成し、テーマカラーの統一は「配色：前の画面と同じテーマカラーを維持」と明示することで対応します。
+## StitchのデザインをAntigravityに渡す
 
-[Stitch 2.0](https://www.aifire.co/p/google-stitch-2-0-a-guide-to-the-free-ai-coding-design-agent)では、標準モード（Gemini 2.5 Flash）が無制限、Experimentalモード（Gemini 2.5 Pro）が月400回に拡充されています。制限は変動する可能性があるため、[公式サイト](https://stitch.withgoogle.com/)で最新情報を確認してください。
-:::
-
-## Google AntigravityにStitchのデザインを渡す
-
-Google Stitchで生成したデザインは、2つのルートでGoogle Antigravityに渡せます。
+Stitchで生成したデザインをAntigravityに渡すルートは2つある。
 
 ### ルートA：Stitch MCP直結（推奨）
 
-Stitch MCPを使えば、Figmaを経由せずStitchの出力を直接Antigravityに接続できます。
-
-**セットアップ手順**
+Stitch MCPを使えば、Figmaを経由せずStitchの出力を直接Antigravityに接続できる。
 
 ```bash
 npx @_davideast/stitch-mcp init
@@ -147,11 +221,9 @@ npx @_davideast/stitch-mcp init
 # Google Cloud認証を完了
 ```
 
-セットアップウィザードではAntigravityがデフォルトの第一選択肢として表示されます。
+セットアップウィザードではAntigravityがデフォルトの第一選択肢として表示される。
 
-**Stitch Skillsのインストール**
-
-Google公式が提供するStitch Skillsで、StitchのデザインデータをAntigravityがより正確に解釈できるようになります。
+Google公式が提供するStitch Skillsを入れると、StitchのデザインデータをAntigravityがより正確に解釈する。
 
 ```bash
 npx add-skill google-labs-code/stitch-skills \
@@ -162,24 +234,20 @@ npx add-skill google-labs-code/stitch-skills \
 
 ### ルートB：Figma経由
 
-StitchからFigmaにエクスポートし（Paste to Figma）、デザインを微調整してからAntigravityに渡すルートです。
+StitchからFigmaにエクスポートし（Paste to Figma）、デザインを微調整してからAntigravityに渡す。以下の整理をするとAntigravityの読み取り精度が上がる。
 
-**FigmaでのAIフレンドリーなデザイン整理**
+**Auto Layoutの適用**
 
-StitchからFigmaにペーストしたデザインは、以下の整理を行うとAntigravityの読み取り精度が向上します。
+Figma MCPは[Auto Layout](https://help.figma.com/hc/en-us/articles/360040451373-Guide-to-auto-layout)（CSSのFlexboxに相当）で構造化された要素の読み取り精度が高い。主要なセクションを `Shift + A` でAuto Layoutに変換する。
 
-**1. Auto Layoutの適用**
-
-Figma MCPは[Auto Layout](https://help.figma.com/hc/en-us/articles/360040451373-Guide-to-auto-layout)（CSSのFlexboxに相当）で構造化された要素の読み取り精度が高いです。主要なセクションをAuto Layoutに変換します（`Shift + A`）。
-
-**2. レイヤー名のセマンティック化**
+**レイヤー名のセマンティック化**
 
 ```
 ❌ Frame 48 > Group 12 > Text
 ✅ header > nav-menu > menu-item-blog
 ```
 
-**3. テンプレート別フレームの整理**
+**テンプレート別フレームの整理**
 
 ```
 📁 My WordPress Theme
@@ -193,16 +261,14 @@ Figma MCPは[Auto Layout](https://help.figma.com/hc/en-us/articles/360040451373-
 
 **Figma MCPのセットアップ（Antigravity）**
 
-AntigravityへのFigma MCP導入は簡単です。
-
 1. Antigravityエディタ → 右上「...」メニュー → MCP Servers
 2. MCP Storeから「Figma MCP」をインストール
 
-手動でJSON設定ファイルを編集する必要はありません。
+JSON設定ファイルの手動編集は不要。
 
 ## 業種カスタマイズテンプレート
 
-上記は不動産業者の例ですが、以下のテンプレートの `[  ]` 部分を自分の業種に置き換えれば、どんな業種でも同じ手順でテーマを作れます。
+不動産以外の業種でも、以下のテンプレートの `[  ]` を埋めるだけで同じフローが使える。Antigravityに「私は [業種] です。競合サイトを分析して、以下のテンプレートを埋めてください」と頼めば、自力で埋める必要もない。
 
 ### フロントページ用テンプレート
 
@@ -261,95 +327,21 @@ Web向け。[業種名]の[詳細コンテンツ名：例「施工事例詳細�
 | 税理士事務所 | サービス一覧 | サービス詳細 | 無料相談を申し込む |
 | 整体院 | 施術メニュー一覧 | 施術メニュー詳細 | 初回体験を予約する |
 
-## 参考サイトのURL・スクリーンショットを活用する
-
-Google Stitchで生成したデザインだけでなく、**既存の参考サイトのURLやスクリーンショットをGoogle Antigravityに直接渡して、デザインの方向性を指示する**ことも可能です。
-
-### 方法1：参考サイトのURLを渡す
-
-Antigravityのブラウザエージェントは、指定したURLを実際に訪問してページ構造やデザインを解析できます。
-
-```
-以下のサイトをブラウザで確認し、デザインの特徴を分析してください。
-https://example.com
-
-このサイトの以下の要素を参考にして、WordPressテーマのheader.phpを生成してください：
-- ナビゲーションメニューの配置とスタイル
-- ヒーローセクションのレイアウト
-- カラースキームとフォントの雰囲気
-```
-
-### 方法2：スクリーンショットをワークスペースに配置する
-
-参考にしたいサイトのスクリーンショットを撮影し、PNG/JPG形式でAntigravityのプロジェクトフォルダに配置します。
-
-```bash
-# プロジェクトフォルダに参考画像用のディレクトリを作成
-mkdir -p my-stitch-theme/references
-
-# スクリーンショットを配置（例）
-# references/archive-page-ref.png
-# references/header-ref.png
-```
-
-Antigravityのチャットで以下のように指示します。
-
-```
-references/archive-page-ref.png を参照してください。
-このスクリーンショットのデザインを参考にして、archive.phpを生成してください。
-
-参考にする要素：
-- 記事カードのレイアウト（アイキャッチの比率、テキスト配置）
-- サイドバーのウィジェット構成
-- 全体のカラースキーム
-
-ただし、以下はStitch MCPから取得したデザインデータに従ってください：
-- ヘッダー・フッターのデザイン
-- フォントファミリー
-```
-
-### 方法3：複数の参考サイトを組み合わせる
-
-複数サイトのスクリーンショットをワークスペースに配置し、要素ごとに異なる参考画像を指定できます。
-
-```
-以下の参考画像を確認し、各要素を組み合わせたWordPressテーマを設計してください。
-
-- ヘッダーの参考：references/header-ref.png
-- 記事一覧（物件一覧）の参考：references/archive-ref.png
-- フッターの参考：references/footer-ref.png
-
-Stitch MCPから取得したカラースキームとフォント設定は維持してください。
-```
-
-:::message alert
-**注意：参考サイトの活用はあくまで「インスピレーション」として**
-既存サイトのデザインをそのまま複製することは著作権の観点から避けてください。レイアウトの構成やカラースキームの方向性など、抽象的な要素を参考にするのが適切です。
-:::
-
-## 次の記事へ
-
-Google Stitchでデザインを生成し、Google Antigravityに渡す準備ができました。次は実際にPHPテンプレートを自動生成するステップに進みましょう。
-
-**次の記事**: [コードを書かずにPHPテンプレートを作る：Google Antigravity活用ガイド](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
-
-## まとめ
-
-- Google Stitchでは、WordPressのテンプレート階層を意識したプロンプト設計が重要
-- プロンプトは「用途・レイアウト・配色・雰囲気・ターゲット」の5要素で構成
-- 業種カスタマイズテンプレートを使えば、どんな業種でも応用可能
-- Stitch MCP直結ルートが最短、Figma経由ルートは微調整が必要な場合に有効
-- 参考サイトのURLやスクリーンショットでデザインの方向性を補強できる
-
 ## 参考リンク
 
 **Google Stitch**
 
 - [Google Stitch 公式](https://stitch.withgoogle.com/)
+- [Stitch Prompt Guide（Google AI Forum）](https://discuss.ai.google.dev/t/stitch-prompt-guide/83844)
 - [Stitch 2.0 ガイド](https://www.aifire.co/p/google-stitch-2-0-a-guide-to-the-free-ai-coding-design-agent)
 - [Stitch MCP（npm）](https://www.npmjs.com/package/@_davideast/stitch-mcp)
 - [Stitch MCP（GitHub）](https://github.com/davideast/stitch-mcp)
 - [Stitch Skills（GitHub）](https://github.com/google-labs-code/stitch-skills)
+
+**Google Antigravity**
+
+- [Google Antigravity 公式](https://antigravity.google/)
+- [Antigravity ブラウザツール ドキュメント](https://antigravity.google/docs/browser)
 
 **Figma**
 
