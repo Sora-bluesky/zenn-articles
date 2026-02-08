@@ -186,11 +186,33 @@ VPS契約前にまず無料で触ってみたいなら、[WSL2で無料で試し
 
 ### パケットフィルターの確認
 
-VPSパネルの「パケットフィルター設定」が「ONにする（推奨）」になっていることを確認する。
+:::message alert
+[XServer VPS公式のOpenClaw告知](https://vps.xserver.ne.jp/support/news_detail.php?view_id=17624)で、パケットフィルター有効化が強く推奨されている。設定不備があると、OpenClawのダッシュボードが第三者からアクセスされるリスクがある。
+:::
+
+パケットフィルターはVPSへの通信で、接続を許可するポートを制限する機能。VPSパネルで以下を確認する。
+
+**確認手順：**
+
+1. [VPSパネル](https://secure.xserver.ne.jp/xapanel/login/xvps/)にログイン
+2. 対象VPSを選択
+3. 左サイドメニューの「パケットフィルター設定」をクリック
+4. 「ONにする（推奨）」にチェックが入っていることを確認
+5. フィルタールール一覧に「SSH（TCP 22）」があることを確認
 
 :::message
-パケットフィルターはVPSへの通信で、接続を許可するポートを制限する機能。OpenClawの利用ではSSH（TCP 22）以外のポート開放は不要。
+デフォルトでONになっている。変更していなければ問題ない。もしOFFにしてしまった場合は「ONにする（推奨）」に戻し、「変更する」ボタンをクリックする。
 :::
+
+OpenClawの利用ではSSH（TCP 22）以外のポート開放は不要。他のアプリ（Difyなど）で80番や443番を開放している場合、OpenClawのGateway（18789番）が意図せずインターネットに露出しないか注意する。
+
+**フィルタールールの追加方法：**
+
+1. 「パケットフィルター設定を追加する」をクリック
+2. フィルターで「SSH」を選択
+3. 「追加する」をクリック
+
+手動で特定IPからのみ許可する場合は「手動で設定」を選び、プロトコル・ポート番号・許可する送信元IPアドレスを指定する。フィルタールールは最大20個まで設定可能。
 
 ### AIプロバイダーの設定
 
@@ -228,15 +250,49 @@ XServer VPS公式マニュアルではOpenAIを使用する例で説明されて
 
 ### SSH接続とセットアップウィザード
 
-VPSにSSH接続する：
+VPSにSSH接続する。XServer VPSは申し込み時にSSH Keyの自動生成を選べる。
+
+**パスワード認証の場合：**
 
 ```bash
 ssh root@<VPSのIPアドレス>
 ```
 
+**公開鍵認証の場合（推奨）：**
+
+```bash
+ssh -i ~/.ssh/xserver-vps-key.pem root@<VPSのIPアドレス>
+```
+
 :::message
 SSH（Secure Shell）はリモートサーバーに安全に接続するプロトコル。VPSパネルの「コンソール」からも操作できる。
 :::
+
+:::message alert
+XServer VPSの公開データによると、VPS公開後1時間で約400件の不正アクセスが発生し、その69.2%がrootユーザーへの攻撃。パスワード認証はブルートフォース攻撃（総当たり攻撃）で突破されるリスクがあるため、公開鍵認証を推奨する。
+:::
+
+**公開鍵認証のセットアップ（Windows PowerShell）：**
+
+```powershell
+# 鍵ペアの生成（Ed25519推奨）
+ssh-keygen -t ed25519 -f $env:USERPROFILE\.ssh\xserver-vps-key
+
+# 公開鍵をVPSに転送
+type $env:USERPROFILE\.ssh\xserver-vps-key.pub | ssh root@<VPSのIPアドレス> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+```
+
+**SSH接続を簡略化（`~/.ssh/config`に追記）：**
+
+```
+Host xserver-vps
+    HostName <VPSのIPアドレス>
+    User root
+    IdentityFile ~/.ssh/xserver-vps-key
+    Port 22
+```
+
+これで `ssh xserver-vps` だけで接続できるようになる。
 
 セットアップウィザードを起動：
 
@@ -283,24 +339,58 @@ openclaw doctor
 
 ### ダッシュボード接続（任意）
 
-OpenClawのWeb UIにはSSHトンネル経由でアクセスする。
+OpenClawのWeb UI（ダッシュボード）にはSSHトンネル経由でアクセスする。ダッシュボードはインターネットに直接公開してはいけない。
 
-ローカルPCから：
+:::message
+**SSHトンネルとは**
+VPSの特定のポート（この場合18789番）を、自分のPC経由でだけアクセスできるようにする技術。イメージとしては「自分のPCからVPSまでの秘密のトンネルを掘る」感覚。トンネルを通さないと管理画面は見えないので、インターネットから直接アクセスされる心配がない。
+:::
 
-```bash
-ssh -L 18789:localhost:18789 root@<VPSのIPアドレス>
+**方法1：PowerShell / ターミナルから（推奨）**
+
+```powershell
+# SSHトンネルを開通する（このウィンドウは開いたままにする）
+ssh -N -L 18789:localhost:18789 root@<VPSのIPアドレス>
 ```
 
-ダッシュボードURLを取得：
+`-N` はコマンドを実行せずトンネルだけ維持するオプション。このウィンドウを閉じるとトンネルも切れる。
+
+別のターミナルを開いてVPSにSSH接続し、ダッシュボードURLを取得：
 
 ```bash
 openclaw dashboard
 ```
 
-表示されたURLをブラウザで開く。
+表示されたURLをブラウザで開く。`http://localhost:18789/...` のようなURLになる。
 
-:::message
-SSHトンネルは、SSH経由でVPS上のサービスにアクセスする方法。ダッシュボードのポートをインターネットに直接開放せずに済む。
+**方法2：Tera Termから**
+
+1. Tera TermでVPSにSSH接続
+2. メニューの「設定」→「SSH転送」を開く
+3. 「追加」をクリック
+4. 以下を入力：
+   - ローカルのポート：`18789`
+   - リモート側ホスト：`localhost`
+   - ポート：`18789`
+5. 「OK」をクリック
+6. ブラウザで `http://localhost:18789` にアクセス
+
+**方法3：SSH configで自動化**
+
+毎回コマンドを打つのが面倒なら、`~/.ssh/config` にトンネル設定を書いておける：
+
+```
+Host xserver-vps-tunnel
+    HostName <VPSのIPアドレス>
+    User root
+    IdentityFile ~/.ssh/xserver-vps-key
+    LocalForward 18789 127.0.0.1:18789
+```
+
+以降は `ssh xserver-vps-tunnel` だけでトンネルが開通する。
+
+:::message alert
+Gateway（18789番ポート）をパケットフィルターで外部に開放しないこと。SSHトンネル経由なら、パケットフィルターはSSH（22番）だけ開放すれば十分。
 :::
 
 ---
@@ -341,9 +431,11 @@ openclaw security audit --fix
 
 XServer VPS：
 
-- [ ] パケットフィルターが「ON」
+- [ ] パケットフィルターが「ON」（[VPSパネル](https://secure.xserver.ne.jp/xapanel/login/xvps/) → パケットフィルター設定で確認）
 - [ ] SSH（TCP 22）以外の不要ポートを開放していない
+- [ ] 公開鍵認証を使用している（パスワード認証は非推奨）
 - [ ] Gateway認証が有効（トークンまたはパスワード）
+- [ ] ダッシュボードにはSSHトンネル経由でアクセスしている（18789番を直接開放していない）
 - [ ] チャンネル権限を「Allowlist」に設定
 - [ ] Moltbookに接続していない（Moltbookは旧名称時代のWebダッシュボード。Gateway認証なしでインターネットに公開されるリスクがある）
 
@@ -442,6 +534,10 @@ VPS契約前にまず無料で触ってみるなら：
 - [公式VPSプロバイダーリスト](https://docs.openclaw.ai/vps)
 - [XServer VPS](https://vps.xserver.ne.jp/)
 - [XServer VPS OpenClawマニュアル](https://vps.xserver.ne.jp/support/manual/man_server_app_use_openclaw.php)
+- [XServer VPS OpenClaw追加のお知らせ（セキュリティ注意事項）](https://vps.xserver.ne.jp/support/news_detail.php?view_id=17624)
+- [XServer VPS パケットフィルター設定](https://vps.xserver.ne.jp/support/manual/man_server_port.php)
+- [XServer VPS SSH接続方法](https://vps.xserver.ne.jp/support/manual/man_server_ssh_connect.php)
+- [XServer VPS 契約直後のセキュリティ対策](https://vps.xserver.ne.jp/vps-media/initial-security/)
 - [XServer VPS 料金プラン](https://vps.xserver.ne.jp/price.php)
 - [XServer VPS 無料VPS](https://vps.xserver.ne.jp/free.php)
 - [DigitalOcean 1-Click チュートリアル](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)
