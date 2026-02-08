@@ -398,6 +398,22 @@ Gateway（18789番ポート）をパケットフィルターで外部に開放�
 
 詳細は[公式チュートリアル](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)と[技術解説ブログ](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)を参照。
 
+### XServer VPS と DigitalOcean のセキュリティ比較
+
+| セキュリティ項目 | DO 1-Click | XServer VPS |
+|---|---|---|
+| Docker隔離 | 自動 | 手動（下記で設定） |
+| 非rootユーザー実行 | 自動 | 手動（マニュアルに案内あり） |
+| Gateway認証 + DMペアリング | 自動 | 半自動（onboard時に設定） |
+| ファイアウォール + Fail2ban | 自動 | 部分自動（パケットフィルターのみ） |
+| TLS暗号化（Caddy + LE） | 自動 | 不要（SSHトンネル前提） |
+
+:::message
+**XServer VPSの設計上の利点**: XServer VPSではWeb UI（ダッシュボード）をインターネットに公開せず、SSHトンネル経由のローカルアクセスのみを推奨している。2026年初頭にOpenClawのControl UIに[RCE脆弱性（CVE-2026-25253）](https://adversa.ai/blog/openclaw-security-101-vulnerabilities-hardening-2026/)が報告され、インターネットに露出した[42,000件以上のインスタンス](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)が影響を受けた。SSHトンネル前提の設計はWeb UIが外部に露出しないため、この種の脆弱性の影響を受けにくい。
+:::
+
+DigitalOceanのようなフル自動セキュリティが必要なら、Docker/Fail2ban/Caddyの手動インストールも可能。詳細は[OpenClaw公式セキュリティガイド](https://docs.openclaw.ai/gateway/security)と[DigitalOcean技術解説ブログ](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)を参照。
+
 ---
 
 ## セキュリティ強化
@@ -465,6 +481,54 @@ Host xserver-vps-tunnel
 
 `ssh xserver-vps-tunnel` でトンネルも自動開通する。
 
+### Docker sandboxでエージェントを隔離する
+
+:::message alert
+**なぜ必要か**: OpenClawの `sandbox.mode` は[デフォルトで「off」](https://docs.openclaw.ai/gateway/security)。この状態では、Discordから送られた指示がVPSのホストOS上で**直接実行**される。悪意ある指示（ファイル削除、情報窃取など）がそのままVPSに影響する。Docker sandboxを有効にすれば、エージェントのコマンドがDockerコンテナ内で隔離実行され、ホストOSを保護できる。
+:::
+
+:::message
+[DigitalOcean 1-Click](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)ではDocker隔離が自動で構成されるが、XServer VPSアプリイメージにはDockerが含まれない。手動でインストールする。
+:::
+
+SSH接続中のVPSで実行：
+
+```bash
+# Dockerのインストール
+apt install -y docker.io
+systemctl enable docker && systemctl start docker
+```
+
+`~/.openclaw/openclaw.json` にsandbox設定を追加：
+
+```bash
+nano ~/.openclaw/openclaw.json
+```
+
+```json
+{
+  "agents": {
+    "defaults": {
+      "sandbox": {
+        "mode": "non-main"
+      }
+    }
+  }
+}
+```
+
+| sandbox.mode | 動作 |
+|---|---|
+| `"off"`（デフォルト） | 全コマンドがホストで直接実行（危険） |
+| `"non-main"` | グループ/チャネルはDocker内、個人DMはホスト |
+| `"all"` | 全コマンドがDocker内で実行（最も安全） |
+
+Gatewayを再起動して反映：
+
+```bash
+systemctl --user restart openclaw-gateway.service
+```
+
 ---
 
 ## セキュリティ確認
@@ -491,6 +555,7 @@ XServer VPS：
 - [ ] 公開鍵認証を使用している（パスワード認証は非推奨）
 - [ ] Gateway認証が有効（トークンまたはパスワード）
 - [ ] ダッシュボードにはSSHトンネル経由でアクセスしている（18789番を直接開放していない）
+- [ ] Docker sandboxが有効（`sandbox.mode: "non-main"` 以上）
 - [ ] チャンネル権限を「Allowlist」に設定
 - [ ] Moltbookに接続していない（Moltbookは旧名称時代のWebダッシュボード。Gateway認証なしでインターネットに公開されるリスクがある）
 
@@ -598,6 +663,9 @@ VPS契約前にまず無料で触ってみるなら：
 - [DigitalOcean 1-Click チュートリアル](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)
 - [DigitalOcean 技術解説ブログ](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)
 - [セキュリティガイド](https://docs.openclaw.ai/gateway/security)
+- [Sandboxing（公式）](https://docs.openclaw.ai/gateway/sandboxing)
+- [DigitalOcean Marketplace - OpenClaw](https://docs.digitalocean.com/products/marketplace/catalog/openclaw/)
+- [OpenClaw Security 101（adversa.ai）](https://adversa.ai/blog/openclaw-security-101-vulnerabilities-hardening-2026/)
 
 ---
 
