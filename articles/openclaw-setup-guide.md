@@ -184,6 +184,19 @@ VPS契約前にまず無料で触ってみたいなら、[WSL2で無料で試し
 アプリイメージを選択するだけで、OpenClawが自動でインストール・構築される。Node.jsのインストールやnpm操作は不要。
 :::
 
+### IPアドレスとrootパスワードの確認
+
+VPS構築が完了したら（通常5〜10分）、VPSパネルでIPアドレスとrootパスワードを確認しておく。この後のSSH接続で使う。
+
+1. [VPSパネル](https://secure.xserver.ne.jp/xapanel/login/xvps/)にログイン
+2. 対象VPSを選択
+3. 「VPS情報」タブにIPアドレスが表示されている（例: `123.456.78.90`）
+4. rootパスワードはVPS申し込み時に自分で設定したもの
+
+:::message
+rootパスワードを忘れた場合は、VPSパネルから「rootパスワードの再設定」ができる。
+:::
+
 ### パケットフィルターの確認
 
 :::message alert
@@ -250,49 +263,37 @@ XServer VPS公式マニュアルではOpenAIを使用する例で説明されて
 
 ### SSH接続とセットアップウィザード
 
-VPSにSSH接続する。XServer VPSは申し込み時にSSH Keyの自動生成を選べる。
+VPSにSSH接続する。WindowsのPowerShellを開いて以下を入力する。
 
-**パスワード認証の場合：**
+:::message
+PowerShellの開き方: Windowsキーを押して「powershell」と入力し、「Windows PowerShell」をクリック。
+:::
 
-```bash
+```powershell
 ssh root@<VPSのIPアドレス>
 ```
 
-**公開鍵認証の場合（推奨）：**
+`<VPSのIPアドレス>` は先ほどVPSパネルで確認したIPアドレスに置き換える（例: `ssh root@123.456.78.90`）。
 
-```bash
-ssh -i ~/.ssh/xserver-vps-key.pem root@<VPSのIPアドレス>
+初回接続時は以下のような確認が出る：
+
 ```
+The authenticity of host '123.456.78.90' can't be established.
+ED25519 key fingerprint is SHA256:xxxxx...
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+```
+
+`yes` と入力してEnter。これは「このサーバーを信頼しますか？」という確認で、初回のみ表示される。
+
+パスワードを聞かれるので、VPS申し込み時に設定したrootパスワードを入力する（入力中は画面に何も表示されないが、正常な動作）。
 
 :::message
 SSH（Secure Shell）はリモートサーバーに安全に接続するプロトコル。VPSパネルの「コンソール」からも操作できる。
 :::
 
-:::message alert
-XServer VPSの公開データによると、VPS公開後1時間で約400件の不正アクセスが発生し、その69.2%がrootユーザーへの攻撃。パスワード認証はブルートフォース攻撃（総当たり攻撃）で突破されるリスクがあるため、公開鍵認証を推奨する。
+:::message
+Discord Bot作成がまだの場合は、ウィザード中にBotトークンを求められて止まる。先に [Discord/LINE連携ガイド](openclaw-sns-guide) の「Discord Botを作成する」セクションを読んでBotを作っておくこと。[XServer VPS公式マニュアル](https://vps.xserver.ne.jp/support/manual/man_server_app_use_openclaw.php)にも手順がある。
 :::
-
-**公開鍵認証のセットアップ（Windows PowerShell）：**
-
-```powershell
-# 鍵ペアの生成（Ed25519推奨）
-ssh-keygen -t ed25519 -f $env:USERPROFILE\.ssh\xserver-vps-key
-
-# 公開鍵をVPSに転送
-type $env:USERPROFILE\.ssh\xserver-vps-key.pub | ssh root@<VPSのIPアドレス> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
-```
-
-**SSH接続を簡略化（`~/.ssh/config`に追記）：**
-
-```
-Host xserver-vps
-    HostName <VPSのIPアドレス>
-    User root
-    IdentityFile ~/.ssh/xserver-vps-key
-    Port 22
-```
-
-これで `ssh xserver-vps` だけで接続できるようになる。
 
 セットアップウィザードを起動：
 
@@ -315,9 +316,6 @@ openclaw onboard --install-daemon
 Allowlistは、OpenClawが反応するチャンネルを限定する設定。既に運用中のDiscordサーバーにBotを追加するなら、意図しないチャンネルでの動作を防ぐためにも設定しておきたい。
 :::
 
-:::message
-Discord/LINEの事前準備（Bot作成）は [Discord/LINE連携ガイド](openclaw-sns-guide) を参照。[XServer VPS公式マニュアル](https://vps.xserver.ne.jp/support/manual/man_server_app_use_openclaw.php)にもDiscord Bot作成手順がある。
-:::
 
 ### 動作確認
 
@@ -377,17 +375,7 @@ openclaw dashboard
 
 **方法3：SSH configで自動化**
 
-毎回コマンドを打つのが面倒なら、`~/.ssh/config` にトンネル設定を書いておける：
-
-```
-Host xserver-vps-tunnel
-    HostName <VPSのIPアドレス>
-    User root
-    IdentityFile ~/.ssh/xserver-vps-key
-    LocalForward 18789 127.0.0.1:18789
-```
-
-以降は `ssh xserver-vps-tunnel` だけでトンネルが開通する。
+「セキュリティ強化」セクションの「SSH接続を簡略化する」でSSH configを設定済みなら、`ssh xserver-vps-tunnel` だけでトンネルが開通する。
 
 :::message alert
 Gateway（18789番ポート）をパケットフィルターで外部に開放しないこと。SSHトンネル経由なら、パケットフィルターはSSH（22番）だけ開放すれば十分。
@@ -409,6 +397,73 @@ Gateway（18789番ポート）をパケットフィルターで外部に開放�
 4. SSH接続後、初期設定ウィザードに従う
 
 詳細は[公式チュートリアル](https://www.digitalocean.com/community/tutorials/how-to-run-openclaw)と[技術解説ブログ](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)を参照。
+
+---
+
+## セキュリティ強化
+
+OpenClawが動いたら、次はセキュリティを固める。
+
+### 公開鍵認証に切り替える
+
+:::message alert
+XServer VPSの公開データによると、VPS公開後1時間で約400件の不正アクセスが発生し、その69.2%がrootユーザーへの攻撃。パスワード認証はブルートフォース攻撃（総当たり攻撃）で突破されるリスクがあるため、公開鍵認証への切り替えを推奨する。
+:::
+
+Windows PowerShellで以下を実行する。
+
+```powershell
+# 鍵ペアの生成（Ed25519推奨）
+ssh-keygen -t ed25519 -f $env:USERPROFILE\.ssh\xserver-vps-key
+```
+
+`Enter passphrase` と聞かれたら、そのままEnter（空パスフレーズ）でよい。パスフレーズを設定するとSSH接続のたびに追加入力が必要になる。
+
+```powershell
+# 公開鍵をVPSに転送（rootパスワードを求められる）
+type $env:USERPROFILE\.ssh\xserver-vps-key.pub | ssh root@<VPSのIPアドレス> "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+```
+
+鍵認証で接続できることを確認：
+
+```powershell
+ssh -i $env:USERPROFILE\.ssh\xserver-vps-key root@<VPSのIPアドレス>
+```
+
+パスワードなしでログインできれば成功。
+
+### SSH接続を簡略化する
+
+毎回長いコマンドを打つのは面倒なので、`~/.ssh/config` に設定を書いておく。
+
+```powershell
+# configファイルを作成（または追記）
+notepad $env:USERPROFILE\.ssh\config
+```
+
+メモ帳が開くので、以下を入力して保存：
+
+```
+Host xserver-vps
+    HostName <VPSのIPアドレス>
+    User root
+    IdentityFile ~/.ssh/xserver-vps-key
+    Port 22
+```
+
+以降は `ssh xserver-vps` だけで接続できるようになる。
+
+ダッシュボード用のSSHトンネル設定も一緒に書いておくと便利：
+
+```
+Host xserver-vps-tunnel
+    HostName <VPSのIPアドレス>
+    User root
+    IdentityFile ~/.ssh/xserver-vps-key
+    LocalForward 18789 127.0.0.1:18789
+```
+
+`ssh xserver-vps-tunnel` でトンネルも自動開通する。
 
 ---
 

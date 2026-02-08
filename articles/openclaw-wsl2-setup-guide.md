@@ -174,34 +174,34 @@ openclaw --version
 警告（deprecated packages）が出ることがあるが、動作に影響はない。無視して進める。
 :::
 
-### AIプロバイダーの設定
+### セットアップウィザード
 
-OpenClawでClaudeを使うには、以下の2つの認証方法がある。
+OpenClawのインストールが終わったら、ウィザードでAIプロバイダーとチャット連携を一括設定する。
 
-| 方法 | 対象 | 料金体系 | 推奨度 |
-|------|------|----------|--------|
-| API Key | 全ユーザー | 従量課金（トークン単位） | 推奨 |
-| setup-token | Claude Pro/Max契約者 | サブスクリプション内 | ⚠️ ToS問題あり |
+:::message
+ウィザード実行前にAPI Keyを用意しておく。[Anthropic Console](https://console.anthropic.com/) でAPI Keyを作成する（[OpenClaw公式](https://docs.openclaw.ai/gateway/authentication)でAPI Key推奨と明記されている）。Discord Botも先に作成しておくと、ウィザードがスムーズに進む（[Discord/LINE連携ガイド](openclaw-sns-guide) の「Discord Botを作成する」を参照）。
+:::
 
-[OpenClaw公式](https://docs.openclaw.ai/gateway/authentication)で「For Anthropic accounts, we recommend using an API key.」と明記されている。
-
-#### API Key（推奨）
-
-1. [Anthropic Console](https://console.anthropic.com/) でAPI Keyを作成
-2. 環境変数に設定：
-
-```bash
-# ~/.openclaw/.env に追加
-echo 'ANTHROPIC_API_KEY=<your-api-key>' >> ~/.openclaw/.env
-```
-
-または onboard ウィザードで設定：
+:::message alert
+2026年1月9日、Anthropicは第三者ツールでのOAuth使用をブロックした。setup-tokenを使うと「This credential is only authorized for use with Claude Code」エラーが出る場合があり、最悪アカウント停止になる。API Keyを使うこと。
+:::
 
 ```bash
 openclaw onboard --install-daemon
 ```
 
-API料金（2026年2月時点）：
+ウィザードでは以下の順に聞かれる：
+
+1. セキュリティ同意 → 内容を確認し「Yes」
+2. Onboarding mode → 「QuickStart」を選択
+3. LLMプロバイダー選択 → 「Anthropic」→「API Key」
+4. API Key入力 → Anthropic ConsoleのAPI Keyを入力
+5. モデル選択 → 任意のモデルを選択
+6. チャットプラットフォーム → 「Discord」を選択（LINEは別途プラグインで設定）
+7. Botトークン入力 → 事前に作成したBotトークンを入力
+8. チャンネル権限 → 「Allowlist」推奨
+
+API料金の目安（2026年2月時点）：
 
 | モデル | 入力 | 出力 | 用途 |
 |--------|------|------|------|
@@ -209,30 +209,15 @@ API料金（2026年2月時点）：
 | Claude Sonnet 4.5 | $3/百万トークン | $15/百万トークン | コーディング |
 | Claude Haiku 4.5 | $1/百万トークン | $5/百万トークン | 高速・低コスト |
 
-#### setup-token（Claude Pro/Max契約者向け）
-
-:::message alert
-2026年1月9日、Anthropicは第三者ツールでのOAuth使用をブロックした。setup-tokenを使うと「This credential is only authorized for use with Claude Code」エラーが出る場合があり、最悪アカウント停止になる。API Keyを使うこと。
+:::message
+使用量により大きく変わるが、1日30分程度の利用で月$10〜$50程度が目安。
 :::
 
-### Gatewayの起動
-
-```bash
-# Gateway modeをlocalに設定
-openclaw config set gateway.mode local
-
-# デーモンとして起動
-openclaw gateway start
-
-# または手動起動（デバッグ用）
-openclaw gateway --port 18789 --verbose
-```
-
-動作確認：
+### 動作確認
 
 ```bash
 openclaw status --all
-openclaw health
+openclaw doctor
 ```
 
 出力例：
@@ -240,6 +225,7 @@ openclaw health
 ```
 ✓ Gateway: running on ws://127.0.0.1:18789
 ✓ Agent: idle
+✓ Channels: discord (connected)
 ```
 
 ---
@@ -247,12 +233,16 @@ openclaw health
 ## セキュリティ対策
 
 :::message alert
-この対策は全員必須。
+この対策は全員必須。onboardウィザードで基本設定は済んでいるが、以下の項目を `~/.openclaw/openclaw.json` で確認・追加する。
 :::
 
-### Gateway認証の設定
+:::message
+`~/.openclaw/openclaw.json` はonboardウィザードが自動生成する設定ファイル。直接編集してカスタマイズできる。WSL2のUbuntuターミナルから `nano ~/.openclaw/openclaw.json` で開ける。
+:::
 
-`~/.openclaw/openclaw.json` に以下を設定：
+### Gateway認証の確認
+
+`~/.openclaw/openclaw.json` に以下の設定があることを確認する：
 
 ```json
 {
