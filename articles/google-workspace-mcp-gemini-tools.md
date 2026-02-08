@@ -6,6 +6,13 @@ topics: ["ai", "googleworkspace", "gemini", "mcp", "仕事効率化"]
 published: false
 ---
 
+:::message
+**関連シリーズ**: Google Workspace MCPサーバー
+1. [導入編：作った話](google-workspace-mcp-overview)
+2. [開発編：Claude Codeとの共同開発](google-workspace-mcp-dev-process)
+3. [実践編：セットアップと使い方](google-workspace-mcp-usage-guide)
+:::
+
 メール1通に5分56秒かかっている。
 
 日本ビジネスメール協会の調査によると、ビジネスパーソンが1日に受け取るメールは平均51通。読むだけで69分。返信を13.6通書くのに81分。合計2時間30分。営業日240日で掛け算すると年間600時間になる。1日8時間労働で75日分。2か月半がメールの読み書きで消えている。
@@ -26,7 +33,7 @@ published: false
 
 ## 作ったもの
 
-Google Workspace MCPサーバーというものを作っている。Claudeに話しかけると、GoogleのサービスをAIが代わりに操作してくれる仕組みだ。メールの送受信、カレンダーの操作、ドキュメントの読み書き。36個のツールがある。
+Google Workspace MCP（AIに外部サービスを操作させるための仕組み）サーバーというものを作った。Claudeに話しかけると、GoogleのサービスをAIが代わりに操作してくれる。メールの送受信、カレンダーの操作、ドキュメントの読み書き。36個のツールがある。
 
 ただ、操作の代行だけでは2時間30分は減らない。メールを送る機能はあるが、何を書くかは自分で考えなければいけない。
 
@@ -78,25 +85,21 @@ Yahoo知恵袋に大量にあったのが、上司への報告が怖いという
 
 メールの返信も、報告書の作成も、最初はプレビューだけが返ってくる。中身を目で確認して、問題なければ実行を許可する。AIが勝手にメールを送ることはない。報告書を勝手に上書きすることもない。
 
-この仕組みはdryRunという名前がついている。デフォルトでONになっていて、明示的にOFFにしない限り何も実行されない。
+この仕組みは試し実行モード（dryRun）と呼んでいる。デフォルトでONになっていて、明示的にOFFにしない限り何も実行されない。
 
 ---
 
 ## 技術的な話
 
-ここから先はエンジニア向けになる。
+ここから先はエンジニア向けの補足情報になる。ここまでの内容だけで十分理解できる。
 
-Google Workspace MCPサーバーは36個のツールで構成されている。6つのGoogleサービス（Docs、Drive、Sheets、Calendar、Tasks、Gmail）をClaude経由で操作できるMCPサーバーだ。今回追加した4ツールは、既存のGmail・Docsツールの上にGemini Flashの言語処理を載せたもの。
+Google Workspace MCPサーバーは36個のツールで構成されている。6つのGoogleサービス（Docs、Drive、Sheets、Calendar、Tasks、Gmail）をClaude経由で操作できるMCPサーバーだ。今回追加した4ツールは、既存のGmail・Docsツールの上にGemini Flash（Googleが提供する軽量・高速なAIモデル）の言語処理を載せたもの。
 
 - gmail_draft_reply: 受信メール → Gemini Flashで返信生成 → 下書き保存
 - gmail_keigo_check: メール文面 → Gemini Flashで敬語分析 → 問題箇所と修正案
 - docs_report_draft: 箇条書きメモ → Gemini Flashで構造化 → Googleドキュメントに書き込み
 - docs_minutes: 走り書きメモ → Gemini Flashで構造化 → Googleドキュメントに書き込み
 
-Gemini FlashはGoogle AI Studioの無料枠で動く。1日1500リクエストまで使える。仕事で使う分には十分な量だ。
+Gemini FlashはGoogle AI Studio（GeminiのAPIを無料で使える開発者向けサービス）の無料枠で動く。1日1500リクエスト（2026年2月時点）まで使える。仕事で使う分には十分な量だ。
 
-MCPサーバー自体の開発経緯とセットアップ方法は、別の記事にまとめてある。
-
-1. [導入編：作った話](google-workspace-mcp-overview)
-2. [開発編：Claude Codeとの共同開発](google-workspace-mcp-dev-process)
-3. [実践編：セットアップと使い方](google-workspace-mcp-usage-guide)
+MCPサーバー自体の開発経緯とセットアップ方法は、関連シリーズにまとめてある。
