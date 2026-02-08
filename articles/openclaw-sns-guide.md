@@ -8,8 +8,8 @@ published: true
 
 :::message alert
 OpenClawのインストールが完了している前提で進める。まだの場合は先に導入ガイドを参照：
-- [XServer VPSで安全に動かす](openclaw-setup-guide)（VPS推奨）
-- [WSL2で無料で試してみた](openclaw-wsl2-setup-guide)（ローカル試用）
+- [XServer VPSで安全に動かす](openclaw-setup-guide) — VPSを契約して24/7稼働させたい場合
+- [WSL2で無料で試してみた](openclaw-wsl2-setup-guide) — まず無料で試したい場合
 :::
 
 :::message
@@ -68,6 +68,10 @@ Discordはコア機能として組み込まれており、追加インストー�
 
 ## Discord連携
 
+:::message
+導入ガイド（[XServer VPS編](openclaw-setup-guide) / [WSL2編](openclaw-wsl2-setup-guide)）のonboardウィザードで**Discord**を設定済みの場合、「Discord Botを作成する」〜「動作確認」はスキップして、下の「Discordセキュリティ設定」セクションに進んでよい。Discord以外を選んだ場合は、以下のBot作成から順に進める。
+:::
+
 ### Discord Botを作成する
 
 1. [Discord Developer Portal](https://discord.com/developers/applications) にアクセス
@@ -111,11 +115,18 @@ Intent（インテント）は、ボットがどの情報にアクセスでき�
 
 ### OpenClawに設定する
 
+:::message
+onboardウィザードでDiscordを選択した場合、この手順は不要（ウィザードが自動で設定済み）。
+:::
+
 ```bash
+# YOUR_BOT_TOKEN を、先ほど「Reset Token」でコピーしたトークンに置き換える
 openclaw channels add --channel discord --token "YOUR_BOT_TOKEN"
 ```
 
-### Gatewayを起動して動作確認
+### 動作確認
+
+Gatewayが起動していない場合は起動する：
 
 ```bash
 openclaw gateway
@@ -136,7 +147,11 @@ Discordサーバーでボットがオンラインになっているか確認し�
 
 ## Discordセキュリティ設定
 
-セキュリティ設定は `~/.openclaw/openclaw.json` を編集する。`~` はホームディレクトリ（Linuxなら `/home/ユーザー名/`、WindowsのWSL2も同様）の省略記号。
+セキュリティ設定は `~/.openclaw/openclaw.json` を編集する。`~` はホームディレクトリ（Linuxなら `/home/ユーザー名/`、WindowsのWSL2も同様）の省略記号。以下のコマンドで開ける：
+
+```bash
+nano ~/.openclaw/openclaw.json
+```
 
 ### DMを無効化する
 
@@ -279,10 +294,31 @@ LINE Messaging APIはWebhookの受信先にHTTPSを要求する。自分で作�
 
 まず試すならngrokが一番手軽。
 
-```bash
-# ngrokのインストール（未導入の場合）
-# https://ngrok.com/ からダウンロード
+### ngrokのインストール
 
+```bash
+# ngrokのインストール（WSL2 / VPSのUbuntu共通）
+sudo snap install ngrok
+
+# インストール確認
+ngrok version
+```
+
+:::message alert
+snapが使えない環境（VPSなど）の場合は、[ngrok公式ダウンロードページ](https://ngrok.com/download)のLinux手順に従う。
+:::
+
+:::message
+[ngrok公式サイト](https://ngrok.com/)で無料アカウントを作成し、認証トークンを設定する：
+```bash
+ngrok config add-authtoken YOUR_NGROK_TOKEN
+```
+認証トークンはngrokダッシュボード（ログイン後の画面）の「Your Authtoken」に表示されている。
+:::
+
+### ngrokでHTTPSトンネルを開く
+
+```bash
 # OpenClaw GatewayのポートをHTTPSで公開
 ngrok http 18789
 ```
@@ -316,12 +352,9 @@ Tailscale Funnelは特殊ヘッダーの問題でLINE Webhookに対応してい�
 
 `dmPolicy` はダイレクトメッセージの扱い方。`pairing` にすると、初回メッセージ時にペアリングコード（ターミナルに表示される認証コード）の入力を求める。知らない人がボットに話しかけても、コードを知らなければ操作できない。
 
-環境変数を使う場合は `~/.openclaw/.env` に記載：
-
-```
-LINE_CHANNEL_ACCESS_TOKEN=xxxxxxxxxxxx
-LINE_CHANNEL_SECRET=yyyyyyyyyyyy
-```
+:::message
+上のJSON設定だけで動く。環境変数（`~/.openclaw/.env`）に書く方法もあるが、上級者向けの代替手段なので気にしなくてよい。
+:::
 
 ### Webhook URLを設定する
 
@@ -473,7 +506,7 @@ LINEは日本のユーザー9,600万人が使っている。新しいアプリ�
 
 ### Claude Code との連携
 
-OpenClawの「coding-agent」スキルを使えば、DiscordやLINEからコード関連の指示も出せる。
+OpenClawの「スキル」は、特定の作業を行う追加機能のこと。「coding-agent」スキルを使えば、DiscordやLINEからコード関連の指示も出せる。
 
 ```
 @OpenClaw このプロジェクトのテストを実行して
@@ -489,23 +522,53 @@ DiscordとLINEを同時に起動し、それぞれのチャットにOpenClawが�
 
 ## Gatewayの常駐化
 
-PCを再起動してもOpenClawが自動で動くようにする：
+PCを再起動してもOpenClawが自動で動くようにする。
+
+:::message
+導入ガイドの `openclaw onboard --install-daemon` で既にデーモンが設定済みの場合、この手順は不要。`openclaw status` で状態を確認できる。
+:::
+
+### VPSの場合
+
+systemdサービス（Linuxでバックグラウンドのプログラムを自動管理する仕組み）として登録されている。以下で管理する：
 
 ```bash
-openclaw onboard --install-daemon
+# 状態確認
+systemctl --user status openclaw-gateway.service
+
+# 再起動
+systemctl --user restart openclaw-gateway.service
+
+# 停止
+systemctl --user stop openclaw-gateway.service
 ```
 
-状態確認：
+### WSL2の場合
+
+WSL2はWindowsのスリープ/再起動時にプロセスが終了する。手動で再起動が必要：
 
 ```bash
+# Gatewayを起動
+openclaw gateway
+
+# バックグラウンド（裏側）で起動する場合（末尾の & が目印）
+openclaw gateway &
+
+# 状態確認
 openclaw status
 ```
 
-停止：
+:::message alert
+WSL2ではsystemdが使えない場合がある。`openclaw onboard --install-daemon` でエラーが出たら、手動でGatewayを起動する運用にする。24/7稼働が必要ならVPSへの移行を推奨（[XServer VPS編](openclaw-setup-guide)）。
+:::
 
-```bash
-openclaw gateway stop
-```
+---
+
+## 次のステップ
+
+- Discord連携ができたら → セキュリティ設定を確認する（DMの無効化、チャンネルの制限）
+- LINEにも挑戦する → HTTPS環境（ngrok）を用意してから設定
+- 24/7稼働にしたい → VPSへの移行を検討（[XServer VPS編](openclaw-setup-guide)）
 
 ---
 
@@ -527,3 +590,4 @@ openclaw gateway stop
 
 - [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ](claude-code-tips-and-features)
