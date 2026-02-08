@@ -72,19 +72,25 @@ Discordはコア機能として組み込まれており、追加インストー�
 導入ガイド（[XServer VPS編](openclaw-setup-guide) / [WSL2編](openclaw-wsl2-setup-guide)）のonboardウィザードで**Discord**を設定済みの場合、「Discord Botを作成する」〜「動作確認」はスキップして、下の「Discordセキュリティ設定」セクションに進んでよい。Discord以外を選んだ場合は、以下のBot作成から順に進める。
 :::
 
-### Discord Botを作成する
+### 1. アプリケーションを作成する
 
 1. [Discord Developer Portal](https://discord.com/developers/applications) にアクセス
 2. 右上の「New Application」をクリック
 3. アプリケーション名を入力（例: `My OpenClaw`）
-4. 左メニューの「Bot」をクリック
-5. 「Reset Token」をクリックしてトークンを取得
+4. ポリシーに同意し「Create」をクリック
+
+### 2. Botトークンを発行する
+
+1. 左メニューの「Bot」をクリック
+2. 「Token」欄の「Reset Token」をクリック
+3. 確認画面が表示されたら「Yes, do it!」を選択
+4. 表示されたトークンをコピーして控えておく
 
 :::message alert
-トークンは一度しか表示されない。忘れたら「Reset Token」で再発行が必要。必ずコピーして保存すること。
+トークンは一度しか表示されない。忘れたら「Reset Token」で再発行が必要。必ずコピーして保存すること。トークンは第三者と共有しないこと。
 :::
 
-### Intentを有効化する
+### 3. Intentを有効化する
 
 Intent（インテント）は、ボットがどの情報にアクセスできるかの許可設定。「メッセージの内容を読む権限」のようなもの。これを忘れるとボットがメッセージを読めない。ハマりポイントの筆頭。
 
@@ -99,7 +105,7 @@ Intent（インテント）は、ボットがどの情報にアクセスでき�
 「ボットが反応しない」という場合は、まずIntentを確認。ここが原因のケースが圧倒的に多い。
 :::
 
-### ボットをサーバーに招待する
+### 4. サーバーに招待する
 
 1. 左メニューの「OAuth2」→「URL Generator」をクリック（OAuth2はボットの認証・権限管理の仕組み）
 2. 「SCOPES」で `bot` と `applications.commands` を選択（SCOPESはボットの権限範囲）
@@ -111,9 +117,9 @@ Intent（インテント）は、ボットがどの情報にアクセスでき�
    - Attach Files
    - Add Reactions
 4. ページ下部に生成されたURLをコピー
-5. ブラウザで開き、ボットを追加するサーバーを選択
+5. ブラウザで開き、ボットを追加するサーバーを選択して「認証」をクリック
 
-### OpenClawに設定する
+### 5. OpenClawに設定する
 
 :::message
 onboardウィザードでDiscordを選択した場合、この手順は不要（ウィザードが自動で設定済み）。
@@ -124,7 +130,7 @@ onboardウィザードでDiscordを選択した場合、この手順は不要（
 openclaw channels add --channel discord --token "YOUR_BOT_TOKEN"
 ```
 
-### 動作確認
+### 6. 動作確認
 
 Gatewayが起動していない場合は起動する：
 
@@ -221,9 +227,9 @@ IDの調べ方：Discordの設定（歯車アイコン）→「アプリの設�
 
 LINEは日本で最も使われているメッセージアプリ。OpenClawと連携すれば、スマホのLINEからAIアシスタントに指示を出せるようになる。
 
-Discordと違い、LINEはプラグインのインストールとHTTPS環境が必要になる。
+Discordと違い、LINEはプラグインのインストールとHTTPS環境（暗号化通信）が必要になる。LINEにメッセージが届くと、LINE側からOpenClawに「メッセージが来たよ」と自動通知する仕組み（Webhook）を使う。この通知経路にHTTPSが必須となる。
 
-### LINE公式アカウントを作る
+### 1. LINE公式アカウントを作成する
 
 2024年9月以降、LINE DevelopersコンソールからMessaging APIチャネルを直接作成する方法は廃止された。LINE Official Account Manager経由で作成する。
 
@@ -235,7 +241,7 @@ Discordと違い、LINEはプラグインのインストールとHTTPS環境が�
 LINE公式アカウントは無料で作れる。コミュニケーションプラン（無料）で月200通まで送信可能。OpenClawの応答メッセージ（Reply API）は課金対象外なので、個人利用なら実質無料で使える。
 :::
 
-### Messaging APIを有効にする
+### 2. Messaging APIを有効にする
 
 1. [LINE Official Account Manager](https://manager.line.biz/) にログイン
 2. 作成したアカウントを選択
@@ -246,27 +252,31 @@ LINE公式アカウントは無料で作れる。コミュニケーションプ�
 プロバイダーの選択は後から変更できない。個人利用なら自分の名前で新規作成するのが無難。
 :::
 
-5. 応答メッセージを「オフ」に切り替え
-6. あいさつメッセージも「オフ」推奨
-7. Webhookを「有効」に
+### 3. LINE Official Account Managerで応答設定を変更する
+
+OpenClawが応答を担当するため、LINEの自動応答を無効化する。
+
+1. [LINE Official Account Manager](https://manager.line.biz/) → 作成したアカウント → 設定 → 応答設定
+2. 応答メッセージを「オフ」に切り替え
+3. あいさつメッセージも「オフ」推奨
+4. Webhookを「有効」に
 
 :::message
 応答メッセージをオフにしないと、OpenClawの応答とLINEの自動応答が両方返ってしまう。
 :::
 
-### チャネルアクセストークンとシークレットを取得
+### 4. チャネルアクセストークンとシークレットを取得する
 
 1. [LINE Developersコンソール](https://developers.line.biz/console/) にログイン
 2. プロバイダー → 作成したMessaging APIチャネルを選択
-3. 「Messaging API設定」タブで以下を取得：
-   - チャネルアクセストークン（「発行」ボタンで長期トークンを発行）
-   - チャネルシークレット（「チャネル基本設定」タブに記載）
+3. 「Messaging API設定」タブでチャネルアクセストークンを取得（「発行」ボタンで長期トークンを発行）
+4. 「チャネル基本設定」タブでチャネルシークレットを取得
 
 :::message alert
 トークンとシークレットは秘密にする。他人に知られるとボットを乗っ取られる。
 :::
 
-### OpenClaw LINEプラグインをインストール
+### 5. OpenClaw LINEプラグインをインストールする
 
 LINEはコア機能ではなくプラグインとして提供されている。
 
@@ -274,7 +284,7 @@ LINEはコア機能ではなくプラグインとして提供されている。
 openclaw plugins install @openclaw/line
 ```
 
-`@openclaw/line` の `@openclaw` はパッケージの提供元（公式プラグイン）を表す。npmのスコープ記法。
+`@openclaw/line` の `@openclaw` は公式プラグインであることを示す名前の一部。
 
 インストール確認：
 
@@ -282,7 +292,7 @@ openclaw plugins install @openclaw/line
 openclaw plugins list
 ```
 
-### HTTPS環境を用意する
+### 6. HTTPS環境を用意する
 
 LINE Messaging APIはWebhookの受信先にHTTPSを要求する。自分で作った証明書（自己署名証明書）では受け付けてもらえず、正規の認証局が発行したものが必要。ngrokやCloudflare Tunnelなら正規の証明書が自動で使われるので、この点を気にしなくていい。
 
@@ -292,9 +302,9 @@ LINE Messaging APIはWebhookの受信先にHTTPSを要求する。自分で作�
 | Cloudflare Tunnel | 本番運用 | 無料。URLが固定 |
 | Caddy + ドメイン | VPS本番運用 | 自動SSL。ドメイン必要 |
 
-まず試すならngrokが一番手軽。
+この記事ではngrokを使う。Cloudflare TunnelやCaddyは上級者向けの代替手段で、ここでは扱わない。
 
-### ngrokのインストール
+#### ngrokのインストール
 
 ```bash
 # ngrokのインストール（WSL2 / VPSのUbuntu共通）
@@ -308,15 +318,15 @@ ngrok version
 snapが使えない環境（VPSなど）の場合は、[ngrok公式ダウンロードページ](https://ngrok.com/download)のLinux手順に従う。
 :::
 
-:::message
-[ngrok公式サイト](https://ngrok.com/)で無料アカウントを作成し、認証トークンを設定する：
+ngrokを使うには無料アカウントが必要。[ngrok公式サイト](https://ngrok.com/)でアカウントを作成し、認証トークンを設定する：
+
 ```bash
 ngrok config add-authtoken YOUR_NGROK_TOKEN
 ```
-認証トークンはngrokダッシュボード（ログイン後の画面）の「Your Authtoken」に表示されている。
-:::
 
-### ngrokでHTTPSトンネルを開く
+`YOUR_NGROK_TOKEN` はngrokダッシュボード（ログイン後の画面）の「Your Authtoken」に表示されている文字列に置き換える。
+
+#### HTTPSトンネルを開く
 
 ```bash
 # OpenClaw GatewayのポートをHTTPSで公開
@@ -333,7 +343,7 @@ ngrok無料枠ではURLが再起動のたびに変わる。毎回LINE Developers
 Tailscale Funnelは特殊ヘッダーの問題でLINE Webhookに対応していない。使わないこと。
 :::
 
-### openclaw.jsonに設定する
+### 7. OpenClawに設定する
 
 `~/.openclaw/openclaw.json` に以下を追加：
 
@@ -356,7 +366,7 @@ Tailscale Funnelは特殊ヘッダーの問題でLINE Webhookに対応してい�
 上のJSON設定だけで動く。環境変数（`~/.openclaw/.env`）に書く方法もあるが、上級者向けの代替手段なので気にしなくてよい。
 :::
 
-### Webhook URLを設定する
+### 8. Webhook URLを設定する
 
 1. [LINE Developersコンソール](https://developers.line.biz/console/) → チャネル → 「Messaging API設定」タブ
 2. Webhook URL に以下を入力：
@@ -368,7 +378,7 @@ https://xxxx-xx-xx.ngrok-free.app/line/webhook
 3. 「検証」ボタンをクリック → 「成功」と表示されればOK
 4. 「Webhookの利用」を有効にする
 
-### Gatewayを起動して動作確認
+### 9. 動作確認
 
 ```bash
 # Gatewayを再起動（設定変更後は再起動が必要）
@@ -403,7 +413,7 @@ openclaw gateway
 ```
 
 :::message
-LINE IDの形式はユーザーが `U` + 32桁の16進数、グループが `C` + 32桁。大文字小文字を区別する。自分のLINE IDはWebhookログから確認できる：`openclaw logs --follow` でメッセージを送り、ログに表示されるIDをコピー。
+LINE IDの形式はユーザーが `U` + 32桁の英数字（a-fと0-9の組み合わせ）、グループが `C` + 32桁。大文字小文字を区別する。自分のLINE IDはWebhookログから確認できる：`openclaw logs --follow` でメッセージを送り、ログに表示されるIDをコピー。
 :::
 
 ### グループでの利用
@@ -590,4 +600,6 @@ WSL2ではsystemdが使えない場合がある。`openclaw onboard --install-da
 
 - [Linux（Ubuntu）インストールガイド（Windows）](wsl2-windows-install-guide)
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [OpenClaw × XServer VPS：月990円でAIが24時間働く環境を作った](openclaw-setup-guide)
+- [OpenClawをWSL2で無料で試してみた](openclaw-wsl2-setup-guide)
 - [Claude Code 便利機能まとめ](claude-code-tips-and-features)

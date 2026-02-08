@@ -78,8 +78,8 @@ ChatGPTやClaude.aiには「継続性がない」という共通の弱点があ�
 | 記憶 | セッション終了で消える | 永続的なメモリを保持 |
 | データ | クラウド（運営会社のサーバー） | 自分のPC/VPS（手元に残る） |
 | 動作 | 受動的（質問に答えるだけ） | 能動的（タスクを自律実行） |
-| 稼働 | 人間が常に指示 | スケジュール実行（Cron + HeartBeat） |
-| 操作対象 | チャットUI内で完結 | ファイルシステム + CLI + チャットアプリ |
+| 稼働 | 人間が常に指示 | スケジュール実行（定期的な自動実行 + 死活監視） |
+| 操作対象 | チャットUI内で完結 | ファイルシステム + コマンド操作 + チャットアプリ |
 
 ChatGPTやClaude.aiは「賢いチャットボット」。OpenClawは「24/7稼働の自律型AIアシスタント」。用途がまったく違う。
 
@@ -172,7 +172,7 @@ VPS契約前にまず無料で触ってみたいなら、[WSL2で無料で試し
 
 [XServer VPS 公式マニュアル](https://vps.xserver.ne.jp/support/manual/man_server_app_use_openclaw.php)に基づく手順。
 
-### VPS申し込みとアプリイメージ選択
+### 1. アプリイメージのインストール
 
 1. [XServer VPS](https://vps.xserver.ne.jp/) にアクセス
 2. XServerアカウントを作成（クレジットカードが必要）
@@ -184,20 +184,22 @@ VPS契約前にまず無料で触ってみたいなら、[WSL2で無料で試し
 アプリイメージを選択するだけで、OpenClawが自動でインストール・構築される。Node.jsのインストールやnpm操作は不要。
 :::
 
-### IPアドレスとrootパスワードの確認
+### 2. 事前準備
+
+#### IPアドレスとrootパスワードの確認
 
 VPS構築が完了したら（通常5〜10分）、VPSパネルでIPアドレスとrootパスワードを確認しておく。この後のSSH接続で使う。
 
 1. [VPSパネル](https://secure.xserver.ne.jp/xapanel/login/xvps/)にログイン
 2. 対象VPSを選択
-3. 「VPS情報」タブにIPアドレスが表示されている（例: `123.456.78.90`）
+3. 「VPS情報」タブにIPアドレスが表示されている（例: `198.51.100.1`）
 4. rootパスワードはVPS申し込み時に自分で設定したもの
 
 :::message
 rootパスワードを忘れた場合は、VPSパネルから「rootパスワードの再設定」ができる。
 :::
 
-### パケットフィルターの確認
+#### パケットフィルターの確認
 
 :::message alert
 [XServer VPS公式のOpenClaw告知](https://vps.xserver.ne.jp/support/news_detail.php?view_id=17624)で、パケットフィルター有効化が強く推奨されている。設定不備があると、OpenClawのダッシュボードが第三者からアクセスされるリスクがある。
@@ -227,7 +229,7 @@ OpenClawの利用ではSSH（TCP 22）以外のポート開放は不要。他の
 
 手動で特定IPからのみ許可する場合は「手動で設定」を選び、プロトコル・ポート番号・許可する送信元IPアドレスを指定する。フィルタールールは最大20個まで設定可能。
 
-### AIプロバイダーの設定
+#### AIプロバイダーの設定
 
 OpenClawでClaudeを使うにはAPI Keyが必要になる。
 
@@ -261,7 +263,22 @@ API料金（2026年2月時点）：
 XServer VPS公式マニュアルではOpenAIを使用する例で説明されている。Claude以外のAIサービス（OpenAI、Google等）も利用可能。
 :::
 
-### SSH接続とセットアップウィザード
+#### チャットサービスBot/ツールの準備
+
+セットアップウィザードでBotトークンの入力を求められるため、事前にDiscord Botを作成しておく必要がある。
+
+1. [Discord Developer Portal](https://discord.com/developers/docs/intro) でアプリケーションを作成
+2. 「Bot」メニューでトークンを発行し、コピーして控えておく
+3. 「Privileged Gateway Intents」の「Message Content Intent」をONにする
+4. 「OAuth2」→「URL Generator」で `bot` にチェックし、生成されたURLからBotをサーバーに招待する
+
+:::message
+詳しい手順は [Discord/LINE連携ガイド](openclaw-sns-guide) の「1. アプリケーションを作成する」以降、または [XServer VPS公式マニュアル](https://vps.xserver.ne.jp/support/manual/man_server_app_use_openclaw.php) を参照。
+:::
+
+### 3. セットアップ
+
+#### SSH接続とセットアップウィザード
 
 VPSにSSH接続する。WindowsのPowerShellを開いて以下を入力する。
 
@@ -273,12 +290,12 @@ PowerShellの開き方: Windowsキーを押して「powershell」と入力し、
 ssh root@<VPSのIPアドレス>
 ```
 
-`<VPSのIPアドレス>` は先ほどVPSパネルで確認したIPアドレスに置き換える（例: `ssh root@123.456.78.90`）。
+`<VPSのIPアドレス>` は先ほどVPSパネルで確認したIPアドレスに置き換える（例: `ssh root@198.51.100.1`）。
 
 初回接続時は以下のような確認が出る：
 
 ```
-The authenticity of host '123.456.78.90' can't be established.
+The authenticity of host '198.51.100.1' can't be established.
 ED25519 key fingerprint is SHA256:xxxxx...
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
@@ -288,11 +305,7 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])?
 パスワードを聞かれるので、VPS申し込み時に設定したrootパスワードを入力する（入力中は画面に何も表示されないが、正常な動作）。
 
 :::message
-SSH（Secure Shell）はリモートサーバーに安全に接続するプロトコル。VPSパネルの「コンソール」からも操作できる。
-:::
-
-:::message
-Discord Bot作成がまだの場合は、ウィザード中にBotトークンを求められて止まる。先に [Discord/LINE連携ガイド](openclaw-sns-guide) の「Discord Botを作成する」セクションを読んでBotを作っておくこと。[XServer VPS公式マニュアル](https://vps.xserver.ne.jp/support/manual/man_server_app_use_openclaw.php)にも手順がある。
+SSH（Secure Shell）はリモートサーバーに安全に接続するための通信方式。VPSパネルの「コンソール」からも操作できる。
 :::
 
 セットアップウィザードを起動：
@@ -309,15 +322,29 @@ openclaw onboard --install-daemon
 4. API Key入力 → Anthropic ConsoleのAPI Keyを入力
 5. モデル選択 → 任意のモデルを選択
 6. チャットプラットフォーム → 「Discord」を選択（LINEは別途プラグインで設定）
-7. Botトークン入力 → 事前に作成したBotトークンを入力
-8. チャンネル権限 → 「Allowlist」推奨
+7. Botトークン入力 → 事前準備で控えたBotトークンを入力
+8. チャンネル権限 → 「Allowlist」を選択し、対象のサーバー名/チャンネル名を入力
+9. 追加設定 → 「No」を選択（後から変更可能）
+10. Bot起動 → 「Do this later（後でやる）」を選択。管理画面を使わなくても、DiscordからBotに話しかけて操作できる
+11. 自動補完有効化 → 「Yes」を選択
 
 :::message
 Allowlistは、OpenClawが反応するチャンネルを限定する設定。既に運用中のDiscordサーバーにBotを追加するなら、意図しないチャンネルでの動作を防ぐためにも設定しておきたい。
 :::
 
+#### ペアリング承認
 
-### 動作確認
+ウィザード完了後、DiscordでBotにメンションすると初回はペアリングコードが表示される。VPS側で以下を実行して承認する。
+
+```bash
+openclaw pairing approve discord <code>
+```
+
+`<code>` にはDiscord側に表示されたペアリングコードを入力する。承認が完了すると、Botとの通常のやり取りが可能になる。
+
+DiscordでBotにメンション（`@Bot名 こんにちは`）を送り、AIから返信が来れば連携成功。
+
+#### 動作確認
 
 ```bash
 # 状態確認
@@ -335,7 +362,7 @@ openclaw doctor
 ✓ Channels: discord (connected)
 ```
 
-### ダッシュボード接続（任意）
+### 4. ダッシュボード接続（任意）
 
 OpenClawのWeb UI（ダッシュボード）にはSSHトンネル経由でアクセスする。ダッシュボードはインターネットに直接公開してはいけない。
 
@@ -375,7 +402,7 @@ openclaw dashboard
 
 **方法3：SSH configで自動化**
 
-「セキュリティ強化」セクションの「SSH接続を簡略化する」でSSH configを設定済みなら、`ssh xserver-vps-tunnel` だけでトンネルが開通する。
+後述の「セキュリティ強化」セクションにある「SSH接続を簡略化する」でSSH configを設定すると、`ssh xserver-vps-tunnel` だけでトンネルが開通するようになる。先にセキュリティ強化を済ませてからここに戻ってくると便利。
 
 :::message alert
 Gateway（18789番ポート）をパケットフィルターで外部に開放しないこと。SSHトンネル経由なら、パケットフィルターはSSH（22番）だけ開放すれば十分。
@@ -499,11 +526,13 @@ apt install -y docker.io
 systemctl enable docker && systemctl start docker
 ```
 
-`~/.openclaw/openclaw.json` にsandbox設定を追加：
+`~/.openclaw/openclaw.json`（`~` はホームディレクトリの省略記号で、Linuxでは `/home/ユーザー名/` にあたる）にsandbox設定を追加：
 
 ```bash
 nano ~/.openclaw/openclaw.json
 ```
+
+（nanoの操作方法: 編集が終わったら `Ctrl+O` → Enter で保存、`Ctrl+X` で終了）
 
 ```json
 {
@@ -557,7 +586,7 @@ XServer VPS：
 - [ ] ダッシュボードにはSSHトンネル経由でアクセスしている（18789番を直接開放していない）
 - [ ] Docker sandboxが有効（`sandbox.mode: "non-main"` 以上）
 - [ ] チャンネル権限を「Allowlist」に設定
-- [ ] Moltbookに接続していない（Moltbookは旧名称時代のWebダッシュボード。Gateway認証なしでインターネットに公開されるリスクがある）
+- [ ] Moltbookに接続していない（Moltbookは旧名称「Moltbot」時代のクラウドダッシュボード。現在は非推奨で、Gateway認証なしでインターネットに公開されるリスクがある。名称変更の経緯は記事冒頭を参照）
 
 DigitalOcean 1-Click：
 
