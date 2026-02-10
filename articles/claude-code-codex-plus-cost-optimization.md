@@ -1,5 +1,5 @@
 ---
-title: "【Claude Code×Codex運用最適化①】Claude Max 20x→Claude Max 5xを狙う: 月$100削減を検証"
+title: "Claude Code × Codex併用でClaude Max 20x→5xを狙う: 月$100削減の検証"
 emoji: "🧪"
 type: "tech"
 topics: ["claudecode", "codex", "vscode", "生成ai", "個人開発"]
@@ -227,7 +227,7 @@ codex
   公式: https://cloud.google.com/gemini/docs/codeassist/gemini-code-customization
 
 詳細手順は別記事に分離した。この記事では判断軸だけに集中する。  
-→ [AI併用時代の「指示資産」設計: Skills・Rules・Commandsの共有運用ガイド](ai-tooling-skills-rules-sharing-guide)
+→ [指示資産の散乱を防ぐ設定共有ガイド](ai-tooling-skills-rules-sharing-guide)
 
 ↑ [目次に戻る](#toc)
 
@@ -319,8 +319,8 @@ codex
 <a id="sec-related"></a>
 ## 関連記事
 
-- 次は②へ: [Claude/Codex/Gemini指示資産の共有運用ガイド](ai-tooling-skills-rules-sharing-guide)
-- 記録を自動化するなら③へ: [Claude Code/Codex使用量ログを1分で自動化する手順](ai-usage-log-skill-automation-guide)
+- 設定共有の詳細: [指示資産の散乱を防ぐ設定共有ガイド](ai-tooling-skills-rules-sharing-guide)
+- ログ自動化: [使用量ログを1分で自動化する手順](ai-usage-log-skill-automation-guide)
 
 ↑ [目次に戻る](#toc)
 

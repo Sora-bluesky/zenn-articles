@@ -1,24 +1,24 @@
 ---
-title: "【Claude Code/Codex/Google Antigravity運用最適化②】指示資産の散乱を防ぐ: Skills・Rules・Commands・Settings共有運用ガイド"
+title: "Claude Code × Codex × Antigravity: 指示資産の散乱を防ぐ設定共有ガイド"
 emoji: "🧩"
 type: "tech"
-topics: ["ai", "claudecode", "codex", "google", "運用"]
+topics: ["claudecode", "codex", "生成ai", "個人開発", "windows"]
 published: false
 ---
 
 <a id="position"></a>
 ## この記事の位置づけ
 
-この記事は、以下の関連記事で触れた「併用運用の詳細版」です。
+Claude Code / Codex / Google Antigravity を併用していると、Skills・Rules・Commands などの「指示資産」がツールごとに散乱しがちになる。この記事では、3ツール間で指示資産を安全に共有する設計と手順をまとめた。
 
-- [Claude Codeだけに依存しない: VS Code版Codex併用でコストと品質を両立した話](claude-code-codex-plus-cost-optimization)
+:::message
+**対象読者**: Claude Code を日常的に使っている個人開発者（Windows + PowerShell 環境前提）
+**前提**: Claude Code の基本操作（CLAUDE.md、Skills、Rules）を理解していること
+**検証環境**: Windows 11 + PowerShell 7.x（2026年2月時点）
+:::
 
-末尾に、読者向けの「Codexへそのまま貼れる移植指示書」を用意しています。
-  
-対象読者は `Windows + PowerShell` 環境を前提にしています。
-
-急ぐ方は、先に [クイックスタート（コピペ用指示書）](#gift-prompt) だけ使ってください。  
-背景や設計意図まで押さえたい方は、本文を順に読むのがおすすめです。
+急ぐ方は、末尾の [コピペ用指示書](#gift-prompt) だけ使ってください。
+設計意図まで押さえたい方は、本文を順に読むのがおすすめです。
 
 ---
 
@@ -26,9 +26,6 @@ published: false
 ## 目次
 
 - [この記事で得られること](#what-you-get)
-- [クイックスタート](#quick-start)
-- [詳細ガイド](#detailed-guide)
-- [詳細ガイドはこんな人向け](#role-of-body)
 - [結論](#conclusion)
 - [想定環境の前提（構成イメージ）](#assumptions)
 - [先に押さえる公式仕様（最新版）](#official-specs)
@@ -40,7 +37,7 @@ published: false
 - [検証チェックリスト（実行順）](#checklist)
 - [よくある失敗と回避策](#pitfalls)
 - [公式リンク（再掲）](#links)
-- [最後まで読んでくださった読者の方へ（コピペ用指示書）](#gift-prompt)
+- [コピペ用指示書（そのまま使える版）](#gift-prompt)
 - [最後に](#closing)
 
 ---
@@ -54,40 +51,16 @@ published: false
 
 ---
 
-<a id="quick-start"></a>
-## クイックスタート
-
-最短で実行したい方は、[最後まで読んでくださった読者の方へ（コピペ用指示書）](#gift-prompt) へ進んでください。
-
----
-
-<a id="detailed-guide"></a>
-## 詳細ガイド
-
-設計意図や運用の判断基準まで押さえたい方は、このまま本文を順に読んでください。
-
----
-
-<a id="role-of-body"></a>
-## 詳細ガイドはこんな人向け
-
-「動かすだけ」で終わらず、運用を定着させたい方向けです。  
-本文では、次の3点を押さえます。
-
-1. なぜこの順番で実行するか（バックアップ -> 段階移植 -> 検証）
-2. どこまで共有し、どこから個人設定として切り分けるか
-3. 問題が起きたときに、どこを疑ってどう戻すか
-
----
-
 <a id="conclusion"></a>
 ## 結論
 
-3ツール併用で崩れにくい設計は「正本 + ツール実装 + 個人差分」の3層です。
+3ツール併用で崩れにくい設計は、指示資産を3層に分けること。
 
-1. 正本（人間が読む版）: `docs/ai-playbook.md`
-2. ツール実装（機械が読む版）: `AGENTS.md` / `GEMINI.md` / 各 `skills` / `rules`
-3. 個人差分: `settings.local.*` などローカル限定ファイル
+1. **チーム共有のルールブック**（人間が読む版）: `docs/ai-playbook.md` に「コードレビューの観点」「命名規則」などを1か所にまとめる
+2. **ツールごとの設定ファイル**（機械が読む版）: ルールブックの内容を `AGENTS.md`（Codex用）/ `GEMINI.md`（Antigravity用）/ 各 `skills` / `rules` に変換して配置
+3. **個人の好み**（ローカル限定）: `settings.local.*` にモデル選択やフック設定など、人によって違う部分だけ置く
+
+ポイントは「ルールブックを更新 → 各ツール設定に反映」の一方向フローを守ること。逆方向（ツール設定を直接編集）をやると、すぐに散乱する。
 
 ---
 
@@ -177,9 +150,11 @@ repo/
     `-- skills/
 ```
 
-> 運用メモ（重要）
-> - Codex Skills の正本は `~/.agents/skills` に固定し、`.codex/skills` はプロジェクト固有の追加がある場合だけ使います。
-> - 共有時は「正本を更新 -> 各ツールへ同期」の順で運用します。
+:::message
+**運用メモ（重要）**
+- Codex Skills の正本は `~/.agents/skills` に固定し、`.codex/skills` はプロジェクト固有の追加がある場合だけ使う
+- 共有時は「正本を更新 → 各ツールへ同期」の一方向フローで運用する
+:::
 
 ---
 
@@ -361,7 +336,7 @@ if (Test-Path "$HOME\.gemini\skills")   { robocopy "$HOME\.gemini\skills"   ".ag
 
 1. Codexで `rules/skills/AGENTS.md` が見えるか確認（`~/.codex/rules/philosophy-global.md` など）
 2. `~/.codex/migration` に退避した `claude-agents` / `claude-commands` から、優先度の高いものを Skills 化して実行確認
-3. Gemini CLIで `/memory list` を実行し `GEMINI.md` 読み込みを確認
+3. Gemini CLIで `/memory show` を実行し `GEMINI.md` の読み込み内容を確認
 4. Gemini CLIで `/help` を実行し custom commands が出るか確認
 5. Antigravityで `.agent` 配下の rules/workflows/skills が認識されるか確認
 6. 予約語衝突チェックを実施（組み込みスラッシュコマンド名が custom commands/skills に存在しないこと）
@@ -412,20 +387,14 @@ if (Test-Path "$HOME\.gemini\skills")   { robocopy "$HOME\.gemini\skills"   ".ag
 
 ---
 
-<a id="closing"></a>
-## 最後に
-
-モデルを跨いだ運用で効くのは、モデル性能差より「指示資産の整備品質」です。  
-まずは `Claude -> Codex` を最小移植し、検証が通ってから `Antigravity` に展開してください。
-
-この記事や指示書は実運用の出発点です。環境差分により想定外の問題が起きる可能性はあるため、必要に応じて Claude Code や Codex と対話しながら、検証結果にもとづいて順次調整していく運用をおすすめします。
-
-### 最後まで読んでくださった読者の方へ
-
-下の指示書をCodexに貼れば、そのまま実行依頼できます。
-
 <a id="gift-prompt"></a>
-#### Codexに貼るコピペ用指示書（そのまま使える版）
+## コピペ用指示書（そのまま使える版）
+
+下の指示書をCodexにそのまま貼れば、移植を実行依頼できる。
+
+:::message
+まずは `Claude → Codex` を最小移植し、検証が通ってから `Antigravity` に展開するのがおすすめ。
+:::
 
 ```text
 あなたは実装担当エンジニアです。私の Windows + PowerShell 環境で、
@@ -506,6 +475,13 @@ Task F: 認識確認と最終報告
 - ロールバック手順
 ```
 
+---
+
+<a id="closing"></a>
+## 最後に
+
+モデルを跨いだ運用で効くのは、モデル性能差より「指示資産の整備品質」。この記事は実運用の出発点であり、環境差分で想定外の問題が起きる可能性はある。検証結果にもとづいて順次調整していく運用をおすすめする。
+
 関連記事:
-- まず①から読む: [Claude Max 20x→Claude Max 5xを狙う: 月$100削減を検証](claude-code-codex-plus-cost-optimization)
-- 次は③へ: [Claude Code/Codex使用量ログを1分で自動化する手順](ai-usage-log-skill-automation-guide)
+- コスト検証: [Claude Max 20x→5xを狙う月$100削減の検証](claude-code-codex-plus-cost-optimization)
+- ログ自動化: [使用量ログを1分で自動化する手順](ai-usage-log-skill-automation-guide)
