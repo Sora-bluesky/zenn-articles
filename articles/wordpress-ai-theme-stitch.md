@@ -8,11 +8,11 @@ published: false
 
 :::message
 **シリーズ構成：AIでWordPressテーマを自作する**
-1. [有料テーマを買わない選択肢：Google Stitch × Google AntigravityでWordPressテーマを自作する](https://zenn.dev/komei/articles/wordpress-ai-theme-overview)
+1. [有料テーマを買わない選択肢：Google Stitch × Google AntigravityでWordPressテーマを自作する](wordpress-ai-theme-overview)
 2. **StitchでテーマのUIを作った**（この記事）
-3. [デザインからPHPテンプレートを自動生成した](https://zenn.dev/komei/articles/wordpress-ai-theme-antigravity)
-4. [AI生成コードのセキュリティを固めた](https://zenn.dev/komei/articles/wordpress-ai-theme-quality)
-5. [記事の執筆から投稿までを自動化した](https://zenn.dev/komei/articles/wordpress-ai-theme-automation)
+3. [デザインからPHPテンプレートを自動生成した](wordpress-ai-theme-antigravity)
+4. [AI生成コードのセキュリティを固めた](wordpress-ai-theme-quality)
+5. [記事の執筆から投稿までを自動化した](wordpress-ai-theme-automation)
 :::
 
 ## Stitchを開いて固まった人へ
