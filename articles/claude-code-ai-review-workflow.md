@@ -27,6 +27,7 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CL
 3. [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 4. **AIにコードを書かせてAIにレビューさせる開発スタイル**（この記事）
 5. [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
+6. [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
 :::
 
 :::message

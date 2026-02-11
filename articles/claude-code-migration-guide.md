@@ -13,6 +13,7 @@ published: true
 - [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
 - [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)
 - **Claude（Web版）の知識をClaude Codeに引っ越す方法**（この記事）
+- [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
 :::
 
 ## 半信半疑だった過去の自分へ
