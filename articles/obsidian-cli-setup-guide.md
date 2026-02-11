@@ -8,7 +8,7 @@ published: true
 
 ## この記事で分かること
 
-- **本日リリースされたObsidian公式CLI**（v1.12.0 Early Access）のセットアップ手順
+- **2026年2月10日リリースのObsidian公式CLI**（v1.12.0 Early Access）のセットアップ手順
 - **Windows環境で実際にハマった5つの罠** と、その回避方法
 - CLIで何ができるのか ── 100以上のコマンドの概要
 
@@ -33,7 +33,7 @@ published: true
 > Obsidian CLI is now available in 1.12 (early access).
 > ── [Obsidian公式 (@obsdmd)](https://x.com/obsdmd/status/2021241384057930224) 2026年2月11日
 
-「Obsidianでできることは、すべてコマンドラインからもできる」── 本日、Obsidian公式がCLIのリリースを発表した。
+「Obsidianでできることは、すべてコマンドラインからもできる」── 2026年2月11日、Obsidian公式がCLIのリリースを発表した。
 
 ObsidianにはMCPプラグイン（前編で紹介）を使えばAIツールからノートを読み書きできる。しかし、**テンプレート適用、プラグイン管理、JavaScript実行**といったObsidian内部の機能にはアクセスできなかった。
 
@@ -290,7 +290,7 @@ GUIを使わずにターミナルだけでVaultを操作できる。SSH接続先
 
 ## まとめ
 
-本日リリースされたObsidian CLI（v1.12.0 Early Access）をWindows環境でセットアップした。
+2026年2月10日にリリースされたObsidian CLI（v1.12.0 Early Access）をWindows環境でセットアップした。
 
 **やってみた所感：**
 
