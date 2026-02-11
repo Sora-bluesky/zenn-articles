@@ -256,7 +256,7 @@ JinaとPlaywrightが最善かどうかはわかりません。有料ツールも
 この記事は[Claude Opus 4.6](https://www.anthropic.com/news/claude-opus-4-6)との実際の対話セッションをもとに書きました。成功も失敗もそのまま、非エンジニア向けに再構成しています。
 
 具体的なセットアップ手順は別記事で解説しています。
-→ [Claude Code Web取得フォールバック機構：セットアップ手順](/articles/claude-code-web-fetch-fallback-tech)
+→ [Claude Code Web取得フォールバック機構：セットアップ手順](claude-code-web-fetch-fallback-tech)
 
 Obsidianへの情報自動同期など、AI活用の実践記録はこのZennアカウントとXで引き続き書いていきます。
 :::

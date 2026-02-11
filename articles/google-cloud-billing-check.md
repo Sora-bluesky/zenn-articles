@@ -24,7 +24,7 @@ published: true
 
 :::message
 Google Cloud Console の基本や「無料トライアルと有料アカウントの違い」を先に知りたい方は、こちらの記事をどうぞ。
-👉 [Google Cloud の「無料」は3種類ある：無料トライアル・無料枠・有料アカウントの違い](/articles/google-cloud-console-basics)
+👉 [Google Cloud の「無料」は3種類ある：無料トライアル・無料枠・有料アカウントの違い](google-cloud-console-basics)
 :::
 
 ## 目次
@@ -304,14 +304,14 @@ gcloud alpha billing accounts list --format="csv(displayName,masterBillingAccoun
 
 「結局、自分は課金する必要があるの？」を判断するための一覧だ。
 
-Google Cloud 全般の無料枠・無料トライアルの詳細は、[Google Cloud Console 入門記事](/articles/google-cloud-console-basics)にまとめている。ここでは **Gemini API に特化した判断基準** を解説する。
+Google Cloud 全般の無料枠・無料トライアルの詳細は、[Google Cloud Console 入門記事](google-cloud-console-basics)にまとめている。ここでは **Gemini API に特化した判断基準** を解説する。
 
 #### Gemini API - 課金しないとできないこと
 
 | 制限事項 | 備考 |
 |---|---|
 | **レート制限の緩和** | 無料枠は 2.5 Pro で 5 RPM（1分あたり5回） / 25 RPD（1日あたり25回） まで |
-| **画像生成（全モデル）** | 無料枠では利用不可。詳細は [Gemini API 画像生成ガイド](/articles/gemini-api-image-generation-guide) を参照 |
+| **画像生成（全モデル）** | 無料枠では利用不可。詳細は [Gemini API 画像生成ガイド](gemini-api-image-generation-guide) を参照 |
 | **データの学習利用を拒否** | 無料枠はモデル改善に使用される可能性あり |
 | **EU/EEA/UK/スイスのユーザー向けサービス提供** | 有料枠でないと提供不可 |
 
@@ -325,7 +325,7 @@ Google Cloud 全般の無料枠・無料トライアルの詳細は、[Google Cl
 | **Google AI Studio** | テキスト生成は無料（全リージョン）。**画像生成は有料のみ** |
 
 :::message
-Google AI Studio の UI 利用自体は無料だ。ただし **画像生成は無料枠の対象外** であり、課金設定が必要。詳細は [Gemini API 画像生成ガイド](/articles/gemini-api-image-generation-guide) を参照してほしい。
+Google AI Studio の UI 利用自体は無料だ。ただし **画像生成は無料枠の対象外** であり、課金設定が必要。詳細は [Gemini API 画像生成ガイド](gemini-api-image-generation-guide) を参照してほしい。
 
 > "Google AI Studio usage is free of charge in all available regions."
 > （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料です。）
@@ -487,8 +487,8 @@ Gemini API を使いたい
 
 ## 関連記事
 
-- [その Gemini 画像、透かし入ってるよ？API画像生成の著作権・料金を公式情報で整理](/articles/gemini-api-image-generation-guide)
-- [Google Cloud の「無料」は3種類ある：無料トライアル・無料枠・有料アカウントの違い](/articles/google-cloud-console-basics)
+- [その Gemini 画像、透かし入ってるよ？API画像生成の著作権・料金を公式情報で整理](gemini-api-image-generation-guide)
+- [Google Cloud の「無料」は3種類ある：無料トライアル・無料枠・有料アカウントの違い](google-cloud-console-basics)
 
 ## 参考リンク
 

@@ -8,7 +8,7 @@ published: false
 
 ## この記事の位置づけ
 
-[AIに「調べて」と言ったとき、裏側で何が起きているか](/articles/claude-code-web-fetch-fallback)で解説したWeb取得フォールバック機構を、自分の環境に導入する手順です。
+[AIに「調べて」と言ったとき、裏側で何が起きているか](claude-code-web-fetch-fallback)で解説したWeb取得フォールバック機構を、自分の環境に導入する手順です。
 
 やることは4つ。
 
@@ -264,7 +264,7 @@ npx playwright install
 ---
 
 :::message
-この記事は[AIに「調べて」と言ったとき、裏側で何が起きているか](/articles/claude-code-web-fetch-fallback)の実装手順をまとめたものです。フォールバック機構の背景や設計判断についてはそちらをお読みください。
+この記事は[AIに「調べて」と言ったとき、裏側で何が起きているか](claude-code-web-fetch-fallback)の実装手順をまとめたものです。フォールバック機構の背景や設計判断についてはそちらをお読みください。
 :::
 
 ## 参考リンク
