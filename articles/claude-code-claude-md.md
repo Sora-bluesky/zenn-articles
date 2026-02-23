@@ -1,5 +1,5 @@
 ---
-title: "Claude Code 実践Tips 3：CLAUDE.md活用術"
+title: "CLAUDE.mdを書いたら、Claude Codeが別人になった"
 emoji: "📝"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
@@ -22,11 +22,13 @@ Claude Codeを使うたびに、同じ説明を繰り返していないだろう
 
 :::message
 **シリーズ構成**
-1. [コンテキスト管理が全ての土台](claude-code-context-management)
-2. [自己検証の仕組みを与える](claude-code-self-verification)
-3. **CLAUDE.md活用術**（この記事）
-4. [効果的なプロンプト術](claude-code-effective-prompts)（準備中）
-5. [サブエージェント活用術](claude-code-subagents)（準備中）
+1. [ポンコツになる原因はコンテキスト](claude-code-context-management)
+2. [「本当に合ってる？」と自問させる](claude-code-self-verification)
+3. **CLAUDE.mdで別人にする**（この記事）
+4. [「いい感じにして」をやめる](claude-code-effective-prompts)
+5. [もう一人のClaudeに調査を任せる](claude-code-subagents)
+6. [2つ同時に動かす並列開発](claude-code-parallel-worktrees)
+7. [「昨日の続き」を一瞬で再開](claude-code-session-management)
 :::
 
 ---

@@ -37,7 +37,7 @@ published: true
 
 :::message
 **Claude Code ユーザーへ**
-Claude Code には「サブエージェント」という機能があり、Claude だけで同様の役割分担ができる。Claude Code ユーザーは [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow) を参照。
+Claude Code には「サブエージェント」という機能があり、Claude だけで同様の役割分担ができる。Claude Code ユーザーは [Claude Code でAIにコードを書かせてAIにレビューさせる](claude-code-ai-review-workflow) を参照。
 :::
 
 ---
@@ -531,4 +531,4 @@ Rate limit exceeded
 - [Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
 - [Google Antigravity × Codex CLI 協調開発：Orchestra方式でタスク自動振り分け](antigravity-orchestra-guide)
 - [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide)
-- [AIにコードを書かせてAIにレビューさせる開発スタイル](claude-code-ai-review-workflow)（Claude Code 版）
+- [Claude Code でAIにコードを書かせてAIにレビューさせる](claude-code-ai-review-workflow)（Claude Code 版）

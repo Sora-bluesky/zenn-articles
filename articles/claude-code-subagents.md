@@ -1,5 +1,5 @@
 ---
-title: "Claude Code 実践Tips 5：サブエージェント活用術"
+title: "Claude Codeの中にもう一人のClaudeがいた"
 emoji: "🤖"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
@@ -20,11 +20,13 @@ published: false
 
 :::message
 **シリーズ構成**
-1. [コンテキスト管理が全ての土台](claude-code-context-management)
-2. [自己検証の仕組みを与える](claude-code-self-verification)
-3. [CLAUDE.md活用術](claude-code-claude-md)
-4. [効果的なプロンプト術](claude-code-effective-prompts)
-5. **サブエージェント活用術**（この記事）
+1. [ポンコツになる原因はコンテキスト](claude-code-context-management)
+2. [「本当に合ってる？」と自問させる](claude-code-self-verification)
+3. [CLAUDE.mdで別人にする](claude-code-claude-md)
+4. [「いい感じにして」をやめる](claude-code-effective-prompts)
+5. **もう一人のClaudeに調査を任せる**（この記事）
+6. [2つ同時に動かす並列開発](claude-code-parallel-worktrees)
+7. [「昨日の続き」を一瞬で再開](claude-code-session-management)
 :::
 
 ---
@@ -266,7 +268,7 @@ Copy-Item ".\.claude\agents\*.md" $dest
 
 ## シリーズまとめ
 
-全5部を通じて、公式ベストプラクティスの核心を解説した。
+全7部を通じて、公式ベストプラクティスの核心を解説した。
 
 | # | 記事 | 核心 |
 |---|------|------|
@@ -275,8 +277,16 @@ Copy-Item ".\.claude\agents\*.md" $dest
 | 3 | [CLAUDE.md](claude-code-claude-md) | 短く、具体的に、本当に必要なことだけ |
 | 4 | [プロンプト術](claude-code-effective-prompts) | 具体的であるほど良い |
 | 5 | [サブエージェント](claude-code-subagents) | 調査は別のコンテキストに委譲 |
+| 6 | [並列開発](claude-code-parallel-worktrees) | Git Worktreeで完全分離した並列作業 |
+| 7 | [セッション管理](claude-code-session-management) | 作業の継続と再開を効率化 |
 
 これらを実践すれば、Claude Codeの効率と精度が大きく向上する。
+
+---
+
+## 次の記事
+
+第6部では、Git Worktreeを使って複数のClaude Codeを完全に分離された環境で同時に動かす方法を解説する。
 
 ---
 

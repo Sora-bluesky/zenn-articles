@@ -22,12 +22,12 @@ Codex CLI との組み合わせ方法に興味がある方は「[参考 Codex CL
 
 :::message
 **シリーズ構成**
-1. [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
-2. [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
-3. [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
-4. **AIにコードを書かせてAIにレビューさせる開発スタイル**（この記事）
-5. [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
-6. [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
+- [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
+- **Claude Code でAIにコードを書かせてAIにレビューさせる**（この記事）
+- [Claude Code への引っ越しガイド：Web版の知識を移行する](claude-code-migration-guide)
+- [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
 :::
 
 :::message
@@ -583,8 +583,8 @@ codex
 
 ## 関連記事
 
-- [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide)
-- [Claude Codeを使いこなす！知っておきたい便利機能まとめ](claude-code-tips-and-features)
-- [Claude Codeが動かない時に見るページ（Windows編）](claude-code-windows-troubleshoot)
-- [Claude（Web版）の知識をClaude Codeに引っ越す方法](claude-code-migration-guide)
+- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
+- [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
+- [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
+- [Claude Code への引っ越しガイド：Web版の知識を移行する](claude-code-migration-guide)
 - [【非エンジニア×AI開発】Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)（Google AI + OpenAI の組み合わせ）

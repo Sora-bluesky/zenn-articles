@@ -335,8 +335,8 @@ WSL2 のインストールが完了したら、以下の記事に進む。
 
 | やりたいこと | 次に読む記事 |
 |-------------|-------------|
-| Claude Code を使いたい | [非エンジニアがWindowsでClaude Codeを使えるようになるまで](claude-code-windows-install-guide) |
-| トラブルが発生した | [Claude Codeが動かない時に見るページ](claude-code-windows-troubleshoot) |
+| Claude Code を使いたい | [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide) |
+| トラブルが発生した | [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot) |
 
 ---
 
