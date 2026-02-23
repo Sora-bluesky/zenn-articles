@@ -169,8 +169,13 @@ TypeScript ファイルを Prettier で自動フォーマットする。
 
 **仕組み**：
 1. `Edit` または `Write` ツールが実行された後に発火
-2. stdin から編集されたファイルパスを取得
+2. stdin（標準入力）から渡された JSON を `jq` で解析し、ファイルパスを取得
 3. `.ts` ファイルなら Prettier を実行
+
+:::message
+**`jq` とは**
+JSON データを加工するコマンドラインツール。Hook には実行されたツールの情報が JSON 形式で stdin（標準入力）に渡される。`jq -r '.tool_input.file_path'` で「編集されたファイルのパス」を取り出している。
+:::
 
 ### 例2：機密ファイルへの変更をブロック
 
@@ -194,7 +199,7 @@ TypeScript ファイルを Prettier で自動フォーマットする。
 }
 ```
 
-**ポイント**：終了コード `2` を返すと、そのツール呼び出しが**ブロック**される。stderr のメッセージが Claude にフィードバックされる。
+**ポイント**：終了コード `2` を返すと、そのツール呼び出しが**ブロック**される。stderr（標準エラー出力：エラーメッセージ用の出力先）のメッセージが Claude にフィードバックされる。
 
 ### 例3：入力待ちのデスクトップ通知
 
@@ -335,3 +340,4 @@ Hooks は**任意のシェルコマンドを自動実行**する。つまり：
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
 - [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 - [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
+- [Claude Codeが勝手にファイルを消した日から、権限設定を真剣にやるようになった](claude-code-permissions)

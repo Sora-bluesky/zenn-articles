@@ -227,3 +227,4 @@ CLAUDE.md はすべてのリクエストで読み込まれる。つまり、1行
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
 - [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 - [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
+- [Claude Codeを寝てる間に働かせる：ヘッドレスモード活用術](claude-code-headless-mode)

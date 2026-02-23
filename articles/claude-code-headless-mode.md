@@ -253,7 +253,7 @@ claude -p "プロジェクト全体を分析して" --max-budget-usd 1.0
 | モード | 内容 | 用途 |
 |--------|------|------|
 | `plan` | ファイルの読み取りのみ（変更不可） | 分析・レビュー |
-| `autoaccept` | すべてのツール利用を自動承認 | 自動化・CI |
+| `bypassPermissions` | すべての権限チェックをスキップ | コンテナ内のみ |
 
 ```bash
 # 読み取り専用で安全に分析
@@ -455,3 +455,5 @@ claude -p "指示" \
 - [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 - [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
 - [Claude Codeの請求額を見て青ざめた人へ贈るコスト管理術](claude-code-cost-management)
+- [Claude Codeが勝手にファイルを消した日から、権限設定を真剣にやるようになった](claude-code-permissions)
+- [Claude CodeをGitHubに住まわせたら、PRレビューが自動化された](claude-code-github-actions-guide)

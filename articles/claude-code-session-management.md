@@ -263,3 +263,5 @@ claude --continue --print "テストを実行して結果を報告して"
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
 - [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 - [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
+- [Claude Codeの請求額を見て青ざめた人へ贈るコスト管理術](claude-code-cost-management)
+- [Claude Codeを寝てる間に働かせる：ヘッドレスモード活用術](claude-code-headless-mode)

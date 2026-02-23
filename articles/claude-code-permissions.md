@@ -276,7 +276,7 @@ MCP ツール名は `mcp__サーバー名__ツール名` のパターン。`mcp_
 
 ## Hooks との連携
 
-[Hooks](claude-code-hooks) と組み合わせると、さらに強力になる。
+[Hooks](claude-code-auto-format-hooks) と組み合わせると、さらに強力になる。
 
 - **権限設定**: 「`.env` の読み取りを拒否する」（静的ルール）
 - **Hooks**: 「`.env` を編集しようとしたら警告メッセージを返す」（動的処理）
@@ -315,3 +315,4 @@ MCP ツール名は `mcp__サーバー名__ツール名` のパターン。`mcp_
 - [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
 - [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
 - [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
+- [Claude Codeに「保存したら自動でフォーマット」を仕込んだら快適すぎた](claude-code-auto-format-hooks)
