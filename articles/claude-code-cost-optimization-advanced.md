@@ -3,7 +3,7 @@ title: "Claude Codeのコストを半分にした7つの設定"
 emoji: "⚡"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
-published: false
+published: true
 ---
 
 ## はじめに
