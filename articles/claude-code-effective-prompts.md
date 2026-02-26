@@ -3,12 +3,12 @@ title: "Claude Codeに「いい感じにして」と言うのをやめた結果"
 emoji: "💬"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
-published: false
+published: true
 ---
 
 ## はじめに
 
-同じことをCloudeに頼んでも、指示の仕方で結果が大きく変わる。
+同じことをClaudeに頼んでも、指示の仕方で結果が大きく変わる。
 
 **曖昧な指示**：
 ```

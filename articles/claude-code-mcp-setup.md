@@ -117,6 +117,11 @@ claude mcp add --transport stdio my-server -- npx -y @some/mcp-package
 古い方式だ。新しくMCPサーバーを追加する際には使わないこと。既存のSSE方式サーバーがHTTPにまだ対応していない場合にのみ使用する。
 
 :::message
+**MCPトランスポートの推奨変更**
+MCPサーバーの通信方式は、SSE（Server-Sent Events）からHTTPトランスポートへの移行が推奨されている。新しくMCPサーバーを設定する場合はHTTPを使用すること。
+:::
+
+:::message
 **公式ドキュメント**
 - [English: MCP - Transport types](https://code.claude.com/docs/en/mcp#add-mcp-servers)
 - [日本語: MCP - トランスポートタイプ](https://code.claude.com/docs/ja/mcp#mcp%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AE%E8%BF%BD%E5%8A%A0)
