@@ -264,13 +264,13 @@ Antigravity のバージョンは、Settings（設定）画面の下部に表示
 
 セキュリティに関する詳細は専用記事を参照：
 
-- [【非エンジニア×AI開発】Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
+- [Google Antigravity を安全に使うために知っておくべきこと](antigravity-security-guide)
 
 ---
 
 ## 関連記事
 
-- [【非エンジニア×AI開発】Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
-- [【非エンジニア×AI開発】Antigravityを安全に使うために知っておくべきこと](antigravity-security-guide)
-- [【非エンジニア×AI開発】AIが何をしたか一目でわかる — Antigravity Artifacts ガイド](antigravity-artifacts-guide)
-- [AIへの指示が伝わらない → 6つのスキルで解決するワークフロー（全体像・導入編）](antigravity-noneng-workflow-overview)
+- [Google Antigravity インストールガイド（Windows）](antigravity-windows-install-guide)
+- [Google Antigravity を安全に使うために知っておくべきこと](antigravity-security-guide)
+- [Google Antigravity Artifacts ガイド：AIの作業が一目でわかる](antigravity-artifacts-guide)
+- [Google Antigravity Skills 入門：AIへの指示が伝わらない問題を解決](antigravity-noneng-workflow-overview)
