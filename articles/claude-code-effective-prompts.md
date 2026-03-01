@@ -3,7 +3,7 @@ title: "Claude Codeに「いい感じにして」と言うのをやめた結果"
 emoji: "💬"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
-published: true
+published: false
 ---
 
 ## はじめに
