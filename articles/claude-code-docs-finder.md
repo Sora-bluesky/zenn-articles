@@ -19,7 +19,9 @@ Claude Code の公式ドキュメント、**どのページに何が書いてあ
 **スマホでは動きません。** モバイルアプリのArtifact環境はAPIリクエストの中継方式がPC版と異なるため、`Invalid response format` エラーになります。詳しくは [ウェブアプリとして配布しようとした](#ウェブアプリとして配布しようとした) で解説しています。
 :::
 
-1. [GitHubリポジトリ](https://github.com/Sora-bluesky/claude-code-docs-finder) を開く
+https://github.com/Sora-bluesky/claude-code-docs-finder
+
+1. 上のGitHubリポジトリを開く
 2. `claude-code-docs-search.html` をクリック → 右上の「Download raw file」ボタンでダウンロード
 3. PCブラウザで [claude.ai](https://claude.ai) を開く
 4. チャット欄にダウンロードしたHTMLファイルを添付して「このHTMLをArtifactとして開いて」と送信（Artifactとは、claude.ai上でHTMLを実行できる機能のこと）
@@ -307,9 +309,7 @@ https://code.claude.com/docs/llms.txt を取得し、
 
 HTMLファイル1つで完結する。コード全体はGitHubで公開している。
 
-:::message
-**[→ GitHubでコードを見る](https://github.com/Sora-bluesky/claude-code-docs-finder)**
-:::
+https://github.com/Sora-bluesky/claude-code-docs-finder
 
 主要な部分だけ抜粋するとこうなる。
 
