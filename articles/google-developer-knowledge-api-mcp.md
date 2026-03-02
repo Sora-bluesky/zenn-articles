@@ -3,7 +3,7 @@ title: "llms.txtでは足りなかった — Google Developer Knowledge APIに�
 emoji: "🔗"
 type: "tech"
 topics: ["google", "gemini", "mcp", "ai", "llm"]
-published: true
+published: false
 ---
 
 ## この記事でできること
