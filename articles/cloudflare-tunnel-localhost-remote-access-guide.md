@@ -19,7 +19,7 @@ published: false
 :::message
 **対象読者**: localhost で Web アプリを動かしている個人開発者（Windows 環境）
 **前提知識**: コマンドライン操作の基本（PowerShell / ターミナル）
-**検証環境**: Windows 11 + cloudflared 2026.2.x（2026 年 3 月時点）
+**検証環境**: Windows 11 + cloudflared 2026.3.0（2026 年 3 月時点）
 :::
 
 ---
@@ -211,10 +211,18 @@ winget install --id Cloudflare.cloudflared
 
 ```powershell
 cloudflared --version
-# cloudflared version 2026.2.x (built ...)
+# cloudflared version 2026.3.0 (built ...)
 ```
 
 バージョンが表示されれば OK。
+
+:::message
+**Windows では cloudflared は自動更新されない。** 手動で更新が必要な場合は以下を実行する。
+
+```powershell
+winget upgrade --id Cloudflare.cloudflared
+```
+:::
 
 > 公式リポジトリ: [cloudflare/cloudflared (GitHub)](https://github.com/cloudflare/cloudflared)
 
@@ -235,8 +243,9 @@ Tunnel の管理方法は 2 つある:
 
 **手順:**
 
-1. [Cloudflare One ダッシュボード](https://one.dash.cloudflare.com/) にログイン
-2. 左メニュー「**Networks**」→「**Tunnels**」
+1. Cloudflare ダッシュボードにログイン（以下どちらでも操作できる）
+   - **Zero Trust ダッシュボード**: [one.dash.cloudflare.com](https://one.dash.cloudflare.com/) →「**Networks**」→「**Tunnels**」
+   - **メインダッシュボード**: [dash.cloudflare.com](https://dash.cloudflare.com/) →「**Networking**」→「**Tunnels**」（2026年2月から利用可能）
 3. 「**Create a tunnel**」をクリック
 4. Connector type:「**Cloudflared**」を選択 →「Next」
 5. Tunnel 名を入力（例: `my-app`）→「Save tunnel」
@@ -571,7 +580,11 @@ winget install --id Tailscale.Tailscale
 
 Tailscale のアプリが起動するので、Google / Microsoft / GitHub アカウントでログイン。
 
-**3. Funnel を有効化**
+**3. HTTPS Certificates を有効化（前提条件）**
+
+Funnel は HTTPS を使用するため、まず証明書の有効化が必要。管理コンソール（[login.tailscale.com/admin/dns](https://login.tailscale.com/admin/dns)）の「**Settings**」→「**DNS**」→「**HTTPS Certificates**」をオンにする。
+
+**4. Funnel を有効化**
 
 Tailscale の管理コンソール（[login.tailscale.com/admin/acls](https://login.tailscale.com/admin/acls)）で ACL に Funnel 許可を追加:
 
@@ -586,7 +599,7 @@ Tailscale の管理コンソール（[login.tailscale.com/admin/acls](https://lo
 }
 ```
 
-**4. ローカルアプリを公開**
+**5. ローカルアプリを公開**
 
 ```powershell
 # localhost:3000 を公開
@@ -595,7 +608,7 @@ tailscale funnel 3000
 
 ターミナルに表示される `https://your-pc.tailnet-xxxx.ts.net` が公開 URL。外出先のスマホからアクセスできる。
 
-**5. バックグラウンド実行（常時公開）**
+**6. バックグラウンド実行（常時公開）**
 
 ```powershell
 tailscale funnel --bg 3000

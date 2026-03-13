@@ -140,7 +140,7 @@ developer.mozilla.org
 ### skills/（スキルファイル）
 
 **グローバル**: `~/.gemini/antigravity/skills/`
-**プロジェクト**: `<workspace>/.agents/skills/`
+**プロジェクト**: `<workspace>/.agent/skills/`（または `<workspace>/.agents/skills/`、どちらも機能する）
 **読むツール**: Antigravity のみ
 
 Claude Code のスキルに相当する。Markdown ファイルで定義し、Antigravity がタスク実行時に参照する。
@@ -154,7 +154,9 @@ Claude Code のスキルに相当する。Markdown ファイルで定義し、An
 
 :::message
 **公式ドキュメント**
-- [English: Gemini CLI Configuration](https://github.com/google-gemini/gemini-cli/blob/main/docs/configuration.md)
+- [English: Gemini CLI MCP Server Guide](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md)
+- [English: Gemini CLI Configuration Reference](https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md)
+- [English: GEMINI.md Guide](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md)
 - [English: Antigravity MCP Guide](https://antigravity.google/docs/mcp)
 :::
 
@@ -378,7 +380,9 @@ ls -la ~/.gemini/antigravity/
 
 ## 参考リンク
 
-- [Gemini CLI Configuration（GitHub）](https://github.com/google-gemini/gemini-cli/blob/main/docs/configuration.md)
+- [Gemini CLI MCP Server Guide（GitHub）](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md)
+- [Gemini CLI Configuration Reference（GitHub）](https://github.com/google-gemini/gemini-cli/blob/main/docs/reference/configuration.md)
+- [GEMINI.md Guide（GitHub）](https://github.com/google-gemini/gemini-cli/blob/main/docs/cli/gemini-md.md)
 - [Antigravity MCP Guide](https://antigravity.google/docs/mcp)
 - [GitHub Issue #16058: GEMINI.md should support tool-specific sections](https://github.com/google-gemini/gemini-cli/issues/16058)
 - [Google AI Developers Forum: Antigravity error from .antigravity folder](https://discuss.ai.google.dev/t/solved-antigravity-error-from-antigravity-folder/126886)

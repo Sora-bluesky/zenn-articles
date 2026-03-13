@@ -214,7 +214,17 @@ Operation [operations/akmf.p12-123456789-abcdef] complete. Result: {
 }
 ```
 
-`keyString` の値が、MCP 設定や環境変数に入れる API キーだ。この値は**一度しか表示されない**ので、すぐにコピーして安全な場所に保存する。
+`keyString` の値が、MCP 設定や環境変数に入れる API キーだ。**この画面を閉じると再表示されない**ので、すぐにコピーして安全な場所に保存する。
+
+:::message
+後から取得したい場合は、以下のコマンドで再取得できる。`KEY_ID` は `name` フィールドの末尾（`keys/abcdef-1234` の `abcdef-1234` 部分）。
+
+```bash
+gcloud services api-keys get-key-string KEY_ID --project=my-ai-tools
+```
+
+ただし、すぐ保存するのが最も確実だ。
+:::
 
 :::message
 **公式ドキュメント**

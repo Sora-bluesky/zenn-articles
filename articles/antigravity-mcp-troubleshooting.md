@@ -195,7 +195,7 @@ gcloud services api-keys create --project=YOUR_PROJECT_ID \
 
 エラーメッセージが出ないパターンなので厄介だ。MCP のツール一覧は表示される。サーバーとの接続も成功している。なのに実行すると認証が通らない。「全部合ってるのに動かない」状態で、最初は自分の設定ミスだと思い込んで延々と設定を見直した。
 
-結論から言うと、2026年3月時点で Antigravity は MCP の OAuth 認証フローをサポートしていない。Google Cloud の公式 Known Issues にも明記されている。
+結論から言うと、2026年3月時点で **Antigravity は MCP の OAuth 認証フローをサポートしていない**。これは Antigravity 固有の Known Issue で、Gemini CLI は OAuth を正式サポートしている。Google Cloud の公式 Known Issues にも明記されている。
 
 OAuth を要求する MCP サーバーだと、ツール一覧の取得（`tools/list`）は通るのに実際のツール呼び出しで認証エラーになる。見た目上「接続成功」しているから余計にタチが悪い。
 
@@ -203,7 +203,7 @@ OAuth を要求する MCP サーバーだと、ツール一覧の取得（`tools
 
 :::message
 **公式ドキュメント**
-- [English: Google Cloud MCP Known Issues](https://cloud.google.com/products/gemini/mcp/known-issues)
+- [English: Google Cloud MCP Known Issues](https://docs.cloud.google.com/mcp/known-issues)
 - ブラウザの翻訳機能で日本語に変換して読める
 :::
 
@@ -333,7 +333,7 @@ https://zenn.dev/sora_biz/articles/google-developer-knowledge-api-mcp
 **公式ドキュメント**
 - [English: Google AI Developers Forum - MCP Tool Execution Error](https://discuss.ai.google.dev/t/error-during-mcp-tool-execution-in-antigravity/118162)
 - [English: Google AI Developers Forum - Connection Error](https://discuss.ai.google.dev/t/client-antigravity-connection-to-server-is-erroring-shutting-down-server/121223)
-- [English: Google Cloud MCP Known Issues](https://cloud.google.com/products/gemini/mcp/known-issues)
+- [English: Google Cloud MCP Known Issues](https://docs.cloud.google.com/mcp/known-issues)
 - [English: Google Antigravity Docs](https://antigravity.google/docs)
 - [English: Developer Knowledge API MCP Server](https://developers.google.com/knowledge/mcp)
 - ブラウザの翻訳機能で日本語に変換して読める
