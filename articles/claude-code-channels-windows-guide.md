@@ -381,6 +381,9 @@ v2.1.81 以降、許可プロンプトをチャットアプリに転送する **
 
 ターミナル側の許可プロンプトも同時に有効で、**先に返答した方が採用される**。外出先ではスマホから、帰宅後はターミナルから、と使い分けられる。
 
+![Telegram で Permission Relay が動作している様子](/images/channels-permission-relay-telegram.jpg)
+*Telegram に許可プロンプトが転送される。`yes xxxxx` と返信すれば、スマホからコマンド実行を許可できる*
+
 :::message
 **Permission Relay が動かない場合**
 プラグインが古い可能性がある。Claude Code で以下を実行してプラグインを更新する：
