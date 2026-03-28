@@ -3,7 +3,7 @@ title: "AIエージェントを複数並べて協調させるツールをWindows
 emoji: "🪟"
 type: "tech"
 topics: ["claudecode", "ai", "windows", "powershell", "個人開発"]
-published: true
+published: false
 ---
 
 Claude Code にレビューさせながら、隣のペインで Codex に実装させたい。macOS なら smux がある。でも僕の環境は Windows だ。
