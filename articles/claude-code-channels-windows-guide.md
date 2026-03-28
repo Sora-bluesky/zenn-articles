@@ -312,23 +312,26 @@ Discord より手順が少ない。個人利用にはこちらの方が手軽。
 4. Bot のユーザー名を入力（末尾が `bot` で終わる必要がある。例：`my_claude_code_bot`）
 5. BotFather がトークンを返す（`123456789:AAHfiqksKZ8...` のような形式）。コピーする
 
-### Step 2: Claude Code でプラグインを設定
+### Step 2: `--channels` フラグ付きで起動
+
+```powershell
+claude --channels plugin:telegram@claude-plugins-official
+```
+
+### Step 3: プラグインのインストールとトークン設定
 
 ```
-> /plugin install telegram@claude-plugins-official
-> /reload-plugins
+/plugin install telegram@claude-plugins-official
+```
+
+```
+/reload-plugins
 ```
 
 トークンを設定：
 
 ```
-> /telegram:configure あなたのBotトークン
-```
-
-### Step 3: `--channels` フラグ付きで再起動
-
-```powershell
-claude --channels plugin:telegram@claude-plugins-official
+/telegram:configure あなたのBotトークン
 ```
 
 ### Step 4: ペアリング
