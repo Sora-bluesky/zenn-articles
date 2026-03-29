@@ -219,6 +219,17 @@ src/auth.ts のリフレッシュトークン処理を実装してください
 
 Architect が Builder に実装を指示し、完了したら Reviewer にレビューを依頼する。Reviewer のフィードバックを Builder に渡して修正させる。全部 `psmux-bridge message` で回る。
 
+実際に僕が使っている構成がこれ。4 ペインに分けて、Claude Code が全体を指揮し、Codex 2 台が実装とレビューを分担、残り 1 ペインで dev server を監視している。
+
+![winsmux 4ペイン構成の実例：Claude Code（commander）+ Codex×2（builder/reviewer）+ dev server（monitor）](/images/winsmux-4pane-demo.png)
+
+| ペイン | ラベル | ロール | 実行中のエージェント/プロセス |
+|--------|--------|--------|--------------------------|
+| 左上 %1 | commander | 全体指揮 | Claude Code |
+| 右上 %3 | builder | 実装 | Codex（gpt-5.4） |
+| 右下 %6 | reviewer | レビュー | Codex（gpt-5.3-codex-spark） |
+| 左下 %5 | monitor | ビルド監視 | Next.js dev server（port 3003） |
+
 ### AI エージェントと手動作業の併用
 
 1 つのペインで自分がコードを書き、隣のペインで AI にテスト生成やリント修正をさせる。エージェントペインだけでなく、普通のシェルペインの出力も `read` で取得できるから、ビルドログを AI に読ませて修正案を出させるといった使い方もできる。
