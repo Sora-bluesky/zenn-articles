@@ -215,7 +215,7 @@ src/auth.ts のリフレッシュトークン処理を実装してください
 |--------|--------|--------|-------------|
 | %1 | architect | 設計と指示 | Claude Code |
 | %2 | builder | 実装 | Codex |
-| %3 | reviewer | レビュー | Gemini CLI |
+| %3 | reviewer | レビュー | Codex（別インスタンス） |
 
 Architect が Builder に実装を指示し、完了したら Reviewer にレビューを依頼する。Reviewer のフィードバックを Builder に渡して修正させる。全部 `psmux-bridge message` で回る。
 
