@@ -6,7 +6,7 @@ topics: ["claudecode", "ai", "windows", "powershell", "個人開発"]
 published: true
 ---
 
-Claude Code にレビューさせながら、隣のペインで Codex に実装させたい。macOS なら smux がある。でも僕の環境は Windows だ。
+Claude Code を司令塔にして、Codex に実装させ、Codex Spark にレビューさせたい。調査は Claude Sonnet に回してコストも抑えたい。それぞれが何をやっているか、ペインで見える化もしたい。macOS なら smux がある。でも僕の環境は Windows だ。
 
 WSL2 を経由すれば tmux は使える。ただ、Windows Terminal と PowerShell で完結させたかった。ネイティブで動かないと、結局もう一枚レイヤーを噛ませることになる。それが嫌だった。
 
