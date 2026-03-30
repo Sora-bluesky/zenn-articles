@@ -1,5 +1,5 @@
 ---
-title: "AIエージェントを並列実行して会話させる：smux の Windows 版 winsmux を作った"
+title: "司令塔はコードを触らない：WSL不要でAIエージェントを並列稼働させる winsmux を作った"
 emoji: "🪟"
 type: "tech"
 topics: ["claudecode", "ai", "windows", "powershell", "個人開発"]
