@@ -1,0 +1,23 @@
+title: "AIコーディングを始めるためのGit — 非エンジニアが最短で「動かせる」ようになる本"
+summary: |
+  Claude Code、Codex、GitHub Copilot ── AIにコードを書いてもらう時代が来た。
+  でもこれらのツールは全部「Git」が前提で動く。
+  「AIに書いてもらいたいだけなのに、Gitがわからなくて詰む」── その壁を取り除く本。
+  プログラミング経験ゼロでも、VS Codeの画面操作だけでGitを使いこなし、
+  最後はClaude Codeで実際にアプリを作るところまで到達する。
+topics: ["git", "github", "claudecode", "ai", "初心者向け"]
+published: false
+price: 0
+toc_depth: 2
+chapters:
+  - "00-introduction"
+  - "01-why-git-in-ai-era"
+  - "02-setup"
+  - "03-first-repository"
+  - "04-add-and-commit"
+  - "05-push-and-pull"
+  - "06-branch-and-merge"
+  - "07-pull-request-and-issue"
+  - "08-claude-code-practice"
+  - "09-troubleshooting"
+  - "10-next-steps"
