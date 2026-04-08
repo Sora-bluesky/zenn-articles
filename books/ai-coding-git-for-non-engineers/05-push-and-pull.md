@@ -17,7 +17,7 @@ title: "GitHubに公開する — push と pull"
 | 自分しか使えない                  | **他の人と共有できる**                    |
 | AI ツールがローカルでしか動かない | **GitHub Actions 等でクラウド連携できる** |
 
-AI コーディングの文脈では、GitHub Copilot を使うには GitHub リポジトリが必要だし、Claude Code で作ったものを公開するのも GitHub 経由が最も簡単である。
+AI コーディングの文脈では、GitHub Copilot を使うには GitHub リポジトリが必要だし、Claude Code や Google Antigravity で作ったものを公開するのも GitHub 経由が最も簡単である。
 
 ## 覚える操作は 3 つだけ
 

@@ -7,7 +7,7 @@ free: true
 
 「AIにコードを書いてもらいたい」と思ったことはないだろうか。
 
-Claude Code、Codex、GitHub Copilot ── 2026年現在、AIにコードを書かせるツールは驚くほど充実している。プログラミングの知識がなくても、日本語で「こういうアプリを作って」と頼めば、AIがコードを生成してくれる時代になった。
+Claude Code、Codex、Google Antigravity、GitHub Copilot ── 2026年現在、AIにコードを書かせるツールは驚くほど充実している。プログラミングの知識がなくても、日本語で「こういうアプリを作って」と頼めば、AIがコードを生成してくれる時代になった。
 
 ところが、いざ使い始めようとすると、こんな壁にぶつかる。
 
@@ -20,7 +20,7 @@ Claude Code、Codex、GitHub Copilot ── 2026年現在、AIにコードを書
 ## 対象読者
 
 - プログラミング経験がゼロの人
-- Claude Code / Codex / GitHub Copilot に興味がある人
+- Claude Code / Codex / Google Antigravity / GitHub Copilot に興味がある人
 - デザイナー、ライター、PM、ディレクター、個人事業主
 - 「ターミナル」「コマンドライン」と聞くだけで不安になる人
 
@@ -32,7 +32,7 @@ Claude Code、Codex、GitHub Copilot ── 2026年現在、AIにコードを書
 
 1. **VS Code の画面操作だけ**で Git の基本操作（記録・公開・枝分かれ）ができる
 2. **GitHub** にプロジェクトを公開し、他の人と共有できる
-3. **Claude Code** を使って、AIに実際のアプリを作ってもらえる
+3. **Claude Code** や **Google Antigravity** を使って、AIに実際のアプリを作ってもらえる
 4. 「やらかした！」ときに、自分で元に戻せる
 
 ## 前提条件
