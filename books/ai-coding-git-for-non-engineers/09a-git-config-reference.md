@@ -274,7 +274,7 @@ git config --global branch.sort -committerdate
 
 先頭の `-` は「降順（新しいものが上）」を表す。
 
-**いつ使うか**: ブランチが増えてきたときに便利。AI ツールを使っていると、Claude Code や Antigravity が機能ごとにブランチを作るので、ブランチ数はすぐに増える。最近触ったブランチが上に来れば探しやすい。
+**いつ使うか**: ブランチが増えてきたときに便利。AI ツールを使っていると、Claude Code が機能ごとにブランチを作るので、ブランチ数はすぐに増える。最近触ったブランチが上に来れば探しやすい。
 
 ---
 
@@ -308,7 +308,7 @@ git config --global push.default current
 git config --global push.autoSetupRemote true
 ```
 
-**いつ使うか**: [第 5 章](05-push-and-pull)で、初回 push 時に `git push -u origin main` と打つ必要があると説明した。この設定を `true` にすると、`git push` だけで同じことが自動的に行われる。ブランチを頻繁に作る AI コーディングでは（Claude Code でも Google Antigravity でも）、毎回 `-u origin ブランチ名` と打つ手間が省けるので設定しておくと快適になる。
+**いつ使うか**: [第 5 章](05-push-and-pull)で、初回 push 時に `git push -u origin main` と打つ必要があると説明した。この設定を `true` にすると、`git push` だけで同じことが自動的に行われる。ブランチを頻繁に作る AI コーディングでは、毎回 `-u origin ブランチ名` と打つ手間が省けるので設定しておくと快適になる。
 
 ### push.followTags — push 時にタグも送る ★☆☆
 
@@ -373,7 +373,7 @@ git config --global pull.ff true
 git config --global fetch.prune true
 ```
 
-**いつ使うか**: AI コーディングではブランチの作成・削除が頻繁に行われる。Claude Code や Google Antigravity が機能ごとにブランチを作るため、GitHub でマージ済みのブランチを削除しても、ローカルには「もう存在しないリモートブランチ」の参照がゾンビのように残り続ける。`true` にしておくと自動で掃除してくれる。
+**いつ使うか**: AI コーディングではブランチの作成・削除が頻繁に行われる。Claude Code が機能ごとにブランチを作るため、GitHub でマージ済みのブランチを削除しても、ローカルには「もう存在しないリモートブランチ」の参照がゾンビのように残り続ける。`true` にしておくと自動で掃除してくれる。
 
 ### fetch.pruneTags — リモートで消えたタグも自動削除 ★☆☆
 

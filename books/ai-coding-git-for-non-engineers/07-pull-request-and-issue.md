@@ -25,7 +25,7 @@ title: "チームで使う — Pull Request と Issue"
 
 ### AI ツールと Pull Request
 
-Claude Code に仕事を頼むと、多くの場合こう動く（Google Antigravity も同様の流れで動作する）。
+Claude Code に仕事を頼むと、多くの場合こう動く。
 
 1. AI ツールがブランチを作る
 2. コードを書いてコミットする

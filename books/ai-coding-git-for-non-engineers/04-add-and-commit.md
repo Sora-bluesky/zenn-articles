@@ -113,7 +113,7 @@ style: ヘッダーの余白を調整   ← 見た目の変更
 
 ### AI が書くコミットメッセージの読み方
 
-Claude Code や Google Antigravity にコミットを任せると、こんなメッセージが自動生成される。
+Claude Code にコミットを任せると、こんなメッセージが自動生成される。
 
 ```
 feat: add user authentication with JWT tokens

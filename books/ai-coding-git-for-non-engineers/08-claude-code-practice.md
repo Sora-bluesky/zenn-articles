@@ -286,26 +286,6 @@ Claude Code を使っていると、AI が Git コマンドを実行する場面
 | 新しいブランチで作業する  | `git switch -c`                    | [第 6 章](06-branch-and-merge)  |
 | Pull Request を作成する   | `gh pr create`                     | [第 7 章](07-pull-request-and-issue)  |
 
-## Codex・Antigravity・Copilot との使い分け
-
-Claude Code 以外にも AI コーディングツールがある。それぞれの特徴を簡単にまとめる。
-
-| ツール                 | 得意なこと                               | 使い方                     | Git の関わり              |
-| ---------------------- | ---------------------------------------- | -------------------------- | ------------------------- |
-| **Claude Code**        | ゼロからのアプリ作成、大規模な変更       | ターミナルに日本語で指示   | 自動で add/commit/push/PR |
-| **Codex**              | 複数ファイルの一括生成、リファクタリング | Web UI またはターミナル    | 自動で commit/PR          |
-| **Google Antigravity** | ゼロからのアプリ作成、リサーチ、コード生成 | ターミナルに日本語で指示   | 自動で add/commit/push    |
-| **GitHub Copilot**     | コード補完、1 ファイル内の修正           | VS Code のエディタ上で提案 | ユーザーが手動で commit   |
-
-### 使い分けの指針
-
-- **新しいプロジェクトを作りたい** → Claude Code
-- **Google のエコシステムを活用したい** → Google Antigravity
-- **既存のコードを少し直したい** → GitHub Copilot
-- **まとまった変更を一括で行いたい** → Codex
-
-どのツールを使っても、Git の基本操作（commit、push、PR）は共通である。本書で学んだ知識がそのまま活きる。
-
 ## 「やらかした！」復旧コーナー
 
 ### 「AI が変なコードをコミットしてしまった」
