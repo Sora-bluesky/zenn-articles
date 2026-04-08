@@ -20,4 +20,5 @@ chapters:
   - "07-pull-request-and-issue"
   - "08-claude-code-practice"
   - "09-troubleshooting"
+  - "09a-git-config-reference"
   - "10-next-steps"
