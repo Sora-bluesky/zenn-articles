@@ -135,7 +135,10 @@ git config --global --list
 | ----------------------------------------- | ---------------------------------- |
 | `git config --global user.name "名前"`    | Git に「自分の名前」を登録する     |
 | `git config --global user.email "メール"` | Git に「メールアドレス」を登録する |
+| `git config --global init.defaultBranch main` | 新しいリポジトリのデフォルトブランチ名を `main` にする |
 
 `--global` は「このパソコン全体で有効」という意味である。一度設定すれば、以降は不要。
 
-- [よく使う git config 設定一覧 — Git Ready](https://git-ready.easegis.jp/guide/tips-git-config-reference)
+:::message alert
+**`init.defaultBranch` の設定は必ず行うこと。** Git のバージョンによっては、`git init` したときのブランチ名が `master` になる。GitHub は `main` が標準なので、ここが食い違うと第 5 章の `git push` でエラーになる。上のコマンドを実行しておけば、常に `main` で始まる。
+:::
