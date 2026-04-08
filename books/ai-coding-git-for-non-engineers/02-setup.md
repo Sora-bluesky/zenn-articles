@@ -65,6 +65,11 @@ sudo apt update && sudo apt install git
 Ubuntu 以外の Linux（Fedora、Arch 等）の場合は、各ディストリビューションのパッケージマネージャーを使う。例: Fedora は `sudo dnf install git`、Arch は `sudo pacman -S git`。
 :::
 
+:::message
+### SSH の設定は今は不要
+Web や書籍で「SSH キーを作れ」と書かれていることがあるが、本書では HTTPS + Git Credential Manager で認証を行う。SSH は第10章「次のステップ」で紹介しているので、必要になったらそちらを参照すること。 **本書の手順はすべて HTTPS で動作する。**
+:::
+
 ## ステップ 2: VS Code のインストール
 
 1. ブラウザで [code.visualstudio.com](https://code.visualstudio.com/) を開く
@@ -168,3 +173,7 @@ git config --global --list
 | `git config --global init.defaultBranch main` | 新しいリポジトリのデフォルトブランチ名を `main` にする |
 
 `--global` は「このパソコン全体で有効」という意味である。一度設定すれば、以降は不要。
+
+:::message
+Git をもっとカスタマイズしたいときは → 第9a章「Git 設定リファレンス」を参照
+:::

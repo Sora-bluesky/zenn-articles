@@ -204,6 +204,19 @@ nothing added to commit but untracked files present (use "git add" to track)
 
 この表示は「main ブランチにいて、hello.txt というまだ追跡されていないファイルがある」と教えてくれている。`git status` は何も変更しない安全なコマンドなので、不安なときは何度でも実行して構わない。
 
+`git status` の出力を1行ずつ読んでみよう。Git があなたに「今の状態」を教えてくれている。
+
+```
+On branch main               ← 今いるブランチの名前
+No commits yet                ← まだ1回も記録していない
+Untracked files:              ← Git がまだ知らないファイルがある
+  (use "git add <file>..."    ← 「git add で追跡を始められるよ」と教えてくれている
+   to include in what will be committed)
+        hello.txt             ← 該当するファイル名
+```
+
+英語のメッセージが並ぶと怖く感じるが、 **Git は「今どういう状態で、次に何をすればいいか」を毎回教えてくれている**。エラーが出ても、メッセージをよく読めばヒントが書いてある。
+
 短縮表示にしたい場合は `-s`（short）オプションを使う。
 
 ```bash
@@ -215,3 +228,5 @@ git status -s
 ```
 
 `??` は「Untracked（未追跡）」の意味である。前のセクションで説明した記号と対応している。
+
+次の第4章で、このファイルを実際に Git に記録する。ここまでできていれば、あと2クリックで完了だ。
