@@ -6,7 +6,7 @@ summary: |
   プログラミング経験ゼロでも、VS Codeの画面操作だけでGitを使いこなし、
   最後はClaude Codeで実際にアプリを作るところまで到達する。
 topics: ["git", "github", "claudecode", "ai", "初心者向け"]
-published: false
+published: true
 price: 0
 toc_depth: 2
 chapters:
