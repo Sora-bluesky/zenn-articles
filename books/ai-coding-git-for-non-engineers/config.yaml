@@ -21,4 +21,8 @@ chapters:
   - "08-claude-code-practice"
   - "09-troubleshooting"
   - "09a-git-config-reference"
+  - "09b-git-donts"
+  - "09c-error-dictionary"
+  - "09d-ai-git-comparison"
   - "10-next-steps"
+  - "09e-cheatsheet"

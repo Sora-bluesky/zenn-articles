@@ -257,3 +257,9 @@ git push
 :::message
 push を毎回楽にする設定 → 第9a章「push.autoSetupRemote」を参照
 :::
+
+## 確認クイズ
+
+- Q1: push と pull の方向をそれぞれ答えよ → A: push は PC→GitHub、pull は GitHub→PC
+- Q2: `origin` とは何？ → A: リモートリポジトリの名前（慣例）
+- Q3: clone と pull の違いは？ → A: clone は最初の1回（丸ごとコピー）、pull は2回目以降（差分を取り込む）
