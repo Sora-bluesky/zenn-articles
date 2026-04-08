@@ -41,12 +41,7 @@ VS Code には、Git 操作を強化する拡張機能が豊富にある。
 
 #### GitHub Flow（最もシンプル、おすすめ）
 
-```
-main ─────────────────────────────── 常にデプロイ可能
-  ├── feature/login ── PR ── マージ ──┘
-  ├── feature/about ── PR ── マージ ──┘
-  └── fix/bug-123 ── PR ── マージ ───┘
-```
+![GitHub Flow](/images/book-10-github-flow.png)
 
 ルールは 2 つだけ。
 
