@@ -81,6 +81,10 @@ git config --global user.signingkey ~/.ssh/id_ed25519.pub
 git config --global gpg.format ssh
 ```
 
+:::message
+Windows の PowerShell では `~/.ssh/id_ed25519.pub` の代わりに `$env:USERPROFILE\.ssh\id_ed25519.pub` でも指定できる。
+:::
+
 **いつ使うか**: GitHub で「Verified」バッジ（緑色のマーク）を表示させたいときに使う。個人の趣味プロジェクトであれば、設定しなくても問題ない。オープンソースの開発に参加するときや、仕事のリポジトリで署名が必須とされている場合に必要になる。
 
 ### commit.gpgsign — 全コミットに署名を付ける ★☆☆
@@ -142,17 +146,17 @@ git config --global core.pager "less"
 
 **何をする設定か**: Windows と Mac/Linux で異なる改行コードを自動的に変換するかどうかを決める。
 
-**改行コードとは**: テキストファイルで「ここで改行する」を示す目に見えない記号のこと。Windows は `CRLF`（2 文字分）、Mac/Linux は `LF`（1 文字分）を使う。この違いがあると、同じファイルなのに Git が「変更された」と誤認することがある。
+**改行コードとは**: テキストファイルで「ここで改行する」を示す目に見えない記号のこと。Windows は `CRLF`（2 文字分）、Mac / Linux は `LF`（1 文字分）を使う。この違いがあると、同じファイルなのに Git が「変更された」と誤認することがある。
 
 ```bash
 # Windows の場合
 git config --global core.autocrlf true
 
-# Mac の場合
+# Mac / Linux の場合
 git config --global core.autocrlf input
 ```
 
-**いつ使うか**: 第 9 章のトラブルシューティング「改行コード問題」で解説済み。Windows ユーザーは `true`、Mac ユーザーは `input` が推奨。
+**いつ使うか**: 第 9 章のトラブルシューティング「改行コード問題」で解説済み。Windows ユーザーは `true`、Mac / Linux ユーザーは `input` が推奨。
 
 :::message
 第 9 章「改行コード問題」で解説済みの項目。具体的な症状と対処法はそちらを参照。

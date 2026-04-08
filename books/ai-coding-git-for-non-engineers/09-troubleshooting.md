@@ -282,7 +282,7 @@ git reset --hard f4e5d6c
 
 **状況**: `warning: LF will be replaced by CRLF` という警告が出る。
 
-**原因**: Windows は改行コードに `CRLF`（2 文字）、Mac/Linux は `LF`（1 文字）を使う。チームで異なる OS を使っていると、差分が改行コードだけで大量に出ることがある。
+**原因**: Windows は改行コードに `CRLF`（2 文字）、Mac / Linux は `LF`（1 文字）を使う。チームで異なる OS を使っていると、差分が改行コードだけで大量に出ることがある。
 
 ### 解決方法
 
@@ -292,7 +292,7 @@ Git の設定で自動変換を有効にする。
 # Windows の場合
 git config --global core.autocrlf true
 
-# Mac の場合
+# Mac / Linux の場合
 git config --global core.autocrlf input
 ```
 

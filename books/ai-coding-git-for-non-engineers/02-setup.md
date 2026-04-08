@@ -48,12 +48,33 @@ git --version
 
 表示されない場合は、画面の指示に従って「コマンドライン・デベロッパー・ツール」をインストールする。ポップアップが出たら「インストール」を押すだけでよい。
 
+:::message
+ダウンロードに数分〜十数分かかることがある。画面が動かなくても、完了するまで待つこと。
+:::
+
+### Linux（Ubuntu）の場合
+
+1. ターミナルを開く
+2. 以下のコマンドを実行する
+
+```bash
+sudo apt update && sudo apt install git
+```
+
+:::message
+Ubuntu 以外の Linux（Fedora、Arch 等）の場合は、各ディストリビューションのパッケージマネージャーを使う。例: Fedora は `sudo dnf install git`、Arch は `sudo pacman -S git`。
+:::
+
 ## ステップ 2: VS Code のインストール
 
 1. ブラウザで [code.visualstudio.com](https://code.visualstudio.com/) を開く
 2. 「Download」ボタンをクリック（OS を自動判別してくれる）
 3. ダウンロードされたファイルを実行
 4. インストール画面の指示に従って進める
+
+:::message
+Mac の場合はダウンロードした `.zip` を展開し、 `Visual Studio Code.app` を「アプリケーション」フォルダにドラッグする。
+:::
 
 ### 日本語化する
 
@@ -90,7 +111,10 @@ VS Code でこの設定を行う。
 1. VS Code を開く
 2. 上部メニューの「ターミナル」→「新しいターミナル」をクリック
 3. 画面下部にターミナル（文字入力画面）が開く
-4. 以下の 2 行を **1 行ずつ** 入力して Enter キーを押す
+
+VS Code のターミナルは OS によって起動するシェルが異なる（Windows: PowerShell、Mac: zsh、Linux: bash）。本書のコマンドはどのシェルでも共通して動作する。
+
+4. 以下の 3 行を **1 行ずつ** 入力して Enter キーを押す
 
 ```bash
 git config --global user.name "自分の名前"
@@ -99,6 +123,12 @@ git config --global user.name "自分の名前"
 ```bash
 git config --global user.email "自分のメールアドレス"
 ```
+
+```bash
+git config --global init.defaultBranch main
+```
+
+3 行目は、新しいリポジトリを作ったときのブランチ名を `main` に設定するコマンドである。これを実行しないと、Git のバージョンによっては `master` がデフォルトになり、第 5 章の push でエラーになる。
 
 :::message
 ここで入力する名前とメールアドレスは、GitHub のアカウントと同じものにしておくのが望ましい。
@@ -129,7 +159,7 @@ git config --global --list
 
 ## 裏で何が起きているか（CLI 解説）
 
-この章で使ったコマンドは 2 つだけ。
+この章で使ったコマンドは 3 つ。
 
 | コマンド                                  | 意味                               |
 | ----------------------------------------- | ---------------------------------- |
@@ -138,7 +168,3 @@ git config --global --list
 | `git config --global init.defaultBranch main` | 新しいリポジトリのデフォルトブランチ名を `main` にする |
 
 `--global` は「このパソコン全体で有効」という意味である。一度設定すれば、以降は不要。
-
-:::message alert
-**`init.defaultBranch` の設定は必ず行うこと。** Git のバージョンによっては、`git init` したときのブランチ名が `master` になる。GitHub は `main` が標準なので、ここが食い違うと第 5 章の `git push` でエラーになる。上のコマンドを実行しておけば、常に `main` で始まる。
-:::

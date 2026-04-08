@@ -197,7 +197,14 @@ git config --global credential.helper manager
 
 # Mac
 git config --global credential.helper osxkeychain
+
+# Linux
+git config --global credential.helper cache
 ```
+
+:::message
+Linux の `cache` は約 15 分間認証情報をメモリに保持する。永続化したい場合は `store` を使うが、平文で保存されるためセキュリティリスクがある点に注意。
+:::
 
 これで認証情報がパソコンに安全に保存され、push / pull のたびにログインする必要がなくなる。
 
