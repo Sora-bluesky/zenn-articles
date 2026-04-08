@@ -113,7 +113,7 @@ main ブランチにいる状態で、`about.txt` が表示されていれば成
 - **merge** — 2つの流れが合流する（Y字型）。「いつ合流したか」の記録が残る
 - **rebase** — 自分の変更を相手の最新の後ろに乗せ直す（一直線）。履歴がきれいになるが、初心者にはリスクがある
 
-本書では merge だけ覚えれば十分。rebase は第9a章の設定リファレンスで補足している。
+本書では merge だけ覚えれば十分。rebase は[第 9a 章の設定リファレンス](09a-git-config-reference)で補足している。
 :::
 
 ## コンフリクト — 変更がぶつかった場合
@@ -231,7 +231,7 @@ VS Code はコンフリクト箇所に以下のボタンを表示してくれる
 | 退避を戻す          | `git stash pop`            | 退避した変更を復元                 |
 
 :::message
-merge と rebase の設定について → 第9a章「pull.rebase」を参照
+merge と rebase の設定について → [第 9a 章「pull.rebase」](09a-git-config-reference)を参照
 :::
 
 ## 確認クイズ
