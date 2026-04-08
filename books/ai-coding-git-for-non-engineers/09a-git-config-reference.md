@@ -46,10 +46,10 @@ title: "Git 設定リファレンス — 全項目を非エンジニア向けに
 git config --global user.name "Taro Yamada"
 ```
 
-**いつ使うか**: 第 2 章で設定済み。GitHub アカウントの名前と揃えておくのが望ましい。
+**いつ使うか**: [第 2 章](02-setup)で設定済み。GitHub アカウントの名前と揃えておくのが望ましい。
 
 :::message
-第 2 章「準備」で設定済みの項目。詳しい手順はそちらを参照。
+[第 2 章「準備」](02-setup)で設定済みの項目。詳しい手順はそちらを参照。
 :::
 
 ### user.email — コミッターのメールアドレス ★★★
@@ -62,10 +62,10 @@ git config --global user.name "Taro Yamada"
 git config --global user.email "taro@example.com"
 ```
 
-**いつ使うか**: 第 2 章で設定済み。GitHub に登録したメールアドレスと一致させること。
+**いつ使うか**: [第 2 章](02-setup)で設定済み。GitHub に登録したメールアドレスと一致させること。
 
 :::message
-第 2 章「準備」で設定済みの項目。詳しい手順はそちらを参照。
+[第 2 章「準備」](02-setup)で設定済みの項目。詳しい手順はそちらを参照。
 :::
 
 ### user.signingkey — GPG/SSH 署名キー ★☆☆
@@ -122,7 +122,7 @@ git config --global core.editor "code --wait"
 
 `--wait` は「VS Code でファイルを閉じるまで Git が待つ」という意味である。これがないと、Git はエディタを開いた瞬間に「メッセージなし」として処理を進めてしまう。
 
-**いつ使うか**: `git commit` をオプションなしで実行したとき、エディタが開いてメッセージの入力を求められる。第 2 章のインストール時に「VS Code をデフォルトエディタに」を選んでいれば、すでに設定されているはずだ。もし Vim（黒い画面のエディタ）が開いて困った経験があれば、上のコマンドで VS Code に切り替えよう。
+**いつ使うか**: `git commit` をオプションなしで実行したとき、エディタが開いてメッセージの入力を求められる。[第 2 章](02-setup)のインストール時に「VS Code をデフォルトエディタに」を選んでいれば、すでに設定されているはずだ。もし Vim（黒い画面のエディタ）が開いて困った経験があれば、上のコマンドで VS Code に切り替えよう。
 
 :::message alert
 Vim が開いてしまった場合の脱出方法: `Esc` キーを押してから `:q!` と入力して `Enter`。これで保存せずに閉じられる。
@@ -160,10 +160,10 @@ git config --global core.autocrlf true
 git config --global core.autocrlf input
 ```
 
-**いつ使うか**: 第 9 章のトラブルシューティング「改行コード問題」で解説済み。Windows ユーザーは `true`、Mac / Linux ユーザーは `input` が推奨。
+**いつ使うか**: [第 9 章](09-troubleshooting)のトラブルシューティング「改行コード問題」で解説済み。Windows ユーザーは `true`、Mac / Linux ユーザーは `input` が推奨。
 
 :::message
-第 9 章「改行コード問題」で解説済みの項目。具体的な症状と対処法はそちらを参照。
+[第 9 章「改行コード問題」](09-troubleshooting)で解説済みの項目。具体的な症状と対処法はそちらを参照。
 :::
 
 ### core.fileMode — ファイルの実行権限を追跡するか ★☆☆
@@ -239,10 +239,10 @@ Thumbs.db
 git config --global init.defaultBranch main
 ```
 
-**いつ使うか**: 第 2 章で設定済み。GitHub は `main` が標準なので、ここが `master` のままだと push 時にエラーが発生する。
+**いつ使うか**: [第 2 章](02-setup)で設定済み。GitHub は `main` が標準なので、ここが `master` のままだと push 時にエラーが発生する。
 
 :::message
-第 2 章「準備」で設定済みの項目。設定しないと Git のバージョンによっては `master` になり、GitHub の `main` と食い違ってトラブルの原因になる。
+[第 2 章「準備」](02-setup)で設定済みの項目。設定しないと Git のバージョンによっては `master` になり、GitHub の `main` と食い違ってトラブルの原因になる。
 :::
 
 ### branch.autoSetupRebase — 新ブランチの rebase 戦略 ★☆☆
@@ -308,7 +308,7 @@ git config --global push.default current
 git config --global push.autoSetupRemote true
 ```
 
-**いつ使うか**: 第 5 章で、初回 push 時に `git push -u origin main` と打つ必要があると説明した。この設定を `true` にすると、`git push` だけで同じことが自動的に行われる。ブランチを頻繁に作る AI コーディングでは（Claude Code でも Google Antigravity でも）、毎回 `-u origin ブランチ名` と打つ手間が省けるので設定しておくと快適になる。
+**いつ使うか**: [第 5 章](05-push-and-pull)で、初回 push 時に `git push -u origin main` と打つ必要があると説明した。この設定を `true` にすると、`git push` だけで同じことが自動的に行われる。ブランチを頻繁に作る AI コーディングでは（Claude Code でも Google Antigravity でも）、毎回 `-u origin ブランチ名` と打つ手間が省けるので設定しておくと快適になる。
 
 ### push.followTags — push 時にタグも送る ★☆☆
 
@@ -605,10 +605,10 @@ git config --global credential.helper osxkeychain
 git config --global credential.helper cache
 ```
 
-**いつ使うか**: 第 5 章「push するたびに認証を求められる」で解説済み。最近の Git for Windows は Git Credential Manager を自動でセットアップするため、手動設定が必要になるのは認証の不具合が起きたときである。
+**いつ使うか**: [第 5 章](05-push-and-pull)「push するたびに認証を求められる」で解説済み。最近の Git for Windows は Git Credential Manager を自動でセットアップするため、手動設定が必要になるのは認証の不具合が起きたときである。
 
 :::message
-第 5 章の「やらかした！復旧コーナー」で解説済みの項目。push のたびにログインを求められる場合の対処法はそちらを参照。
+[第 5 章](05-push-and-pull)の「やらかした！復旧コーナー」で解説済みの項目。push のたびにログインを求められる場合の対処法はそちらを参照。
 :::
 
 ### credential.useHttpPath — URL パスごとに別の認証情報を使う ★☆☆
@@ -683,7 +683,7 @@ git config --global --unset push.autoSetupRemote
 
 ## おすすめ初期設定まとめ
 
-ここまでの設定から、非エンジニアが AI コーディングを始めるときに入れておくと便利なものを厳選した。第 2 章で設定済みの項目も含め、全体像を示す。
+ここまでの設定から、非エンジニアが AI コーディングを始めるときに入れておくと便利なものを厳選した。[第 2 章](02-setup)で設定済みの項目も含め、全体像を示す。
 
 ```bash
 # === 第 2 章で設定済み ===

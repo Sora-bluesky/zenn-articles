@@ -24,19 +24,19 @@ Git なしで Vibe Coding を始めると、こんな問題が起きる:
 
 ここまでの章で、Git の基本操作は一通り身についた。
 
-- リポジトリを作れる（第 3 章）
-- 変更を記録できる（第 4 章）
-- GitHub に公開できる（第 5 章）
-- ブランチで安全に試せる（第 6 章）
-- Pull Request でレビューできる（第 7 章）
+- リポジトリを作れる（[第 3 章](03-first-repository)）
+- 変更を記録できる（[第 4 章](04-add-and-commit)）
+- GitHub に公開できる（[第 5 章](05-push-and-pull)）
+- ブランチで安全に試せる（[第 6 章](06-branch-and-merge)）
+- Pull Request でレビューできる（[第 7 章](07-pull-request-and-issue)）
 
-第1章で、こんな例を見た。
+[第 1 章](01-why-git-in-ai-era)で、こんな例を見た。
 
 > あなた: 自己紹介ページを作って
 > Claude Code: わかりました。以下のファイルを作成します。
 > （...git add, git commit が実行される...）
 
-あのとき「git add」「git commit」が何をしているかわからなかった。今はわかる。第3章で学んだ「3つのエリア」、第4章で学んだ「add と commit」、第5章で学んだ「push」—— これらが全部つながっている。
+あのとき「git add」「git commit」が何をしているかわからなかった。今はわかる。[第 3 章](03-first-repository)で学んだ「3つのエリア」、[第 4 章](04-add-and-commit)で学んだ「add と commit」、[第 5 章](05-push-and-pull)で学んだ「push」—— これらが全部つながっている。
 
 これらは全部、 **この章のための準備** だった。いよいよ AI にコードを書いてもらおう。
 
@@ -87,7 +87,7 @@ curl -fsSL https://claude.ai/install.sh | bash
 :::
 
 :::message alert
-Windows では **Git for Windows** が必要である。第 2 章でインストール済みなら問題ない。
+Windows では **Git for Windows** が必要である。[第 2 章](02-setup)でインストール済みなら問題ない。
 :::
 
 インストール完了後、以下で確認する。
@@ -112,7 +112,7 @@ claude
 
 ### 手順 1: リポジトリを準備する
 
-第 3 章〜第 5 章で学んだ手順で、GitHub リポジトリを用意する。
+[第 3 章](03-first-repository)〜[第 5 章](05-push-and-pull)で学んだ手順で、GitHub リポジトリを用意する。
 
 1. パソコンに新しいフォルダ `my-profile-site` を作成
 2. VS Code でフォルダを開く
@@ -170,7 +170,7 @@ VS Code の「ソース管理」パネルを開くと、AI が作成したファ
 
 ファイルをクリックすると、 **差分ビュー**（変更前と変更後の比較画面）が開く。新規ファイルの場合はすべて緑色（追加）で表示される。
 
-内容を確認して問題なければ、第 4 章で学んだ手順でコミットする。
+内容を確認して問題なければ、[第 4 章](04-add-and-commit)で学んだ手順でコミットする。
 
 1. **+** ボタンで全ファイルをステージング
 2. コミットメッセージを入力（例: `feat: 自己紹介ページを作成`）
@@ -280,11 +280,11 @@ Claude Code を使っていると、AI が Git コマンドを実行する場面
 | AI の動作                 | Git 操作                           | 学んだ章 |
 | ------------------------- | ---------------------------------- | -------- |
 | ファイルを作成・編集する  | （Git 操作なし、ファイル操作のみ） | —        |
-| 変更を記録に含める        | `git add`                          | 第 4 章  |
-| 変更を確定する            | `git commit`                       | 第 4 章  |
-| GitHub にアップロードする | `git push`                         | 第 5 章  |
-| 新しいブランチで作業する  | `git switch -c`                    | 第 6 章  |
-| Pull Request を作成する   | `gh pr create`                     | 第 7 章  |
+| 変更を記録に含める        | `git add`                          | [第 4 章](04-add-and-commit)  |
+| 変更を確定する            | `git commit`                       | [第 4 章](04-add-and-commit)  |
+| GitHub にアップロードする | `git push`                         | [第 5 章](05-push-and-pull)  |
+| 新しいブランチで作業する  | `git switch -c`                    | [第 6 章](06-branch-and-merge)  |
+| Pull Request を作成する   | `gh pr create`                     | [第 7 章](07-pull-request-and-issue)  |
 
 ## Codex・Antigravity・Copilot との使い分け
 
