@@ -336,6 +336,74 @@ pwsh scripts\install.ps1 -AppendAgentsRule
 
 最後に。OpenAI の日本語対応を誰よりも早く迎え入れて、このリポを役目終わりにする日を楽しみにしている。その日まで、ずんだもんには毎晩喋ってもらう。
 
+## v0.2.0 で入った拡張（2026-04-18 追記）
+
+記事公開後、自分で毎日使っているうちに「12 語だと足りない」「このプロジェクトでは `slice` を公式用語として使っているから緩めたい」という場面が出てきた。全部を 1 つの yaml に詰め込むと、他の人の事情と衝突する。そこで v0.2.0 で 4 つを足した。
+
+### 禁止語 12 → 26 語
+
+普遍的に読みにくくなるカテゴリを追加。
+
+- プロセス系: `merge`, `rebase`, `cherry-pick`
+- 概念系: `fingerprint`, `fallback`, `fixture`, `payload`, `helper`, `wrapper`
+- 状態系: `pending`, `idle`
+- レビュー系: `verdict`, `blocker`
+
+加えて、`冪等` を入れた。自分の README で「冪等に動く」と書いていたのが、読み上げさせたら詰まったので、自ツールで自分を叩く形になった。
+
+### severity 三段階（ERROR / WARNING / INFO）
+
+v0.1.x は「1 件でも違反があれば `ok: false`」という硬い判定だった。運用しているうちに「これは直さなくていい」「むしろ指摘として残しておきたい」の中間が欲しくなった。
+
+- **ERROR**: これがゼロになるまで `ok: true` は返さない（書き直し必須）
+- **WARNING**: `advisories` フィールドで通知される（無視できる）
+- **INFO**: 同上、参考情報
+
+`finalize` の返り値も `5件の違反を検出 (3 ERROR, 1 WARNING, 1 INFO)` のように内訳を返すようにした。書き直しループは ERROR のみが回る。
+
+### User-local override（`~/.codex/jp_lint.yaml`）
+
+リポジトリのバンドル規則を触らず、利用者側で調整できる。探索優先順位は `$CODEX_JP_HARNESS_USER_CONFIG` → `$XDG_CONFIG_HOME/codex-jp-harness/jp_lint.yaml` → `~/.codex/jp_lint.yaml`。ファイル不在ならバンドル値がそのまま使われる。
+
+```yaml
+disable:
+  - slice          # プロジェクト用語として常用するなら外す
+overrides:
+  handoff:
+    severity: WARNING
+add:
+  - term: foobar
+    suggest: "foobar は日本語訳を使う"
+    severity: ERROR
+```
+
+### `codex-jp-tune` CLI
+
+override ファイルを対話的に編集するコマンド。`pyyaml` だけに依存する軽量スクリプト。
+
+```bash
+codex-jp-tune path                        # 設定ファイルパス
+codex-jp-tune show                        # 有効な禁止語一覧
+codex-jp-tune disable <term>              # 無効化
+codex-jp-tune enable <term>               # 無効化の取り消し
+codex-jp-tune set-severity <term> WARNING # severity 調整
+codex-jp-tune add <term> --suggest "..."  # 追加
+```
+
+### `jp-harness-tune` skill（Claude Code 用）
+
+`codex-jp-tune` は手が早い分、安易に無効化されやすい。そこで、Claude Code 用に **「本当にルールを緩める必要があるか」を問い直す skill** を同梱した（`skills/jp-harness-tune/skill.md`）。類義の日本語表現で置換できるなら、緩めずに書き直す方向へ誘導する。`~/.claude/skills/` に置けば `/jp-harness-tune` で呼べる。
+
+1 つのルールを緩めると、そのぶん書き手の自主規律は下がる。緩めるかどうかの判断にもう 1 人の目を挟む、という設計である。
+
+### cross-platform
+
+当初は Windows + PowerShell 専用だったが、`install.sh` を追加して macOS / Linux / Git Bash on Windows でも動くようになった。Git Bash 上では MSYS パスを native Windows 形式に自動変換する。
+
+---
+
+v0.2.0 の各機能の背景は、GitHub の [Release v0.2.0](https://github.com/Sora-bluesky/codex-jp-harness/releases/tag/v0.2.0) にも書いてある。
+
 ---
 
 **関連リンク**
