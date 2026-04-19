@@ -390,11 +390,13 @@ codex-jp-tune set-severity <term> WARNING # severity 調整
 codex-jp-tune add <term> --suggest "..."  # 追加
 ```
 
-### `jp-harness-tune` skill（Claude Code 用）
+### `jp-harness-tune` skill（Codex CLI 用）
 
-`codex-jp-tune` は手が早い分、安易に無効化されやすい。そこで、Claude Code 用に **「本当にルールを緩める必要があるか」を問い直す skill** を同梱した（`skills/jp-harness-tune/skill.md`）。類義の日本語表現で置換できるなら、緩めずに書き直す方向へ誘導する。`~/.claude/skills/` に置けば `/jp-harness-tune` で呼べる。
+`codex-jp-tune` は手が早い分、安易に無効化されやすい。そこで、Codex CLI 用に **「本当にルールを緩める必要があるか」を問い直す skill** を同梱した（`skills/jp-harness-tune/SKILL.md`）。類義の日本語表現で置換できるなら、緩めずに書き直す方向へ誘導する。`~/.codex/skills/jp-harness-tune/SKILL.md` に置けば、Codex CLI の入力欄で `$` を押して `$jp-harness-tune` を選択して呼べる。
 
 1 つのルールを緩めると、そのぶん書き手の自主規律は下がる。緩めるかどうかの判断にもう 1 人の目を挟む、という設計である。
+
+> **余談**: v0.2.0 の初回配布では、この skill を誤って Claude Code 形式（`skill.md` 小文字 + Claude Code 用 frontmatter）で同梱してしまい、Codex では認識されていなかった。Codex の skill は `SKILL.md` 大文字固定、呼び出しは `/` ではなく `$` sigil。v0.2.1 で `openai/codex` のソース（`codex-rs/core-skills/src/loader.rs`）を読み直して正しい形に書き換えた。skill を作るときは、ホストの流儀を公式ソースで裏取りすること。
 
 ### cross-platform
 
@@ -402,7 +404,7 @@ codex-jp-tune add <term> --suggest "..."  # 追加
 
 ---
 
-v0.2.0 の各機能の背景は、GitHub の [Release v0.2.0](https://github.com/Sora-bluesky/codex-jp-harness/releases/tag/v0.2.0) にも書いてある。
+v0.2.0 と v0.2.1 の各機能の背景は、GitHub の [Release v0.2.0](https://github.com/Sora-bluesky/codex-jp-harness/releases/tag/v0.2.0) と [Release v0.2.1](https://github.com/Sora-bluesky/codex-jp-harness/releases/tag/v0.2.1) にも書いてある。
 
 ---
 
