@@ -1,5 +1,5 @@
 ---
-title: "Codex の日本語を救ったのは「ずんだもん」だった"
+title: "Codex の日本語は、ずんだもんに音読させる前提で書いたら直った"
 emoji: "🎛️"
 type: "tech"
 topics: ["codex", "mcp", "ai", "openai", "個人開発"]
