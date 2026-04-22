@@ -25,6 +25,11 @@ https://github.com/Sora-bluesky/ja-output-harness
 - 修正しきれなかった違反は JSONL に記録され、**次セッション起動時** に短い再教育プロンプトが Codex に渡る
 - 実測の初手 ok 率は 23.8%（n=21, Wilson 95% CI [10.6%, 45.1%]）。低く見える数字だが、評価すべきは continuation 後の最終品質のほう
 
+実際、ハーネスを通した後の Codex の応答はこう見える。
+
+![ハーネス適用後の Codex チャット欄の例](/images/ja-output-harness-after.png)
+*英語識別子（`TASK-314`・`PR`・`git-guard`・`start-orchestra.ps1`・`PowerShell`・`pwsh` など）が自動でバッククォートに包まれ、1 文が短く刻まれている。音読しても詰まらない*
+
 ## 仕組み: 3 段の処理が直列に動く
 
 Codex 0.120 で **Stop hook** と **SessionStart hook** という公式拡張ポイントが公開された。Codex 本体にも OpenAI のコードにも手を入れず、この 2 つのフックだけで検品ループを構築している。
