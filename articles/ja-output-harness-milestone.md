@@ -3,7 +3,7 @@ title: "Codex のフックだけで日本語を読みやすくするハーネス
 emoji: "🪝"
 type: "tech"
 topics: ["codex", "ai", "openai", "個人開発", "python"]
-published: false
+published: true
 ---
 
 ## はじめに
