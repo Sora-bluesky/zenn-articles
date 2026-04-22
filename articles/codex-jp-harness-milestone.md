@@ -3,7 +3,7 @@ title: "Codex の日本語は、ずんだもんに音読させる前提で書い
 emoji: "🎛️"
 type: "tech"
 topics: ["codex", "mcp", "ai", "openai", "個人開発"]
-published: true
+published: false
 ---
 
 ## はじめに
