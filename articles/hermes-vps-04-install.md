@@ -1,5 +1,5 @@
 ---
-title: "Hermes Agentを実体としてVPSに置く──インストールとDockerサンドボックス"
+title: "【第4回】Hermes Agentを実体としてVPSに置く──インストールとDockerサンドボックス"
 emoji: "🤖"
 type: "tech"
 topics: ["hermes", "vps", "docker", "python", "uv"]
@@ -159,7 +159,7 @@ docker --version
 
 `docker --version`で`Docker version 29.x.x`のような表示が出ればOK。
 
-![Docker engine 29.5.2インストール完了+systemd serviceに登録](/images/hermes-vps-04-docker-install.png)
+![Docker engine 29.5.2インストール完了+systemd serviceに登録](/images/hermes-vps/hermes-vps-04-docker-install.png)
 
 ### admin権限でdockerコマンドを動かせるようにする
 
@@ -179,7 +179,7 @@ docker run hello-world
 
 「Hello from Docker!」が出ればOK。
 
-![docker run hello-worldで「Hello from Docker!」が表示される](/images/hermes-vps-04-docker-hello.png)
+![docker run hello-worldで「Hello from Docker!」が表示される](/images/hermes-vps/hermes-vps-04-docker-hello.png)
 
 これでDocker engineが「ネット越しに必要なコンテナを取ってこられる+adminユーザーで起動できる」状態になった。Hermes Agent本体も同じ仕組みで起動時に必要なコンテナを取りに行くので、ここで動けば後の安心材料になる。
 
@@ -196,7 +196,7 @@ git tag --sort=-creatordate | head -5
 
 `--sort=-creatordate`は「作成日降順」の意味で、最新tagが先頭に来る。本シリーズ執筆時点では`v2026.5.16`が最新(=`v0.14.0`、2026年5月16日リリース)だった。
 
-![git clone成功+git tag一覧でv2026.5.16が最新](/images/hermes-vps-04-clone-tag.png)
+![git clone成功+git tag一覧でv2026.5.16が最新](/images/hermes-vps/hermes-vps-04-clone-tag.png)
 
 ### 既知バグ回避のためmainブランチで運用する
 
@@ -217,7 +217,7 @@ git pull
 
 `git pull`で当該PRの修正(`agent/codex_runtime.py`と`agent/auxiliary_client.py`のNoneガード追加)が降りてくる。
 
-![git checkout main+git pullで最新HEAD取得](/images/hermes-vps-04-checkout.png)
+![git checkout main+git pullで最新HEAD取得](/images/hermes-vps/hermes-vps-04-checkout.png)
 
 :::message
 **バグ回避のためのmain運用が、本記事の最大の判断**:Hermes Agentは活発に開発されており、リリースtagには上記のような未解決バグが残ることがある。「最新tagをチェックアウトすれば安全」とは限らない。**該当のIssue/PRを確認→修正がmainにあればmain運用に切り替える**、を毎回考える必要がある。
@@ -370,7 +370,7 @@ openai-codex (1 credentials):
 
 5パート全部回答すると以下のように完了画面が出る。
 
-![hermes setup完了画面、Settings/API Keys/Dataのパス案内+各種コマンド一覧](/images/hermes-vps-04-setup-complete.png)
+![hermes setup完了画面、Settings/API Keys/Dataのパス案内+各種コマンド一覧](/images/hermes-vps/hermes-vps-04-setup-complete.png)
 
 `~/.hermes/`配下に以下が揃う。
 
@@ -465,7 +465,7 @@ uv pip install -e ".[all]"
 
 ここまで来てやっとTelegramの会話が動く。Telegramアプリで自分のbotに「テスト」と送ると、Hermes Agentから返信が返ってくる。
 
-![Telegramで「テスト」送信→Hermes Agentから「テスト受信しました。」と返信(ターミナル側はop run経由でhermes gateway起動中、機密情報マスク済)](/images/hermes-vps-04-telegram-success.png)
+![Telegramで「テスト」送信→Hermes Agentから「テスト受信しました。」と返信(ターミナル側はop run経由でhermes gateway起動中、機密情報マスク済)](/images/hermes-vps/hermes-vps-04-telegram-success.png)
 
 これが第4回の到達点だ。手動起動でHermes AgentがTelegram経由で返事をしてくれる状態。Codex OAuth経由でgpt-5.5を呼び、Docker backendで応答処理を完結している。
 
