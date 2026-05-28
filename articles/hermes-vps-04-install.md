@@ -7,7 +7,7 @@ published: false
 ---
 
 :::message
-このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。全7回を予定している。
+このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。全10回を予定している。
 
 - 第1回──Hermes AgentをVPSに常駐させる(契約からログインまで)
 - 第2回──Hermes Agentの公開SSHをTailscaleで安全に閉じる
@@ -15,7 +15,10 @@ published: false
 - **第4回**(本記事)──Hermes Agentを実体としてVPSに置く(インストールとDockerサンドボックス)
 - 第5回──Hermes AgentをCodex/GrokとTelegramに繋ぐ(承認モード固定の作法)
 - 第6回──Hermes Agentをsystemdで24時間常駐させる
-- 第7回──Hermes Agentの手足に自宅のデスクトップを使う(Wake-on-LANとzellij)
+- 第7回──Hermes Agent Cronで毎朝の定型を任せる
+- 第8回──Hermes Agent Skillsに手順を覚えさせる
+- 第9回──Hermes AgentのWeb/X検索を使い分ける
+- 第10回──Hermes Agentの手足に自宅のデスクトップを使う(Wake-on-LANとzellij)
 :::
 
 ## はじめに
