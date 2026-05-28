@@ -306,7 +306,7 @@ Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN
 
 `op vault list`が`Hermes-Prod`のみを返すことを確認する(他の保管庫が見えたらスコープ設定が間違っている)。
 
-![手元PCで op vault list がHermes-Prodだけを返す](/images/hermes-vps/hermes-vps-03-local-op-test.png)
+![手元PCでop vault listがHermes-Prodだけを返す](/images/hermes-vps/hermes-vps-03-local-op-test.png)
 
 確認できたら`Remove-Item`で環境変数を消す。PowerShellを閉じるだけでも消える(`$env:VAR`はそのPowerShellプロセス内だけ有効)。
 
