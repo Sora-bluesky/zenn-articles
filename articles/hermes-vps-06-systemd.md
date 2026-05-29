@@ -18,7 +18,7 @@ published: false
 - [`journalctl --user`でログを追う](#journalctl---userでログを追う)
 - [TelegramとDiscordで疎通確認](#telegramとdiscordで疎通確認)
 - [provider切り替えの動作確認(Codex→Grok)](#provider切り替えの動作確認(codex→grok))
-- [承認モードmanualの動作確認](#承認モードmanualの動作確認)
+- [コンテナ隔離と承認モード](#コンテナ隔離と承認モード)
 - [VPS再起動テスト](#vps再起動テスト)
 - [まとめと第7回予告](#まとめと第7回予告)
 - [Rescue:第6回でよくあるエラー](#rescue%3A%E7%AC%AC6%E5%9B%9E%E3%81%A7%E3%82%88%E3%81%8F%E3%81%82%E3%82%8B%E3%82%A8%E3%83%A9%E3%83%BC)
@@ -33,7 +33,7 @@ published: false
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Docker sandboxとHermes Agentのインストール+Codex OAuth+Telegram疎通
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す+承認モードの確認
 - **第6回(本記事)**──systemd常駐化で24時間動かす
 - 第7回──Cronで毎朝の定型タスクを任せる
@@ -55,7 +55,7 @@ published: false
 | 異常終了時 | 気づかない/手動再起動 | **systemdが自動再起動+ログ収集** |
 | ログの場所 | ターミナル画面(SSH切ると消える) | **`journalctl --user`で永続的に追える** |
 | Telegram/Discord疎通 | 第4回でTelegramだけ確認 | **両方で挨拶+具体的な指示の往復が成立** |
-| 承認モード動作 | 設定だけ確認(`approvals.mode=manual`) | **`ls`等のコマンドで実際に承認プロンプトが挟まる** |
+| 安全境界 | 設定だけ確認(`approvals.mode=manual`) | **コマンドはコンテナ内で隔離実行**(ホスト無傷) |
 
 第6回でやることを一言でまとめると「Hermes Agentの起動・監視・ログ収集をsystemdに任せて、人間はTelegram/Discordから話しかけるだけにする」。
 
@@ -172,19 +172,80 @@ ls -la ~/.config/systemd/user/hermes-gateway.service
 
 ## 生成されたunitファイルを読み解く
 
-<!-- TBD:実機で生成されたunitの実内容を貼り付け、各行の意味を表で解説 -->
+生成されたunitの中身を見る。
 
-`cat ~/.config/systemd/user/hermes-gateway.service`の出力を読む。第4回のセットアップウィザードで触れたunit構成と、`hermes gateway install`が自動生成した内容を突き合わせて、各行の意味を理解しておく。
+```bash
+systemctl --user cat hermes-gateway
+```
 
-<!-- TBD:実機出力を貼り付け後、以下のフォーマットで各ディレクティブを解説
-| ディレクティブ | 意味 | このシリーズでの役割 |
-|---|---|---|
-| `[Unit] Description=` | unitの説明文 | journalctlの表示で使われる |
-| `[Service] ExecStart=` | 起動コマンド本体 | `op run -- hermes gateway` |
-| `[Service] EnvironmentFile=` | 環境変数ファイル | `service-account.env` |
-| `[Service] Restart=` | 異常終了時の挙動 | `on-failure`(自動再起動) |
-| `[Install] WantedBy=` | enable時の依存先 | `default.target`(ユーザーセッション開始時) |
--->
+`hermes gateway install`が書き出した本体は次の内容だ(抜粋)。
+
+```ini
+[Unit]
+Description=Hermes Agent Gateway - Messaging Platform Integration
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/home/admin/hermes-agent/venv/bin/python -m hermes_cli.main gateway run --replace
+WorkingDirectory=/home/admin/hermes-agent
+Environment="HERMES_HOME=/home/admin/.hermes"
+Restart=always
+RestartSec=5
+RestartForceExitStatus=75
+KillMode=mixed
+ExecReload=/bin/kill -USR1 $MAINPID
+TimeoutStopSec=210
+
+[Install]
+WantedBy=default.target
+```
+
+主要な行の意味。
+
+| 行 | 意味 |
+|---|---|
+| `ExecStart=` | 起動コマンド本体。venvのpythonが`gateway run`を起動する |
+| `Restart=always` | 異常終了でも通常終了でも、必ず起動し直す(24時間常駐の要) |
+| `RestartForceExitStatus=75` | 終了コード75は「計画的な再起動要求」として即起動し直す印 |
+| `ExecReload=/bin/kill -USR1` | リロード信号(SIGUSR1)で、処理中タスクを取りこぼさず再起動する |
+| `TimeoutStopSec=210` | 停止時に最大210秒待つ(実行中タスクの完了を待つため) |
+| `WantedBy=default.target` | ユーザーセッション開始時に自動起動する |
+
+:::message alert
+**ここが最大の注意点**:`ExecStart=`が`op run`を経由していない。venvのpythonを直接起動するだけだ。つまりこのまま起動すると、第3回で組んだ1Password(`op run`が`op://`参照を実トークンに展開する仕組み)が働かず、TelegramもDiscordもトークンを受け取れない。プロセス自体は起動するが「No messaging platforms enabled(messengerが1つも有効になっていない)」状態になる。
+:::
+
+`hermes gateway install`は「venvのpythonを常駐させる」ところまでは面倒を見るが、「秘密情報をどう注入するか」は環境ごとに違うので踏み込まない。本シリーズは1Password+`op run`方式なので、生成されたunitに`op run`の衣を着せてやる必要がある。
+
+## op runでsecretsを注入するdrop-in
+
+unit本体を手で書き換えるのは避ける。`hermes gateway restart`や`hermes update`が本体unitを再生成する場面があり、手編集は上書きで消えるからだ(出典:[hermes_cli/gateway.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/gateway.py)の`refresh_systemd_unit_if_needed`)。
+
+そこでsystemdの**drop-in**を使う。drop-inは本体unitの上に設定を後付けで重ねる仕組みで、本体を書き換えないので再生成されても消えない。
+
+`~/.config/systemd/user/hermes-gateway.service.d/op-run.conf`を作る。
+
+```bash
+mkdir -p ~/.config/systemd/user/hermes-gateway.service.d
+cat > ~/.config/systemd/user/hermes-gateway.service.d/op-run.conf <<'EOF'
+[Service]
+EnvironmentFile=%h/.hermes/service-account.env
+ExecStart=
+ExecStart=/usr/bin/op run --env-file=%h/.hermes/secrets.env -- %h/hermes-agent/venv/bin/python -m hermes_cli.main gateway run --replace
+EOF
+```
+
+3行の意味は次のとおり。
+
+| 行 | 役割 |
+|---|---|
+| `EnvironmentFile=...service-account.env` | 1Passwordサービスアカウントのトークンを読み込む。`op run`がこれを使って`op://`参照を解決する |
+| `ExecStart=`(空の代入) | 本体unitの`ExecStart`を一度消す。systemdは空代入で前の値をクリアする仕様で、起動コマンドが二重になるのを防ぐために必須 |
+| `ExecStart=/usr/bin/op run ...` | 起動コマンドを`op run`でくるみ直す。これで`secrets.env`の`op://`参照が実トークンに展開されてからgatewayが起動する |
+
+`%h`はそのユーザーのホームディレクトリ(`/home/admin`)に展開されるsystemdの変数だ。これでsystemd常駐の下ごしらえは完了。次の章で実際に起動する。
 
 ## `systemctl --user`でhermes gatewayを起動
 
@@ -269,28 +330,28 @@ Telegramで以下を順に送る。
 
 両方から日付付きの返答が返ってくれば、OAuth登録・provider切り替えの動作確認は完了。
 
-## 承認モードmanualの動作確認
+## コンテナ隔離と承認モード
 
-<!-- TBD:実機作業 -->
+第5回で`approvals.mode=manual`(危険なコマンドの前に人間へ確認を求める安全弁)を設定した。ただし**本シリーズの構成では、この承認プロンプトは原則出ない**。理由を理解しておくと混乱しない。
 
-`approvals.mode=manual`を設定した目的は、「Telegram/Discord経由で来た指示でもコマンド実行前に1回確認が挟まる」状態を作ることだった。実際に確認する。
+第4回でコマンドの実行場所(backend)を`docker`にした。これはエージェントのコマンドを**隔離されたDockerコンテナの中で実行する**設定だ。ここでの「ホスト」とは、第1回で契約したVPS本体——あなたのSSHログイン鍵、1Passwordのトークン、sshdやsystemdの設定が載っている土台——を指す。コンテナはそのホストから壁で仕切られているので、エージェントがコンテナの中で何をしようと、ホスト側のファイルやプロセスには手が届かない。もし実行場所を`local`にしてホスト上で直接動かしていたら、`rm`の打ち間違い一発でSSHログイン鍵やトークンごと消え、VPSに二度と入れなくなる事故もあり得た。第4回でDockerを選んだのは、それを先回りで防ぐためだ。
 
-Telegramで以下を送る。
+公式ドキュメントはこう明記している。
 
-```
-カレントディレクトリのファイル一覧を見せて
-```
+> When running in a container backend (Docker...), dangerous command checks are skipped because the container is the security boundary.
+> (コンテナの中で動かす場合、コンテナ自体が安全境界なので、危険コマンドのチェックはスキップされる)
+> 出典:[Hermes Agent公式tipsガイド](https://hermes-agent.nousresearch.com/docs/guides/tips)
 
-hermesは内部的に`ls`相当のコマンドを実行しようとするが、`approvals.mode=manual`が効いていれば、実行前にTelegramに承認プロンプトが表示される。
+つまり**安全を担保しているのは「1回ずつの承認」ではなく「コンテナによる隔離」**だ。試しにTelegramで「カレントディレクトリのファイル一覧を見せて」と送ると、承認を挟まず即実行されて結果が返る。コンテナの外(ホスト)に害が及ばないので、いちいち止めない、という設計だ。
 
-<!-- TBD:承認プロンプトのスクショ。「Approve / Deny / Edit」のような選択肢が出るはず -->
-
-「Approve」を押すと実行→結果がTelegramに返ってくる。「Deny」を押すと実行されない。
-
-<!-- TBD:Approve後の結果スクショ、Deny後の挙動スクショ -->
+![Telegramで「ファイル一覧を見せて」と送ると、承認を挟まずコンテナ内で即実行され結果が返る](/images/hermes-vps/hermes-vps-06-sandbox-noprompt.png)
 
 :::message alert
-**ここが承認モードの本質**:Discord/Telegramからの指示は誰でも(allowlistに登録された範囲で)送れる経路なので、実行前の人間確認が安全装置として機能する。第5回でmanualに固定した意味が、この章で実際に動く形で見えるはずだ。
+**「コンテナ内なら何でも安全」ではない**:隔離が守るのは**ホスト**(VPS本体)だ。コンテナの中では、エージェントはファイルの作成・上書き・削除を確認なしで行える。うっかり消えると困るデータをコンテナ内に置かないこと、そして**誰がエージェントに指示できるかをallowlistで絞ること**(第5回の数値ユーザーID)が、隔離と並ぶ防御線になる。「ホストは守られる」ことと「コンテナの中なら絶対安全」は別の話だ。
+:::
+
+:::message
+**承認モードはいつ効くのか**:もし実行場所を`local`(ローカル=ホスト上で直接実行)に戻すと、今度は承認プロンプトが復活し、`rm`等の危険コマンドの前に確認が入る。ローカル実行は速いがホストに直接触れるので、その場合の安全弁として`manual`が活きる。本シリーズはコンテナ隔離を主、承認モードを従とする二段構えだ。
 :::
 
 ## VPS再起動テスト
@@ -332,7 +393,7 @@ journalctl --user -u hermes-gateway.service --since "5 minutes ago"
 - `journalctl --user`でログ収集経路が確立済み
 - Telegram+Discord両系統の疎通+SSH切断後の生存を確認済み
 - Codex/Grok両providerの応答を確認済み
-- 承認モードmanualが実際に承認プロンプトを挟むことを確認済み
+- Dockerコンテナでエージェントのコマンドが隔離実行され、ホストに触れないことを確認済み(`approvals.mode=manual`はローカル実行時の保険)
 - VPS再起動後の自動復帰を確認済み
 
 第6回完了時点で、ユーザーがVPSに触らずにスマホだけでHermes Agentと会話できる状態になった。次は「会話を待つ」だけでなく「Hermesから話しかけてもらう」運用に進む。

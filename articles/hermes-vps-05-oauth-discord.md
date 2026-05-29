@@ -30,7 +30,7 @@ published: false
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Docker sandboxとHermes Agentのインストール+Codex OAuth+Telegram疎通
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
 - **第5回**(本記事)──Grok OAuthとDiscordを足す+承認モードの確認
 - 第6回──systemd常駐化(`hermes gateway install`)
 - 第7回──Cronで毎朝の定型タスクを任せる
@@ -303,9 +303,9 @@ Telegram単独で運用するなら、この章はまるごと飛ばして次章
 
 個人用Botでも招待URLを公開しなければ他人はインストールできないため実害なしだ。OFFに変更しようとすると「プライベートアプリケーションはデフォルトの認証リンクを持つことはできません」というエラーが出るが、これは別設定の「デフォルトインストール設定」を「なし」に変えてから保存する必要がある連動仕様。シンプルさ優先でONのまま進める。
 
-「**Privileged Gateway Intents**」セクションの「**Message Content Intent**」トグルを**ON**にする(HermesがDiscord上のメッセージ本文を読むのに必須)。残り2つ(Presence Intent / Server Members Intent)はOFFのまま。画面下部に出る「**変更を保存**」ボタン(緑色)で保存する。
+「**Privileged Gateway Intents**」セクションで**Message Content Intent**を**ON**にする(HermesがDiscord上のメッセージ本文を読むのに必須)。残る2つ(Presence Intent / Server Members Intent)は**OFFのまま**でよい。後述の許可ユーザーを数値IDで指定すればServer Membersは不要だ(ユーザー名やロールで指定する場合だけServer Membersも要る)。画面下部に出る「**変更を保存**」ボタン(緑色)で保存する。
 
-![Botページ全体:Privileged Gateway IntentsでMessage Content IntentがON、変更を保存済み](/images/hermes-vps/hermes-vps-05-discord-intent-on.png)
+![Botページ:Privileged Gateway IntentsでMessage Content IntentのみON(Server Members / PresenceはOFF)、変更を保存済み](/images/hermes-vps/hermes-vps-05-discord-intent-on.png)
 
 「**トークン**」セクションの「**トークンをリセット**」ボタンを押す。Discordアカウントに設定済みの多要素認証(2FA)で本人確認が走る。
 
@@ -364,13 +364,17 @@ hermes setup gateway
 Discordの設定プロンプトが順に出る。
 
 1. **Discord botトークン**:1Passwordに保存した実tokenを貼り付ける。「Discord token saved」が緑文字で出れば成功
-2. **Allowed user IDs or usernames**:自分のDiscord user IDを入れる。Discord本体「ユーザー設定」→「詳細設定」→「**開発者モード**」をON → 自分のアイコン右クリック → 「**ユーザーIDをコピー**」で取得(usernameでも可、gateway起動時に解決される)
-3. **Home channel ID**:**空Enter**でスキップ。チャンネルIDはbot招待後に取得するので、後で`/set-home`コマンドで設定する
+2. **Allowed user IDs or usernames**:**数値のユーザーIDを入れる**(推奨)。Discord本体「ユーザー設定」→「詳細設定」→「**開発者モード**」をON → 自分のアイコン右クリック → 「**ユーザーIDをコピー**」で取得。ユーザー名でも設定はできるが、自分のDiscordユーザー名と正確に一致が必要で(XやTelegramのハンドルとは別物のことが多い)、解決にServer Membersインテントも要る。数値IDなら一致ズレもインテントも不要で確実
+3. **Home channel ID**(cron出力や通知の配信先チャンネル):**空Enter**でスキップ。チャンネルIDはbot招待後に取得するので、後で`/sethome`コマンド(第6回で実施)で設定する
 4. **Install the gateway as a systemd service?** [Y/n]:**n** で答える(常駐化は第6回でやる)
 
 「`Messaging Platforms (Gateway) configuration complete!`」が緑文字で出れば完了だ。
 
 ![hermes setup gatewayの実行全体:Discord token saved→allowlist→home channel空→systemd n→completion](/images/hermes-vps/hermes-vps-05-discord-wizard-complete.png)
+
+:::message
+**許可ユーザーの指定はDiscordだけ数値IDが前提**(messengerで仕様が違う):Telegramは自分のユーザー名をそのまま許可リストに書ける。一方Discordは、ユーザー名で書くとbotが内部で「名前→数値ID」を解決する必要があり、その解決にServer Membersインテントが要る。本記事はServer MembersをOFFにする最小構成なので、Discordは最初から数値ユーザーIDで指定する。XやTelegramのハンドルとDiscordユーザー名は別物のことも多いので、数値IDなら取り違えも起きない。
+:::
 
 完了後、第4回でやったTelegram tokenと同じ後処理を踏む。`.env`に書かれたDiscord botトークン行を除去する(平文をディスクに残さない)。
 
