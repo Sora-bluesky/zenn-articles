@@ -285,10 +285,10 @@ which hermes
 hermes version
 ```
 
-`which hermes`で`~/hermes-agent/venv/bin/hermes`が返り、`hermes version`で`0.14.0`系が表示されればOK。
+`which hermes`で`~/.local/bin/hermes`(`~/hermes-agent/venv/bin/hermes`へのシンボリックリンク)が返り、`hermes version`で`0.14.0`系が表示されればOK。`source venv/bin/activate`でvenvを有効化した後はvenv内のパスが直接返る。
 
 :::message
-Hermes Agentでは`hermes version`(サブコマンド形式)を使う。`hermes --version`(ダッシュ付き)は実装されていない。`hermes doctor`(自己診断)、`hermes auth list`(認証一覧)等もサブコマンド形式が標準(出典:[hermes_cli/main.py@v2026.5.16](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py))。
+Hermes Agentは`hermes version`(サブコマンド形式)でも`hermes --version`(ダッシュ付き)でも同じバージョンが表示される。`hermes doctor`(自己診断)、`hermes auth list`(認証一覧)等の機能はサブコマンド形式が標準(出典:[hermes_cli/main.py@v2026.5.16](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py))。
 :::
 
 ## hermes setupで対話的に初期設定

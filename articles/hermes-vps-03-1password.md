@@ -125,7 +125,7 @@ Telegramは第3回で実際にbotを発行して値を入れる。Discordは第5
 │   │   └── auth.json(Codex/Grok OAuth、Hermes自動管理)        │
 │   └── ~/.config/systemd/user/hermes-gateway.service(第4回)   │
 │       └── ExecStart=op run --env-file=... --                 │
-│              python -m hermes_gateway run                    │
+│              hermes gateway run                              │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -483,7 +483,7 @@ unset OP_SERVICE_ACCOUNT_TOKEN
 # .env を export してから起動
 export TELEGRAM_BOT_TOKEN=<実値>
 export DISCORD_BOT_TOKEN=<実値>
-python -m hermes_gateway run
+hermes gateway run
 ```
 
 このやり方だと`.env`に実値を書く必要があり、ディスクとシェル履歴に平文が残る。
@@ -491,7 +491,7 @@ python -m hermes_gateway run
 `op run`を挟むとこうなる:
 
 ```bash
-op run --env-file=$HOME/.hermes/secrets.env -- python -m hermes_gateway run
+op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway run
 ```
 
 挙動を分解すると:
@@ -500,7 +500,7 @@ op run --env-file=$HOME/.hermes/secrets.env -- python -m hermes_gateway run
 |---|---|
 | 1.読み込み | `--env-file=`で指定したファイルを開き、`op://...`形式の値を探す |
 | 2.解決 | 各`op://`参照を1Passwordに問い合わせて実値に置き換える(認証はサービスアカウントトークン) |
-| 3.実行 | `--`の後ろのコマンド(`python -m hermes_gateway run`)を起動し、解決済みの環境変数を子プロセスにだけ渡す |
+| 3.実行 | `--`の後ろのコマンド(`hermes gateway run`)を起動し、解決済みの環境変数を子プロセスにだけ渡す |
 | 4.終了後 | 子プロセスが終わったら、実値はメモリから消える。ディスクには何も書き出されない |
 
 ポイントは「実値が**メモリ上の子プロセスにだけ存在する**」こと。`secrets.env`(参照だけ)はディスクに残るが、平文値はディスクに書かれない。シェル履歴にも残らない(コマンドラインに値が並ばないので)。
@@ -614,7 +614,7 @@ After=network-online.target
 [Service]
 Type=simple
 EnvironmentFile=%h/.hermes/service-account.env
-ExecStart=/usr/bin/op run --env-file=%h/.hermes/secrets.env -- python -m hermes_gateway run
+ExecStart=/usr/bin/op run --env-file=%h/.hermes/secrets.env -- hermes gateway run
 Restart=on-failure
 RestartSec=10s
 
@@ -680,7 +680,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 第3回で達成したのは、Hermesに秘密を渡す経路を**op CLI一択**に固定したこと。VPSのディスクには`op://`参照だけが書かれ、実値は1Password側に存在する。サービスアカウントのスコープは`Hermes-Prod` read-onlyだけで、最小権限の原則を守る。
 
-第4回でHermes本体をインストールしたら、systemdユニットの`ExecStart`を`op run --env-file=$HOME/.hermes/secrets.env -- python -m hermes_gateway run`にすることで、起動時に自動で`op://`参照が解決され、Hermesプロセスに環境変数として注入される。MCPを使わないので、AIのコンテキスト・ログ・キャッシュに秘密が載る経路はない。
+第4回でHermes本体をインストールしたら、systemdユニットの`ExecStart`を`op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway run`にすることで、起動時に自動で`op://`参照が解決され、Hermesプロセスに環境変数として注入される。MCPを使わないので、AIのコンテキスト・ログ・キャッシュに秘密が載る経路はない。
 
 これで「Hermesに秘密をどう渡すか」の設計判断は終わった。第4回ではいよいよHermes本体をインストールする。
 
