@@ -195,7 +195,9 @@ ssh -N -L 56121:127.0.0.1:56121 -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
 | `-N` | SSH接続にシェルを要求しない(転送だけ動かす)。公式ガイド推奨 |
 | `-L 56121:127.0.0.1:56121` | 「手元PCのポート56121に来た通信を、VPSの`localhost:56121`に転送する」 |
 
-プロンプトは返らない(`-N`のため正常)。**認証中はこのタブを閉じない**。
+:::message
+**ここがつまずきやすい**:Enterを押してもカーソルが戻らず、固まったように見えるのが成功のサインだ(`-N`はシェルを開かない指定なので、何も表示されないのが正常)。ここでウィンドウを閉じてはいけない。ブラウザでの認証が終わるまでこのタブはそのまま放置する。なお56121番は、Grokの認証が内部で使う固定の窓口番号(ポート)で、xAI側がこの番号以外を受け付けないため番号を変えられない。
+:::
 
 ![手元PCの新規タブでssh -N -L ...を打った直後、エラーなくカーソルが返らない状態](/images/hermes-vps/hermes-vps-05-ssh-tunnel.png)
 
@@ -259,6 +261,9 @@ hermes auth add xai-oauth --manual-paste
 
 ## Discord botの追加(任意。Telegramだけでも十分動く)
 
+
+Telegram単独で運用するなら、この章はまるごと飛ばして次章の「[provider/messenger選択の考え方](#provider%2Fmessenger%E9%81%B8%E6%8A%9E%E3%81%AE%E8%80%83%E3%81%88%E6%96%B9)」に進んでよい。後でDiscordを足したくなったらここに戻ればいい。
+
 
 ここからの章はオプションだ。**Telegramだけで運用しても、Hermes Agentの7割以上の機能は損なわれない**。ボイスモード・image/file入出力・stream応答・skill自動ロード・cron配信・DM topicによるskill切替、すべてTelegram単独で動く。ソロ運用ならむしろTelegramのほうが軽量・モバイル可読性が高い。
 

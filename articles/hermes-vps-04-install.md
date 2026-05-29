@@ -245,6 +245,8 @@ git pull
 
 :::message
 **バグ回避のためのmain運用が、本記事の最大の判断**:Hermes Agentは活発に開発されており、リリースtagには上記のような未解決バグが残ることがある。「最新tagをチェックアウトすれば安全」とは限らない。**該当のIssue/PRを確認→修正がmainにあればmain運用に切り替える**、を毎回考える必要がある。
+
+本の刷り直しにたとえると、tagは製本済みの第5刷、mainは日々修正が入る最新の原稿だ。今回は第5刷に印刷ミスがあり、その直しは原稿側にしか入っていなかった、という状況にあたる。
 :::
 
 :::message
@@ -307,13 +309,15 @@ Hermes Agentでは`hermes version`(サブコマンド形式)を使う。`hermes 
 
 私が実機で入力した値を表で残しておく。Hermes Agentの対話は項目数が多く、一つずつ判断するのは負担が大きいので、ここでまとめて参照できるようにする。
 
+なお表中の★印は、このあとの「つまずきポイント」で詳しく説明する項目を指す。
+
 | 質問 | 回答 | 補足 |
 |---|---|---|
 | Setup mode | **Full setup** | Quickだとbackend設定が漏れる |
 | Provider | **OpenAI Codex** | Codex CLIと同じOAuth経路。第5回でGrok追加 |
 | TTS Provider(初期) | Keep current (Edge TTS) | 無料、APIキー不要 |
 | Terminal Backend | **docker** | 採用判断は前述 |
-| Docker image | デフォルト(`nikolaik/python-nodejs:python3.11-nodejs20`) | 初回起動時にdocker hubから自動pull |
+| Docker image | デフォルト(`nikolaik/python-nodejs:python3.11-nodejs20`) | PythonとNode.jsが最初から入った標準のコンテナ。中身は気にしなくてよい。初回起動時にdocker hubから自動で取ってくる |
 | Persist filesystem | yes | コンテナ内のファイルがセッション間で残る |
 | CPU cores | **2** | VPS 4コア中の半分 |
 | Memory MB | **3072**(=3GB) | VPS 6GBの半分 |
@@ -332,7 +336,7 @@ Hermes Agentでは`hermes version`(サブコマンド形式)を使う。`hermes 
 | Tools for CLI / Telegram | デフォルト(主要ツールON) | Xサーチは第5回、Discordも第5回 |
 | Browser Provider | Local Browser(★recommended・free) | VPS内Chromium、APIキー不要 |
 | Image Generation Provider | **OpenAI (Codex auth) [free]** | ★罠あり、下矢印を**2回**押す(後述) |
-| Image Generation Model | デフォルト(gpt-image-2-medium) | Codex OAuth枠で使える |
+| Image Generation Model | デフォルト(gpt-image-2-medium) | 画像生成に使うモデル名。Codex OAuth枠で追加料金なしで使える |
 | Search Provider | DuckDuckGo (ddgs) | APIキー不要 |
 
 ### つまずきポイント1:Image Generation Providerの「下矢印1回罠」
@@ -435,7 +439,7 @@ op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway
 |---|---|
 | `cd ~/hermes-agent && source venv/bin/activate` | Hermes Agentの作業環境に入る(venvをアクティベート) |
 | `set -a; source ~/.hermes/service-account.env; set +a` | `OP_SERVICE_ACCOUNT_TOKEN`を環境変数として読み込み(opが認証に使う) |
-| `op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway` | opが`secrets.env`の`op://`参照を解決→`hermes gateway`(messaging gateway起動)に環境変数として注入 |
+| `op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway` | `op run`は第3回で作った仕組み。`secrets.env`の中の`op://`参照(秘密情報の置き場所だけを書いた目印)を実際の値に置き換えてから、後ろのコマンドを起動するラッパーだ。`--`はこの記号より後ろが実行したいコマンド本体という区切り。つまりここでは`hermes gateway`(messaging gateway起動)に秘密情報を環境変数として渡して起動する |
 
 :::message
 `hermes gateway`(`hermes run`ではない、ここよく間違える)。`run`コマンドは存在せず、messaging gateway起動は`hermes gateway`が正(出典:[hermes_cli/main.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py) line 1469付近の`cmd_gateway`)。

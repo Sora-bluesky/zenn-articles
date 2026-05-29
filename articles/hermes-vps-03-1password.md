@@ -143,6 +143,16 @@ Hermesは24時間動く常駐エージェントで、起動の度にコンテキ
 
 ## 事前準備
 
+### 1Passwordの契約と`Hermes-Prod`保管庫を用意する
+
+このシリーズで秘密情報を入れる箱が`Hermes-Prod`保管庫だ。第1回・第2回でadminパスワードやTailscaleの認証情報を入れる先として登場したが、まだ作っていない人向けに作成手順を書いておく。
+
+1. [1password.com](https://1password.com)で個人またはファミリープランを契約する(無料プランには保管庫の追加機能がない)
+2. 同じページから1Passwordデスクトップアプリ(Windows/Mac)をダウンロードして、契約したアカウントでサインインする
+3. アプリ左下の保管庫一覧の横にある「**+**」(新しい保管庫を作成)をクリックし、名前に`Hermes-Prod`と入れて作成する
+
+保管庫(英語UIではVault)は「アイテムをまとめて入れる引き出し」のこと。Hermes関連の秘密はすべてこの`Hermes-Prod`に集める。
+
 ### 手元PCに1Password CLI(op)をインストールする
 
 WindowsならPowerShellで:
@@ -325,6 +335,8 @@ Tailscale IPがわからなければ[login.tailscale.com/admin/machines](https:/
 
 VPSのadminセッションで以下を順に実行する。1Password公式のDebian/Ubuntuリポジトリを追加してから`apt install`するパターンだ。
 
+この6行は1Password公式が指定している署名検証(配布されたパッケージが本物かを確かめる手続き)の準備で、中身を1つずつ理解する必要はない。上から順に1行ずつ貼り付け、それぞれエラーが出ずにコマンド待ちの状態に戻ることだけ確認すればよい。何をしている行なのかはこの下の表で軽く触れる。
+
 ```bash
 curl -sS https://downloads.1password.com/linux/keys/1password.asc | sudo gpg --dearmor --output /usr/share/keyrings/1password-archive-keyring.gpg
 
@@ -422,7 +434,14 @@ ls -la ~/ | grep .hermes
 
 ### opの動作確認(VPS上)
 
-サービスアカウントトークンを使って、VPSからop CLIが動くかを確認する。bashで環境変数を読み込む構文はPowerShellと違うので注意する。
+サービスアカウントトークンを使って、VPSからop CLIが動くかを確認する。ここで注意したいのが、環境変数(コマンドに値を渡すための入れ物)を一時的にセットする書き方が、手元PC(Windows)とVPS(Linux)で違うことだ。
+
+| どこで打つか | 一時セットの書き方 | 削除の書き方 |
+|---|---|---|
+| 手元PC(Windows/PowerShell) | `$env:OP_SERVICE_ACCOUNT_TOKEN = "..."` | `Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN` |
+| VPS内(Linux/bash) | `set -a` → `source ...` → `set +a` | `unset OP_SERVICE_ACCOUNT_TOKEN` |
+
+この先のコードブロックには【手元PC】【VPS内】のラベルを付けてある。打ち込む場所を間違えると構文エラーになるので、ラベルとプロンプト(行頭の`$`がWindows、`admin@hermes-vps:~$`等がVPS)を見て確認する。
 
 ```bash
 set -a
