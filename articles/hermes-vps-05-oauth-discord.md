@@ -31,7 +31,7 @@ published: false
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Docker sandboxとHermes Agentのインストール+Codex OAuth+Telegram疎通
-- **第5回(本記事)**──Grok OAuthとDiscordを足す+承認モードの確認
+- **第5回**(本記事)──Grok OAuthとDiscordを足す+承認モードの確認
 - 第6回──systemd常駐化(`hermes gateway install`)
 - 第7回──Cronで毎朝の定型タスクを任せる
 - 第8回──Skillsに手順を覚えさせる
@@ -475,7 +475,7 @@ provider切り替えは2通り。
 
 ```bash
 # 永続切り替え(再起動時もこのproviderで起動)
-hermes config set model.provider xai-grok
+hermes config set model.provider xai-oauth
 
 # 一時切り替え:Telegramで「providerをGrokにして」とメッセージするとconfig書き換え+リロード(承認確認あり)
 ```
@@ -623,7 +623,7 @@ hermes setup agent
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(main運用) |
+| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点でmain運用。最新は[v2026.5.29](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29)=v0.15.1でNoneType修正済み、新規読者は最新tagで進めてよい) |
 | OAuth実装(Codex/Grok) | [hermes_cli/auth.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/auth.py) |
 | OAuth over SSH公式ガイド | [hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh](https://hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh) |
 | セットアップウィザード構成 | [hermes_cli/setup.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/setup.py) |

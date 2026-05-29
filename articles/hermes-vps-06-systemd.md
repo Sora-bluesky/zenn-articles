@@ -357,7 +357,7 @@ journalctl --user -u hermes-gateway.service --since "5 minutes ago"
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(main運用) |
+| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点。最新は[v2026.5.29](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29)=v0.15.1。NoneTypeバグは解消済みで、`hermes gateway install`のフローは最新版でも変わらない) |
 | `hermes gateway install`実装 | [hermes_cli/gateway.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/gateway.py) |
 <!-- TBD:公式systemd常駐ガイドのURLは実機検証時に確定。
 hermes-agent.nousresearch.com/docs/guides/systemdが存在するか確認、
