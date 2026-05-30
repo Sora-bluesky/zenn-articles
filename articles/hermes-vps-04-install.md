@@ -255,7 +255,7 @@ git pull
 
 ### インストール
 
-本シリーズは**`./setup-hermes.sh`一発**でインストールする。
+**本シリーズは`./setup-hermes.sh`一発**でインストールする。
 
 ```bash
 ./setup-hermes.sh

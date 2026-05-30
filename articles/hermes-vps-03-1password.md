@@ -509,7 +509,7 @@ op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway run
 
 ### secrets.envの設計
 
-ここが`op run`の中核だ。実値ではなく**`op://`参照だけ**を書く。opがコマンド実行時に参照を解決して環境変数として子プロセスに注入する。
+ここが`op run`の中核だ。**実値ではなく`op://`参照だけ**を書く。opがコマンド実行時に参照を解決して環境変数として子プロセスに注入する。
 
 ```bash
 nano ~/.hermes/secrets.env

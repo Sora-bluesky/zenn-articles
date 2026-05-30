@@ -221,7 +221,7 @@ VPSにはブラウザがないので`--no-browser`でブラウザ自動起動を
 
 ![hermes auth add xai-oauth --no-browser実行直後、認証URLが表示された画面](/images/hermes-vps/hermes-vps-05-xai-oauth-auth-url.png)
 
-手元PCのブラウザでxAIアカウント(SuperGrokまたはX Premium+)にログインすると、「Grok Buildを承認」画面が出る。Verify your identity / Read your profile / Read your email address / Maintain access when you're not present / Make authenticated requests from Grok Build / Use the xAI APIの6つの権限が列挙されるので、**「許可」**を押す。
+手元PCのブラウザでxAIアカウント(SuperGrokまたはX Premium+)にログインすると、「Grok Buildを承認」画面が出る。Verify your identity / Read your profile / Read your email address / Maintain access when you're not present / Make authenticated requests from Grok Build / Use the xAI APIの6つの権限が列挙されるので、「**許可**」を押す。
 
 ![xAI認証画面「Grok Buildを承認」のスコープ一覧+「許可」ボタン](/images/hermes-vps/hermes-vps-05-xai-authorize.png)
 
