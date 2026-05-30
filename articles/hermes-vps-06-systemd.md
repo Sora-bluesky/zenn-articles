@@ -268,6 +268,8 @@ EOF
 
 `%h`はそのユーザーのホームディレクトリ(`/home/admin`)に展開されるsystemdの変数だ。これでsystemd常駐の下ごしらえは完了。次の章で実際に起動する。
 
+![systemctl --user cat hermes-gatewayの出力。本体unit(ExecStartはop run無し)の下にop-runドロップインが重なって読み込まれている](/images/hermes-vps/hermes-vps-06-unit-cat.png)
+
 ## 起動・停止・再起動を操作する
 
 ドロップインをsystemdに反映して、サービスを起動し直す。installの段階で起動・自動起動(enable)・lingerはすでに済んでいるので、ここで打つのは「再読込」と「再起動」が中心になる。`sudo`は使わない。
@@ -287,15 +289,24 @@ systemctl --user is-active hermes-gateway.service
 systemctl --user status hermes-gateway.service
 ```
 
-<!-- TBD:status出力(active (running)の表示)を貼り付け、Main PID/Memory/CGroup欄を解説 -->
+成功していれば、`is-active`は`active`、`status`の先頭は`active (running)`になり、Main PIDはop run(秘密を渡すラッパー)を指す。フラップ(再起動ループ)していなければ`NRestarts=0`だ。
+
+```text
+active
+ActiveState=active
+SubState=running
+NRestarts=0
+```
+
+![systemctl --user statusでactive (running)・Main PIDがop・ドロップイン(op-run.conf)が認識されている画面](/images/hermes-vps/hermes-vps-06-service-status.png)
+
+![systemctl --user showでis-active=active・NRestarts=0(フラップしていない証拠)](/images/hermes-vps/hermes-vps-06-active-nrestarts.png)
 
 :::message
 lingerはadminユーザーの「居残り権限」(SSHログアウト後もユーザーサービスを動かし続ける設定)で、これが無いとログアウト時にsystemdユーザーマネージャーごと止まってhermesも止まる。本シリーズでは`hermes gateway install`が自動で有効化済みなので、手動操作は不要。`loginctl show-user "$USER" | grep -i Linger`で`Linger=yes`を確認できる。
 :::
 
 ## ログを永続的に追えるようにする
-
-<!-- TBD:実機作業 -->
 
 hermesの標準出力・標準エラーはsystemdが自動でjournalに記録する。SSHのターミナル画面と違って、ログアウトしても消えない。
 
@@ -310,27 +321,31 @@ journalctl --user -u hermes-gateway.service -f
 journalctl --user -u hermes-gateway.service --since today
 ```
 
-<!-- TBD:起動直後のログ出力(provider登録/messenger接続/listenポート確認)を貼り付け、注目すべき行をハイライト -->
+ドロップイン反映後は秘密が渡るので`No messaging platforms enabled`は出なくなり、`Started hermes-gateway.service`に続いて警告がいくつか出る。次の3つはいずれも無害だ。
 
-正常に起動していれば、`Telegram bot connected as @hermes_vps_xxx_bot`と`Discord bot logged in as Hermes VPS#1234`の両方が出力される。
+```text
+WARNING gateway.run: Docker backend is enabled ... no explicit host-visible output mount ... is configured.
+WARNING hermes_plugins.discord_platform.adapter: Opus codec not found — voice channel playback disabled
+WARNING tools.environments.docker: Docker storage driver does not support per-container disk limits ...
+```
+
+`Docker backend ... output mount`はメディア配信のときだけ影響、`Opus codec not found`はボイス再生のみ無効、`Docker storage driver ... disk limits`はディスク上限が付かないだけで、Telegram/Discordのテキストやり取りには関係ない。
 
 ## TelegramとDiscordで疎通を確認する
 
-<!-- TBD:実機作業。スクショ4枚想定 -->
-
 systemd経由で起動したhermesに、Telegram・Discord両方から話しかける。第4回でTelegram単体の挨拶は確認済みなので、本章では「両方の経路が並行で生きている」ことを示す。
 
-1. スマホのTelegramで`@hermes_vps_xxx_bot`を開いて「hello」と送る→挨拶の返信を確認
-   <!-- TBD:スクショ。マスク対象:bot名、user ID -->
-2. PCのDiscordで`#hermes-channel`を開いて「hello」と送る→挨拶の返信を確認
-   <!-- TBD:スクショ。マスク対象:サーバー名、自分のDiscord ID -->
-3. SSHを切る(`exit`または`Ctrl+D`)
-4. もう一度Telegramから「are you still alive?」と送る→返信が来ることを確認(systemd常駐の証拠)
-   <!-- TBD:スクショ。SSH切断後にTelegramで返信が来ている状態 -->
+まずTelegram。botに「hello」と送ると挨拶が返る。
+
+![Telegramでbotに話しかけると挨拶が返る(systemd常駐下で稼働)](/images/hermes-vps/hermes-vps-06-telegram-reply.png)
+
+次にDiscord。第5回で招待したサーバーでbotにメンションすると、同じように返事が来る。常駐起動時には`Gateway online — Hermes is back and ready.`の通知も届く。
+
+![Discordサーバーでbotにメンションすると返信が来る](/images/hermes-vps/hermes-vps-06-discord-reply.png)
+
+SSHを切っても(`exit`)、Telegram/Discordから話しかければ返事が来る。これがSSHから独立して動くsystemd常駐の証拠だ。
 
 ## providerを切り替える
-
-<!-- TBD:実機作業 -->
 
 第5回で2系統登録したprovider(Codex/Grok)が、両方とも実際に応答するか確認する。Hermes Agentは`/provider`コマンドで会話中に切り替えられる。
 
@@ -343,7 +358,17 @@ Telegramで以下を順に送る。
 今日の日付を教えて
 ```
 
-<!-- TBD:両providerからの応答スクショ。返答の文体や絵文字使用に違いが出ることが多い -->
+`/provider`で切り替えると、Hermesが新しいモデルとprovider情報を返す。例えば`xai-oauth`に切り替えると、grok系モデルへの切り替えが表示される。
+
+```text
+Model switched to grok-4.3
+Provider: xAI Grok OAuth (SuperGrok / Premium+)
+Context: 1,000,000 tokens
+Max output: 30,000 tokens
+(session only — add --global to persist)
+```
+
+![Telegramで/provider xai-oauthに切り替え、grok系モデルに切り替わった応答が返る](/images/hermes-vps/hermes-vps-06-provider-switch.png)
 
 両方から日付付きの返答が返ってくれば、OAuth登録・provider切り替えの動作確認は完了。
 
@@ -361,7 +386,7 @@ Telegramで以下を順に送る。
 
 つまり、**安全を担保しているのは「1回ずつの承認」ではなく「コンテナによる隔離」だ**。試しにTelegramで「カレントディレクトリのファイル一覧を見せて」と送ると、承認を挟まず即実行されて結果が返る。コンテナの外(ホスト)に害が及ばないので、いちいち止めない、という設計だ。
 
-<!-- TBD:実機スクショ未撮影。撮影後にこの行を有効化する → ![Telegramで「ファイル一覧を見せて」と送ると、承認を挟まずコンテナ内で即実行され結果が返る](/images/hermes-vps/hermes-vps-06-sandbox-noprompt.png) -->
+![Telegramで「ファイル一覧を見せて」と送ると、承認を挟まずコンテナ内で即実行され結果が返る](/images/hermes-vps/hermes-vps-06-sandbox-noprompt.png)
 
 :::message alert
 **「コンテナ内なら何でも安全」ではない**:隔離が守るのは**ホスト**(VPS本体)だ。コンテナの中では、エージェントはファイルの作成・上書き・削除を確認なしで行える。うっかり消えると困るデータをコンテナ内に置かないこと、そして**誰がエージェントに指示できるかをallowlistで絞ること**(第5回の数値ユーザーID)が、隔離と並ぶ防御線になる。「ホストは守られる」ことと「コンテナの中なら絶対安全」は別の話だ。
@@ -372,8 +397,6 @@ Telegramで以下を順に送る。
 :::
 
 ## VPS再起動後も自動で立ち上がるか確認する
-
-<!-- TBD:実機作業。所要時間10分前後 -->
 
 systemd常駐の最終確認として、VPSを再起動してhermesが勝手に復帰するか見る。
 
@@ -396,7 +419,22 @@ systemctl --user is-active hermes-gateway.service
 journalctl --user -u hermes-gateway.service --since "5 minutes ago"
 ```
 
-<!-- TBD:再起動前後のstatus出力スクショ。起動時刻がreboot直後になっていることを確認 -->
+再接続して値を見ると、再起動→自動復帰→疎通までが揃っているのが分かる。
+
+```text
+20:05:48 up 2 min,  1 user,  load average: 0.31, 0.09, 0.03
+ActiveState=active
+SubState=running
+ActiveEnterTimestamp=Fri 2026-05-29 20:03:33 JST
+NRestarts=0
+Linger=yes
+```
+
+`up 2 min`で再起動を、`ActiveEnterTimestamp`がboot直後を指すことで「手を触れず自動で立ち上がった」ことを、`NRestarts=0`で安定を、`Linger=yes`で常駐の土台を、それぞれ値で裏取りできる。
+
+![sudo reboot実行でSSHが切れる画面](/images/hermes-vps/hermes-vps-06-reboot.png)
+
+![再接続後、uptimeが数分・is-active=active・ActiveEnterTimestampがreboot直後を指す(手動操作なしで自動復帰した証拠)](/images/hermes-vps/hermes-vps-06-reboot-recovery.png)
 
 このタイミングでSSHを開かずにスマホのTelegramから「hello」を送って返信が来れば、24時間常駐運用の完成。第4回・第5回で「動くけどSSHが必要」だったHermes Agentが、ここでようやく「VPSの上で勝手に動き続ける」状態に切り替わる。
 
@@ -427,6 +465,7 @@ journalctl --user -u hermes-gateway.service --since "5 minutes ago"
 | `journalctl --user`に何も出ない | (a)ユーザーマネージャー自体が起動していない場合は`systemctl --user status`で全体状態を確認、(b)journaldのrate limitに引っかかっている場合は`/etc/systemd/journald.conf`の`RateLimitBurst`を確認 |
 | VPS再起動後にhermesが起動しない | (a)`systemctl --user is-enabled hermes-gateway.service`で`enabled`を確認(installの2問目をnにしたなら`enable`を打つ)、(b)`loginctl show-user admin \| grep Linger`で`Linger=yes`を確認、(c)`op run`の`service-account.env`のtokenが期限切れの場合は1Passwordで再発行 |
 | Telegram/Discordの片方だけ応答しない | `journalctl --user -u hermes-gateway.service -f`でmessenger接続時のエラーログを確認。token失効・Privileged Intent設定(Discord)の取りこぼしが主因 |
+| grokが`Could not decrypt the provided encrypted_content`(HTTP 400)を返しセッションが詰まる | 1セッション中にprovider/modelを切り替えた後、旧providerの暗号化推論データを再送するため起きる既知挙動(gateway自体は落ちず別providerにフォールバックすることが多い)。当面はセッション途中でproviderを切り替えない、または詰まったセッションを`sessions.json`で`suspended:true`にして`hermes gateway restart`。v0.15.x以降で再発しにくくなる(完全解消は未確認)。参照:[#32617](https://github.com/NousResearch/hermes-agent/issues/32617) |
 | 承認プロンプトがTelegramに出ない | `~/.hermes/config.yaml`の`approvals.mode`を確認。`manual`以外になっていたら再設定 |
 | メモリ消費が増え続ける | `systemctl --user status hermes-gateway.service`のMemory欄で確認。長時間運用で増加が顕著なら[Issues](https://github.com/NousResearch/hermes-agent/issues)で`memory`等のキーワード検索→該当Issueがなければ新規起票 |
 
