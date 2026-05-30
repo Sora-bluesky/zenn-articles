@@ -98,3 +98,7 @@ coverage/
 screenshots/
 *screenshot*
 *スクリーンショット*
+
+# Playwright MCP の出力・検証用スクショ等のランタイム生成物
+.playwright-mcp/
+hermes06-bold-fixed.png
