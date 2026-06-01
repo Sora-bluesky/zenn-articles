@@ -17,6 +17,7 @@ published: false
 - [管理ユーザーを作って安全にログインする](#管理ユーザーを作って安全にログインする)
 - [よくあるエラーと対処](#よくあるエラーと対処)
 - [まとめと第2回予告](#まとめと第2回予告)
+- [参考リンク](#参考リンク)
 
 :::message
 このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。全10回を予定している。
@@ -687,3 +688,11 @@ chmod 700 /home/admin/.ssh
 - rootのSSHログインを禁止(`PermitRootLogin no`)
 
 次回はTailscaleでVPSと手元端末を非公開トンネルで繋ぎ、公開SSH(22番ポート)そのものを安全に閉じる。今回でrootのSSHログインは閉じたが、adminは22番経由で入れる状態。これをTailnet経由だけに絞る。**順番を間違えるとログインできない事故になる**急所なので、丁寧に進める。
+## 参考リンク
+
+| 内容 | リンク |
+|---|---|
+| OpenClawとの比較・OpenRouter首位の背景 | [MarkTechPost](https://www.marktechpost.com/2026/05/10/openclaw-vs-hermes-agent-why-nous-researchs-self-improving-agent-now-leads-openrouters-global-rankings/) |
+| 永続型AIエージェントの比較 | [The New Stack](https://thenewstack.io/persistent-ai-agents-compared/) |
+| Hermes Agent公式リポジトリ | [GitHub README](https://github.com/NousResearch/hermes-agent) |
+| 学習ループ設計の解説 | [Turing Post](https://www.turingpost.com/p/hermes) |
