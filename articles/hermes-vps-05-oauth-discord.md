@@ -507,6 +507,10 @@ hermes config set model.provider xai-oauth
 
 出典:[hermes_cli/config.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/config.py)の`cmd_config_set`。
 
+:::message
+2系統にすると切り替えたくなるが、**常用するproviderは1本に決めて使い続ける**のが結局おトクだ。乗り換えるたびにAPI互換・認証・タイムアウトの調整で時間がかかるし、直接契約だと割引や接続性で得をしやすい。とはいえ上の2系統は無駄ではない——片方が落ちたときの保険として**予備の1本は残しておく**。「常用は1本、予備に1本」が落としどころだ。
+:::
+
 ### messenger(出入口)の選び方
 
 TelegramとDiscordの違いをHermes Agent観点で整理する。両者の機能はかなり重なるが、実装の出自が違う(出典:[gateway/platforms/](https://github.com/NousResearch/hermes-agent/tree/main/gateway/platforms)と[plugins/platforms/discord/](https://github.com/NousResearch/hermes-agent/tree/main/plugins/platforms/discord))。
