@@ -23,6 +23,7 @@ published: false
 - [よくあるエラーと対処](#よくあるエラーと対処)
 - [まとめと第4回予告](#まとめと第4回予告)
 - [番外編:1Password Environments(beta)とは何か](#%E7%95%AA%E5%A4%96%E7%B7%A8%3A1password-environments(beta)%E3%81%A8%E3%81%AF%E4%BD%95%E3%81%8B)
+- [公式ドキュメント引用元](#公式ドキュメント引用元)
 
 :::message
 このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。全10回を予定している。
@@ -730,3 +731,11 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 「Codex/Telegram/Discord/自宅GPU連携でトークンの種類が10個以上に増えて、本編の`secrets.env`に書き並べるのが破綻してきた」と感じたら、移行を検討すればよい。
 
 ここまでが第3回。次回は第4回でHermes Agent本体をインストールする。
+## 公式ドキュメント引用元
+
+| 項目 | 引用元 |
+|---|---|
+| 1Passwordサービスアカウントの発行 | [Service Accounts](https://www.1password.dev/service-accounts/get-started/) |
+| opコマンド(1Password CLI)の導入 | [1Password CLI](https://www.1password.dev/cli/get-started/) |
+| op://参照記法 | [Secret references](https://www.1password.dev/cli/secret-references/) |
+| op runで環境変数に秘密を注入 | [Load secrets into env vars](https://www.1password.dev/cli/secrets-environment-variables/) |
