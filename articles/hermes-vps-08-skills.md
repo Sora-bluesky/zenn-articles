@@ -14,7 +14,7 @@ published: false
 - [事前準備](#事前準備)
 - [組み込みSkillを見る](#組み込みskillを見る)
 - [最初の自作Skillを作る](#最初の自作skillを作る)
-- [Progressive Disclosureを理解する](#progressive-disclosureを理解する)
+- [段階的に読み込む仕組み(Progressive Disclosure)](#段階的に読み込む仕組み(progressive-disclosure))
 - [CronにSkillを紐付ける](#cronにskillを紐付ける)
 - [Skills Hubから足す](#skills-hubから足す)
 - [Skillにファイルを添付する](#skillにファイルを添付する)
@@ -292,7 +292,7 @@ Telegram botに、順に送る。
 
 ![Telegramで/reload_skillsを送るとSkills Reloaded・Added Skills: morning-news・86 skill(s) availableが表示され、続けて/morning_newsでニュース要約が出典URL付きで届いた画面。bot名はHermes VPS](/images/hermes-vps/hermes-vps-08-skill-telegram-call.png)
 
-## Progressive Disclosureを理解する
+## 段階的に読み込む仕組み(Progressive Disclosure)
 
 「必要な時だけ読み込む」とは具体的にどういうことか。Hermes Agentは3段階でSkillを読む。これをProgressive Disclosure(段階的開示)と呼ぶ。
 

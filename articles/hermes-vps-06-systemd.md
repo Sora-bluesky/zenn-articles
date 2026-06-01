@@ -21,8 +21,8 @@ published: false
 - [providerを切り替える](#providerを切り替える)
 - [コンテナ隔離と承認モード](#コンテナ隔離と承認モード)
 - [VPS再起動後も自動で立ち上がるか確認する](#vps再起動後も自動で立ち上がるか確認する)
-- [まとめと第7回予告](#まとめと第7回予告)
 - [よくあるエラーと対処](#よくあるエラーと対処)
+- [まとめと第7回予告](#まとめと第7回予告)
 - [公式ドキュメント引用元](#公式ドキュメント引用元)
 
 第5回で「Codex+Grok(頭脳2系統)+Telegram+Discord(出入口2系統)」までは揃った。ただこの時点ではSSHでログインして`op run -- hermes gateway`を手で叩いている状態で、SSHを切ると会話相手はいなくなる。
@@ -438,6 +438,20 @@ Linger=yes
 
 このタイミングでSSHを開かずにスマホのTelegramから「hello」を送って返信が来れば、24時間常駐運用の完成。第4回・第5回で「動くけどSSHが必要」だったHermes Agentが、ここでようやく「VPSの上で勝手に動き続ける」状態に切り替わる。
 
+## よくあるエラーと対処
+
+| 症状 | 対処 |
+|---|---|
+| `systemctl --user status`が`failed`になる | `journalctl --user -u hermes-gateway.service -n 200`でExecStart直後のエラーを読む。多くは、(a)`op://`参照の解決失敗(`service-account.env`のtoken失効)、(b)Discord/Telegram tokenの参照ミス、(c)venvパスが`ExecStart`から見えていない、のいずれか |
+| `enable hermes-gateway.service`で`Failed to enable: No such file or directory` | unitファイルのパスが`~/.config/systemd/user/`になっていない。`hermes gateway install --force`で再生成する |
+| SSHログアウト後にhermesが止まる | lingerが無効。`loginctl show-user admin \| grep Linger`で`Linger=yes`を確認(通常はinstallが自動で有効化済み)。無効なら`loginctl enable-linger admin`を1回実行 |
+| `journalctl --user`に何も出ない | (a)ユーザーマネージャー自体が起動していない場合は`systemctl --user status`で全体状態を確認、(b)journaldのrate limitに引っかかっている場合は`/etc/systemd/journald.conf`の`RateLimitBurst`を確認 |
+| VPS再起動後にhermesが起動しない | (a)`systemctl --user is-enabled hermes-gateway.service`で`enabled`を確認(installの2問目をnにしたなら`enable`を打つ)、(b)`loginctl show-user admin \| grep Linger`で`Linger=yes`を確認、(c)`op run`の`service-account.env`のtokenが期限切れの場合は1Passwordで再発行 |
+| Telegram/Discordの片方だけ応答しない | `journalctl --user -u hermes-gateway.service -f`でmessenger接続時のエラーログを確認。token失効・Privileged Intent設定(Discord)の取りこぼしが主因 |
+| grokが`Could not decrypt the provided encrypted_content`(HTTP 400)を返しセッションが詰まる | 1セッション中にprovider/modelを切り替えた後、旧providerの暗号化推論データを再送するため起きる既知挙動(gateway自体は落ちず別providerにフォールバックすることが多い)。当面はセッション途中でproviderを切り替えない、または詰まったセッションを`sessions.json`で`suspended:true`にして`hermes gateway restart`。v0.15.x以降で再発しにくくなる(完全解消は未確認)。参照:[#32617](https://github.com/NousResearch/hermes-agent/issues/32617) |
+| 承認プロンプトがTelegramに出ない | `~/.hermes/config.yaml`の`approvals.mode`を確認。`manual`以外になっていたら再設定 |
+| メモリ消費が増え続ける | `systemctl --user status hermes-gateway.service`のMemory欄で確認。長時間運用で増加が顕著なら[Issues](https://github.com/NousResearch/hermes-agent/issues)で`memory`等のキーワード検索→該当Issueがなければ新規起票 |
+
 ## まとめと第7回予告
 
 第6回でやったこと:
@@ -454,20 +468,6 @@ Linger=yes
 第6回完了時点で、ユーザーがVPSに触らずにスマホだけでHermes Agentと会話できる状態になった。次は「会話を待つ」だけでなく「Hermesから話しかけてもらう」運用に進む。
 
 第7回ではCronを使って、毎朝の定型タスク(ニュース要約、当日のスケジュール整理、TODOの提示など)をHermes Agent側から自発的に通知する仕組みを作る。systemdに常駐できたからこそ、Cron+hermesの組み合わせが意味を持つ。
-
-## よくあるエラーと対処
-
-| 症状 | 対処 |
-|---|---|
-| `systemctl --user status`が`failed`になる | `journalctl --user -u hermes-gateway.service -n 200`でExecStart直後のエラーを読む。多くは、(a)`op://`参照の解決失敗(`service-account.env`のtoken失効)、(b)Discord/Telegram tokenの参照ミス、(c)venvパスが`ExecStart`から見えていない、のいずれか |
-| `enable hermes-gateway.service`で`Failed to enable: No such file or directory` | unitファイルのパスが`~/.config/systemd/user/`になっていない。`hermes gateway install --force`で再生成する |
-| SSHログアウト後にhermesが止まる | lingerが無効。`loginctl show-user admin \| grep Linger`で`Linger=yes`を確認(通常はinstallが自動で有効化済み)。無効なら`loginctl enable-linger admin`を1回実行 |
-| `journalctl --user`に何も出ない | (a)ユーザーマネージャー自体が起動していない場合は`systemctl --user status`で全体状態を確認、(b)journaldのrate limitに引っかかっている場合は`/etc/systemd/journald.conf`の`RateLimitBurst`を確認 |
-| VPS再起動後にhermesが起動しない | (a)`systemctl --user is-enabled hermes-gateway.service`で`enabled`を確認(installの2問目をnにしたなら`enable`を打つ)、(b)`loginctl show-user admin \| grep Linger`で`Linger=yes`を確認、(c)`op run`の`service-account.env`のtokenが期限切れの場合は1Passwordで再発行 |
-| Telegram/Discordの片方だけ応答しない | `journalctl --user -u hermes-gateway.service -f`でmessenger接続時のエラーログを確認。token失効・Privileged Intent設定(Discord)の取りこぼしが主因 |
-| grokが`Could not decrypt the provided encrypted_content`(HTTP 400)を返しセッションが詰まる | 1セッション中にprovider/modelを切り替えた後、旧providerの暗号化推論データを再送するため起きる既知挙動(gateway自体は落ちず別providerにフォールバックすることが多い)。当面はセッション途中でproviderを切り替えない、または詰まったセッションを`sessions.json`で`suspended:true`にして`hermes gateway restart`。v0.15.x以降で再発しにくくなる(完全解消は未確認)。参照:[#32617](https://github.com/NousResearch/hermes-agent/issues/32617) |
-| 承認プロンプトがTelegramに出ない | `~/.hermes/config.yaml`の`approvals.mode`を確認。`manual`以外になっていたら再設定 |
-| メモリ消費が増え続ける | `systemctl --user status hermes-gateway.service`のMemory欄で確認。長時間運用で増加が顕著なら[Issues](https://github.com/NousResearch/hermes-agent/issues)で`memory`等のキーワード検索→該当Issueがなければ新規起票 |
 
 ## 公式ドキュメント引用元
 
