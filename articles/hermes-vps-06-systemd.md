@@ -2,7 +2,7 @@
 title: "【第6回】Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰"
 emoji: "🤖"
 type: "tech"
-topics: ["claudecode", "hermes", "systemd", "linux", "vps"]
+topics: ["ai", "hermes", "systemd", "linux", "vps"]
 published: false
 ---
 
@@ -39,8 +39,8 @@ published: false
 - **第6回**(本記事)──systemd常駐化で24時間動かす
 - 第7回──Cronで毎朝の定型タスクを任せる
 - 第8回──Skillsに手順を覚えさせる
-- 第9回──Web/X検索の使い分け(Firecrawl+SearXNG+X Search)
-- 第10回──自宅PCをWake-on-LANで起こす+zellij
+- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 所要時間の目安は60〜90分(うちVPS再起動の待ち時間が10分前後)。手を動かすのは10コマンド程度で、`hermes gateway install`という公式コマンドが入ったので、手書きでunitファイルを書く必要はない。
 
@@ -110,7 +110,6 @@ systemd・hermes gateway・messengerの3層に焦点を絞った構成。
 
 ## 事前準備
 
-<!-- TBD:実機作業後に追記。以下のチェックリストを実機で1つずつ確認してスクショ撮影 -->
 
 ### 4-1. VPSにSSHで入る
 
@@ -144,7 +143,6 @@ source venv/bin/activate
 | 1Passwordサービスアカウント | `cat ~/.hermes/service-account.env` | `OP_SERVICE_ACCOUNT_TOKEN=ops_...`の1行 |
 | op run疎通 | `op run --env-file=$HOME/.hermes/secrets.env -- env \| grep TOKEN` | TELEGRAM/DISCORDの両tokenが実値展開される |
 
-<!-- TBD:この章は実機作業中に各コマンドの実出力を貼り付ける。1Password実値はマスク必須 -->
 
 ## ユーザーunitを生成する
 
@@ -449,7 +447,7 @@ Linger=yes
 | VPS再起動後にhermesが起動しない | (a)`systemctl --user is-enabled hermes-gateway.service`で`enabled`を確認(installの2問目をnにしたなら`enable`を打つ)、(b)`loginctl show-user admin \| grep Linger`で`Linger=yes`を確認、(c)`op run`の`service-account.env`のtokenが期限切れの場合は1Passwordで再発行 |
 | Telegram/Discordの片方だけ応答しない | `journalctl --user -u hermes-gateway.service -f`でmessenger接続時のエラーログを確認。token失効・Privileged Intent設定(Discord)の取りこぼしが主因 |
 | grokが`Could not decrypt the provided encrypted_content`(HTTP 400)を返しセッションが詰まる | 1セッション中にprovider/modelを切り替えた後、旧providerの暗号化推論データを再送するため起きる既知挙動(gateway自体は落ちず別providerにフォールバックすることが多い)。当面はセッション途中でproviderを切り替えない、または詰まったセッションを`sessions.json`で`suspended:true`にして`hermes gateway restart`。v0.15.x以降で再発しにくくなる(完全解消は未確認)。参照:[#32617](https://github.com/NousResearch/hermes-agent/issues/32617) |
-| 承認プロンプトがTelegramに出ない | `~/.hermes/config.yaml`の`approvals.mode`を確認。`manual`以外になっていたら再設定 |
+| (local backendで)承認プロンプトが出ない | `~/.hermes/config.yaml`の`approvals.mode`が`manual`か確認。なお**Docker backend(本シリーズ既定)では承認は原則出ない**のが正常(本回「コンテナ隔離と承認モード」参照) |
 | メモリ消費が増え続ける | `systemctl --user status hermes-gateway.service`のMemory欄で確認。長時間運用で増加が顕著なら[Issues](https://github.com/NousResearch/hermes-agent/issues)で`memory`等のキーワード検索→該当Issueがなければ新規起票 |
 
 ## まとめと第7回予告
@@ -476,10 +474,7 @@ Linger=yes
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
 | 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2。NoneTypeバグは解消済みで、`hermes gateway install`のフローは最新版でも変わらない) |
 | `hermes gateway install`実装 | [hermes_cli/gateway.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/gateway.py) |
-<!-- TBD:公式systemd常駐ガイドのURLは実機検証時に確定。
-hermes-agent.nousresearch.com/docs/guides/systemdが存在するか確認、
-存在しなければGitHub README該当節へのアンカーに差し替え -->
-| 公式systemd常駐ガイド | [hermes-agent.nousresearch.com/docs/guides/systemd](https://hermes-agent.nousresearch.com/docs/guides/systemd) |
+| 公式messaging gateway(systemd常駐) | [docs/user-guide/messaging](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/) |
 | systemd.unit (man) | [freedesktop.org/.../systemd.unit](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html) |
 | systemd.service (man) | [freedesktop.org/.../systemd.service](https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html) |
 | systemctl (man) | [freedesktop.org/.../systemctl](https://www.freedesktop.org/software/systemd/man/latest/systemctl.html) |

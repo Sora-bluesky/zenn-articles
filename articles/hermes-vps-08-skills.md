@@ -2,7 +2,7 @@
 title: "【第8回】Hermes Agentが使うほど自分専用に育つ──Skillsに手順を覚えさせる"
 emoji: "🤖"
 type: "tech"
-topics: ["claudecode", "hermes", "skills", "自動化", "vps"]
+topics: ["ai", "hermes", "skills", "自動化", "vps"]
 published: false
 ---
 
@@ -38,8 +38,8 @@ published: false
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-cron)──Cronで毎朝の定型タスクを任せる
 - **第8回**(本記事)──Skillsに手順を覚えさせる
-- 第9回──Web/X検索の使い分け(Firecrawl+SearXNG+X Search)
-- 第10回──自宅PCをWake-on-LANで起こす+zellij
+- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 手を動かすのは、VPSにSSHでつないで`SKILL.md`を1枚作り、Telegramから呼び出すだけ。難しいプログラミングは出てこない。
 
@@ -227,7 +227,7 @@ metadata:
 - 「今日の話題は?」と聞かれた時
 
 ## Procedure
-1. 24時間以内のAI関連ニュース(Hacker News上位、ArXiv新着、X上のリポスト1000以上の投稿)を収集
+1. 24時間以内のAI関連ニュース(Hacker News上位、ArXiv新着、Xで最近話題のAI関連投稿)を収集
 2. 3〜5項目に絞る。優先度:技術的に新規性が高い → 業界影響が大きい → 個人開発者目線で使える
 3. 各項目を2行以内で要約し、出典URLを末尾に付ける
 4. 最後に「気になるトピックがあれば、深掘りしてください」と添える

@@ -33,8 +33,8 @@ published: false
 - 第6回──Hermes Agentをsystemdで24時間常駐させる
 - 第7回──Hermes Agent Cronで毎朝の定型を任せる
 - 第8回──Hermes Agent Skillsに手順を覚えさせる
-- 第9回──Hermes AgentのWeb/X検索を使い分ける
-- 第10回──Hermes Agentの手足に自宅のデスクトップを使う(Wake-on-LANとzellij)
+- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 :::
 
 ## この回の到達点
@@ -94,7 +94,7 @@ Hermes Agentは複数のbackendを選べる。README宣伝コピーは「local /
 | SSH / Modal / Daytona / Vercel Sandbox | 採用しない | 外部マシン/外部サービスへの委譲。本シリーズは1台のVPSで完結させる方針 |
 | Singularity | 採用しない | HPC向け。一般的なVPS運用には過剰 |
 
-Telegramから飛んできた指示が`rm -rf /`のような破壊コマンドでも、Docker backendなら**コンテナの中で完結**する。ホスト側のadminファイルやsshd設定には触れない。後段の第5回で承認モード(ask)を固定するので、人間の許可なしには発動しないが、二重の防御線を張る。
+Telegramから飛んできた指示が`rm -rf /`のような破壊コマンドでも、Docker backendなら**コンテナの中で完結**する。ホスト側のadminファイルやsshd設定には触れない。後段の第5回で承認モード(`approvals.mode=manual`)も固定する。ただし主防御はこのDocker隔離で、承認モードは将来ホスト上で直接実行(local backend)に戻したときの保険だ(詳細は第6回)。
 
 ## 第4回終了時点の構成図
 

@@ -2,7 +2,7 @@
 title: "【第9回】Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける"
 emoji: "🔎"
 type: "tech"
-topics: ["claudecode", "hermes", "searxng", "firecrawl", "vps"]
+topics: ["ai", "hermes", "searxng", "firecrawl", "vps"]
 published: false
 ---
 
@@ -38,7 +38,7 @@ published: false
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-cron)──Cronで毎朝の定型タスクを任せる
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-skills)──Skillsに手順を覚えさせる
 - **第9回**(本記事)──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
-- 第10回──自宅PCをWake-on-LANで起こす+zellij
+- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 手を動かすのは、VPSにSSHでつないでDockerで検索エンジンを1つ立て、APIキーを1つ取り、設定を3行書き換えるだけ。難しいプログラミングは出てこない。
 
@@ -48,7 +48,7 @@ published: false
 
 | 項目 | 第8回完了時 | 第9回完了後 |
 |---|---|---|
-| Web検索 | 既定のキーレス検索だけ(質が安定しない) | **SearXNGを自前で持ち、無制限に検索** |
+| Web検索 | 既定のキーレス検索だけ(質が安定しない) | **SearXNGを自前で持ち、回数を気にせず検索** |
 | サイト本文の取得 | 手段が定まっていない | **Firecrawlを難しいページ用に確保** |
 | X(旧Twitter)の話題 | 「利用不可」で代替されていた | **x_searchで議論と投稿URLを拾う** |
 | 設定の考え方 | 1つのbackendだけ意識 | **機能別に検索先を切り替える優先順位を理解** |
@@ -135,7 +135,7 @@ cat ~/.hermes/config.yaml | grep -A 4 "web:"    # 今の web: セクション
 
 ## SearXNGで自前の検索エンジンを持つ
 
-SearXNGは、自分のサーバーに立てる検索エンジンだ。GoogleやBingなど複数の検索結果をまとめて返す「メタ検索」で、回数制限がなく、検索語が外部のAPI業者に渡らない。第4回で入れたDockerの上に1コンテナ立てるだけで動く。
+SearXNGは、自分のサーバーに立てる検索エンジンだ。GoogleやBingなど複数の検索結果をまとめて返す「メタ検索」で、自前APIキーや課金枠が要らず、検索語が外部のAPI業者に渡らない(上流の検索エンジン側の制限・ブロックはあり得る)。第4回で入れたDockerの上に1コンテナ立てるだけで動く。
 
 ### 置き場所を作って設定ファイルを書く
 
@@ -342,7 +342,7 @@ x_searchを使って、Hermes Agent(NousResearch)についてXで最近どんな
 **Xに触れる道は3つあり、混同しない**
 
 - **xai-oauth → x_search**(この記事):Grokが議論を要約し、根拠の投稿URLを返す。数値は返さない
-- **xurl**(X開発者API):いいね数など正確な数値や特定アカウントのtimelineが要るときに使う。別途X APIの認証が必要で、本記事では使わない。Grok Build連携のスキル化として**第11回以降**で詳しく扱う予定
+- **xurl**(X開発者API):いいね数など正確な数値や特定アカウントのtimelineが要るときに使う。別途X APIの認証が必要で、本記事では使わない。Grok Build連携のスキル化は本シリーズ(全10回)の範囲外で、別途扱う予定
 - **web_search**(公開Web検索):Xを覗くことはできるが正確な数値は取れない。Xの数値目的では使わない
 
 「正確な数値が欲しい」と思ったら、それは`x_search`の役割ではなく`xurl`の領分だと切り分ける。ここで`x_search`に数値を求めないのは、機能の境界を守ることでもある。
@@ -395,7 +395,7 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 
 これで、VPSのHermes Agentは「最新情報を自分で取りに行く」目を持った。決まった時刻に動き(第7回)、覚えた手順で(第8回)、必要な情報を自分で検索して(第9回)要約を届ける。
 
-第10回(最終回)は、この「思考と検索の拠点」に手足を足す。画像生成や大量バッチ、GPU推論はVPSのCPUでは荷が重い。そこで自宅のGPUデスクトップをWake-on-LANで起こし、Tailscale経由でリモート操作する。VPSという脳と、自宅GPUという手足を、Hermes Agentがつなぐ最終形だ。
+第10回(最終回)は、この「思考と検索の拠点」に手足を足す。画像生成や大量バッチ、GPU推論はVPSのCPUでは荷が重い。そこで家の余ったPCをLinuxに換装し、24時間つながる常駐GPUサーバーにする。VPSはTailscale経由でその機械に重い計算を任せる——常に起きている受付がVPS、重い処理担当が自宅GPU機、という分担をHermes Agentがつなぐ最終形だ。
 
 ## よくあるエラーと対処
 

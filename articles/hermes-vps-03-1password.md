@@ -36,8 +36,8 @@ published: false
 - 第6回──Hermes Agentをsystemdで24時間常駐させる
 - 第7回──Hermes Agent Cronで毎朝の定型を任せる
 - 第8回──Hermes Agent Skillsに手順を覚えさせる
-- 第9回──Hermes AgentのWeb/X検索を使い分ける
-- 第10回──Hermes Agentの手足に自宅のデスクトップを使う(Wake-on-LANとzellij)
+- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 :::
 
 ## この回の到達点
@@ -731,6 +731,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 「Codex/Telegram/Discord/自宅GPU連携でトークンの種類が10個以上に増えて、本編の`secrets.env`に書き並べるのが破綻してきた」と感じたら、移行を検討すればよい。
 
 ここまでが第3回。次回は第4回でHermes Agent本体をインストールする。
+
 ## 公式ドキュメント引用元
 
 | 項目 | 引用元 |

@@ -2,7 +2,7 @@
 title: "【第5回】Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す"
 emoji: "🤖"
 type: "tech"
-topics: ["claudecode", "hermes", "discord", "oauth", "xai"]
+topics: ["vps", "hermes", "discord", "oauth", "xai"]
 published: false
 ---
 
@@ -35,8 +35,8 @@ published: false
 - 第6回──systemd常駐化(`hermes gateway install`)
 - 第7回──Cronで毎朝の定型タスクを任せる
 - 第8回──Skillsに手順を覚えさせる
-- 第9回──Web/X検索の使い分け(Firecrawl+SearXNG+X Search)
-- 第10回──自宅PCをWake-on-LANで起こす+zellij
+- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 ## この回の到達点
 
@@ -84,7 +84,7 @@ published: false
 | デバイスコードフロー | 端末側にコードが表示されて、それを別端末のブラウザで承認するOAuth方式。テレビにコードが出てスマホで承認するNetflixログインに近い |
 | loopback OAuth | 端末内の特定のポート(56121等)にブラウザがリダイレクトして承認するOAuth方式。Grokがこの方式を使う |
 | SSHトンネリング | 手元PC↔VPSの間に「特定のポート番号だけを通す仮想トンネル」を作る。VPSにブラウザが無いので、loopback OAuthを成立させるために必要 |
-| 承認モード(`approvals.mode`) | エージェントがコマンドを実行する前に「これ実行していい?」と人間に確認する設定。`manual`(=旧名ask)で固定すると、Telegram/Discord経由で来た指示も毎回承認確認が挟まる |
+| 承認モード(`approvals.mode`) | エージェントがコマンドを実行する前に「これ実行していい?」と人間に確認する設定。`manual`(=旧名ask)で固定する設定。ただしDocker backend(本シリーズ既定)では承認は原則出ず、これはlocal backendに戻したときの保険(第6回参照) |
 
 ## 第5回終了時点の構成図
 
@@ -365,7 +365,7 @@ Discordの設定プロンプトが順に出る。
 
 1. **Discord botトークン**:1Passwordに保存した実tokenを貼り付ける。「Discord token saved」が緑文字で出れば成功
 2. **Allowed user IDs or usernames**:**数値のユーザーIDを入れる**(推奨)。Discord本体「ユーザー設定」→「詳細設定」→「**開発者モード**」をON → 自分のアイコン右クリック → 「**ユーザーIDをコピー**」で取得。ユーザー名でも設定はできるが、自分のDiscordユーザー名と正確に一致が必要で(XやTelegramのハンドルとは別物のことが多い)、解決にServer Membersインテントも要る。数値IDなら一致ズレもインテントも不要で確実
-3. **Home channel ID**(cron出力や通知の配信先チャンネル):**空Enter**でスキップ。チャンネルIDはbot招待後に取得するので、後で`/sethome`コマンド(第6回で実施)で設定する
+3. **Home channel ID**(cron出力や通知の配信先チャンネル):**空Enter**でスキップ。チャンネルIDはbot招待後に取得する。home channelの設定はDiscord配信を使う場合の任意設定で、本シリーズの必須手順ではない
 4. **Install the gateway as a systemd service?** [Y/n]:**n** で答える(常駐化は第6回でやる)
 
 「`Messaging Platforms (Gateway) configuration complete!`」が緑文字で出れば完了だ。
@@ -600,7 +600,7 @@ approvals:
 
 | 子キー | 意味 |
 |---|---|
-| `mode: manual` | 毎回人間に承認確認(=旧名ask) |
+| `mode: manual` | 承認確認を有効化(=旧名ask)。Docker既定では原則出ず、local時の保険 |
 | `timeout: 60` | 承認待ち60秒(超過で却下扱い) |
 | `cron_mode: deny` | cronから呼ばれた時は自動拒否(第7回で活きる安全弁) |
 | `mcp_reload_confirm: true` | MCP再読込時にも承認確認 |
