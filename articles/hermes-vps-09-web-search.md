@@ -322,7 +322,7 @@ hermes doctor 2>&1 | grep -iE "xai oauth|x_search"   # ✓ が出れば有効
 
 ### 数値を求めない、が鉄則
 
-`x_search`が返すのは、**Xでの議論の要約**と、その根拠になった**投稿のURL**だけだ。いいね数・リポスト数・閲覧数のような数値は返さない(公式の仕様で、返ってくるのは要約と引用URLのみ)。
+`x_search`が返すのは、**Xでの議論の要約**と、その根拠になった**投稿のURL**が中心だ。いいね数・リポスト数・閲覧数のような数値は返さない(公式の仕様では、返ってくるのは要約と引用URL等であって、いいね数のような数値フィールドは無い)。
 
 ところがここで「いいねが多い順に」などと数値を頼むと、エージェントは取得できない数値を埋めようとする。実際に試したときは、取れないはずの数字を「概算」と添えて出してきた。これは根拠のない捏造だ。
 
@@ -415,7 +415,7 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 | Web検索バックエンドの一覧(8種) | [features/web-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-search)「Backends」 |
 | backendの優先順位(機能別 > 共有 > 自動検出) | 同上「Per-capability configuration」 |
 | X Search(`x_search`)の仕様・自動有効化 | [features/x-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/x-search) |
-| `x_search`の返り値は`answer`と`citations`のみ(いいね・リポスト等の数値フィールドは無い) | 同上「Tool parameters」 |
+| `x_search`の返り値は要約(`answer`)と引用URL(`citations`)が中心(他に`inline_citations`/`degraded`等の項目あり。いいね・リポスト等の数値フィールドは無い) | 同上「Tool parameters」 |
 | SearXNGの`settings.yml`(`formats`にjson) | [SearXNG公式](https://docs.searxng.org/) |
 | Firecrawlの無料枠(月1,000) | [Firecrawl公式](https://www.firecrawl.dev/) |
 | `search_backend`/`extract_backend`・`crawl_backend`不在・8バックエンド | 実機v0.15.1で確認(2026-06-01)。`config.yaml` / `hermes doctor` / `docker compose logs` |

@@ -662,7 +662,7 @@ hermes setup agent
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点でmain運用。最新は[v2026.5.29](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29)=v0.15.1でNoneType修正済み、新規読者は最新tagで進めてよい) |
+| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点でmain運用。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2でNoneType修正済み、新規読者は最新tagで進めてよい) |
 | OAuth実装(Codex/Grok) | [hermes_cli/auth.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/auth.py) |
 | OAuth over SSH公式ガイド | [hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh](https://hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh) |
 | セットアップウィザード構成 | [hermes_cli/setup.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/setup.py) |

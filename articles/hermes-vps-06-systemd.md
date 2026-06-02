@@ -148,7 +148,7 @@ source venv/bin/activate
 
 ## ユーザーunitを生成する
 
-第4回の`hermes setup gateway`で「Install gateway as systemd?」に**N**で答えたが、ここで改めて`hermes gateway install`を実行する。**フラグは付けない**——フラグなしで実行すると、adminのユーザーunitとして生成される(`--user`というオプションは存在しない。`--system`を付けたときだけroot権限のシステム全体unitになる。出典:[hermes_cli/gateway.py@v2026.5.16](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/gateway.py))。
+第4回の`hermes setup gateway`で「Install gateway as systemd?」に**N**で答えたが、ここで改めて`hermes gateway install`を実行する。**フラグは付けない**——フラグなしで実行すると、adminのユーザーunitとして生成される(`--user`というオプションは存在しない。`sudo hermes gateway install --system`を付けると、ログイン状態に依存しないboot-time system serviceになる(rootではなく、あなたのユーザーとして走る。linger不要なのでVPS・ヘッドレス向き)。本シリーズはユーザーunit+lingerで進めるが、VPSなら`--system`も選べる。出典:[Messaging Gateway(systemd)](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/))。
 
 ```bash
 cd ~/hermes-agent
@@ -474,7 +474,7 @@ Linger=yes
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点。最新は[v2026.5.29](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29)=v0.15.1。NoneTypeバグは解消済みで、`hermes gateway install`のフローは最新版でも変わらない) |
+| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2。NoneTypeバグは解消済みで、`hermes gateway install`のフローは最新版でも変わらない) |
 | `hermes gateway install`実装 | [hermes_cli/gateway.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/gateway.py) |
 <!-- TBD:公式systemd常駐ガイドのURLは実機検証時に確定。
 hermes-agent.nousresearch.com/docs/guides/systemdが存在するか確認、
