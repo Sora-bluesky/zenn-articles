@@ -146,7 +146,7 @@ source venv/bin/activate
 
 ## ユーザーunitを生成する
 
-第4回の`hermes setup gateway`で「Install gateway as systemd?」に**N**で答えたが、ここで改めて`hermes gateway install`を実行する。**フラグは付けない**——フラグなしで実行すると、adminのユーザーunitとして生成される(`--user`というオプションは存在しない。`sudo hermes gateway install --system`を付けると、ログイン状態に依存しないboot-time system serviceになる(rootではなく、あなたのユーザーとして走る。linger不要なのでVPS・ヘッドレス向き)。本シリーズはユーザーunit+lingerで進めるが、VPSなら`--system`も選べる。出典:[Messaging Gateway(systemd)](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/))。
+第4回の`hermes setup gateway`で「Install gateway as systemd?」に**N**で答えたが、ここで改めて`hermes gateway install`を実行する。**フラグは付けない**——フラグなしで実行すると、adminのユーザーunitとして生成される(`--user`というオプションは存在しない)。一方`sudo hermes gateway install --system`を付けると、ログイン状態に依存しないboot-time system serviceになる(rootではなく、あなたのユーザーとして走る。linger不要なのでVPS・ヘッドレス向き)。本シリーズはユーザーunit+lingerで進めるが、VPSなら`--system`も選べる。出典:[Messaging Gateway(systemd)](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/)。
 
 ```bash
 cd ~/hermes-agent
