@@ -29,7 +29,7 @@ published: false
 :::message
 このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。全10回を予定している。
 
-- 第1回──Hermes AgentをVPSに常駐させる(契約からログインまで)
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──Hermes AgentをVPSに常駐させる(契約からログインまで)
 - **第2回**(本記事)──Hermes Agentの公開SSHをTailscaleで安全に閉じる
 - 第3回──Hermes Agentの秘密情報を1Passwordで平文に出さない運用
 - 第4回──Hermes Agent本体をVPSに入れる(インストールとDockerサンドボックス)
@@ -39,6 +39,8 @@ published: false
 - 第8回──Hermes Agent Skillsに手順を覚えさせる
 - 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
 - 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
+
+全体像と各回への入口は、まとめ記事[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 ## 公開された22番ポートはなぜ危険か

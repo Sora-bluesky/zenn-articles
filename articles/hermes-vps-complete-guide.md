@@ -3,7 +3,7 @@ title: "Hermes Agent完全構築ガイド｜VPSに常駐させる「使うほど
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "vps", "個人開発", "自動化"]
-published: false
+published: true
 ---
 
 ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く。けれど、覚えるのはいつもこちら側だ。同じ説明を書き直し、同じ指示を出し直す。Hermes Agentはここが違う。一度うまくいったやり方を、自分でスキルとして書き残し、次からは勝手に使い回す。使うほど手順がたまり、こちらが教えなくても賢くなっていく——そういう設計の、オープンソースの自律型エージェントだ。

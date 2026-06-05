@@ -344,7 +344,7 @@ x_searchを使って、Hermes Agent(NousResearch)についてXで最近どんな
 **Xに触れる道は3つあり、混同しない**
 
 - **xai-oauth → x_search**(この記事):Grokが議論を要約し、根拠の投稿URLを返す。数値は返さない
-- **xurl**(X開発者API):いいね数など正確な数値や特定アカウントのtimelineが要るときに使う。別途X APIの認証が必要で、本記事では使わない。Grok Build連携のスキル化は本シリーズ(全10回)の範囲外で、別途扱う予定
+- **xurl**(X開発者API):いいね数など正確な数値や特定アカウントのtimeline、自分のブックマークが要るときに使う。別途X APIの認証が必要で、本記事では使わない。xurlを認証して自分のブックマークを整理する活用は、この先の回で扱う
 - **web_search**(公開Web検索):Xを覗くことはできるが正確な数値は取れない。Xの数値目的では使わない
 
 「正確な数値が欲しい」と思ったら、それは`x_search`の役割ではなく`xurl`の領分だと切り分ける。ここで`x_search`に数値を求めないのは、機能の境界を守ることでもある。
@@ -354,7 +354,7 @@ X検索がどうしても安定しない場合(第5回で触れた[Issue #26847]
 
 ## morning-news Skillをハイブリッド検索に育てる
 
-最後に、第8回で作ったmorning-news Skillを、いまそろえた検索前提に書き換える。第8回のSKILL.mdの手順1には「Xのリポスト1000以上の投稿」という**数値条件**が残っていた。これも`x_search`では取れない数値なので、捏造のもとになる。全文を入れ替えて消す。
+最後に、第8回で作ったmorning-news Skillを、いまそろえた検索前提に書き換える。第8回の手順は「Hacker News上位・ArXiv新着・Xで最近話題の投稿」をまとめて取りに行く形で、検索の役割分担が曖昧だった。これをWeb検索とX検索に切り分け、末尾に取得状況を必ず残す形へ全文を入れ替える。
 
 ```bash
 nano ~/.hermes/skills/morning-news/SKILL.md
@@ -366,22 +366,30 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 ## Procedure
 1. **Web検索(SearXNG)**で過去24時間のAI関連記事のURL一覧を取得
 2. 上位3〜5件の本文を取得し(エージェントがextractを選ぶ)、内容を確認
-3. **x_search**でXでの最近の議論・反応を取得して加える(投稿URL付き。数値は付けない)
+3. **x_search**でXでの議論・反応を取得して加える。根拠にしたX投稿のURL(x.com/…/status/…)を必ず添える。数値は付けない
 4. Web側とX側を統合し、合計5項目に絞る
 5. 各項目を2行で要約し、出典URLを末尾に付ける
+6. 末尾に「取得状況」を必ず付ける(Web検索・本文取得・X検索を、使用/未使用で)
 
 ## Pitfalls
-- x_searchが無効・403の場合は手順3を省略し、Web/HN側だけで5項目埋める
 - いいね/RT等の数値は出さない(x_searchは数値を返さないため、書くと捏造になる)
+- x_searchが無効・403の日はWebだけで5項目を埋め、取得状況に「X検索: 未使用」と正直に書く
+- 「X検索: 使用(x_search)」と書くのは、X投稿URLを本文に載せたときだけ
+- 手動cron実行の直後はmessage_countが0のまま見えることがある。完了を待ってから、本文・x_searchの呼び出し・取得状況の整合を確認する
+
+## References
+- references/x-search-output-consistency.md: X投稿URLと取得状況を照合する検証手順
 ```
 
-![更新後のSKILL.md全文。手順にSearXNG・本文取得・x_searchが並び、数値を出さない注記が見える画面](/images/hermes-vps/hermes-vps-09-skill-updated.png)
+![更新後のSKILL.md全文。手順にSearXNG・本文取得・x_searchが並び、末尾の取得状況と、X投稿URLを必ず添える注記が見える画面](/images/hermes-vps/hermes-vps-09-skill-updated.png)
 
 中身を書き換えるだけなので`/reload_skills`は不要だ。Telegramから`/morning_news`(アンダースコア)で呼ぶ。
 
-ここで実機が見せてくれた振る舞いが、この回の主張をそのまま裏づけていた。`x_search`に直接届かなかったとき、エージェントは記事側をWeb検索で埋めたうえで、末尾にこう書き添えてきた──「この環境では専用のx_searchツールに直接届かなかったため、X公開検索結果で補完しました」。使えなかった道具を隠さず申告している。**数値を求めなければ、エージェントは無理に数字を作らず、できなかったことを正直に書く**。
+ここで効いてくるのが、末尾の「取得状況」だ。`x_search`が使えた朝は、X投稿のURL(`x.com/…/status/…`)が本文に並び、取得状況に「X検索: 使用(x_search)」と出る。逆に`x_search`に届かなかった朝は、エージェントがWebだけで記事を埋め、「X検索: 未使用」と正直に書く。**取得状況と本文がいつも一致するので、X検索が本当に効いた朝なのかを、ひと目で確かめられる**。数値さえ求めなければ、エージェントは無理に数字を作らず、できたこととできなかったことをそのまま残す。
 
-![Telegramで/morning_newsを送り、記事URLとXの話題のハイブリッド結果が届いた画面。いいね/RT等の数値は無く、x_searchが直接使えなかった旨が明記されている(自分のハンドル/chat IDはマスク)](/images/hermes-vps/hermes-vps-09-morning-news-hybrid.png)
+この「投稿URLと取得状況の照合」は、SKILL.mdの末尾にReferencesとして書いた検証手順(`references/x-search-output-consistency.md`)に切り出してある。skillは本体から`references/`のファイルを参照でき、手順が増えても本体を短いまま保てる。
+
+![Telegramで/morning_newsを送り、記事URLとX投稿URLのハイブリッド結果が届いた画面。末尾の取得状況に「X検索: 使用(x_search)」と出て、本文のX投稿URLと一致している(自分のハンドル/chat IDはマスク)](/images/hermes-vps/hermes-vps-09-morning-news-hybrid.png)
 
 第7回で作ったCronジョブはこのSkillを添付済みなので、翌朝7時の自動配信も新しい手順で動く。手順を直したいときは、これからもSKILL.mdの1箇所を直すだけでいい。
 
@@ -393,7 +401,7 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 - SearXNGをDockerで自己ホストし、`json`出力を有効にしてHermes Agentから使えるようにした
 - `search_backend` / `extract_backend`を機能別に指定し、`web.backend`より優先される順位を理解した(`crawl_backend`は存在しない)
 - `xai-oauth`を土台に`x_search`でXの議論と投稿URLを拾い、**数値は一切求めない**ことで捏造を防いだ
-- morning-news Skillをハイブリッド検索に書き換え、`x_search`が使えないときは正直に申告して代替する動きを確認した
+- morning-news Skillを、X投稿URLと末尾の「取得状況」を必ず残す形に書き換え、X検索が効いた朝もダメな朝も、本文と取得状況がいつも一致するようにした
 
 これで、VPSのHermes Agentは「最新情報を自分で取りに行く」目を持った。決まった時刻に動き(第7回)、覚えた手順で(第8回)、必要な情報を自分で検索して(第9回)要約を届ける。
 

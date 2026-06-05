@@ -36,6 +36,8 @@ published: true
 - 第8回──Hermes Agent Skillsに手順を覚えさせる
 - 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
 - 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
+
+全体像と各回への入口は、まとめ記事[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 ## この回の到達点
