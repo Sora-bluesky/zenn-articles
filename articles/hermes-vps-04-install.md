@@ -23,7 +23,7 @@ published: false
 - [公式ドキュメント引用元](#公式ドキュメント引用元)
 
 :::message
-このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。全10回を予定している。
+このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。順次公開中で、回数は内容に応じて増えていく。
 
 - 第1回──Hermes AgentをVPSに常駐させる(契約からログインまで)
 - 第2回──Hermes Agentの公開SSHをTailscaleで安全に閉じる
@@ -31,10 +31,12 @@ published: false
 - **第4回**(本記事)──Hermes Agent本体をVPSに入れる(インストールとDockerサンドボックス)
 - 第5回──Hermes Agentに頭脳と出入口をもう1系統足す(Grok OAuthとDiscord+承認モードの確認)
 - 第6回──Hermes Agentをsystemdで24時間常駐させる
-- 第7回──Hermes Agent Cronで毎朝の定型を任せる
-- 第8回──Hermes Agent Skillsに手順を覚えさせる
-- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
-- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
+- 第7回──公式アプリ「Hermes Desktop」でマウス操作する
+- 第8回──Web Dashboardで設定をブラウザ管理する
+- 第9回──Hermes Agent Cronで毎朝の定型を任せる
+- 第10回──Hermes Agent Skillsに手順を覚えさせる
+- 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 :::
 
 ## この回の到達点

@@ -37,10 +37,12 @@ published: false
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す+承認モードの確認
 - **第6回**(本記事)──systemd常駐化で24時間動かす
-- 第7回──Cronで毎朝の定型タスクを任せる
-- 第8回──Skillsに手順を覚えさせる
-- 第9回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
-- 第10回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
+- 第7回──公式アプリ「Hermes Desktop」でマウス操作する
+- 第8回──Web Dashboardで設定をブラウザ管理する
+- 第9回──Cronで毎朝の定型タスクを任せる
+- 第10回──Skillsに手順を覚えさせる
+- 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 所要時間の目安は60〜90分(うちVPS再起動の待ち時間が10分前後)。手を動かすのは10コマンド程度で、`hermes gateway install`という公式コマンドが入ったので、手書きでunitファイルを書く必要はない。
 
@@ -463,9 +465,9 @@ Linger=yes
 - Dockerコンテナでエージェントのコマンドが隔離実行され、ホストに触れないことを確認済み(`approvals.mode=manual`はローカル実行時の保険)
 - VPS再起動後の自動復帰を確認済み
 
-第6回完了時点で、ユーザーがVPSに触らずにスマホだけでHermes Agentと会話できる状態になった。次は「会話を待つ」だけでなく「Hermesから話しかけてもらう」運用に進む。
+第6回完了時点で、ユーザーがVPSに触らずにスマホだけでHermes Agentと会話できる状態になった。次は、この同じHermesを「黒い画面(SSH)」以外からも触れるようにしていく。
 
-第7回ではCronを使って、毎朝の定型タスク(ニュース要約、当日のスケジュール整理、TODOの提示など)をHermes Agent側から自発的に通知する仕組みを作る。systemdに常駐できたからこそ、Cron+hermesの組み合わせが意味を持つ。
+第7回では、母艦(普段使いのPC)に公式デスクトップアプリ「Hermes Desktop」を入れ、Tailscale越しにVPSのHermesをマウス操作で動かす。コマンドを打たなくても、普通のアプリの窓から同じエージェントを使えるようにする回だ。
 
 ## 公式ドキュメント引用元
 
