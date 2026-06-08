@@ -33,13 +33,13 @@ published: false
 
 シリーズの全体像はこちら。
 
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す+承認モードの確認
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
-- **第7回**(本記事)──公式アプリ「Hermes Desktop」でマウス操作する
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──Hermes AgentをVPSに迎える──契約から最小構成のログインまで
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる
+- 第3回──Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す
+- 第4回──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
+- 第5回──Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す
+- 第6回──Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰
+- **第7回**(本記事)──Hermes Agentをマウス操作で動かす──公式アプリ「Hermes Desktop」を入れる
 - 第8回──Web Dashboardで設定をブラウザ管理する
 - 第9回──Cronで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
