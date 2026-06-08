@@ -25,8 +25,24 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 - **第3回**：[Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)
 - **第4回**：Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
 - **第5回**：Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す
+- **第6回**：Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰
 
-第3回以降はSubstackで先行公開中で、Zennには順次追加していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
+### 第2部：顔をつける — 黒い画面の外から操作する
+
+- **第7回**：Hermes Agentをマウス操作で動かす──公式アプリ「Hermes Desktop」を入れる
+- **第8回**：Hermes Agentをブラウザの管理画面で扱う──Web Dashboardで設定する
+
+### 第3部：育てる — 自分から動き、覚え、調べる
+
+- **第9回**：Hermes Agentが朝から話しかけてくる──Cronで毎朝の定型タスクを任せる
+- **第10回**：Hermes Agentが使うほど自分専用に育つ──Skillsに手順を覚えさせる
+- **第11回**：Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
+
+### 第4部：手足を伸ばす — 重い処理を自宅PCに任せる
+
+- **第12回**：家の余ったPCをLinuxの常駐GPUサーバーにする──VPSの手足を伸ばす
+
+第4回以降はSubstackで先行公開中で、Zennには順次追加していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
 
 ## このシリーズで作るもの
 
