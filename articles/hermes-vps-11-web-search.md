@@ -32,9 +32,9 @@ published: false
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す+承認モードの確認
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
+- 第4回──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
+- 第5回──Grok OAuthとDiscordを足す+承認モードの確認
+- 第6回──systemd常駐化で24時間動かす
 - 第7回──公式アプリ「Hermes Desktop」でマウス操作する
 - 第8回──Web Dashboardで設定をブラウザ管理する
 - 第9回──Cronで毎朝の定型タスクを任せる
