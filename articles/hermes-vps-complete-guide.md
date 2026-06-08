@@ -22,7 +22,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 - **第1回**：[Hermes AgentをVPSに迎える──契約から最小構成のログインまで](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)
 - **第2回**：[Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)
-- **第3回**：Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す
+- **第3回**：[Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)
 - **第4回**：Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
 - **第5回**：Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す
 
