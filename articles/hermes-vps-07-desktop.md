@@ -377,6 +377,10 @@ issue #38216の報告者が試した結果はこうだ。
 
 だから最初にやるのは、VPSに常駐させた`hermes dashboard`に繋ぎ替えること。「AI本体はVPSに住み、母艦には見るための窓を置く」構成にする。繋ぎ替えれば、モデルの鍵もVPS側のものが使われ、チャットが通るようになる。
 
+設定画面は、右上の歯車アイコン(⚙)から開く。
+
+![Hermes Desktopの初回起動画面。右上の歯車アイコン(⚙)を赤枠と矢印で示している](/images/hermes-vps/hermes-vps-07-desktop-14b-settings-icon.png)
+
 ### Remote URLを入れてサインインする
 
 | 操作 | 入力 |
