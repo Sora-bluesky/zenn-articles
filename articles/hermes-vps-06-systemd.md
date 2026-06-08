@@ -469,6 +469,14 @@ Linger=yes
 
 第7回では、母艦(普段使いのPC)に公式デスクトップアプリ「Hermes Desktop」を入れ、Tailscale越しにVPSのHermesをマウス操作で動かす。コマンドを打たなくても、普通のアプリの窓から同じエージェントを使えるようにする回だ。
 
+---
+
+| ← 前の回 | 次の回 → |
+|---|---|
+| 第5回 GrokとDiscordを足す | 第7回 Hermes Desktopを入れる(近日公開) |
+
+📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
 ## 公式ドキュメント引用元
 
 | 項目 | 引用元 |

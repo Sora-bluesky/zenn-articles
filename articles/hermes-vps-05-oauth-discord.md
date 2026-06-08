@@ -650,6 +650,14 @@ hermes setup agent
 
 第6回ではsystemdユーザーサービスとして登録して、VPS再起動時も自動で復帰する常駐運用に切り替える。`hermes gateway install`の公式コマンドが入ったので、手書きunitを書く必要はなくなった。常駐後、TelegramとDiscord両方で疎通+CodexとGrok両方の応答+承認モードmanualの動作を一気通貫で確認する。
 
+---
+
+| ← 前の回 | 次の回 → |
+|---|---|
+| 第4回 Dockerサンドボックスで隔離する | 第6回 systemdで24時間動かす(近日公開) |
+
+📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
 ## よくあるエラーと対処
 
 

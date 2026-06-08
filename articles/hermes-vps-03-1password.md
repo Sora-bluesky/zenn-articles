@@ -691,6 +691,14 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 これで「Hermesに秘密をどう渡すか」の設計判断は終わった。第4回ではいよいよHermes本体をインストールする。
 
+---
+
+| ← 前の回 | 次の回 → |
+|---|---|
+| [第2回 Tailscaleで公開SSHを閉じる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) | 第4回 Dockerサンドボックスで隔離する(近日公開) |
+
+📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
 ## 番外編:1Password Environments(beta)とは何か
 
 本編では通常の「保管庫アイテム+`op run`」パターンで完結させた。読者が混乱しないよう、1Passwordが2025-2026年に提供を始めた新機能**Environments**(beta)について最後に触れておく。本編とは別の運用アプローチで、現時点では選択肢の一つとして頭の片隅に置く程度でよい。

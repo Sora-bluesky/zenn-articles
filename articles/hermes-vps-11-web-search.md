@@ -409,6 +409,14 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 
 第12回は、この「思考と検索の拠点」に手足を足す。画像生成や大量バッチ、GPU推論はVPSのCPUでは荷が重い。そこで家の余ったPCをLinuxに換装し、24時間つながる常駐GPUサーバーにする。VPSはTailscale経由でその機械に重い計算を任せる——常に起きている受付がVPS、重い処理担当が自宅GPU機、という分担をHermes Agentがつなぐ形だ。
 
+---
+
+| ← 前の回 | 次の回 → |
+|---|---|
+| 第10回 Skillsに手順を覚えさせる | 第12回 自宅PCをGPUサーバーにする(近日公開) |
+
+📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
 ## よくあるエラーと対処
 
 | 症状 | 対処 |

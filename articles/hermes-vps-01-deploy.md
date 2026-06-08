@@ -699,6 +699,14 @@ chmod 700 /home/admin/.ssh
 
 次回はTailscaleでVPSと手元端末を非公開トンネルで繋ぎ、公開SSH(22番ポート)そのものを安全に閉じる。今回でrootのSSHログインは閉じたが、adminは22番経由で入れる状態。これをTailnet経由だけに絞る。**順番を間違えるとログインできない事故になる**急所なので、丁寧に進める。
 
+---
+
+| ← 前の回 | 次の回 → |
+|---|---|
+| (これが第1回です) | [第2回 Tailscaleで公開SSHを閉じる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
+
+📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
 ## 参考リンク
 
 | 内容 | リンク |
