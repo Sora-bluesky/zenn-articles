@@ -124,7 +124,7 @@ hermes skills list
 - `hermes skills list`の末尾に`85 builtin … 85 enabled`と出る(同梱Skillが最初から全部使える状態)
 - Telegramでbotに話しかけて返事が来る(Skillの呼び出しと結果の受け取りに使う)
 
-![ターミナルでls ~/.hermes/skills/を実行した画面。ディレクトリが空、またはmkdirで作成した直後の状態(ホスト名はマスク)](/images/hermes-vps/hermes-vps-10-skills-dir.png)
+![ターミナルでls ~/.hermes/skills/を実行した画面。ディレクトリが空、またはmkdirで作成した直後の状態](/images/hermes-vps/hermes-vps-10-skills-dir.png)
 
 ![hermes skills listの初期表示。SkillがName/Category/Source/Trustの列で並んでいる画面](/images/hermes-vps/hermes-vps-10-skills-list-top.png)
 

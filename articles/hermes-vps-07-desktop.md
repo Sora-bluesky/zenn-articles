@@ -185,7 +185,7 @@ chmod 600 ~/.hermes/.env
 
 `SECRET`は、再起動してもログインが切れないための署名鍵だ。これが無いと、dashboardを再起動するたびにサインインがやり直しになる。
 
-![~/.hermes/.envに3つのHERMES_DASHBOARD_BASIC_AUTH_*が追記された画面。値はマスクし、キー名だけが見える状態](/images/hermes-vps/hermes-vps-07-desktop-03-env.png)
+![~/.hermes/.envに3つのHERMES_DASHBOARD_BASIC_AUTH_*が追記された画面。キー名だけが見える状態](/images/hermes-vps/hermes-vps-07-desktop-03-env.png)
 
 ### 生成したパスワードを1Passwordにも保存する
 
@@ -224,7 +224,7 @@ venv/bin/python -m hermes_cli.main dashboard --host <tailscale-ip> --port 9119 -
 
 ![hermes dashboardの初回起動でweb UIのビルド(vite build)が進んでいる画面](/images/hermes-vps/hermes-vps-07-desktop-05-build.png)
 
-![ビルドが終わってWeb UIが起動し、待ち受けURLが表示された画面。URL内のTailscale IPはマスク](/images/hermes-vps/hermes-vps-07-desktop-06-built.png)
+![ビルドが終わってWeb UIが起動し、待ち受けURLが表示された画面](/images/hermes-vps/hermes-vps-07-desktop-06-built.png)
 
 別のSSHタブを開き、認証ゲートがかかっているか確認する。
 
@@ -237,7 +237,7 @@ curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_provid
 **認証なしで開く`--insecure`は使わない**。`--insecure`は認証ゲートそのものを飛ばして外向きにbindする逃げ道で、APIキーや秘密を誰でも読める画面を晒してしまう。`.env`に認証情報を入れていれば、`--insecure`なしでもTailscale IPに開ける(認証つきのまま外向きにできる)。本シリーズは認証+Tailscaleで閉じ、`--insecure`は使わない。
 :::
 
-![別タブでcurlした/api/statusがauth_required: trueと["basic"]を返している画面。Tailscale IPはマスク](/images/hermes-vps/hermes-vps-07-desktop-07-api-status.png)
+![別タブでcurlした/api/statusがauth_required: trueと["basic"]を返している画面](/images/hermes-vps/hermes-vps-07-desktop-07-api-status.png)
 
 `true`と`["basic"]`が確認できたら、`Ctrl+C`で一旦止める。ビルドは済んだので、次は自動起動に載せる。
 
@@ -273,7 +273,7 @@ WantedBy=default.target
 `ExecStart`の`%h/hermes-agent/venv/bin/python`は、第4回でソースを置いた場所(`~/hermes-agent/venv`)。設定の置き場`~/.hermes`とは別なので混同しない。`%h`はホームディレクトリ(`/home/admin`)に展開されるsystemdの変数。
 :::
 
-![nanoでhermes-dashboard.serviceを編集している画面。unitの中身が見え、ExecStartの--hostのTailscale IPはマスク](/images/hermes-vps/hermes-vps-07-desktop-08-unit.png)
+![nanoでhermes-dashboard.serviceを編集している画面。unitの中身が見える](/images/hermes-vps/hermes-vps-07-desktop-08-unit.png)
 
 反映して起動する。
 
@@ -287,7 +287,7 @@ curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_provid
 
 `active (running)`になり、`/api/status`が`true`/`["basic"]`を返せば、VPS側の準備は完了。もし起動に失敗するなら、`.env`に認証情報が入っているか(2つ前の手順)、venvパスが合っているか(`ls ~/hermes-agent/venv/bin/python`)を確かめる。
 
-![systemctl --user statusでhermes-dashboardがactive (running)、別のcurlで/api/statusがtrue/["basic"]を返している画面。ホスト名とTailscale IPはマスク](/images/hermes-vps/hermes-vps-07-desktop-09-systemd-active.png)
+![systemctl --user statusでhermes-dashboardがactive (running)、別のcurlで/api/statusがtrue/["basic"]を返している画面](/images/hermes-vps/hermes-vps-07-desktop-09-systemd-active.png)
 
 ## 母艦にHermes Desktopを入れる
 
@@ -396,7 +396,7 @@ issue #38216の報告者が試した結果はこうだ。
 
 パスワードは、先ほど1Passwordに保存したdashboardのパスワードをここで呼び出して貼り付ける。長いランダム文字列なので手打ちしない。
 
-![Settings → Gateway → Remote gatewayを選び、Remote URLを入力したところ。左の設定メニュー、値をマスクしたRemote URL欄、Sign inボタンが1画面に見える](/images/hermes-vps/hermes-vps-07-desktop-15-settings-gateway.png)
+![Settings → Gateway → Remote gatewayを選び、Remote URLを入力したところ。左の設定メニュー、Remote URL欄、Sign inボタンが1画面に見える](/images/hermes-vps/hermes-vps-07-desktop-15-settings-gateway.png)
 
 ![サインインのフォーム。admin欄が見え、パスワードは伏字](/images/hermes-vps/hermes-vps-07-desktop-17-signin.png)
 
@@ -417,7 +417,7 @@ Hermes Desktopは2つの認証方式に対応する。
 
 接続が成功すると、Desktopの中身がVPSのHermesに切り替わる。画面下のモデル表示がVPS側のモデルに変わっていれば成功だ。設定画面を閉じてメイン画面に戻ると、左サイドバーにもVPS側のデータが見えるようになる。
 
-![リモート接続が成功し、GatewayのAuthenticationがSigned inになった画面。VPSのHermesに繋がった証拠。Tailscale IPと個人情報はマスク](/images/hermes-vps/hermes-vps-07-desktop-18-signed-in.png)
+![リモート接続が成功し、GatewayのAuthenticationがSigned inになった画面。VPSのHermesに繋がった証拠](/images/hermes-vps/hermes-vps-07-desktop-18-signed-in.png)
 
 :::message
 **将来への伏線**:v0.16.0のHermes Desktopは、複数のprofile(担当)を1つのウィンドウで同時に動かせる。例えば「普段の相棒」「Zenn原稿の編集者」「VPS運用担当」のように分ける。今回は「将来こう分けられる」という入口を見ておくだけで十分。本格的な役割分担は後の回で扱う。

@@ -288,7 +288,7 @@ Environmentsの詳細は本記事末尾の番外編で扱う。
 
 ここで`ops_eyJ...`で始まるトークンが表示される。**このトークンは一度しか表示されない**。ページを離れた瞬間に1Password側でも再表示できなくなる。
 
-![4画面目:トークンが表示される(本物の値はマスク)](/images/hermes-vps/hermes-vps-03-sa-wizard-step4-token.png)
+![4画面目:トークンが表示される](/images/hermes-vps/hermes-vps-03-sa-wizard-step4-token.png)
 
 :::message alert
 画面右側に「**1Passwordに保存**」ボタンがあるが、これは**クリックしない**。これを押すとデフォルト保管庫(プライベート等)に「Service Account token」名で自動保存される。Hermes関連を全部`Hermes-Prod`保管庫に集めたいシリーズの命名規則から外れる。**コピーアイコン**(📋)でクリップボードに取得する。
@@ -305,7 +305,7 @@ Environmentsの詳細は本記事末尾の番外編で扱う。
 | 有効期限 | `2026/08/25`(90日後、1Passwordが自動で30日前にアラート設定) |
 | メモ | `scope: Hermes-Prod read-only / 用途: VPS本番のop CLI認証` |
 
-![1Passwordにサービスアカウントトークンを保存(値はマスク)](/images/hermes-vps/hermes-vps-03-sa-stored-in-1pw.png)
+![1Passwordにサービスアカウントトークンを保存](/images/hermes-vps/hermes-vps-03-sa-stored-in-1pw.png)
 
 保存できたら、4画面目のブラウザタブを閉じてOK。トークンはこれで1Password側にだけ存在する。
 
@@ -476,7 +476,7 @@ unset OP_SERVICE_ACCOUNT_TOKEN
 
 `op vault list`が`Hermes-Prod`のみを返し、`op item list`がHermes-Prodの全アイテムを返せば、サービスアカウント経由のVPSからの参照が成立した証拠。
 
-![VPSで`op vault list`がHermes-Prodのみ、`op item list`が7アイテムを返す(IDマスク済)](/images/hermes-vps/hermes-vps-03-vps-op-test.png)
+![VPSで`op vault list`がHermes-Prodのみ、`op item list`が7アイテムを返す](/images/hermes-vps/hermes-vps-03-vps-op-test.png)
 
 ## op runで起動時だけ秘密を渡す
 
@@ -592,7 +592,7 @@ TELEGRAM=1234567890:...
 DISCORD=(empty)
 ```
 
-![op runでTELEGRAMの先頭10文字が展開、DISCORDが(empty)で返る(値マスク済)](/images/hermes-vps/hermes-vps-03-op-run-test.png)
+![op runでTELEGRAMの先頭10文字が展開、DISCORDが(empty)で返る](/images/hermes-vps/hermes-vps-03-op-run-test.png)
 
 これで「`op://`参照が`op run`に展開されて子プロセスに渡る」経路が完成した。第5回でDiscord botトークンの実値を1Passwordに入れた瞬間に、同じ`secrets.env`のままDiscordの値も流れるようになる(`secrets.env`は変更不要)。
 

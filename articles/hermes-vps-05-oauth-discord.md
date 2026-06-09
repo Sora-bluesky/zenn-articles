@@ -295,9 +295,9 @@ Telegram単独で運用するなら、この章はまるごと飛ばして次章
 1. 右上の青いボタン「**新しいアプリケーション**」をクリック
 2. モーダル「**アプリを新規作成する**」が開くので、「**名前**」欄に`Hermes VPS`(任意)を入力 → 開発者向けサービス利用規約と開発者ポリシーへの同意チェック → 「**作成**」
 3. 作成後、「**一般情報**」ページが開く。「**概要**」と「**タグ**」は空欄でOK(個人用Bot、Discord App Directoryに公開しないため)
-4. 「**アプリID**」と「**公開キー**」は操作不要。後段のOAuth2 URLジェネレーターが自動で参照する。技術的には公開しても害は薄いが、本シリーズの記事スクショでは個人運用Bot特定を避けるためマスクする
+4. 「**アプリID**」と「**公開キー**」は操作不要。後段のOAuth2 URLジェネレーターが自動で参照する
 
-![一般情報ページで「名前」にHermes VPS、概要・タグは空欄、アプリID・公開キーはマスク](/images/hermes-vps/hermes-vps-05-discord-general-info.png)
+![一般情報ページで「名前」にHermes VPS、概要・タグは空欄](/images/hermes-vps/hermes-vps-05-discord-general-info.png)
 
 左サイドバーで「**Bot**」を開く。「**認可フロー**」セクションの「**公開Bot**」トグルはONのままで問題ない。
 
@@ -319,7 +319,7 @@ Telegram単独で運用するなら、この章はまるごと飛ばして次章
 
 承認すると新しいtokenが画面に表示される。**この場でコピー**しないと再表示不可だ(忘れたら再度リセットすれば良いが、その場合既存tokenは即無効化される)。
 
-![トークンをリセット直後、新しいtokenが表示+「コピー」ボタン強調(tokenは黒塗りマスク)](/images/hermes-vps/hermes-vps-05-discord-token-reset.png)
+![トークンをリセット直後、新しいtokenが表示+「コピー」ボタン強調](/images/hermes-vps/hermes-vps-05-discord-token-reset.png)
 
 なお、「**Botの権限**」セクション(画面下部の権限チェックボックス群)はこの画面では何もチェックしない。後述のOAuth2 URLジェネレーターで招待時に選ぶためだ。
 
@@ -419,7 +419,7 @@ Developer Portalに戻り、左サイドバー「**OAuth2**」を開く。「**O
 
 ![Developer Portal左サイドバーで「OAuth2」を選択](/images/hermes-vps/hermes-vps-05-discord-oauth2-sidebar.png)
 
-![OAuth2ページ上部のクライアント情報(クライアントIDマスク済み)](/images/hermes-vps/hermes-vps-05-discord-oauth2-client-info.png)
+![OAuth2ページ上部のクライアント情報](/images/hermes-vps/hermes-vps-05-discord-oauth2-client-info.png)
 
 「**スコープ**」セクションで以下にチェック。
 
@@ -444,7 +444,7 @@ Developer Portalに戻り、左サイドバー「**OAuth2**」を開く。「**O
 
 最下部「**生成されたURL**」欄に招待URLが自動表示される。「コピー」ボタンでコピーして新規ブラウザタブで開く。
 
-![OAuth2 URLジェネレーター:連携タイプ「ギルドのインストール」+生成URL(マスク済み)+「コピー」ボタン強調](/images/hermes-vps/hermes-vps-05-discord-oauth2-url-generated.png)
+![OAuth2 URLジェネレーター:連携タイプ「ギルドのインストール」+生成URL+「コピー」ボタン強調](/images/hermes-vps/hermes-vps-05-discord-oauth2-url-generated.png)
 
 招待URLを開くと、Discord本体の招待画面が4段階で表示される。
 
