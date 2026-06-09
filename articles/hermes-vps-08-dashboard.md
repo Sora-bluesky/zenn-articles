@@ -128,20 +128,7 @@ YAMLは慣れないとインデント(字下げ)で詰まりやすい書式。Da
 
 ## 第8回終了時点の構成図
 
-```
-[母艦(ノートPC)]
-   ├─ ブラウザ ────────┐
-   └─ Hermes Desktop ───┤
-                        │
-            Tailscale(暗号化トンネル)
-                        │
-[VPS(XServer)]          │
-   ├─ hermes dashboard(常駐・port 9119)←────┘
-   ├─ hermes gateway(常駐・config.yaml変更後はRESTART NOWで再読込)
-   ├─ ~/.hermes/config.yaml(=管制室から書き換わる)
-   ├─ ~/.hermes/.env(=APIキー類)
-   └─ Telegram/Discord/Webhook等(チャンネルペインで管理)
-```
+![第8回終了時点の構成図。母艦(ノートPC)のブラウザとHermes DesktopがTailscaleの暗号化トンネルでVPSに繋がる。VPS側ではhermes dashboard(常駐・port 9119)が管制室を表示、hermes gateway(常駐・RESTART NOWで再読込)が設定を反映、~/.hermes/config.yamlは管制室から書き換わる設定ファイル、~/.hermes/.envはAPIキー類、Telegram/Discord/Webhook等はチャンネルペインで管理される構成図](/images/hermes-vps/hermes-vps-08-dashboard-architecture-diagram.png)
 
 第6回で立ち上げた`hermes gateway`は今までずっと走っていて、Telegram/DiscordからのメッセージにもHermesが応答していた。そこに第7回でDesktopが、この回でDashboardが「同じVPSのHermesへの別の窓」として加わる。
 
