@@ -23,7 +23,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 - **第1回**：[Hermes AgentをVPSに迎える──契約から最小構成のログインまで](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)
 - **第2回**：[Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)
 - **第3回**：[Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)
-- **第4回**：Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
+- **第4回**：[Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)
 - **第5回**：Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す
 - **第6回**：Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰
 
@@ -42,7 +42,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 - **第12回**：家の余ったPCをLinuxの常駐GPUサーバーにする──VPSの手足を伸ばす
 
-第4回以降はSubstackで先行公開中で、Zennには順次追加していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
+第5回以降はSubstackで先行公開中で、Zennには順次追加していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
 
 ## このシリーズで作るもの
 

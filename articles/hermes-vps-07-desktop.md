@@ -36,7 +36,7 @@ published: false
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──Hermes AgentをVPSに迎える──契約から最小構成のログインまで
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す
-- 第4回──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
 - 第5回──Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す
 - 第6回──Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰
 - **第7回**(本記事)──Hermes Agentをマウス操作で動かす──公式アプリ「Hermes Desktop」を入れる

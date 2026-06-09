@@ -30,7 +30,7 @@ published: false
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- 第4回──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
 - **第5回**(本記事)──Grok OAuthとDiscordを足す+承認モードの確認
 - 第6回──systemd常駐化(`hermes gateway install`)
 - 第7回──公式アプリ「Hermes Desktop」でマウス操作する
@@ -654,7 +654,7 @@ hermes setup agent
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| 第4回 Dockerサンドボックスで隔離する | 第6回 systemdで24時間動かす(近日公開) |
+| [第4回 Dockerサンドボックスで隔離する](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) | 第6回 systemdで24時間動かす(近日公開) |
 
 📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
