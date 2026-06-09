@@ -32,7 +32,7 @@ published: true
 - 第5回──Hermes Agentに頭脳と出入口をもう1系統足す(Grok OAuthとDiscord+承認モードの確認)
 - 第6回──Hermes Agentをsystemdで24時間常駐させる
 - 第7回──公式アプリ「Hermes Desktop」でマウス操作する
-- 第8回──Web Dashboardで設定をブラウザ管理する
+- 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - 第9回──Hermes Agent Cronで毎朝の定型を任せる
 - 第10回──Hermes Agent Skillsに手順を覚えさせる
 - 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)

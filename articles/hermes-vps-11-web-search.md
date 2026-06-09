@@ -36,7 +36,7 @@ published: false
 - 第5回──Grok OAuthとDiscordを足す+承認モードの確認
 - 第6回──systemd常駐化で24時間動かす
 - 第7回──公式アプリ「Hermes Desktop」でマウス操作する
-- 第8回──Web Dashboardで設定をブラウザ管理する
+- 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - 第9回──Cronで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - **第11回**(本記事)──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
