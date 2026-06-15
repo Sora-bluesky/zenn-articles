@@ -30,7 +30,7 @@ published: true
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──Hermes Agentの秘密情報を1Passwordで平文に出さない運用
 - **第4回**(本記事)──Hermes Agent本体をVPSに入れる(インストールとDockerサンドボックス)
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Hermes Agentに頭脳と出入口をもう1系統足す(Grok OAuthとDiscord+承認モードの確認)
-- 第6回──Hermes Agentをsystemdで24時間常駐させる
+- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──Hermes Agentをsystemdで24時間常駐させる
 - 第7回──公式アプリ「Hermes Desktop」でマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - 第9回──Hermes Agent Cronで毎朝の定型を任せる
