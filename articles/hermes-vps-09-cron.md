@@ -36,7 +36,7 @@ published: false
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す──承認モードの確認
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
-- 第7回──Hermes Desktopでマウス操作する
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──Hermes Desktopでマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - **第9回**(本記事)──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる

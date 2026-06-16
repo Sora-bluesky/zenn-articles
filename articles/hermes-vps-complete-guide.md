@@ -29,7 +29,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 ### 第2部：顔をつける — 黒い画面の外から操作する
 
-- **第7回**：Hermes Agentをマウス操作で動かす──公式アプリ「Hermes Desktop」を入れる
+- **第7回**：[Hermes Agentをマウス操作で動かす──公式アプリ「Hermes Desktop」を入れる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)
 - **第8回**：Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 
 ### 第3部：育てる — 自分から動き、覚え、調べる

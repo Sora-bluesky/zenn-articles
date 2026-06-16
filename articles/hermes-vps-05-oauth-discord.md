@@ -33,7 +33,7 @@ published: true
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
 - **第5回**(本記事)──Grok OAuthとDiscordを足す+承認モードの確認
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化(`hermes gateway install`)
-- 第7回──公式アプリ「Hermes Desktop」でマウス操作する
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - 第9回──Cronで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
