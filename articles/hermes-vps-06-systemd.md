@@ -39,10 +39,9 @@ published: true
 - **第6回**(本記事)──systemd常駐化で24時間動かす
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- 第9回──Cronで毎朝の定型タスクを任せる
+- 第9回──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
-- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 所要時間の目安は60〜90分(うちVPS再起動の待ち時間が10分前後)。手を動かすのは10コマンド程度で、`hermes gateway install`という公式コマンドが入ったので、手書きでunitファイルを書く必要はない。
 
@@ -475,7 +474,7 @@ Linger=yes
 |---|---|
 | [第5回 GrokとDiscordを足す](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) | [第7回 Hermes Desktopを入れる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 ## 公式ドキュメント引用元
 

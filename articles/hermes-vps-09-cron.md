@@ -41,7 +41,6 @@ published: false
 - **第9回**(本記事)──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - 第11回──Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
-- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 手を動かすのは、第8回でブックマークしたDashboardのURLを開いて、「CRON」ペインの「作成」ボタンから新規ジョブを1つ登録するだけ。SSHでターミナルを開く必要はない。
 
@@ -380,7 +379,7 @@ hermes cron remove <job_id>       # 削除
 |---|---|
 | 第8回 Web Dashboardで設定を見える化する(近日公開) | 第10回 Skillsに手順を覚えさせる(近日公開) |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 ## よくあるエラーと対処
 

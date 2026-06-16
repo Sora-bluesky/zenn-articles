@@ -35,10 +35,9 @@ published: true
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化(`hermes gateway install`)
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- 第9回──Cronで毎朝の定型タスクを任せる
+- 第9回──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
-- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 ## この回の到達点
 
@@ -656,7 +655,7 @@ hermes setup agent
 |---|---|
 | [第4回 Dockerサンドボックスで隔離する](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) | [第6回 systemdで24時間動かす](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 ## よくあるエラーと対処
 

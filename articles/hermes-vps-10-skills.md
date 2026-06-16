@@ -45,7 +45,6 @@ published: false
 - 第9回──Dashboardで毎朝の定型タスクを任せる
 - **第10回**(本記事)──Skillsに手順を覚えさせる
 - 第11回──Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
-- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 ## 概念整理──Skillsで何が変わるか
 
@@ -419,9 +418,9 @@ botに、順に送ってみる。
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| 第9回 Cronで毎朝の定型を任せる | 第11回 Web検索とX検索を使い分ける(近日公開) |
+| 第9回 Dashboardで毎朝の定型を任せる | 第11回 Web検索とX検索を使い分ける(近日公開) |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 ## よくあるエラーと対処
 

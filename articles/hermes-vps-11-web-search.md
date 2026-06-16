@@ -19,7 +19,7 @@ published: false
 - [検索とextractが効くか確かめる](#検索とextractが効くか確かめる)
 - [Xでの議論を拾う(数値は出させない)](#xでの議論を拾う(数値は出させない))
 - [morning-news Skillをハイブリッド検索に育てる](#morning-news-skillをハイブリッド検索に育てる)
-- [まとめと第12回予告](#まとめと第12回予告)
+- [まとめ](#まとめ)
 - [よくあるエラーと対処](#よくあるエラーと対処)
 - [公式ドキュメント引用元](#公式ドキュメント引用元)
 
@@ -37,10 +37,9 @@ published: false
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- 第9回──Cronで毎朝の定型タスクを任せる
+- 第9回──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - **第11回**(本記事)──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
-- 第12回──家の余ったPCをLinux常駐GPUサーバーにする(VPSの手足)
 
 手を動かすのは、VPSにSSHでつないでDockerで検索エンジンを1つ立て、APIキーを1つ取り、設定を3行書き換えるだけ。難しいプログラミングは出てこない。
 
@@ -395,7 +394,7 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 
 第9回で作ったCronジョブはこのSkillを添付済みなので、翌朝7時の自動配信も新しい手順で動く。手順を直したいときは、これからもSKILL.mdの1箇所を直すだけでいい。
 
-## まとめと第12回予告
+## まとめ
 
 第11回でやったこと。
 
@@ -407,15 +406,15 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 
 これで、VPSのHermes Agentは「最新情報を自分で取りに行く」目を持った。決まった時刻に動き(第9回)、覚えた手順で(第10回)、必要な情報を自分で検索して(第11回)要約を届ける。
 
-第12回は、この「思考と検索の拠点」に手足を足す。画像生成や大量バッチ、GPU推論はVPSのCPUでは荷が重い。そこで家の余ったPCをLinuxに換装し、24時間つながる常駐GPUサーバーにする。VPSはTailscale経由でその機械に重い計算を任せる——常に起きている受付がVPS、重い処理担当が自宅GPU機、という分担をHermes Agentがつなぐ形だ。
+シリーズはここから先、記憶の持たせ方や他のAIとの連携、道具の追加へと続いていく。「思考と検索の拠点」になったこのエージェントを、どこまで自分専用に育てられるか。続きは順次公開する。
 
 ---
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| 第10回 Skillsに手順を覚えさせる | 第12回 自宅PCをGPUサーバーにする(近日公開) |
+| 第10回 Skillsに手順を覚えさせる | (続きは順次公開) |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 ## よくあるエラーと対処
 
