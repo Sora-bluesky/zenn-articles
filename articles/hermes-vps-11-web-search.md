@@ -2,411 +2,531 @@
 title: "【第11回】Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける"
 emoji: "🔎"
 type: "tech"
-topics: ["ai", "hermes", "searxng", "firecrawl", "vps"]
+topics: ["ai", "hermes", "firecrawl", "tavily", "vps"]
 published: false
 ---
 
 ## 目次
 
-- [この回の到達点](#この回の到達点)
-- [なぜWebとXを分けて考えるのか](#なぜwebとxを分けて考えるのか)
-- [この回で出てくる言葉](#この回で出てくる言葉)
-- [第11回終了時点の構成図](#第11回終了時点の構成図)
-- [8つのバックエンドから2つを選ぶ](#8つのバックエンドから2つを選ぶ)
-- [SearXNGで自前の検索エンジンを持つ](#searxngで自前の検索エンジンを持つ)
-- [Firecrawlで難しいページの本文を取る](#firecrawlで難しいページの本文を取る)
-- [検索先の優先順位を押さえる](#検索先の優先順位を押さえる)
-- [検索とextractが効くか確かめる](#検索とextractが効くか確かめる)
-- [Xでの議論を拾う(数値は出させない)](#xでの議論を拾う(数値は出させない))
+- [概念整理──なぜWebとXを分けるか](#概念整理──なぜwebとxを分けるか)
+- [事前準備](#事前準備)
+- [検索と本文抽出の考え方──このシリーズの選択](#検索と本文抽出の考え方──このシリーズの選択)
+- [FirecrawlのAPIキーを取得して1Passwordに入れる](#firecrawlのapiキーを取得して1passwordに入れる)
+- [secrets.envとconfig.yamlで設定を反映](#secrets.envとconfig.yamlで設定を反映)
+- [動作確認──検索と本文抽出が効くか](#動作確認──検索と本文抽出が効くか)
+- [無料枠を使い切ったらTavilyに切り替える──web-failover skillで自動化](#無料枠を使い切ったらtavilyに切り替える──web-failover-skillで自動化)
+- [X Searchの設定──hermes doctorの落とし穴と--platform telegramの罠](#x-searchの設定──hermes-doctorの落とし穴と--platform-telegramの罠)
 - [morning-news Skillをハイブリッド検索に育てる](#morning-news-skillをハイブリッド検索に育てる)
+- [最終確認チェックリスト(第11回)](#最終確認チェックリスト(第11回))
 - [まとめ](#まとめ)
+- [実検証コラム──SearXNG自己ホストの罠](#実検証コラム──searxng自己ホストの罠)
+- [もっと自由にやりたい人へ(自己ホスト抽出)](#もっと自由にやりたい人へ(自己ホスト抽出))
 - [よくあるエラーと対処](#よくあるエラーと対処)
+- [コマンド早見表](#コマンド早見表)
 - [公式ドキュメント引用元](#公式ドキュメント引用元)
 
-第10回でmorning-news Skillを作ったとき、毎朝のニュース要約に一文が混じっていた。「X検索は利用不可だったため、HN/Web中心で代替しました」。エージェントは正直に、使えなかった道具を申告していた。
+第10回で、Hermes Agentに「自分専用の手順」を覚えさせるところまで来た。`~/.hermes/skills/`に置いた`SKILL.md`を、Telegramからも毎朝のCronからも同じ口で呼べる状態だ。
 
-検索の質は、Skillの出力をそのまま左右する。第10回までのHermes Agentは「決まった時刻に、覚えた手順で動く」ところまで来たが、その手順が見にいく情報源がまだ整っていない。第11回は、Hermes Agentが使える複数の検索バックエンドを整理し、**Web検索**と**X検索**を別の道具として有効化する。
+ただ、ここで一つ問題が残る。スキルがどれだけ整っていても、検索の質が悪ければ、要約も提案も浅いままになる。第9回の`morning-news`が朝の話題を5項目並べてくれても、その元になるURLが古かったり的外れだったりすれば、出力は雑談以下になる。
+
+第11回はそこを直す回だ。Hermes Agentの検索を「Web(過去のページ)」と「X(リアルタイムの会話)」の2系統に分け、それぞれに必要な道具を入れる。本シリーズの推奨は**公式デフォルトのFirecrawlを本線にする**。無料枠(500クレジット/月)を使い切ったらTavily(1,200クレジット/月)に切り替えられる構成にする。XのほうはGrok経由で議論を拾い、いいね数などの数値は一切扱わない。
+
+そして今回の山場は、Firecrawlの無料枠を実際に使い切ったときに起きる。402 Insufficient creditsで止まった検索を、第10回で書いたskillが自動で拾い、Tavily切替のランブックを提示する。手で慌てて設定を直すのではなく、エージェントが自分で運用を引き継ぐ。これが「使うほど自分専用に育つ」の到達点になる。
+
+途中で、SearXNGを自己ホストして完全無料の検索を作ろうとした検証も挟む。結論から書くと、これは記事末尾のコラムに降ろした。実機で動かすと主要engine(duckduckgo・wikipedia・brave)が軒並みbot対策で止まる事実を確認したからだ。一次情報として証拠ログまで残す。
 
 シリーズの全体像はこちら。
 
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す+承認モードの確認
+:::message
+**Hermes Agent VPSシリーズ(全12回)**
+
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──Hermes AgentをVPSに迎える──契約から最小構成のログインまで
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す──承認モードの確認
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──Hermes Desktopでマウス操作する
 - 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - 第9回──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
-- **第11回**(本記事)──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+- **第11回**(本記事)──Web検索とX検索を使い分ける
+- 第12回──まとめと運用の継続(近日公開)
+:::
 
-手を動かすのは、VPSにSSHでつないでDockerで検索エンジンを1つ立て、APIキーを1つ取り、設定を3行書き換えるだけ。難しいプログラミングは出てこない。
+## 概念整理──なぜWebとXを分けるか
 
-## この回の到達点
+最初に、この回で起きることを言葉にしておく。
 
-第10回完了時と第11回完了後の差分を表にする。
+Web検索は「過去のページから情報を拾う」もの。X Searchは「リアルタイムの会話から空気を拾う」もの。両方を分けて持っていると、ニュース要約のときに「事実(Web)+人の反応(X)」が一つの応答に揃う。さらにWeb側は「検索(URL探し)」と「抽出(本文取り)」に分かれる。同じbackendで両方をまかなえる構成にしておけば、設定は`config.yaml`の1行で済む。
+
+### 第10回までの到達点と第11回の差分
+
+第10回完了時と第11回完了後で、何がどう変わるかを表にする。
 
 | 項目 | 第10回完了時 | 第11回完了後 |
 |---|---|---|
-| Web検索 | 既定のキーレス検索だけ(質が安定しない) | **SearXNGを自前で持ち、回数を気にせず検索** |
-| サイト本文の取得 | 手段が定まっていない | **Firecrawlを難しいページ用に確保** |
-| X(旧Twitter)の話題 | 「利用不可」で代替されていた | **x_searchで議論と投稿URLを拾う** |
-| 設定の考え方 | 1つのbackendだけ意識 | **機能別に検索先を切り替える優先順位を理解** |
+| Web検索 | 第4回setupでデフォルト(DDGS等)のまま | Firecrawl(default・検索と本文抽出の両対応・500クレジット/月)が本線 |
+| Web抽出 | 未設定 or デフォルト | 同じくFirecrawl。1つのbackendで検索も本文抽出も済む |
+| 枠切れ対策 | なし | Tavily(1,200クレジット/月)に1行で切り替える手順を用意。web-failover skillで自動化 |
+| X Search | 第5回でGrok OAuth(xai-oauth)は追加済み | platformごとに有効化し、Xの議論を拾えるようにする。数値は出させない |
+| 設定の置き場所 | バラバラ | 秘密キーは1Password(op://参照)、backendはconfig.yamlの1行 |
 
-一言でまとめると「検索という名前で一括りにしていたものを、Web検索・本文取得・X検索の3つに分け、それぞれに合った道具を割り当てる」回だ。
+一言でまとめると「Hermesに事実(Web)と反応(X)を両方取りに行かせて、無料枠が切れても自分で運用を引き継がせる」回だ。
 
-## なぜWebとXを分けて考えるのか
-
-「検索して」と頼むと、つい1つの機能だと思ってしまう。だが中身は性質の違う3つの作業に分かれている。
-
-- **Web検索**:キーワードから記事やドキュメントのURL一覧を引く。ニュースや技術情報の入口
-- **本文取得**(extract):見つけたURLを開いて中身のテキストを取り出す。要約の材料
-- **X検索**:Xでの人の反応・速報を拾う。「世間がどう受け止めたか」が分かる
-
-ここで大事なのは、**Xの情報をWeb検索で取りにいかない**ことだ。公開Web検索でXを覗くと、投稿は拾えても「いいね数」「リポスト数」のような数値は正確に取れない。それでも数値を求めると、エージェントは取得できない数字を埋めようとする。後で実機で確かめるが、実際に頼むと「概算」と添えて、根拠のない数値を出してきた。
-
-だからこの回では、Webは検索専用の道具(SearXNG)で、本文取得は別の道具(Firecrawl)で、Xは専用のX検索で拾う。そしてX検索では**数値を一切求めない**。これが捏造を防ぐ唯一の確実な方法だ。
-
-## この回で出てくる言葉
+### この回で出てくる言葉
 
 | 用語 | 意味 | たとえ |
 |---|---|---|
-| SearXNG | 自分のサーバーに立てる検索エンジン(メタ検索) | 自宅に置く検索窓。回数制限なく使える |
-| Firecrawl | URLの本文を整形して取り出す外部サービス | 散らかったページを読みやすく清書する係 |
-| backend | 検索や本文取得を実際に担う「業者」の指定 | 配送を頼む運送会社の選択 |
-| search_backend | 検索を担当する業者(機能別の指定) | 「検索はこの会社」と名指しする欄 |
-| extract_backend | 本文取得を担当する業者(機能別の指定) | 「本文取りはこの会社」と名指しする欄 |
-| x_search | XをGrok経由で検索し、議論の要約と投稿URLを返す道具 | Xの話題を聞ける窓口。数値は返さない |
-| xai-oauth | 第5回で通したGrokのログイン。x_searchを動かす土台 | x_searchの電源 |
+| web_search | クエリでURL一覧を返すtool | 検索結果ページの取得 |
+| web_extract | 特定URLの本文を抽出するtool | 1ページを開いて中身だけ取り出す |
+| Firecrawl | AI向け検索・本文抽出のクラウドサービス。Hermes公式のデフォルトbackend。検索と本文抽出の両対応 | Webページを綺麗な印刷物に変換してくれるサービス |
+| Tavily | AI最適化検索・抽出のクラウドサービス。同じく検索と本文抽出の両対応。本シリーズではFirecrawlの枠切れ時の切替先 | 同上(別ベンダー) |
+| backend | web検索・抽出を実装する道具の選択。`backend: firecrawl`のようにconfig.yamlに書く | 使うブラウザを決める |
+| op://参照 | config/envに秘密の実値を書かず、1Passwordの場所だけを指す書き方。実値は起動時に`op run`が注入する(第3回) | 金庫の中身でなく、金庫の番号だけメモに書く |
+| x_search | XでのGrokによる議論・反応の要約。投稿URLは返るが、いいね/RT等の数値は返さない | 「Xで今この話題どうなってる?」をGrokに聞く |
+| ランブック | 「ここで止まったらこの順で直す」と書いた手順書。第10回のskillに添付できる | 非常時マニュアル |
 
-## 第11回終了時点の構成図
+### 第11回終了時点の構成図
 
-検索の3機能が、それぞれ別の業者に割り当てられる。Web検索は同じVPS上に立てたSearXNG、本文取得はFirecrawl、X検索はGrok経由のx_searchだ。
+![VPS上のHermes AgentがFirecrawlを本線にしてWeb検索とWeb抽出を行い、無料枠が切れたらconfig.yamlの1行書き換えでTavilyに切り替え、X検索はGrok OAuth経由のx_searchで議論を拾う構成図。秘密キーは1Passwordにop://参照で格納され、起動時にop runが注入する](/images/hermes-vps/hermes-vps-11-web-search-architecture-diagram.png)
 
-```text
-┌─────────────────────────────────────────────────────┐
-│  VPS(常駐中のHermes Agent)                            │
-│                                                     │
-│   検索の依頼 ──┬─ Web検索   → SearXNG(同じVPSの中)   │
-│               │   (search_backend)  Dockerで自己ホスト │
-│               │                                     │
-│               ├─ 本文取得  → Firecrawl(外部API)     │
-│               │   (extract_backend) 難しいページ用    │
-│               │                                     │
-│               └─ X検索     → x_search(Grok経由)      │
-│                   xai-oauth(第5回)が土台。数値は返さない │
-└─────────────────────────────────────────────────────┘
-```
+ポイントは、`backend`を1つ選べば検索も本文抽出も済むこと、そしてキーは1Passwordに置いてconfig.yamlには参照しか書かないことだ。秘密を平文でディスクに残さない第3回の作法を、今回もそのまま使う。
 
-ポイントは、3つを別々に持てること。Web検索は自己ホストで無料枠を気にせず使えるSearXNGに任せ、有料枠のあるFirecrawlは「素のページでは歯が立たない難しいサイト」だけに温存できる。
+## 事前準備
 
-## 8つのバックエンドから2つを選ぶ
+各回は別の日に作業することが多い。まず、いつものVPSにSSHで接続し直すところから始める(第1〜2回で設定したTailscale経由、ユーザー`admin`・ホスト`hermes-vps`)。第10回と同じく、本文を書く前に実機(v0.16.0)の実体を確認しておく。
 
-Hermes Agentは8種類の検索バックエンドに対応している。まず現状を見ておく。
+### 接続して稼働を確認する
+
+次の4つは「動いているか」の確認用だ。
 
 ```bash
 ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
-hermes version                                  # v0.15.1 を確認
-cat ~/.hermes/config.yaml | grep -A 4 "web:"    # 今の web: セクション
+hermes version                                  # v0.16.0 を確認
+systemctl --user status hermes-gateway          # active (running)
+docker ps                                       # Docker engine 稼働(第4回)
+systemctl --user cat hermes-gateway | grep -i exec   # op run経由で起動しているか(第6回)
 ```
 
-![cat config.yamlのweb:セクション。backend: ddgsで、search_backend/extract_backendが空の初期状態](/images/hermes-vps/hermes-vps-11-config-web-before.png)
+`hermes version`が`v0.16.0`、hermes-gatewayが`active (running)`、Docker engineが動いていて、起動コマンドが`op run --env-file=~/.hermes/secrets.env -- hermes gateway run`になっていれば、第10回までの構成は崩れていない。Telegramからbotに何か話しかけて返事が来ることもあわせて確認しておく。
 
-8つの内訳はこうなっている。
+### 今のweb:セクションを確認する(出発点)
 
-| バックエンド | 検索 | 本文取得 | 無料枠 | 向き |
-|---|---|---|---|---|
-| Firecrawl(デフォルト) | ✓ | ✓ | 1,000/月 | 総合。ただし無料枠の消費が早い |
-| SearXNG | ✓ | ✗ | 無制限(自己ホスト) | 検索特化、無料運用 |
-| Brave Search | ✓ | ✗ | 2,000/月 | 検索強化、無料枠多め |
-| DDGS(DuckDuckGo) | ✓ | ✗ | 無制限 | キー不要のフォールバック |
-| Tavily | ✓ | ✓ | 1,000/月 | AI最適化検索 |
-| Exa | ✓ | ✓ | 1,000/月 | セマンティック検索 |
-| Parallel | ✓ | ✓ | 有料 | 並列大量検索 |
-| xAI | ✓ | ✗ | 有料 | GrokのWeb検索(X Searchとは別物) |
+この回で書き換える`web:`セクションの現状を見ておく。下のコマンド1つの出力が出発点になる。
 
-表の「デフォルト」はコード上の既定がFirecrawlという意味で、利用にはAPIキーが要る。そのためキー未設定の初期状態では、キー不要のDDGSが既定値として入っている(実機のbackendもddgsになっている)。どちらにしても、このあと検索先を自分で指定し直すので気にしなくてよい。
+```bash
+grep -A 6 "^web:" ~/.hermes/config.yaml
+```
 
-このシリーズでは**SearXNG**(検索)と**Firecrawl**(本文取得)を組み合わせる。理由はシンプルで、検索は回数を気にせず使いたいから自己ホストのSearXNG、本文取得は質の高いFirecrawlを「ここぞ」という難しいページだけに使う、という役割分担にすると無料枠を長く保てる。
+![ターミナルでgrep -A 6 web: config.yamlを実行した出力。第4回setup直後の状態でbackendの値が未設定のままになっている画面](/images/hermes-vps/hermes-vps-11-config-before.png)
 
-用途で道具を選ぶと質が上がる。キーワードから意味の近い結果が欲しいときは**Exa**(セマンティック検索)、JavaScriptで描画される重いページの本文取得は**Firecrawl**が向く。本シリーズはSearXNG+Firecrawlの2つで十分で、用途が増えたら表の他のbackendも候補になる(ブラウザを直接操作する高度な用途では低レベルのBrowser CDPという別系統の手もあるが、検索用途では不要)。
+`backend:`の値や`search_backend:`・`extract_backend:`の有無、`use_gateway:`の値が見える。ここを今回`backend: "firecrawl"`に整える。
+
+## 検索と本文抽出の考え方──このシリーズの選択
+
+HermesのWebは「検索(URL探し)」と「抽出(本文取り)」の2つに分かれる。両方をまかなえるbackendを1つ選べば、設定はconfig.yamlの1行で済む。主なbackendは次のとおり。
+
+| backend | search | extract | 料金 | キー | このシリーズでの扱い |
+|---|---|---|---|---|---|
+| **Firecrawl**(default・公式推奨) | ✓ | ✓ | 無料500クレジット/月 | `FIRECRAWL_API_KEY` | **採用**(本線)。公式が「Recommended for most users」と明記 |
+| **Tavily** | ✓ | ✓ | 無料1,200クレジット/月 | `TAVILY_API_KEY` | **切替先**。Firecrawl枠切れ時の受け皿 |
+| Exa | ✓ | ✓ | 有料(無料トライアル) | `EXA_API_KEY` | 用途別の選択肢 |
+| SearXNG(自己ホスト) | ✓ | ✗ | 無料(自己ホスト) | `SEARXNG_URL` | **降格**。実検証で主要engineがbot対策で停止すると判明(末尾コラム) |
+| Brave Search | ✓ | ✗ | 無料2000/月 | `BRAVE_SEARCH_API_KEY` | 検索の代替候補 |
+| DDGS(DuckDuckGo) | ✓ | ✗ | 無料 | 不要 | キーレスのフォールバック |
+
+出典は[公式web-searchドキュメント](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-search)。Firecrawlが`Recommended for most users`と明記されている。
+
+### 本線=Firecrawl(default)、枠切れ時はTavily
 
 :::message
-表の一番下の**xAI**は、GrokによるWeb検索であってX検索(x_search)とは別物だ。Xでの議論を拾いたいときに使うのは、この回の後半で扱う`x_search`のほう。混同しないよう注意する。
+- **本線はFirecrawl**:Hermes公式の`backend`デフォルトであり、「Recommended for most users」と公式docが明記している。1つのbackendで検索も本文抽出も済むので設定がシンプル(config.yamlの1行)
+- **枠切れ時はTavily**:無料1,200クレジット/月でFirecrawlより枠が広い。同じく1つのbackendで検索も本文抽出も済む。切替は`backend: firecrawl`を`backend: tavily`に直すだけ
 :::
 
-## SearXNGで自前の検索エンジンを持つ
+「最初からTavilyにすればよいのでは」と思うかもしれない。Hermes公式が推奨するレールに乗ると、`hermes setup`のwizardやエラーメッセージとの整合が取りやすい。まずは公式のレールに乗り、枠が切れたら切り替える、が一番楽だ。
 
-SearXNGは、自分のサーバーに立てる検索エンジンだ。GoogleやBingなど複数の検索結果をまとめて返す「メタ検索」で、自前APIキーや課金枠が要らず、検索語が外部のAPI業者に渡らない(上流の検索エンジン側の制限・ブロックはあり得る)。第4回で入れたDockerの上に1コンテナ立てるだけで動く。
+### SearXNGはこのシリーズでは降格(理由は実検証コラムで)
 
-### 置き場所を作って設定ファイルを書く
+当初は「SearXNGで検索を無料・無制限に」と考えた。実機で動かしてみたら、主要engine(duckduckgo・wikipedia・brave等)がクラウド側のbot対策で軒並み弾かれる事実を確認した。詳しい証拠ログは末尾の[実検証コラム](#実検証コラム──searxng自己ホストの罠)に残す。SearXNGを使うならBrave Search APIキー等の追加が要り、それなら最初からFirecrawl/Tavilyで素直に進めるほうが速い。
 
-```bash
-mkdir -p ~/searxng/searxng
-cd ~/searxng
-nano docker-compose.yml
-```
+### 自動fallbackの公式PRはオープン中
 
-![mkdirで~/searxngを作り、nanoでdocker-compose.ymlを開いた直後の画面](/images/hermes-vps/hermes-vps-11-searxng-compose-edit.png)
+公式リポジトリでは、`search_fallback_backends`と`extract_fallback_backends`を導入するPRが進んでいる([#23315](https://github.com/NousResearch/hermes-agent/pull/23315)・[#23366](https://github.com/NousResearch/hermes-agent/pull/23366)・どちらも執筆時点ではopen)。これがマージされれば、Firecrawl枠切れ時に自動で次のbackendへフォールバックする仕様になる。それまでは「設定を1行直す」操作が必要で、本記事ではその操作自体を第10回のskillに引き取らせる方針で進める。
 
-`docker-compose.yml`には最小構成を書く。外向きにポートを開かず、`127.0.0.1`(自分のVPSの中)だけに見せるのが安全面の肝だ。
+## FirecrawlのAPIキーを取得して1Passwordに入れる
 
-```yaml
-services:
-  searxng:
-    image: searxng/searxng:latest
-    ports:
-      - "127.0.0.1:8888:8080"
-    volumes:
-      - ./searxng:/etc/searxng
-    environment:
-      - BASE_URL=http://localhost:8888/
-      - INSTANCE_NAME=hermes-searxng
-    restart: unless-stopped
-```
+### Firecrawlのアカウントを作る
 
-![保存後のdocker-compose.ymlの中身。127.0.0.1:8888へのポート割り当てが見える画面](/images/hermes-vps/hermes-vps-11-searxng-compose-saved.png)
+Firecrawlは[firecrawl.dev](https://www.firecrawl.dev)で無料アカウントを作る。無料枠は500クレジット/月(最新の上限は公式で確認)。
 
-### JSON出力を有効にする(必須)
+![Firecrawlのサインアップ画面。Sign Upパネルにメールアドレス・パスワード欄とContinue with GitHub/Googleボタンが並ぶ画面](/images/hermes-vps/hermes-vps-11-firecrawl-signup.png)
 
-ここが見落としやすい。SearXNGは初期状態だと人間向けのHTMLしか返さない。Hermes AgentはJSONで結果を受け取るので、`settings.yml`で`json`形式を明示的に許可する。これを忘れると、検索しても結果が取れない。
+### APIキーを発行する
 
-```bash
-cat > ~/searxng/searxng/settings.yml <<EOF
-use_default_settings: true
-search:
-  formats:
-    - html
-    - json
-server:
-  secret_key: "$(openssl rand -hex 32)"
-EOF
-```
+ダッシュボードで`fc-`で始まるAPIキーを確認する。
 
-![保存後のsettings.ymlの中身。formatsにhtmlとjsonが並んでいる画面](/images/hermes-vps/hermes-vps-11-searxng-settings.png)
+![FirecrawlダッシュボードのAPI Keys画面。Personal Teamの欄に無料枠のクレジット表示とfc-で始まるAPIキーが赤枠で囲まれている](/images/hermes-vps/hermes-vps-11-firecrawl-apikey.png)
 
-### 起動して動作を確かめる
+### 1Passwordに格納する(第3回の作法)
 
-```bash
-cd ~/searxng
-docker compose up -d
-docker compose logs --tail=30
-curl -s "http://localhost:8888/search?q=test&format=json" | head -50
-```
+キーの実値は平文でファイルに書かず、第3回で作った保管庫`Hermes-Prod`に新規アイテム`Hermes VPS - Firecrawl API key`を作って入れる(命名は第5回のDiscord bot tokenと揃える)。
 
-![docker compose up -d実行直後。イメージのpullとコンテナ起動のログが流れている画面](/images/hermes-vps/hermes-vps-11-searxng-up.png)
+![1Passwordの保管庫Hermes-Prodに「Hermes VPS - Firecrawl API key」アイテムを保存した画面](/images/hermes-vps/hermes-vps-11-1password-firecrawl.png)
 
-![docker compose psでsearxngがUp状態になっている画面](/images/hermes-vps/hermes-vps-11-searxng-ps.png)
+「**認証情報**」フィールドにFirecrawlのキーを貼り付けて保存する。1Passwordの日本語UIでは「認証情報」と表示されるが、`op://`参照では内部名`credential`で参照する。文中の操作は「認証情報」、コード上の表記は`credential`と使い分ける(第3回・第5回参照)。
 
-最後の`curl`でJSONが返ってくれば、検索エンジンとして動いている。これがHermes Agentから叩く先になる。
+## secrets.envとconfig.yamlで設定を反映
 
-![curlでlocalhost:8888にJSON形式の検索リクエストを送り、JSON応答が返ってきた画面](/images/hermes-vps/hermes-vps-11-searxng-curl-json.png)
+秘密キーは1Passwordの参照(op://)を`secrets.env`に書き、backendは`config.yaml`の1行に書く。これで平文の秘密をディスクに残さない第3回の方針を守れる。
 
-## Firecrawlで難しいページの本文を取る
-
-SearXNGは検索(URL一覧)はできるが、ページの**本文取得**はできない。そこをFirecrawlに任せる。
-
-ただし誤解しないでおきたいのは、本文取得のすべてをFirecrawlがやるわけではない、という点だ。素のHTMLページなら、エージェントは自分で`curl`を使って読んでしまう。Firecrawlが本領を発揮するのは、JavaScriptで描画されるページや、HTMLが汚れていて読みやすいテキストに整形しないと使えない複雑なページだ。だからFirecrawlは「難しいページ用の保険」と考えると、無料枠の消費を抑えられる。
-
-### APIキーを取って保管庫に入れる
-
-[Firecrawl](https://www.firecrawl.dev/)にサインアップする。無料枠は月1,000クレジットで、これは難しいページの本文取得に絞れば個人利用で十分に保つ量だ。
-
-![Firecrawlのサインアップ画面](/images/hermes-vps/hermes-vps-11-firecrawl-signup.png)
-
-![Firecrawlダッシュボードのトップ。無料枠1,000/月の表示が見える画面](/images/hermes-vps/hermes-vps-11-firecrawl-dashboard.png)
-
-ダッシュボードでAPIキー(`fc-`で始まる文字列)を発行する。
-
-![APIキー発行画面。fc-で始まるキーが表示された画面](/images/hermes-vps/hermes-vps-11-firecrawl-apikey.png)
-
-このキーは第3回と同じ作法で扱う。コードや設定ファイルに直接書かず、1Passwordの**保管庫**(英語UIではVault)にアイテムを作って保存し、参照だけを使う。第3回で作った保管庫`Hermes-Prod`に「Firecrawl」というアイテムを足し、APIキーを**認証情報**フィールド(英語UIではcredential)に入れておく。
-
-![1Passwordの保管庫Hermes-Prodに新規アイテム「Firecrawl」を作りAPIキーを保存した画面](/images/hermes-vps/hermes-vps-11-firecrawl-1password.png)
-
-## 検索先の優先順位を押さえる
-
-道具がそろったので、Hermes Agentに「Web検索はSearXNG、本文取得はFirecrawl」と教える。ここで設定の**優先順位**を理解しておくと、後で混乱しない。
-
-Hermes Agentは検索先をこの順で決める。
-
-1. `web.search_backend` / `web.extract_backend`(機能別の指定。最優先)
-2. `web.backend`(機能別が空のときの共有フォールバック)
-3. 環境変数からの自動検出
-
-つまり機能別の指定があれば、それが`web.backend`より優先される。そして覚えておきたい落とし穴がひとつ──設定できるのは**検索**と**本文取得**の2つだけで、`crawl_backend`(サイト巡回)のようなキーは存在しない。あると思って書いても無視される。
-
-### secrets.envに参照を足す
+### secrets.envにFirecrawlのop://参照を追加する
 
 ```bash
 nano ~/.hermes/secrets.env
 ```
 
-```bash
-FIRECRAWL_API_KEY=op://Hermes-Prod/Firecrawl/credential
-SEARXNG_URL=http://localhost:8888
+エディタが開いたら、ファイルの末尾に以下の1行を追加する(保管庫名は第3回と同じ`Hermes-Prod`、アイテム名は前章で作った`Hermes VPS - Firecrawl API key`に合わせる)。
+
+```text
+FIRECRAWL_API_KEY=op://Hermes-Prod/Hermes VPS - Firecrawl API key/credential
 ```
 
-`FIRECRAWL_API_KEY`は1Passwordの参照(`op://`)で書く。`SEARXNG_URL`はさっき立てたコンテナの宛先だ。
+追記したら保存して閉じる(`Ctrl`+`O`→`Enter`で保存、`Ctrl`+`X`で終了)。実値は`op run`が起動時に注入する。gatewayは第6回のsystemdユニットで`op run --env-file=~/.hermes/secrets.env -- hermes gateway run`として起動しているので、ここに足した参照は次回起動時に解決される。
 
-![secrets.envにFIRECRAWL_API_KEY=op://...とSEARXNG_URL=...を追記した画面](/images/hermes-vps/hermes-vps-11-secrets-env.png)
+![secrets.envをnanoで開いた画面。TELEGRAM/DISCORD/FIRECRAWL/SEARXNG_URL/TAVILYの各op://参照が6行で並んでいる](/images/hermes-vps/hermes-vps-11-secrets-env-new.png)
 
-### config.yamlのweb:セクションを書き換える
+### config.yamlでbackendをfirecrawlにする
 
-`config.yaml`にはすでに`web:`セクションがある。新しく足すのではなく、空だった2つの欄を埋める。
+:::message alert
+config.yamlは長い。`web:`セクションは**すでに存在する**(事前準備で見たとおり)。ここに新しい`web:`を貼ると二重定義で壊れる。**既存の`backend:`の値だけ直す**。
+:::
 
 ```bash
 nano ~/.hermes/config.yaml
 ```
 
+`Ctrl`+`W`で検索を開き、`backend:`または`web:`で位置を出す。書き換え後の`web:`はこうなる。
+
 ```yaml
 web:
-  backend: ddgs                 # 機能別が空のときのフォールバック
-  search_backend: "searxng"     # ← '' から "searxng" に書き換えた
-  extract_backend: "firecrawl"  # ← '' から "firecrawl" に書き換えた
+  backend: "firecrawl"          # 公式デフォルト・本線(search+extract両対応)
+  search_backend: ""            # 空でよい(backendが両方をまかなう)
+  extract_backend: ""           # 空でよい
   use_gateway: false
-  # crawl_backend は存在しない(設定できるのは search と extract のみ)
 ```
 
-![config.yamlのweb:セクションにsearch_backend: searxngとextract_backend: firecrawlが入った画面](/images/hermes-vps/hermes-vps-11-config-backend.png)
+![config.yamlのweb:セクションを書き換えた後の画面。backend firecrawlと並んでsearch_backendとextract_backendが空、use_gateway falseが赤枠でハイライトされている](/images/hermes-vps/hermes-vps-11-config-after-firecrawl.png)
 
-### 再起動して反映する
+`search_backend`と`extract_backend`は空のままでよい(`backend`が両方をまかなうため)。両方を`"firecrawl"`と明記する書き方でも動く。保存して終了する(`Ctrl`+`O`→`Enter`、`Ctrl`+`X`)。
 
-第6回でsystemd常駐化し、`op run`経由で起動しているので、サービスを再起動すれば`op://`参照が実際のキーに展開されて反映される。
+### 反映(再起動)
 
 ```bash
 systemctl --user restart hermes-gateway
 systemctl --user is-active hermes-gateway        # active が返れば再起動成功
 ```
 
-![systemctl --user is-active hermes-gatewayがactiveと返った画面(再起動成功の確認)](/images/hermes-vps/hermes-vps-11-gateway-restart.png)
+![systemctl --user restart hermes-gatewayを実行し、続いてis-activeがactiveを返した画面](/images/hermes-vps/hermes-vps-11-gateway-restart.png)
 
-## 検索とextractが効くか確かめる
+`active`が返れば設定が反映された。`status=1/FAILURE`の表示が混じることがあるが、旧プロセスがSIGKILLされた表示で、再起動自体は正常だ。`is-active`が`active`を返すかで判断する。
 
-Telegramからbotに頼んで、実際に検索が通るか見る。
+## 動作確認──検索と本文抽出が効くか
+
+### Telegram検索が返るか
+
+botに以下を送る。
 
 ```text
 「systemdとは何か」を簡潔に検索して、3つの一次情報URLを並べて教えて
 ```
 
-![Telegramで検索を依頼し、3件以上のURLと一行要約が返ってきた画面](/images/hermes-vps/hermes-vps-11-telegram-search.png)
+数秒〜10秒で結果が返り、実在URLが3件以上+各URLに一行要約が付いていれば成功だ。
 
-URLが返ってきたら、それが本当にSearXNG経由かを確かめておく。VPS側でSearXNGのログを見ると、いま投げたクエリが処理された記録が残っている。設定が効いている動かぬ証拠だ。
+![Telegramで検索クエリを送信し、Tavily経由で3件のsystemd公式URLが一行要約付きで返ってきた画面。bot名はHermes VPS](/images/hermes-vps/hermes-vps-11-telegram-search.png)
 
-```bash
-cd ~/searxng && docker compose logs --tail=20
-```
+Tavily切替後の同クエリ再送でも同じ挙動になる(切替時の動作確認は次章のskill経由のフローで詳しく扱う)。
 
-![docker compose logsにSearXNGがクエリを処理したログが出ている画面。gatewayからsearxngが使われた実証](/images/hermes-vps/hermes-vps-11-searxng-log.png)
+### 本文抽出の確認
 
-本文取得も試す。URLを指定して中身を抜き出してもらう。
+次に、特定URLの本文を取り出せるかを確かめる。
 
 ```text
 https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html の主要セクション見出しだけ抜き出して
 ```
 
-このページは素のHTMLなので、エージェントは`curl`で取得して見出しを返してくる。Firecrawlは温存されたままだ。手段はエージェントが状況で選ぶ。
+ここで起きたことを正直に書く。指定したURLはbot対策で阻まれた。普通なら「取れません」で終わる場面だが、エージェントはそこで止まらなかった。
 
-![Telegramで本文取得を依頼し、ページの見出し一覧が返ってきた画面。今回はcurl経由で手段はエージェント判断](/images/hermes-vps/hermes-vps-11-telegram-extract.png)
+エージェントは`web_extract`を2回呼び直し(freedesktop / GitHub raw)、`execute_code`まで動員して約3分間試行錯誤を続け、最終的にGitHub上に置かれた公式原本の元データ(XML形式・systemdプロジェクト自身が管理する一次資料)から主要セクション見出し7つ(Description / Service Templates / Automatic Dependencies / Options / Command lines / Examples / See Also)を取得して返した。
 
-## Xでの議論を拾う(数値は出させない)
+![Telegramでextract指示を出し、指定URLがbot対策で阻まれた後、エージェントがweb_extractを2回(freedesktop / GitHub raw)とexecute_codeで自律的に迂回し、公式原本XMLから7つの主要セクション見出しを抽出した画面](/images/hermes-vps/hermes-vps-11-telegram-extract.png)
 
-ここからがこの回の山場だ。Web検索とは別に、Xでの反応を拾う`x_search`を使う。
+これがエージェントの真価=自律的迂回だ。素のHTMLは`curl`で足り、`backend`に設定したFirecrawlが効くのはJS描画や本文をきれいに取り出す必要がある複雑なページだが、阻まれたときに代替経路を自分で見つけて完遂できるかは別の能力で、ここで初めて見える。
 
-`x_search`は第5回で通した`xai-oauth`(GrokのOAuthログイン)を土台に動く。だから追加の認証はいらない。状態は`hermes doctor`で数行で確認できる。`hermes tools`という対話メニューは画面が固まりやすいので、確認には使わない。
+## 無料枠を使い切ったらTavilyに切り替える──web-failover skillで自動化
 
-```bash
-hermes auth list                                     # xai-oauth があるか
-hermes doctor 2>&1 | grep -iE "xai oauth|x_search"   # ✓ が出れば有効
-```
+Firecrawlの無料枠(500クレジット/月)を使い切ったら、Tavily(無料1,200クレジット/月)に切り替える。準備さえしておけば、切替は`config.yaml`の1行を直すだけだ。
 
-![hermes doctorの出力に✓ xAI OAuth (logged in)と✓ x_searchが並び、config.yamlのx_searchセクションも見える画面](/images/hermes-vps/hermes-vps-11-doctor-xsearch.png)
+### Tavilyのアカウントとキーを準備する(事前)
 
-### 数値を求めない、が鉄則
+枠切れに備えて、最初からTavilyのキーも1Passwordに入れておく(使うかどうかは別として、用意するだけならコストゼロ)。
 
-`x_search`が返すのは、**Xでの議論の要約**と、その根拠になった**投稿のURL**が中心だ。いいね数・リポスト数・閲覧数のような数値は返さない(公式の仕様では、返ってくるのは要約と引用URL等であって、いいね数のような数値フィールドは無い)。
+手順はFirecrawlとほぼ同じだ。
 
-ところがここで「いいねが多い順に」などと数値を頼むと、エージェントは取得できない数値を埋めようとする。実際に試したときは、取れないはずの数字を「概算」と添えて出してきた。これは根拠のない捏造だ。
-
-防ぐ方法はひとつ、**数値を一切求めない**こと。議論の中身と投稿URLだけを頼む。
+1. [app.tavily.com](https://app.tavily.com/home)でアカウント作成
+2. ダッシュボードでAPIキー(`tvly-...`)を確認
+3. 1Password保管庫`Hermes-Prod`にアイテム`Hermes VPS - Tavily API key`を作成し「認証情報」にキーを格納
+4. `secrets.env`にTavilyのop://参照も追加(まだ使わなくても問題ない)
 
 ```text
-x_searchを使って、Hermes Agent(NousResearch)についてXで最近どんな
-反応・議論があるか、代表的な投稿URLを3〜5件つけて教えて。
-いいね数などの数値は付けず、議論の内容とURLだけで。
+TAVILY_API_KEY=op://Hermes-Prod/Hermes VPS - Tavily API key/credential
 ```
 
-![x_searchでXの議論・反応の要約と投稿URLが返ってきた画面。いいね/RT等の数値は出ていない](/images/hermes-vps/hermes-vps-11-xsearch-result.png)
+ここまでやっておけば、切替はあと1行の書き換えだけになる。
 
-返ってきた投稿URLは、クリックすれば実在のX投稿に飛ぶ。もし出力に数値が混じったら、それは捏造なので採用せず、依頼文から数値の要求を消して頼み直す。
+### 実機で踏んだ402──そしてskillが自動で動いた
+
+ここからが本題だ。執筆中に、Firecrawlの無料枠を本当に使い切った。普段は枠を意識せず使っていたが、検証で検索を回しすぎてクレジットが0になり、次の検索でこのエラーが返ってきた。
+
+```text
+Insufficient credits to perform this request. For more credits, you can upgrade your plan...
+```
+
+ここで第10回が効いた。事前に書いておいた`web-failover` skillが、このエラーを見て自動で起動した。skillの本文はこうなっている。
+
+```markdown
+## When to Use
+- Firecrawl のレスポンスに 402 / "Insufficient credits" / "credits required" が含まれた時
+- ユーザーから「Tavilyに切り替えて」「Firecrawl枠が切れた」と頼まれた時
+
+## Procedure
+1. ~/.hermes/config.yaml の web.backend を "tavily" に書き換える
+2. hermes-gateway を再起動する
+3. 月初にクレジットがリセットされたら "firecrawl" に戻す手順を最後に提示する
+
+## Runbook (出力する2行)
+yq -i '.web.backend = "tavily"' ~/.hermes/config.yaml
+systemctl --user restart hermes-gateway
+```
+
+エージェントはこのskillを読み、ユーザー(私)に向かって**切替用のランブック2行**を提示してきた。402のエラー文と一緒に、yqでconfig.yamlを書き換えるコマンドと、systemd再起動コマンドが並ぶ。翌月クレジットがリセットされたらfirecrawlに戻す注意も末尾に付いた。
+
+![Firecrawl 402 Insufficient creditsエラーをトリガーにweb-failover skillが自動起動し、Tavily切替用のランブック2行(yq -i書き換え+systemctl restart)と翌月戻しの注意が1つの応答に並んだ画面](/images/hermes-vps/hermes-vps-11-skill-runbook-firecrawl-402.png)
+
+ここからは人間の出番だ。提示されたランブックの2行を、host shellのターミナルでそのまま実行する。動作確認の`is-active`を末尾に足して、切替成功までを一気通貫で見る。
+
+```bash
+yq -i '.web.backend = "tavily"' ~/.hermes/config.yaml
+systemctl --user restart hermes-gateway
+systemctl --user is-active hermes-gateway
+```
+
+![ランブックの2行を実機で実行し、yqでconfig.yamlのbackendをtavilyに書き換え、systemctl --user restart hermes-gatewayの後にis-activeがactiveを返した画面](/images/hermes-vps/hermes-vps-11-skill-runbook-execute.png)
+
+切替が効いているかは、`yq`で読み取って確認する。
+
+```bash
+yq '.web.backend' ~/.hermes/config.yaml         # → tavily
+systemctl --user is-active hermes-gateway        # → active
+```
+
+![yqでweb.backendがtavilyを返し、systemctl --user is-activeがactiveを返している1画面。切替確認の証拠](/images/hermes-vps/hermes-vps-11-tavily-active.png)
+
+そのままTelegramで同じ検索クエリ(`「systemdとは何か」を簡潔に検索して、3つの一次情報URLを並べて`)を送ると、今度はTavily経由で3件のsystemd公式URLが返ってきた。402で止まっていた検索が、skill→ランブック→実行→検索成功と一連で繋がった瞬間だ。
+
+ここで起きたことを整理すると、こうなる。
+
+- Hermesがエラーを見てskillを自動選択した(skill自動切替)
+- skillの中身にしたがって、エージェントが切替手順を整形して提示した
+- ユーザー(私)はランブックの2行を実行するだけで運用を引き継げた
+- 切替後の動作確認まで、同じ会話の中で完結した
+
+公式PR [#23315](https://github.com/NousResearch/hermes-agent/pull/23315) / [#23366](https://github.com/NousResearch/hermes-agent/pull/23366) がマージされて`search_fallback_backends`が入れば、この手順はさらに自動化される。それまでは「skillに運用を引き取らせる」が、非エンジニアにとって最も実用的な落とし所になる。
 
 :::message
-**Xに触れる道は3つあり、混同しない**
-
-- **xai-oauth → x_search**(この記事):Grokが議論を要約し、根拠の投稿URLを返す。数値は返さない
-- **xurl**(X開発者API):いいね数など正確な数値や特定アカウントのtimeline、自分のブックマークが要るときに使う。別途X APIの認証が必要で、本記事では使わない。xurlを認証して自分のブックマークを整理する活用は、この先の回で扱う
-- **web_search**(公開Web検索):Xを覗くことはできるが正確な数値は取れない。Xの数値目的では使わない
-
-「正確な数値が欲しい」と思ったら、それは`x_search`の役割ではなく`xurl`の領分だと切り分ける。ここで`x_search`に数値を求めないのは、機能の境界を守ることでもある。
+動作確認が取れたら、本線をFirecrawlに戻すかどうかは月のクレジット状況で判断する。月初にFirecrawlのクレジットがリセットされたら、`yq -i '.web.backend = "firecrawl"' ~/.hermes/config.yaml`と再起動で戻せる。Tavilyのほうが枠は広いので、当面そのまま使い続けてもよい。
 :::
 
-X検索がどうしても安定しない場合(第5回で触れた[Issue #26847](https://github.com/NousResearch/hermes-agent/issues/26847)のように、OAuthが弾かれることがある)は、無理に使わずWeb検索(SearXNG)中心で確定してよい。X検索は「あれば人の反応も拾える」加点要素だ。
+## X Searchの設定──hermes doctorの落とし穴と--platform telegramの罠
+
+ここから先のX検索は、第5回でGrok OAuth(`xai-oauth`)を入れていることが前提になる。Grok OAuthがx_searchの動作土台で、追加のキーは要らない。詳細は[公式x-searchドキュメント](https://hermes-agent.nousresearch.com/docs/user-guide/features/x-search)。
+
+### Xに使う道を混同しない
+
+| 道 | 何をするか | 認証 |
+|---|---|---|
+| Grok OAuth(第5回) | Grokを動かす土台。`x_search`もこれで動く | 設定済み(`hermes doctor`で✓ xAI OAuth) |
+| `x_search` | **Xでの議論・反応をGrokが要約し、根拠の投稿URLを返す**。いいね/RT等の数値は返さない | Grok OAuthで動く(追加不要) |
+| `web_search` | 公開web検索。Xには不向き(正確な数値が取れず、捏造を招く) | (Firecrawl/Tavily側) |
+
+### 数値(いいね/RT)を求めない=捏造させない
+
+:::message alert
+`x_search`は**いいね/RT/閲覧などの数値を返さない**(公式schemaは`answer`+引用URLのみ)。それなのに「いいね数が多い順に」等と頼むと、エージェントは取得できない数値を**推測で埋める=捏造する**。本記事では**数値を一切求めず**、議論の内容と`x_search`が返した投稿URLだけを扱う。**出力に数値が出たら捏造なので採用しない**。
+:::
+
+### hermes doctorの✓だけでは足りない
+
+まず現状を確認する。
+
+```bash
+hermes auth list                                  # xai-oauthがあるか(第5回で追加)
+hermes doctor 2>&1 | grep -iE "xai oauth|x_search"
+```
+
+![hermes doctorの出力をgrepで絞り、✓ xAI OAuth (logged in)と✓ x_searchが並んでいる画面](/images/hermes-vps/hermes-vps-11-doctor-xsearch.png)
+
+`✓ xAI OAuth (logged in)`と`✓ x_search`が並んで出る。ここで「使える状態だ」と判断すると、実際には呼べない。実機で踏んだ罠だ。
+
+### 一次情報:doctorの✓は「有効化可能」の意味だった
+
+Telegramで`x_search`を試したら、エージェントは「x_searchが利用できない」と返してきた。doctorは✓を出しているのに、だ。
+
+調べてみると、`hermes tools enable`でplatformごとに別途有効化が要ると判明した。doctorの✓は「有効化可能な状態」を示すだけで、実際にsessionから呼べる状態にするには次のコマンドが要る。
+
+```bash
+hermes tools enable x_search                       # CLI platform で有効化
+hermes tools list | grep x_search                  # ✓ enabled x_search 🐦 X (Twitter) Search
+```
+
+![hermes tools enable x_searchで✓ Enabledが返り、続いてhermes tools listでx_searchがenabled表示になっている画面](/images/hermes-vps/hermes-vps-11-tools-enable-xsearch.png)
+
+ここでもう一段の罠がある。`hermes tools enable x_search`の`--platform`はデフォルトが`cli`だ。Telegramから呼ぶには、`--platform telegram`で別途有効化しないといけない。
+
+```bash
+hermes tools enable x_search --platform telegram
+hermes tools list --platform telegram | grep x_search   # ✓ enabled x_search 🐦 X (Twitter) Search
+```
+
+![hermes tools enable x_search --platform telegramで✓ Enabledが返り、--platform telegram指定のlistでもenabled表示になっている画面。platform別の有効化が完了した証拠](/images/hermes-vps/hermes-vps-11-tools-enable-xsearch-telegram.png)
+
+この一次情報は本シリーズで初めて記録する。「doctorで✓が出ていても、platformごとに`hermes tools enable --platform <name>`が要る」は、公式docには明示されておらず、実機で詰まって初めて気付いた挙動だ。第5回でGrok OAuthを入れて第11回でx_searchを使う読者は、ここで必ず通る道になる。
+
+### モデルはgpt-5.5のままで呼べる
+
+もう一つ実機で確認した事実を残す。私のHermesは普段gpt-5.5(openai-codex)で動かしている。「x_searchはGrok系メインモデルじゃないと使えないのでは」と思っていたが、`--platform telegram`を有効化した後は、gpt-5.5 sessionからもx_searchが普通に呼べた。
+
+config.yamlの`x_search.model`はツール内部実行用で別軸の設定だ。sessionのメインモデルと、x_searchが内部で使うモデルは独立している。ここを取り違えると「メインモデルをgrokに変えなければ」と無駄な変更を入れることになる。
+
+### 動作確認(数値を出させない)
+
+botに以下を送る。**数値を求めない**のがポイントだ。
+
+```text
+x_searchを使って、Hermes Agent(NousResearch)についてXで最近どんな反応・議論があるか、代表的な投稿URLを3〜5件つけて教えて。いいね数などの数値は付けず、議論の内容とURLだけで。
+```
+
+![Telegramでx_searchクエリを送り、bot応答にx_searchの呼び出しログ・議論要約・3〜5件のX投稿URLが並び、いいね数などの数値は一切出ていない画面](/images/hermes-vps/hermes-vps-11-x-search-result.png)
+
+返ってきた投稿URL(`x.com/<ユーザー名>/status/<数字>`形式)が実在するかをクリックして確認する。`x_search`は捏造URLを返さない設計だが、念のため本物に飛ぶかを最初の1回は確かめる。出力に「いいね○件」「RT○件」のような数値が混じっていたら、それは捏造なので採用しない。プロンプトを「数値なしで」と書き直して再実行する。
 
 ## morning-news Skillをハイブリッド検索に育てる
 
-最後に、第10回で作ったmorning-news Skillを、いまそろえた検索前提に書き換える。第10回の手順は「Hacker News上位・ArXiv新着・Xで最近話題の投稿」をまとめて取りに行く形で、検索の役割分担が曖昧だった。これをWeb検索とX検索に切り分け、末尾に取得状況を必ず残す形へ全文を入れ替える。
+第10回で作った`~/.hermes/skills/morning-news/SKILL.md`を、新しい検索の役割分担(Firecrawl検索+Firecrawl抽出+x_search)に合わせて全文置換する。末尾に取得状況を必ず残す形にする。
 
 ```bash
 nano ~/.hermes/skills/morning-news/SKILL.md
+# Ctrl+K連打で全行削除 → 下のSKILL.md全文を貼り付け → Ctrl+O → Enter → Ctrl+X
 ```
 
-手順(Procedure)を、検索の3機能に対応させ、**数値を一切出さない**形にする。
+更新後の`SKILL.md`全文(数値は一切出さない=x_searchは数値を返さず、書くと捏造になる)。
 
-```text
+```markdown
+---
+name: morning-news
+description: 朝のニュースと、X上のAI関連の話題を要約してTelegramに届ける
+version: 1.2.0
+metadata:
+  hermes:
+    tags: [news, daily, x-search]
+    category: information
+---
+# Morning News Summary
+
+## When to Use
+- 朝の情報収集の時間
+- Cronから毎朝7時に自動実行
+- 「今日の話題は?」と聞かれた時
+
 ## Procedure
-1. **Web検索(SearXNG)**で過去24時間のAI関連記事のURL一覧を取得
-2. 上位3〜5件の本文を取得し(エージェントがextractを選ぶ)、内容を確認
-3. **x_search**でXでの議論・反応を取得して加える。根拠にしたX投稿のURL(x.com/…/status/…)を必ず添える。数値は付けない
+1. **Web検索**で過去24時間のAI関連記事のURL一覧を取得(backendはconfig.yamlの設定どおり・Firecrawlまたは枠切れ後Tavily)
+2. 上位3〜5件の本文を取得し(必要なページはweb_extract、素のページはそのまま)、内容を確認
+3. **x_search**でXでの議論・反応を取得して加える。根拠にしたX投稿のURL(x.com/<ユーザー名>/status/<数字>)を必ず添える。数値は付けない
 4. Web側とX側を統合し、合計5項目に絞る
-5. 各項目を2行で要約し、出典URLを末尾に付ける
-6. 末尾に「取得状況」を必ず付ける(Web検索・本文取得・X検索を、使用/未使用で)
+5. 各項目を2行以内で要約し、出典URL(記事URLまたはX投稿URL)を末尾に付ける
+6. 末尾に「取得状況」を必ず付ける:
+   - Web検索: 使用 / 未使用
+   - 本文抽出: N件成功
+   - X検索: 使用(x_search) / 未使用(理由)
+   ※「使用(x_search)」と書けるのは、X投稿URL(x.com/status)を本文に1件以上載せたときだけ
+
+## Verification
+- 項目数が3〜5になっているか
+- 各項目に出典URL(記事URLまたはX投稿URL)が付いているか
+- X由来の項目にx.com/statusの投稿URLが付いているか
+- いいね/RT等の数値が出ていないか(x_searchは数値を返さないため、出たら捏造)
+- 末尾に「取得状況」が付き、本文の実態と一致しているか
 
 ## Pitfalls
 - いいね/RT等の数値は出さない(x_searchは数値を返さないため、書くと捏造になる)
 - x_searchが無効・403の日はWebだけで5項目を埋め、取得状況に「X検索: 未使用」と正直に書く
-- 「X検索: 使用(x_search)」と書くのは、X投稿URLを本文に載せたときだけ
-- 手動cron実行の直後はmessage_countが0のまま見えることがある。完了を待ってから、本文・x_searchの呼び出し・取得状況の整合を確認する
+- 「使用(x_search)」と書くのにX投稿URLが本文に無い不一致を作らない
 
 ## References
 - references/x-search-output-consistency.md: X投稿URLと取得状況を照合する検証手順
 ```
 
-![更新後のSKILL.md全文。手順にSearXNG・本文取得・x_searchが並び、末尾の取得状況と、X投稿URLを必ず添える注記が見える画面](/images/hermes-vps/hermes-vps-11-skill-updated.png)
+![nanoで開いた更新後のmorning-news SKILL.md v1.2.0。Procedure / Verification / Pitfalls / References各セクションが見える画面](/images/hermes-vps/hermes-vps-11-skill-md.png)
 
-中身を書き換えるだけなので`/reload_skills`は不要だ。Telegramから`/morning_news`(アンダースコア)で呼ぶ。
+:::message
+既存Skillの**中身を書き換えるだけ**なら`/reload_skills`は不要(第10回参照)。呼び出し名はアンダースコアの`/morning_news`だ。
+:::
 
-ここで効いてくるのが、末尾の「取得状況」だ。`x_search`が使えた朝は、X投稿のURL(`x.com/…/status/…`)が本文に並び、取得状況に「X検索: 使用(x_search)」と出る。逆に`x_search`に届かなかった朝は、エージェントがWebだけで記事を埋め、「X検索: 未使用」と正直に書く。**取得状況と本文がいつも一致するので、X検索が本当に効いた朝なのかを、ひと目で確かめられる**。数値さえ求めなければ、エージェントは無理に数字を作らず、できたこととできなかったことをそのまま残す。
+### Telegramから呼んで取得状況を確認する
 
-この「投稿URLと取得状況の照合」は、SKILL.mdの末尾にReferencesとして書いた検証手順(`references/x-search-output-consistency.md`)に切り出してある。skillは本体から`references/`のファイルを参照でき、手順が増えても本体を短いまま保てる。
+botに`/morning_news`(アンダースコア)を送る。返ってきた応答で見るのは次の点だ。
 
-![Telegramで/morning_newsを送り、記事URLとX投稿URLのハイブリッド結果が届いた画面。末尾の取得状況に「X検索: 使用(x_search)」と出て、本文のX投稿URLと一致している](/images/hermes-vps/hermes-vps-11-morning-news-hybrid.png)
+- 5項目に絞られているか
+- 各項目に記事URLまたはX投稿URLが付いているか
+- いいね/RT等の数値が出ていないか
+- 末尾の「取得状況」がWeb検索・本文抽出・X検索の3行で書かれているか
+- 「X検索: 使用(x_search)」と書かれていれば、本文中にx.com/statusのURLが1件以上載っているか(本文の実態と一致しているか)
 
-第9回で作ったCronジョブはこのSkillを添付済みなので、翌朝7時の自動配信も新しい手順で動く。手順を直したいときは、これからもSKILL.mdの1箇所を直すだけでいい。
+![Telegramで/morning_newsを呼び出し、OpenAI / Anthropic / Z.AI / Google ADK / OpenAI Partner Networkの5項目が記事URL+X投稿URL3件のハイブリッドで並び、末尾にWeb検索 使用 / 本文抽出 N件成功 / X検索 使用(x_search)と取得状況が明示され、数値は一切出ていない画面](/images/hermes-vps/hermes-vps-11-morning-news.png)
+
+ここで「X検索: 使用(x_search)」と書けるのは、本文中にX投稿URLが1件以上載っているときだけ、というルールをSKILL.md側に書いておくのが要点だ。skillに自己整合性を持たせると、応答の信頼性が一段上がる。
+
+このskillは第9回のCronジョブにも添付されているので、明日の朝7時には自動で同じハイブリッド配信がTelegramに届くようになる。
+
+## 最終確認チェックリスト(第11回)
+
+第11回の到達点を確認する。
+
+- [ ] `FIRECRAWL_API_KEY`が1Password(`Hermes VPS - Firecrawl API key`)に格納され、`secrets.env`に`op://`参照がある
+- [ ] 切替用に`TAVILY_API_KEY`も1Passwordに格納され、`secrets.env`に`op://`参照がある(使う日が来たとき即切替可能)
+- [ ] `~/.hermes/config.yaml`に`backend: firecrawl`(本線)
+- [ ] Telegramからの検索で実在URLが3件以上返る
+- [ ] 本文抽出の指示で見出しが返る。阻まれた場合はエージェントが自律的迂回をした
+- [ ] `hermes doctor`で`✓ x_search`を確認し、`hermes tools enable x_search --platform telegram`まで実行した
+- [ ] `x_search`でXの議論+投稿URLが返り、**数値が出ない**
+- [ ] morning-news Skillが新Procedure(Web検索+web_extract+x_search・数値なし)で動作し、取得状況が末尾に付く
+- [ ] 第9回Cronから翌朝7時に自動配信が届く
 
 ## まとめ
 
-第11回でやったこと。
+第10回までで、エージェントは「24時間動く+自分専用の手順を覚える」状態になっていた。第11回は、そこに「事実(Web)と反応(X)を自分で取りに行く」道を足した。
 
-- 8つの検索バックエンドから、自己ホストで無料枠を気にせず使える**SearXNG**(検索)と**Firecrawl**(難しいページの本文取得)を選んで組み合わせた
-- SearXNGをDockerで自己ホストし、`json`出力を有効にしてHermes Agentから使えるようにした
-- `search_backend` / `extract_backend`を機能別に指定し、`web.backend`より優先される順位を理解した(`crawl_backend`は存在しない)
-- `xai-oauth`を土台に`x_search`でXの議論と投稿URLを拾い、**数値は一切求めない**ことで捏造を防いだ
-- morning-news Skillを、X投稿URLと末尾の「取得状況」を必ず残す形に書き換え、X検索が効いた朝もダメな朝も、本文と取得状況がいつも一致するようにした
+今回でやったこと。
 
-これで、VPSのHermes Agentは「最新情報を自分で取りに行く」目を持った。決まった時刻に動き(第9回)、覚えた手順で(第10回)、必要な情報を自分で検索して(第11回)要約を届ける。
+- Firecrawlを本線にしてWeb検索とWeb抽出を1つのbackendでまかなう構成にした
+- 切替先のTavilyを事前準備し、1Passwordとsecrets.envに参照を入れた
+- 実機でFirecrawl 402を踏み、web-failover skillが自動でランブックを提示することを確認した
+- `hermes doctor`の✓と`hermes tools enable --platform telegram`の罠を実機で記録した
+- gpt-5.5 sessionからx_searchが呼べることを確認した
+- morning-news Skillをハイブリッド検索(Web+X)に育て、取得状況を必ず末尾に付ける形にした
 
-シリーズはここから先、記憶の持たせ方や他のAIとの連携、道具の追加へと続いていく。「思考と検索の拠点」になったこのエージェントを、どこまで自分専用に育てられるか。続きは順次公開する。
+Hermes Agentは「事実(Web)+反応(X)」を自分で取りに行ける状態になった。Web検索・抽出はFirecrawl、枠切れ時はTavilyに1行で切替、Xの議論はGrok経由。skillが運用を引き取ってくれるので、無料枠が切れて慌てる場面でもエージェントが自分で次の手を出してくれる。続きは順次公開していく。
 
 ---
 
@@ -416,25 +536,116 @@ nano ~/.hermes/skills/morning-news/SKILL.md
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
+## 実検証コラム──SearXNG自己ホストの罠
+
+執筆過程でSearXNGを自己ホストして検索を全部無料・無制限にしようとした。実機で動かしてみたら主要engineが軒並みbot対策で停止していた。この一次情報を読者に残す。
+
+### 試した構成(自己ホスト一式を実際に立てた)
+
+SearXNG公式のDockerイメージを`127.0.0.1:8888`でlistenさせ、`settings.yml`でJSON出力を有効化し、`SEARXNG_URL=http://localhost:8888`をHermesに設定した。`config.yaml`で`search_backend: searxng`+`extract_backend: tavily`のハイブリッドにした。実際にコンテナが立ち上がり、疎通も取れた状態まで作った。
+
+![SearXNG自己ホスト用のdocker-compose.yml。127.0.0.1:8888でlisten、restart unless-stoppedで常駐させる構成](/images/hermes-vps/hermes-vps-11-searxng-compose.png)
+
+![SearXNGのsettings.ymlでJSON出力を有効化した画面(formats html json)](/images/hermes-vps/hermes-vps-11-searxng-settings.png)
+
+![docker compose up -d直後の起動ログ。searxng-1がRunning表示](/images/hermes-vps/hermes-vps-11-searxng-up.png)
+
+![docker compose psでSearXNGがUp状態、127.0.0.1:8888->8080/tcpでlistenしている画面](/images/hermes-vps/hermes-vps-11-searxng-ps.png)
+
+![curlでlocalhost:8888/searchにformat=jsonでアクセスし、JSON応答が返ってSearXNG単体は動いていることを示す画面](/images/hermes-vps/hermes-vps-11-searxng-curl-json.png)
+
+### botは応答を返したが、ログを見ると主要engineは軒並み停止していた
+
+Telegramから`「systemdとは何か」を簡潔に検索して、3つの一次情報URLを並べて教えて`と送ると、botは確かに3つの一次情報URL(`systemd.io`/`github.com/systemd/systemd`/`freedesktop.org`)を返してきた。一見成功に見える。
+
+ところが裏でSearXNGコンテナのログを見ると、主要engineは以下のエラーが連発していた。
+
+| engine | 症状 |
+|---|---|
+| duckduckgo | `SearxEngineCaptchaException: CAPTCHA (wt-wt) (suspended_time=0)`(CAPTCHA表示で停止) |
+| wikipedia | `HTTP requests timeout`(タイムアウト) / `500 Internal Server Error` |
+| brave | `SearxEngineTooManyRequestsException: Too many request (suspended_time=180)`(レート制限・180秒停止) |
+
+![docker compose logs --tail=20の出力に上記エラーが並ぶ画面。一次情報の証拠](/images/hermes-vps/hermes-vps-11-searxng-logs.png)
+
+:::message alert
+**応答が返ったのは「SearXNGが効いた」とは限らない**
+
+botが3つのURLを返せたのは、(1)LLMが内部知識から既知URLを出した可能性、(2)エラー後にretryで別engineから取れた可能性、(3)他のbackend(Tavilyの抽出等)が補った可能性のどれかだ。**SearXNG単体が「無料・無制限の検索」を担えたわけではない**。ログがそれを示している。表面の成功と内部のログを両方見ないと、実態が分からない。
+:::
+
+### なぜこうなるか・どうすれば直るか
+
+SearXNGは「複数の検索engineをまとめて叩くメタ検索エンジン」だが、APIキー無しで各検索サイト(`search.brave.com`等)を直接スクレイピングするため、クラウド側のbot対策(CAPTCHA・レート制限)で弾かれる。これは公開SearXNGインスタンスでも自己ホストでも変わらない構造的問題だ。
+
+直す方法は、Brave Search APIキー(無料2000/月)等を取得して`BRAVE_SEARCH_API_KEY`として設定する手があり、これでSearXNG経由でAPI叩きになるためbot対策を回避できる。ただしキーを足すなら、最初からFirecrawl/Tavilyを直接使う方が話が早い。
+
+### 本シリーズの結論
+
+「SearXNGで検索を完全無料・無制限」は、APIキー追加なしでは現実的でない。Hermes公式が推奨するFirecrawl(default)に乗るのが、非エンジニアにとってシンプルで確実。SearXNGは「もっと自由にやりたい人へ」の選択肢として末尾コラムに残す。
+
+## もっと自由にやりたい人へ(自己ホスト抽出)
+
+「クラウドの無料枠を一切使いたくない=完全に自己ホストで無制限にしたい」という人向けの発展。非エンジニアには一段難しいので、本編はFirecrawl/Tavilyで十分。ここは読み物として。
+
+| 選択肢 | 長所 | 短所 |
+|---|---|---|
+| **SearXNG+Brave Search APIキー** | 検索を自己ホスト化+APIキー無料枠2000/月でbot対策回避 | APIキーが増える。本文抽出は別途必要(SearXNGは検索専用) |
+| **crawl4ai**(自己ホスト) | 単一コンテナで軽く、このクラスのVPSにも乗る。無料・無制限・キー不要。本文のmarkdown化がきれい | Hermesの`extract_backend`に名前で指定できない。`hermes mcp`で外部MCPツールとして繋ぎ、エージェントに使わせる誘導が要る(上級) |
+| **Firecrawl**(自己ホスト) | Hermesに`FIRECRAWL_API_URL`で素直に繋がる | サーバ(API+Redis+RabbitMQ+Postgres+ブラウザ)で**メモリを大量に使う**。小型VPSには重く、常駐中のHermesを圧迫する。8GB以上の専用機向け |
+
+:::message
+つまり「VPSに乗る軽さ(crawl4ai)」と「Hermesに素直に繋がる(自己ホストFirecrawl)」は両立しにくい。自宅に余力のあるPCがあるなら、そこに抽出サーバを建ててVPSのHermesから繋ぐ手もある(この話は別の機会に)。本編はFirecrawl(枠切れたらTavily)で素直に動かすのが結局いちばん速い。
+:::
+
 ## よくあるエラーと対処
 
 | 症状 | 対処 |
 |---|---|
-| `curl`でSearXNGがJSONを返さない | `settings.yml`の`formats`に`json`を入れたか確認。直したら`docker compose restart`でコンテナを再起動 |
-| 検索を頼んでもURLが返らない | 1) `search_backend: "searxng"`になっているか、2) `SEARXNG_URL`が`secrets.env`にあるか、3) `docker compose ps`でコンテナがUpか |
-| Firecrawlが`402`やクレジット切れ | 無料枠(月1,000)を使い切っている。本文取得を多用しない。素のページはエージェントが`curl`で足りる |
-| `x_search`が`403`で失敗する | 第5回で触れた[Issue #26847](https://github.com/NousResearch/hermes-agent/issues/26847)(OAuthが弾かれる)の可能性。Web検索中心で確定してよい |
-| 出力にいいね/RT等の数値が出た | それは捏造。依頼文から数値の要求を消す。`x_search`は数値を返さない |
-| エージェントが`x_search`でなく公開Web検索でXを覗く | `x_search`を名指しで頼み直す。それでも公開検索になる場合は、出力にその旨が正直に書かれる |
+| Firecrawlで「Insufficient credits」「402 Payment Required」 | 無料500クレジット/月を使い切った。Tavilyに切替(web-failover skillが自動でランブックを提示する)。月初にリセットされたら戻してもよい |
+| Firecrawlキーが認識されない | 1) `secrets.env`の`op://`パス間違い(保管庫名/アイテム名/credential)、2) 1Password側のアイテム名と一致確認、3) `op run --env-file=~/.hermes/secrets.env -- bash -c 'echo ${FIRECRAWL_API_KEY:0:6}'`で実値が展開されるか確認 |
+| 抽出が空 or 期待と違う | 大きいページは自動要約される。SKILL.mdで「特定セクションだけ抜き出す」と明示する。FirecrawlはJS描画や複雑なページに効く(素のHTMLはcurlで足りる) |
+| X Searchで`degraded: true` | xAI側のレート制限。少し時間を置く+クエリを単純化 |
+| 再起動で`status=1/FAILURE`表示 | 旧プロセスがSIGKILLされた表示で再起動では正常。`is-active`が`active`を返せば成功 |
+| SearXNGに切り替えたら検索結果が薄い/エラー | 主要engineがbot対策で停止している可能性が高い(コラム参照)。Brave Search APIキー追加、または本線のFirecrawlに戻す |
+| `hermes doctor`で✓ x_searchなのにTelegramから呼べない | `hermes tools enable x_search --platform telegram`を実行する。`hermes doctor`(健康診断コマンド・第8回〜第10回で導入)の✓は「有効化可能」の意味で、platformごとの有効化が別途必要 |
+
+## コマンド早見表
+
+```bash
+# 設定確認・反映
+cat ~/.hermes/config.yaml | grep -A 4 "^web:"                                  # 現在のbackend確認
+op run --env-file=~/.hermes/secrets.env -- bash -c 'echo ${FIRECRAWL_API_KEY:0:6}'   # キー展開確認
+systemctl --user restart hermes-gateway                                        # 反映
+hermes doctor 2>&1 | grep -iE "firecrawl|tavily|x_search"                      # 効いているか
+
+# backend切替(Firecrawl ↔ Tavily)
+yq -i '.web.backend = "tavily"' ~/.hermes/config.yaml                          # skillが提示するランブックと同じ
+systemctl --user restart hermes-gateway
+yq '.web.backend' ~/.hermes/config.yaml                                        # 切替確認
+
+# X Searchの有効化(platformごと)
+hermes tools enable x_search                                                   # cli platform
+hermes tools enable x_search --platform telegram                               # telegram platform
+hermes tools list --platform telegram | grep x_search                          # 確認
+
+# Telegramから動作確認(例)
+「systemdとは何か」を検索して
+https://example.com の主要セクション見出しを抽出して
+x_searchで NousResearch のXでの反応を投稿URLつきで(数値は不要)
+/morning_news        # 第10回Skill経由(呼び出し名はアンダースコア)
+```
 
 ## 公式ドキュメント引用元
 
 | 項目 | 引用元 |
 |---|---|
-| Web検索バックエンドの一覧(8種) | [features/web-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-search)「Backends」 |
-| backendの優先順位(機能別 > 共有 > 自動検出) | 同上「Per-capability configuration」 |
-| X Search(`x_search`)の仕様・自動有効化 | [features/x-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/x-search) |
-| `x_search`の返り値は要約(`answer`)と引用URL(`citations`)が中心(他に`inline_citations`/`degraded`等の項目あり。いいね・リポスト等の数値フィールドは無い) | 同上「Tool parameters」 |
-| SearXNGの`settings.yml`(`formats`にjson) | [SearXNG公式](https://docs.searxng.org/) |
-| Firecrawlの無料枠(月1,000) | [Firecrawl公式](https://www.firecrawl.dev/) |
-| `search_backend`/`extract_backend`・`crawl_backend`不在・8バックエンド | 実機v0.15.1で確認(2026-06-01)。`config.yaml` / `hermes doctor` / `docker compose logs` |
+| Web検索全般・バックエンド比較・Firecrawlがdefaultで推奨 | [hermes-agent.nousresearch.com/docs/user-guide/features/web-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-search)(「Firecrawl (default), Recommended for most users.」) |
+| 機能別バックエンドはsearch/extractのみ(crawl_backendは存在しない) | 同上 per-capability backends |
+| 自動fallback `search_fallback_backends` / `extract_fallback_backends`(執筆時点open) | NousResearch/hermes-agent PR [#23315](https://github.com/NousResearch/hermes-agent/pull/23315) / PR [#23366](https://github.com/NousResearch/hermes-agent/pull/23366) |
+| SearXNG自己ホスト(Docker)+JSON format必須 | [Hermes同梱skill searxng-search](https://github.com/NousResearch/hermes-agent/blob/main/optional-skills/research/searxng-search/SKILL.md) |
+| SearXNGはsearch専用(extract不可) | [NousResearch/hermes-agent#32698](https://github.com/NousResearch/hermes-agent/issues/32698) |
+| Tavily(search+extract・無料枠) | [app.tavily.com](https://app.tavily.com/home) / 公式web-search |
+| 秘密はop://参照で1Passwordに置く(平文をディスクに残さない) | 第3回・第5回(本シリーズ) |
+| X Search全般・数値非対応(answer+引用URLのみ) | [公式x-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/x-search) |
+| `hermes tools enable --platform <name>`が必要(doctorの✓は有効化可能の意味) | 実機v0.16.0で確認(2026-06-17) |
