@@ -3,7 +3,7 @@ title: "【第8回】Hermes Agentをブラウザの管制室から操る──We
 emoji: "🎛️"
 type: "tech"
 topics: ["ai", "hermes", "dashboard", "vps", "ux"]
-published: false
+published: true
 ---
 
 ## 目次

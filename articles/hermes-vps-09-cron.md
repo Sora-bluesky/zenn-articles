@@ -37,7 +37,7 @@ published: false
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す──承認モードの確認
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──Hermes Desktopでマウス操作する
-- 第8回──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
 - **第9回**(本記事)──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - 第11回──Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
@@ -377,7 +377,7 @@ hermes cron remove <job_id>       # 削除
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| 第8回 Web Dashboardで設定を見える化する(近日公開) | 第10回 Skillsに手順を覚えさせる(近日公開) |
+| [第8回 Web Dashboardで設定を見える化する](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) | 第10回 Skillsに手順を覚えさせる(近日公開) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
