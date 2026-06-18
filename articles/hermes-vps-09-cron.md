@@ -3,7 +3,7 @@ title: "【第9回】Hermes Agentが朝から話しかけてくる──Dashboar
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "cron", "自動化", "vps"]
-published: false
+published: true
 ---
 
 ## 目次
@@ -432,6 +432,14 @@ hermes cron remove <job_id>              # 削除
 ローカル / Telegram / Discord / Slack / Email
 ```
 
+## 補足:CronはHermes自身が時計を見ている
+
+HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)の最後の章(34:37〜)でCronを扱っている。動画によれば、Hermesのcronはサーバー側のsystem cronとは別系統で、Hermes本体が**毎分tickする独自の関数**でジョブを巡回するという。確かに本回のCRONペインで「今すぐ実行」を押した直後・cron式に従って次の発火を待つ動きは「Hermesが自分で時計を見て話しかけてくる」体感に近い。こちらが話しかける前に届く、という設計だ。
+
+動画ではさらに2点踏み込んでいる。(a)ジョブの実体は`~/.hermes/cron/jobs.json`に保存されている(公式docはSQLite保存と書いている箇所があるが、実機v0.16.0で確認すると確かに`jobs.json`に書かれている)。(b)発火時の配信は`send_message`ツールを呼ぶのではなく、**最初に設定した「home gateway」に自動で届く**設計になっている。本回の手順で「配信先=Telegram」を選んでいれば、Hermesが裏でTelegram bot APIを直接叩いて届けてくれる。読者は意識せずTelegramに届く理由がここにある。
+
+動画は英語で約40分・YouTube設定で日本語自動翻訳字幕も出せる。本回の手順だけで運用は完結するので無理に見る必要はないが、「裏で何が起きているか」をもう一段知りたい人向けの良質な補助線として置いておく。
+
 ## 公式ドキュメント引用元
 
 | 項目 | 引用元 |
@@ -443,3 +451,4 @@ hermes cron remove <job_id>              # 削除
 | 配信先(ローカル/Telegram/Discord等) | 同上「Delivery Targets」 |
 | `[SILENT]`による送信抑制 | 同上「When the agent's final response contains [SILENT], delivery is suppressed」 |
 | Cron配信先5択の実装 | [web/src/pages/CronPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/CronPage.tsx) |
+| Cron内部実装の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§cronジョブ(34:37〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)(2026-06-16公開・英語・自動翻訳字幕で日本語可) |

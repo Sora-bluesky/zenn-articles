@@ -35,7 +35,7 @@ published: true
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化(`hermes gateway install`)
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- 第9回──Dashboardで毎朝の定型タスクを任せる
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Skillsに手順を覚えさせる
 - 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
 

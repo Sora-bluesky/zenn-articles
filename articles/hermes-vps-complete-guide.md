@@ -34,9 +34,19 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 ### 第3部：育てる — 自分から動き、覚え、調べる
 
-- **第9回**：Hermes Agentが朝から話しかけてくる──Dashboardで毎朝の定型タスクを任せる
+- **第9回**：[Hermes Agentが朝から話しかけてくる──Dashboardで毎朝の定型タスクを任せる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)
 - **第10回**：Hermes Agentが使うほど自分専用に育つ──Skillsに手順を覚えさせる
 - **第11回**：Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
+
+### 第4部：記憶を分けて育てる ─ 「覚える」を分けて整理する
+
+- **第12回**：Hermes AgentにMemoryで好みと前提を記憶させる──毎回説明不要の自分専用AIへ
+- **第13回**：Hermes AgentにObsidianを連携させる──外付けの脳として知識を共有する
+- **第14回**：Hermes AgentにSession Searchで過去会話を思い出す──会話の文脈を自動復元
+- **第15回**：Hermes Agentにllm-wikiで知識を貯める──同じことを二度調べない自分専用知識ベースへ
+- **第16回**：Hermes AgentにSOUL.mdで人格を与える──口調と判断基準を一貫させる
+- **第17回**：Hermes AgentにSkillsを育て直す──手順を定期的に見直して最適化
+- **第18回**：Hermes AgentにCuratorでスキルを整理させる──増えた技術を棚卸ししてスリムに
 
 この先も、段階を追って順次公開していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
 
@@ -51,6 +61,31 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 そこから先は、毎朝決まった時刻に自分から動かし、よく使う手順を覚えさせ、調べたことを貯め、声や画像やファイルを扱い、やがて細かく言わなくても自分で進める相棒に育てていく。重い処理は家で余っているPCに任せる分担も作る。
 
 連載は順次公開中で、回は内容の充実に合わせて増えたり並び替わったりする。いまは最初の「体を作る」段階まで公開し、その先へ進んでいるところだ。
+
+## 参考動画(連載と併読推奨・任意)
+
+[Hermes Architecture EXPLAINED: Memory, Context & Gateways](https://www.youtube.com/watch?v=n32qq7Kwzh0)
+
+HuggingFace公式チャンネル提供の解説動画。約40分・英語(YouTubeの設定→字幕→自動翻訳→日本語で日本語字幕も出せる)。2026年6月公開。
+
+**動画=全体図/連載=実装手順**という分担にしてある。動画はHermes Agentの内部設計(エージェントループ・コンテキスト構築・メモリ三形式・ゲートウェイ・cronの仕組み)を俯瞰する。本連載はVPSで実際に動かし、月1,800円ほどで毎日育てていく運用手順を日本語で実機検証する。両方読むと立体的に理解できる。動画を見なくても連載は完結する。
+
+最初の章「アーキテクチャの概要」(0:57〜3:49・約3分)だけ見ると、この連載が何を作っているかが30秒で腑に落ちる。それ以降は読んでいる回に該当する章だけ拾えばよい。
+
+| 動画チャプター | 開始時刻 | 対応する連載回 |
+|---|---|---|
+| アーキテクチャの概要 | [0:57](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=57s) | 第1回(全体図) |
+| エージェントループ | [3:49](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=229s) | 第10回(Skills) / 第12回(Memory) |
+| コンテキスト | [7:31](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=451s) | 第12回(Memory) / 第16回(SOUL.md) |
+| コンテキスト圧縮 | [13:28](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=808s) | 第18回(Curator)周辺 |
+| コンテキスト圧縮プロンプト | [18:28](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1108s) | 第18回(Curator)周辺 |
+| ゲートウェイ | [19:59](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1199s) | 第5回(Discord) / 第6回(systemd) |
+| メモリ | [28:00](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1680s) | 第12-14回(記憶系) |
+| cronジョブ | [34:37](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s) | 第9回(Cron) |
+
+:::message
+動画は2026年6月公開で、本連載が依拠するHermes Agent v0.16.0(2026年6月5日)と近い時期だが、ファイル名や格納場所など実装の細部で一部食い違いがある(動画の`memory/`は実機で`memories/`複数形・動画の`hermes.db`は実機で`state.db`等)。本連載は実機v0.16.0で確認した名称・場所を採用している。動画は「設計の全体図」、連載は「v0.16.0で実際に動いた手順」と読み分けるとずれない。
+:::
 
 ## はじめる前に必要なもの
 

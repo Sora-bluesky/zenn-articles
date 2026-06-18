@@ -34,7 +34,7 @@ published: true
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──Hermes Agentをsystemdで24時間常駐させる
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- 第9回──Dashboardで毎朝の定型タスクを任せる
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)──Dashboardで毎朝の定型タスクを任せる
 - 第10回──Hermes Agent Skillsに手順を覚えさせる
 - 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
 
@@ -714,3 +714,4 @@ chmod 700 /home/admin/.ssh
 | 永続型AIエージェントの比較 | [The New Stack](https://thenewstack.io/persistent-ai-agents-compared/) |
 | Hermes Agent公式リポジトリ | [GitHub README](https://github.com/NousResearch/hermes-agent) |
 | 学習ループ設計の解説 | [Turing Post](https://www.turingpost.com/p/hermes) |
+| 内部架構の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§アーキテクチャの概要(0:57〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=57s)(2026-06-16公開・約40分・英語・YouTube設定で日本語自動翻訳字幕も可) |

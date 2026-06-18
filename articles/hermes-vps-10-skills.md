@@ -42,7 +42,7 @@ published: false
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──Hermes Desktopでマウス操作する
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- 第9回──Dashboardで毎朝の定型タスクを任せる
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)──Dashboardで毎朝の定型タスクを任せる
 - **第10回**(本記事)──Skillsに手順を覚えさせる
 - 第11回──Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
 
@@ -418,7 +418,7 @@ botに、順に送ってみる。
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| 第9回 Dashboardで毎朝の定型を任せる | 第11回 Web検索とX検索を使い分ける(近日公開) |
+| [第9回 Dashboardで毎朝の定型を任せる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) | 第11回 Web検索とX検索を使い分ける(近日公開) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
