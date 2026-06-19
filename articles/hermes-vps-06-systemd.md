@@ -1,5 +1,5 @@
 ---
-title: "【第6回】Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰"
+title: "【第6回】Hermes Agentをsystemdで常時起動させる方法"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "systemd", "linux", "vps"]
@@ -31,17 +31,31 @@ published: true
 
 シリーズの全体像はこちら。
 
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──VPSを契約して最小限の安全な状態でadminにログイン
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Tailscaleで公開SSHを閉じる
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──1Password Service Accountと`op run`でsecrets管理
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──DockerサンドボックスとHermes Agentのインストール+Codex OAuth+Telegram疎通
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す+承認モードの確認
-- **第6回**(本記事)──systemd常駐化で24時間動かす
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
-- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)──Dashboardで毎朝の定型タスクを任せる
-- 第10回──Skillsに手順を覚えさせる
-- 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+:::details シリーズのもくじ(全45回・タップで開く)
+
+**第I部 体を作る**
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
+- **第6回**(本記事) Hermes Agentをsystemdで常時起動させる方法
+
+**第II部 顔をつける**
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
+
+**第III部 育てる**
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
+- 第10回 Hermes Agentが使うほど賢くなるSkillsの登録方法
+- 第11回 Hermes Agentに最新情報を自動取得させる方法
+
+**第IV部 記憶を分けて育てる**
+- 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
+- 第13回 Hermes AgentとObsidianを連携して知識を共有する
+
+全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+:::
 
 所要時間の目安は60〜90分(うちVPS再起動の待ち時間が10分前後)。手を動かすのは10コマンド程度で、`hermes gateway install`という公式コマンドが入ったので、手書きでunitファイルを書く必要はない。
 
@@ -472,7 +486,7 @@ Linger=yes
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第5回 GrokとDiscordを足す](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) | [第7回 Hermes Desktopを入れる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
+| [第5回 Hermes AgentにGrokとDiscordを連携させる](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) | [第7回 Hermes Agentをデスクトップアプリで操作する方法](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

@@ -1,5 +1,5 @@
 ---
-title: "【第9回】Hermes Agentが朝から話しかけてくる──Dashboardで毎朝の定型タスクを任せる"
+title: "【第9回】Hermes Agentに毎朝のタスクを自動実行させる"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "cron", "自動化", "vps"]
@@ -30,17 +30,31 @@ published: true
 
 シリーズの全体像はこちら。
 
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──Hermes AgentをVPSに迎える──契約から最小構成のログインまで
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す──承認モードの確認
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──Hermes Desktopでマウス操作する
-- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- **第9回**(本記事)──Dashboardで毎朝の定型タスクを任せる
-- 第10回──Skillsに手順を覚えさせる
-- 第11回──Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
+:::details シリーズのもくじ(全45回・タップで開く)
+
+**第I部 体を作る**
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
+- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) Hermes Agentをsystemdで常時起動させる方法
+
+**第II部 顔をつける**
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
+
+**第III部 育てる**
+- **第9回**(本記事) Hermes Agentに毎朝のタスクを自動実行させる
+- 第10回 Hermes Agentが使うほど賢くなるSkillsの登録方法
+- 第11回 Hermes Agentに最新情報を自動取得させる方法
+
+**第IV部 記憶を分けて育てる**
+- 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
+- 第13回 Hermes AgentとObsidianを連携して知識を共有する
+
+全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+:::
 
 手を動かすのは、第8回でブックマークしたDashboardのURLを開いて、「CRON」ペインの「作成」ボタンから新規ジョブを1つ登録するだけ。SSHでターミナルを開く必要はない。
 
@@ -377,7 +391,7 @@ hermes cron remove <job_id>       # 削除
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第8回 Web Dashboardで設定を見える化する](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) | 第10回 Skillsに手順を覚えさせる(近日公開) |
+| [第8回 Hermes AgentをWeb Dashboardで管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) | 第10回 Hermes Agentが使うほど賢くなるSkillsの登録方法(近日公開) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

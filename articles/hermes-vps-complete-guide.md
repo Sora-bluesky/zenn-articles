@@ -1,5 +1,5 @@
 ---
-title: "Hermes Agent完全構築ガイド｜VPSに常駐させる「使うほど賢くなる」エージェント"
+title: "Hermes Agent完全構築ガイド｜VPSに常駐する自分専用AIエージェントの作り方"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "vps", "個人開発", "自動化"]
@@ -18,35 +18,100 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 連載は続いており、回の順番や数は内容の充実に合わせて変わることがある。ここでは公開済みの回をまとめておく。以降の回は、公開しだいこのページに追加していく。
 
-### 第1部：体を作る — サーバーに常駐するAIを用意する
+### 第I部　体を作る
 
-- **第1回**：[Hermes AgentをVPSに迎える──契約から最小構成のログインまで](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)
-- **第2回**：[Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)
-- **第3回**：[Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)
-- **第4回**：[Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)
-- **第5回**：[Hermes Agentの頭脳と出入口を2系統に増やす──GrokとDiscordを足す](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)
-- **第6回**：[Hermes Agentを24時間止めずに動かす──systemdで自動起動・自動復帰](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)
+| 回 | 見出し |
+|----|--------|
+| 1 | [Hermes AgentをVPSにデプロイする方法](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) |
+| 2 | [Hermes Agentの接続を安全にする方法](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
+| 3 | [Hermes Agentの認証情報を安全に管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) |
+| 4 | [Hermes AgentをDockerで隔離して動かす方法](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) |
+| 5 | [Hermes AgentにGrokとDiscordを連携させる](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
+| 6 | [Hermes Agentをsystemdで常時起動させる方法](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
-### 第2部：顔をつける — 黒い画面の外から操作する
+### 第II部　顔をつける
 
-- **第7回**：[Hermes Agentをマウス操作で動かす──公式アプリ「Hermes Desktop」を入れる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)
-- **第8回**：[Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)
+| 回 | 見出し |
+|----|--------|
+| 7 | [Hermes Agentをデスクトップアプリで操作する方法](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
+| 8 | [Hermes AgentをWeb Dashboardで管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
 
-### 第3部：育てる — 自分から動き、覚え、調べる
+### 第III部　育てる
 
-- **第9回**：[Hermes Agentが朝から話しかけてくる──Dashboardで毎朝の定型タスクを任せる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)
-- **第10回**：Hermes Agentが使うほど自分専用に育つ──Skillsに手順を覚えさせる
-- **第11回**：Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
+| 回 | 見出し |
+|----|--------|
+| 9 | [Hermes Agentに毎朝のタスクを自動実行させる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
+| 10 | Hermes Agentが使うほど賢くなるSkillsの登録方法 |
+| 11 | Hermes Agentに最新情報を自動取得させる方法 |
 
-### 第4部：記憶を分けて育てる ─ 「覚える」を分けて整理する
+### 第IV部　記憶を分けて育てる
 
-- **第12回**：Hermes AgentにMemoryで好みと前提を記憶させる──毎回説明不要の自分専用AIへ
-- **第13回**：Hermes AgentにObsidianを連携させる──外付けの脳として知識を共有する
-- **第14回**：Hermes AgentにSession Searchで過去会話を思い出す──会話の文脈を自動復元
-- **第15回**：Hermes Agentにllm-wikiで知識を貯める──同じことを二度調べない自分専用知識ベースへ
-- **第16回**：Hermes AgentにSOUL.mdで人格を与える──口調と判断基準を一貫させる
-- **第17回**：Hermes AgentにSkillsを育て直す──手順を定期的に見直して最適化
-- **第18回**：Hermes AgentにCuratorでスキルを整理させる──増えた技術を棚卸ししてスリムに
+| 回 | 見出し |
+|----|--------|
+| 12 | Hermes AgentにMemoryで好みと前提を記憶させる |
+| 13 | Hermes AgentとObsidianを連携して知識を共有する |
+| 14 | Hermes Agentに過去の会話を自動で復元させる |
+| 15 | Hermes Agent専用の知識ベースを構築する方法 |
+| 16 | Hermes Agentに一貫した人格を与える方法 |
+| 17 | Hermes AgentのSkillsを定期的に最適化する |
+| 18 | Hermes Agentのスキルを整理・スリム化する方法 |
+
+### 第V部　他のAIを束ねる
+
+| 回 | 見出し |
+|----|--------|
+| 19 | Hermes Agentから自宅PCを操作できるようにする |
+| 20 | Hermes Agentにタスクを分担させる方法 |
+| 21 | Hermes Agentで作業を見える化するKanbanの導入 |
+| 22 | Hermes Agentに役割を割り振って運用する方法 |
+| 23 | Hermes AgentからローカルLLMを呼び出す方法 |
+
+### 第VI部　手足を増やす（道具）
+
+| 回 | 見出し |
+|----|--------|
+| 24 | Hermes Agentのツールを一括管理する方法 |
+| 25 | Hermes Agentにブラウザ操作をさせる方法 |
+| 26 | Hermes Agentに画像や画面を理解させる方法 |
+| 27 | Hermes Agentに画像生成をさせる方法 |
+| 28 | Hermes Agentに音声で返答させる方法 |
+| 29 | Hermes Agentに成果物を自動で出力させる方法 |
+| 30 | Hermes Agentにレポートや資料を作成させる方法 |
+| 31 | Hermes Agentに外部ツールを連携させる方法 |
+
+### 第VII部　外部連携
+
+| 回 | 見出し |
+|----|--------|
+| 32 | Hermes AgentとNotion・Google Driveを連携させる方法 |
+| 33 | Hermes AgentをWebhooksで外部から起動させる方法 |
+| 34 | Hermes Agentで家電を操作する方法 |
+
+### 第VIII部　自走させる
+
+| 回 | 見出し |
+|----|--------|
+| 35 | Hermes Agentに最後まで作業を完遂させる |
+| 36 | Hermes Agentを用途別に使い分ける方法 |
+| 37 | Hermes AgentをDigital Twinsとして運用する |
+
+### 第IX部　声と生活導線
+
+| 回 | 見出し |
+|----|--------|
+| 38 | Hermes Agentを音声で操作する方法 |
+| 39 | Hermes Agentに音声日報を自動作成させる方法 |
+| 40 | Hermes Agentの通知先を使い分ける方法 |
+
+### 第X部　安全・費用・保守
+
+| 回 | 見出し |
+|----|--------|
+| 41 | Hermes Agentの月額費用を把握する方法 |
+| 42 | Hermes Agentの運用コストを下げる方法 |
+| 43 | Hermes Agentの権限を安全に制限する方法 |
+| 44 | Hermes Agentのバックアップと復旧方法 |
+| 45 | Hermes Agentに何を任せるかを決める方法 |
 
 この先も、段階を追って順次公開していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
 

@@ -1,5 +1,5 @@
 ---
-title: "【第10回】Hermes Agentが使うほど自分専用に育つ──Skillsに手順を覚えさせる"
+title: "【第10回】Hermes Agentが使うほど賢くなるSkillsの登録方法"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "skills", "自動化", "vps"]
@@ -34,17 +34,31 @@ published: false
 
 シリーズの全体像はこちら。
 
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy)──Hermes AgentをVPSに迎える──契約から最小構成のログインまで
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Hermes Agentの玄関を世界から隠す──Tailscaleで公開SSHを閉じる
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──Hermes Agentの秘密をファイルに残さない──1Passwordで参照だけ渡す
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Hermes Agent本体をVPSに入れる──Dockerサンドボックスで隔離する
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Grok OAuthとDiscordを足す──承認モードの確認
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──systemd常駐化で24時間動かす
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──Hermes Desktopでマウス操作する
-- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)──Dashboardで毎朝の定型タスクを任せる
-- **第10回**(本記事)──Skillsに手順を覚えさせる
-- 第11回──Hermes Agentが最新情報を自分で取りに行く──Web検索とX検索を使い分ける
+:::details シリーズのもくじ(全45回・タップで開く)
+
+**第I部 体を作る**
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
+- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) Hermes Agentをsystemdで常時起動させる方法
+
+**第II部 顔をつける**
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
+
+**第III部 育てる**
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
+- **第10回**(本記事) Hermes Agentが使うほど賢くなるSkillsの登録方法
+- 第11回 Hermes Agentに最新情報を自動取得させる方法
+
+**第IV部 記憶を分けて育てる**
+- 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
+- 第13回 Hermes AgentとObsidianを連携して知識を共有する
+
+全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+:::
 
 ## 概念整理──Skillsで何が変わるか
 
@@ -418,7 +432,7 @@ botに、順に送ってみる。
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第9回 Dashboardで毎朝の定型を任せる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) | 第11回 Web検索とX検索を使い分ける(近日公開) |
+| [第9回 Hermes Agentに毎朝のタスクを自動実行させる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) | 第11回 Hermes Agentに最新情報を自動取得させる方法(近日公開) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
@@ -458,6 +472,15 @@ botに、順に送ってみる。
 /commands                                   … 全スキルのスラッシュ名を一覧
 ```
 
+### 強制ロード(必ず使わせたいとき・2026-06-18 Teknium告知)
+
+| 場面 | 方法 | 効果 |
+|---|---|---|
+| その会話中だけ強制ロード | チャット冒頭で`/<skill-name>`を打つ | そのセッション内でskillが必ず参照される |
+| 起動時から永続的に強制ロード | shellのエイリアスで`hermes -s <skill-name>`(`-s`は`--skills`の短縮) | Hermesを開くたびにそのskillをロードした状態で始まる |
+
+たとえばTeknium本人は自身のhermes開発作業で`alias hermes-dev='hermes -s hermes-agent-dev'`を仕込んでいるとリプライで共有している(2026-06-18)。Hermesは関連skillを自動で選んでくれるが、「いつも必ず使ってほしい」場面ではこの2つで明示的にロードさせる。
+
 ## 公式ドキュメント引用元
 
 | 項目 | 引用元 |
@@ -469,3 +492,4 @@ botに、順に送ってみる。
 | Skills Hub(official/community等のソース) | 同上「Supported Hub Sources」 |
 | Trust Level(builtin/official/trusted/community) | 同上「Security Scanning & Trust Levels」 |
 | NEW SKILL+編集鉛筆・CRONのSKILLS添付欄 | 実機Dashboard v0.16.0で確認(2026-06-11)。[@Teknium告知](https://x.com/Teknium/status/2066185784332562605) |
+| 強制ロード方法(`/<skill-name>`+`hermes -s`エイリアス) | [@Tekniumリプライ(2026-06-18)](https://x.com/Teknium/status/2067672465678209501) |

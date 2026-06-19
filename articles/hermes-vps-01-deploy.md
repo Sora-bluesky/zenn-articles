@@ -1,5 +1,5 @@
 ---
-title: "【第1回】Hermes AgentをVPSに迎える──契約から最小構成のログインまで"
+title: "【第1回】Hermes AgentをVPSにデプロイする方法"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "vps", "hermes", "ubuntu", "個人開発"]
@@ -23,22 +23,30 @@ published: true
 - [まとめと第2回予告](#まとめと第2回予告)
 - [参考リンク](#参考リンク)
 
-:::message
-このシリーズはHermes AgentをVPSに常駐させるまでの実録だ。順次公開中で、回数は内容に応じて増えていく。
+:::details シリーズのもくじ(全45回・タップで開く)
 
-- **第1回**(本記事)──Hermes AgentをVPSに常駐させる(契約からログインまで)
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale)──Hermes Agentの公開SSHをTailscaleで安全に閉じる
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)──Hermes Agentの秘密情報を1Passwordで平文に出さない運用
-- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install)──Hermes Agent本体をVPSに入れる(インストールとDockerサンドボックス)
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord)──Hermes Agentに頭脳と出入口をもう1系統足す(Grok OAuthとDiscord+承認モードの確認)
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd)──Hermes Agentをsystemdで24時間常駐させる
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop)──公式アプリ「Hermes Desktop」でマウス操作する
-- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard)──Hermes Agentをブラウザの管制室から操る──Web Dashboardで設定を見える化する
-- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron)──Dashboardで毎朝の定型タスクを任せる
-- 第10回──Hermes Agent Skillsに手順を覚えさせる
-- 第11回──Web/X検索の使い分け(SearXNG+Firecrawl+X Search)
+**第I部 体を作る**
+- **第1回**(本記事) Hermes AgentをVPSにデプロイする方法
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
+- [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
+- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) Hermes Agentをsystemdで常時起動させる方法
 
-全体像と各回への入口は、まとめ記事[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+**第II部 顔をつける**
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
+
+**第III部 育てる**
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
+- 第10回 Hermes Agentが使うほど賢くなるSkillsの登録方法
+- 第11回 Hermes Agentに最新情報を自動取得させる方法
+
+**第IV部 記憶を分けて育てる**
+- 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
+- 第13回 Hermes AgentとObsidianを連携して知識を共有する
+
+全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 ## この回の到達点
@@ -702,7 +710,7 @@ chmod 700 /home/admin/.ssh
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| (これが第1回です) | [第2回 Tailscaleで公開SSHを閉じる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
+| (これが第1回です) | [第2回 Hermes Agentの接続を安全にする方法](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
