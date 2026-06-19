@@ -113,7 +113,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 44 | Hermes Agentのバックアップと復旧方法 |
 | 45 | Hermes Agentに何を任せるかを決める方法 |
 
-この先も、段階を追って順次公開していく。最新回はSubstackの登録か、Zennの著者フォローで追ってほしい。
+この先も、段階を追って順次公開していく。最新回は[Substackの登録](https://sorabiz.substack.com/subscribe)か、Zennの著者フォローで追ってほしい。
 
 ## このシリーズで作るもの
 
