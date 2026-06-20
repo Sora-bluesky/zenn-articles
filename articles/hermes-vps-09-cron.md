@@ -454,6 +454,22 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 動画は英語で約40分・YouTube設定で日本語自動翻訳字幕も出せる。本回の手順だけで運用は完結するので無理に見る必要はないが、「裏で何が起きているか」をもう一段知りたい人向けの良質な補助線として置いておく。
 
+## 補足:v0.17.0でAutomation Blueprintsが追加された
+
+2026-06-19公開のv0.17.0「The Reach Release」で、Cron構文を一切覚えずに同等の自動化を組める**Automation Blueprints**が追加された。「毎朝8時に最新ニュースを要約」のような依頼を、blueprint定義1つでDashboard form/CLI-TUI-messengerのslash command/agent会話/docs catalogエントリの4経路から横断して呼べる。
+
+本記事のCron CLI(`hermes cron`)とDashboardのCRONペインは引き続き使える(後方互換)。Blueprintsは追加の選択肢だ。「`0 7 * * *`を覚えるのが面倒」「自然言語で組みたい」読者向けに、第IX部Voice周辺で別途扱う予定。`hermes update`で最新に保てば自動で使えるようになる。
+
+## 補足:Telegram Bot APIのRich Messages(v0.17.0でdefault ON)
+
+2026年6月13日、Telegram創業者の[Pavel Durovが正式に告知](https://x.com/durov/status/2065896953519484976)したとおり、Telegram Bot APIに**Rich Messages**が入った。表(tables)・入れ子の箇条書き(nested lists)・本文中に埋め込む画像や動画(inline media)・数式(formulas)・見出し(headers)などを、Telegramのチャット欄に直接表示できる新APIだ。仕様は[公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options)にまとまっている。
+
+同日、Hermesの[Tekniumも追従を予告](https://x.com/Teknium/status/2065777563356774688)し、画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math を追加」の方針を示している。
+
+**2026-06-19公開のHermes v0.17.0「The Reach Release」で正式に追従**された。Bot API 10.1のrich messagesでレンダリング・formatting改善・long message handling・native markupが**default ON**で動く。opt-outも可。`hermes update`で本体を最新に保ち続けていれば、cron通知のTelegram表示が自動でリッチになる(表・入れ子の箇条書き・本文中inline media・見出しが効く)。
+
+設定変更は不要だ。古い導入時期の`config.yaml`に残っている`telegram.extra.rich_messages`等のキーは触らなくてよい(Hermes側の挙動とは独立)。
+
 ## 公式ドキュメント引用元
 
 | 項目 | 引用元 |
@@ -466,3 +482,5 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 | `[SILENT]`による送信抑制 | 同上「When the agent's final response contains [SILENT], delivery is suppressed」 |
 | Cron配信先5択の実装 | [web/src/pages/CronPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/CronPage.tsx) |
 | Cron内部実装の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§cronジョブ(34:37〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)(2026-06-16公開・英語・自動翻訳字幕で日本語可) |
+| Telegram Bot API Rich Messages追加(2026-06-13) | [Pavel Durov公式ポスト](https://x.com/durov/status/2065896953519484976) — `We now support rich formatting for all chatbots. Tables, nested lists, inline media, formulas, headers and more`+[Telegram公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options) |
+| Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688) — `Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math 追加」 |

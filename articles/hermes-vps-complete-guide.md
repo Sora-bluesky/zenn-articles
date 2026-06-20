@@ -149,7 +149,7 @@ HuggingFace公式チャンネル提供の解説動画。約40分・英語(YouTub
 | cronジョブ | [34:37](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s) | 第9回(Cron) |
 
 :::message
-動画は2026年6月公開で、本連載が依拠するHermes Agent v0.16.0(2026年6月5日)と近い時期だが、ファイル名や格納場所など実装の細部で一部食い違いがある(動画の`memory/`は実機で`memories/`複数形・動画の`hermes.db`は実機で`state.db`等)。本連載は実機v0.16.0で確認した名称・場所を採用している。動画は「設計の全体図」、連載は「v0.16.0で実際に動いた手順」と読み分けるとずれない。
+動画は2026年6月公開で、本連載が依拠するHermes Agent v0.16.0(2026年6月5日)と近い時期だが、ファイル名や格納場所など実装の細部で一部食い違いがある(動画の`memory/`は実機で`memories/`複数形・動画の`hermes.db`は実機で`state.db`等)。本連載は実機v0.16.0で確認した名称・場所を採用している。動画は「設計の全体図」、連載は「v0.16.0で実際に動いた手順」と読み分けるとずれない。なお2026-06-19公開の**v0.17.0「The Reach Release」**で、iMessage連携(Photon Spectrum)・Automation Blueprints・Dashboard profile builder・Subagent watch-windows・Skills Hub刷新等の大型追加が入った。連載各回の末尾コラムでv0.17.0新機能の差分は順次補足する。`hermes update`で本体を最新に保ち続けていれば自動で反映される。
 :::
 
 ## はじめる前に必要なもの

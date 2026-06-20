@@ -413,6 +413,17 @@ botに、順に送ってみる。
 - [ ] **Dashboard**:CRONの作成モーダルでSKILLS欄に`summarize-to-japanese`をチェックし、ジョブカードにバッジが付いた
 - [ ] **Dashboard→Telegram**:稲妻(今すぐ実行)で、hermes-watchの要約がTelegramに届いた
 
+## 補足:v0.17.0でSkills Hub Browserが刷新された
+
+本記事はv0.16.0時点の画面で撮影したが、2026-06-19公開の**v0.17.0「The Reach Release」**でSkills Hubがブラウザ側で大きく刷新された。
+
+- **Featured セクション**=OpenAI/Anthropic/HuggingFace/NVIDIAのtrusted tapからオススメSkillが目立つ位置に並ぶ
+- **Full Skill Preview**=インストール前に各SkillのSKILL.md全文と説明を読める
+- **Security Scan**=各Skillにセキュリティスキャンが追加された(prompt injection等の検出)
+- **Connected Hubs**=複数のSkill Hubを横断ブラウズ
+
+本記事の`+ NEW SKILL`ボタンや`BROWSE HUB`の基本操作は変わらないが、v0.17.0のHub画面は本記事のスクショとは見た目が違う。新UIの解説と「育て直し」の運用は第17回(Skills育て直し)で扱う予定だ。`hermes update`で本体を最新に保ち続けていれば、自動で新UIに切り替わる。
+
 ## まとめと第11回予告
 
 第10回でやったこと。
