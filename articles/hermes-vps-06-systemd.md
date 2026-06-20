@@ -47,7 +47,7 @@ published: true
 
 **第III部 育てる**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
-- 第10回 Hermes Agentが使うほど賢くなるSkillsの登録方法
+- [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) Hermes Agentが使うほど賢くなるSkillsの登録方法
 - 第11回 Hermes Agentに最新情報を自動取得させる方法
 
 **第IV部 記憶を分けて育てる**
