@@ -415,7 +415,7 @@ botに、順に送ってみる。
 
 ## 補足:v0.17.0でSkills Hub Browserが刷新された
 
-本記事はv0.16.0時点の画面で撮影したが、2026-06-19公開の**v0.17.0「The Reach Release」**でSkills Hubがブラウザ側で大きく刷新された。
+本記事はv0.16.0時点の画面で撮影したが、2026-06-19公開の**v0.17.0**「The Reach Release」でSkills Hubがブラウザ側で大きく刷新された。
 
 - **Featured セクション**=OpenAI/Anthropic/HuggingFace/NVIDIAのtrusted tapからオススメSkillが目立つ位置に並ぶ
 - **Full Skill Preview**=インストール前に各SkillのSKILL.md全文と説明を読める
