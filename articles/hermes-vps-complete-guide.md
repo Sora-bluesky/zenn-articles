@@ -152,6 +152,10 @@ HuggingFace公式チャンネル提供の解説動画。約40分・英語(YouTub
 動画は2026年6月公開で、本連載が依拠するHermes Agent v0.16.0(2026年6月5日)と近い時期だが、ファイル名や格納場所など実装の細部で一部食い違いがある(動画の`memory/`は実機で`memories/`複数形・動画の`hermes.db`は実機で`state.db`等)。本連載は実機v0.16.0で確認した名称・場所を採用している。動画は「設計の全体図」、連載は「v0.16.0で実際に動いた手順」と読み分けるとずれない。なお2026-06-19公開の**v0.17.0**「The Reach Release」で、iMessage連携(Photon Spectrum)・Automation Blueprints・Dashboard profile builder・Subagent watch-windows・Skills Hub刷新等の大型追加が入った。連載各回の末尾コラムでv0.17.0新機能の差分は順次補足する。`hermes update`で本体を最新に保ち続けていれば自動で反映される。
 :::
 
+:::message
+2026-06-21にNousResearch公式の Docker イメージ `nousresearch/hermes-agent` も公開された。第4回は第三者製の `nikolaik/python-nodejs:python3.11-nodejs20` で書いているが、新規読者は公式イメージから始めても同じ手順で動く。既存読者は乗り換え不要(両方使える)。第4回末尾コラムに詳細を補足してある。
+:::
+
 ## はじめる前に必要なもの
 
 詳しい手順は各回で説明するが、全体を通して使うものを先に挙げておく。
