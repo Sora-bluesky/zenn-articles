@@ -196,7 +196,7 @@ cat ~/.hermes/skills/note-taking/obsidian/SKILL.md
 
 冒頭のYAMLフロントマター(`---`で囲まれた領域)で、必要な環境変数(`OBSIDIAN_VAULT_PATH`)、未設定時のフォールバック(`~/Documents/Obsidian Vault`)、使うツール(`search_files`/`read_file`/`write_file`/`patch`)が宣言されている。
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-skill-md-head.png -->
+![ターミナルでcat ~/.hermes/skills/note-taking/obsidian/SKILL.md | head -20 を実行した結果。冒頭のYAMLフロントマター(name obsidian / description Read, search, create, and edit notes in the Obsidian vault. / platforms [linux, macos, windows])の下に、Obsidian Vault見出し+概要+Vault path節(OBSIDIAN_VAULT_PATH環境変数とフォールバック~/Documents/Obsidian Vault)+file toolsの注意書きが並ぶ画面](/images/hermes-vps/hermes-vps-13-skill-md-head.png)
 
 :::message
 SKILL.mdが「Hermesに対する手順書」だ。HermesがVaultをどう触るかは、ここに書かれた手順をAI側が読んで自分で組み立てる。読者がSKILL.mdを直接書く必要はないが、一度読んでおくと「skillとは何か」が腑に落ちる(第10回Skillsの復習)。
