@@ -51,7 +51,7 @@ published: true
 **第III部 育てる**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
 - **第10回**(本記事) Hermes Agentが使うほど賢くなるSkillsの登録方法
-- 第11回 Hermes Agentに最新情報を自動取得させる方法
+- [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) Hermes Agentに最新情報を自動取得させる方法
 
 **第IV部 記憶を分けて育てる**
 - 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
@@ -443,7 +443,7 @@ botに、順に送ってみる。
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第9回 Hermes Agentに毎朝のタスクを自動実行させる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) | 第11回 Hermes Agentに最新情報を自動取得させる方法(近日公開) |
+| [第9回 Hermes Agentに毎朝のタスクを自動実行させる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) | [第11回 Hermes Agentに最新情報を自動取得させる方法](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

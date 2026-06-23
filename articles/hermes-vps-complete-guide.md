@@ -42,7 +42,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 |----|--------|
 | 9 | [Hermes Agentに毎朝のタスクを自動実行させる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
 | 10 | [Hermes Agentが使うほど賢くなるSkillsの登録方法](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
-| 11 | Hermes Agentに最新情報を自動取得させる方法 |
+| 11 | [Hermes Agentに最新情報を自動取得させる方法](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
 
 ### 第IV部　記憶を分けて育てる
 
