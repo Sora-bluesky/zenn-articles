@@ -226,7 +226,7 @@ OBSIDIAN_VAULT_PATH=/home/admin/vault
 mkdir -p /home/admin/vault
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-env-nano-after.png -->
+![GNU nano 8.7.1で`/home/admin/.hermes/.env`を開いた画面。TELEGRAM/DISCORD/HERMES_DASHBOARD/WEBHOOK等のtoken値はすべて黒塗りマスクされ、末尾の追記行`OBSIDIAN_VAULT_PATH=/home/admin/vault`が赤枠で示されている。下部にnanoの日本語キーバインドヘルプ(^Gヘルプ・^O書き込み・^F検索など)](/images/hermes-vps/hermes-vps-13-env-nano-after.png)
 
 ### 反映確認と再起動
 
@@ -238,7 +238,7 @@ systemctl --user restart hermes-gateway          # 反映に再起動が必要
 systemctl --user status hermes-gateway           # active (running)
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-env-grep.png -->
+![ターミナルで`grep OBSIDIAN_VAULT_PATH ~/.hermes/.env`を実行した結果。プロンプトのホスト名は黒塗りマスク済で、出力行`OBSIDIAN_VAULT_PATH=/home/admin/vault`が赤枠で示されている](/images/hermes-vps/hermes-vps-13-env-grep.png)
 
 `.env`の変更は本体起動時に1回だけ読み込まれる仕様だ。書き換えただけでは効かない。`systemctl --user restart`を必ず挟む。
 
