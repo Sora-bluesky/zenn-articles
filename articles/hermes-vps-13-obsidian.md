@@ -255,7 +255,7 @@ HermesとObsidianの接続経路は混乱しやすい。本回で使うのは「
 | Obsidian MCPサーバー | Obsidianプラグイン経由のAPI(検索・グラフ・タグ操作) | 本回は使わない。skill主軸で十分 |
 | git同期 | 母艦のVaultとVPSのVaultを揃える | §11で扱う(基本=git push/pull手動) |
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-mcp-list.png -->
+![ターミナルで`hermes mcp list`を実行した結果。MCP Servers見出しの下にName/Transport/Tools/Status列のテーブルが1行だけ並び、agentwikis (npx -y agentwikis-mcp/all/✓ enabled)のみ表示。Obsidian用MCPは存在しない](/images/hermes-vps/hermes-vps-13-mcp-list.png)
 
 MCPサーバー経由のObsidian連携は、リアルタイム検索やグラフ操作が必要になったときの選択肢だ。本連載は当面skill主軸で運用する。
 
@@ -268,7 +268,7 @@ hermes memory --help
 # providers: honcho, openviking, mem0, hindsight, holographic, retaindb, byterover, supermemory
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-memory-help-providers.png -->
+![ターミナルで`hermes memory --help`を実行した結果。usageとサブコマンド(setup/status/off/reset)の説明文の中に「Available providers: honcho, openviking, mem0, hindsight, holographic, retaindb, byterover」と並び、Obsidianはこのprovider一覧に含まれていない](/images/hermes-vps/hermes-vps-13-memory-help-providers.png)
 
 Obsidianはmemory providerではなく、note-taking skillとして提供されている。第12回の表現で言えば「第3層(外部provider)」ではなく「別カテゴリ(外付け脳)」だ。memoryコマンドで設定するものではない。Vault連携は`OBSIDIAN_VAULT_PATH`(§7)+bundled obsidian skill(§6)の2本立てで行う。これが正しい経路だ。
 
