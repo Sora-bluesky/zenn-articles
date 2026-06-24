@@ -445,7 +445,7 @@ git commit -m "変更内容の説明"
 git push origin main
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-git-push.png -->
+![母艦のPowerShellで`git push origin main`を実行した直後の画面。`Add §11-1 sync verification note`というcommitがpushされ、`Writing objects: 100% (4/4), 427 bytes`+`To https://github.com/Sora-bluesky/hermes-vault.git`+`<old-hash>..<new-hash>  main -> main`の3行で成功している。ユーザー名はプロンプトでマスク済](/images/hermes-vps/hermes-vps-13-git-push.png)
 
 VPSで取り込む:
 
