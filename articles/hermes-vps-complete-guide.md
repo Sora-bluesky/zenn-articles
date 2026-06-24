@@ -29,14 +29,14 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 5 | [Hermes AgentにGrokとDiscordを連携させる](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
 | 6 | [Hermes Agentをsystemdで常時起動させる方法](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
-### 第II部　顔をつける
+### 第II部　顔と操作席
 
 | 回 | 見出し |
 |----|--------|
 | 7 | [Hermes Agentをデスクトップアプリで操作する方法](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
 | 8 | [Hermes AgentをWeb Dashboardで管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
 
-### 第III部　育てる
+### 第III部　生活リズム
 
 | 回 | 見出し |
 |----|--------|
@@ -49,7 +49,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 回 | 見出し |
 |----|--------|
 | 12 | [Hermes AgentにMemoryで好みと前提を記憶させる](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) |
-| 13 | Hermes AgentとObsidianを連携して知識を共有する |
+| 13 | Hermes AgentとObsidianを連携して知識を共有する方法 |
 | 14 | Hermes Agentに過去の会話を自動で復元させる |
 | 15 | Hermes Agentに他のAIのセッションも吸収させる方法 |
 | 16 | Hermes Agent専用の知識ベースを構築する方法 |
@@ -66,53 +66,59 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 22 | Hermes Agentで作業を見える化するKanbanの導入 |
 | 23 | Hermes Agentに役割を割り振って運用する方法 |
 | 24 | Hermes AgentからローカルLLMを呼び出す方法 |
+| 25 | Hermes AgentからGrok Composerを直接呼び出す方法 |
 
-### 第VI部　手足を増やす（道具）
-
-| 回 | 見出し |
-|----|--------|
-| 25 | Hermes Agentのツールを一括管理する方法 |
-| 26 | Hermes Agentにブラウザ操作をさせる方法 |
-| 27 | Hermes Agentに画像や画面を理解させる方法 |
-| 28 | Hermes Agentに画像生成をさせる方法 |
-| 29 | Hermes Agentに音声で返答させる方法 |
-| 30 | Hermes Agentに成果物を自動で出力させる方法 |
-| 31 | Hermes Agentにレポートや資料を作成させる方法 |
-| 32 | Hermes Agentに外部ツールを連携させる方法 |
-
-### 第VII部　外部連携
+### 第VI部　手足を増やす
 
 | 回 | 見出し |
 |----|--------|
-| 33 | Hermes AgentとNotion・Google Driveを連携させる方法 |
-| 34 | Hermes AgentをWebhooksで外部から起動させる方法 |
-| 35 | Hermes Agentで家電を操作する方法 |
+| 26 | Hermes Agentのツールを一括管理する方法 |
+| 27 | Hermes Agentにブラウザ操作をさせる方法 |
+| 28 | Hermes Agentに画像や画面を理解させる方法 |
+| 29 | Hermes Agentに画像生成をさせる方法 |
+| 30 | Hermes Agentに音声で返答させる方法 |
+| 31 | Hermes Agentに成果物を自動で出力させる方法 |
+| 32 | Hermes Agentにレポートや資料を作成させる方法 |
+| 33 | Hermes Agentに外部ツールを連携させる方法 |
+
+### 第VII部　外部サービス連携
+
+| 回 | 見出し |
+|----|--------|
+| 34 | Hermes AgentとNotion・Google Driveを連携させる方法 |
+| 35 | Hermes AgentをWebhooksで外部から起動させる方法 |
+| 36 | Hermes Agentで家電を操作する方法 |
+| 37 | Hermes AgentにiMessageを送受信させる方法 |
+| 38 | Hermes Agentを複数台で連携運用する方法 |
 
 ### 第VIII部　自走させる
 
 | 回 | 見出し |
 |----|--------|
-| 36 | Hermes Agentに最後まで作業を完遂させる |
-| 37 | Hermes Agentを用途別に使い分ける方法 |
-| 38 | Hermes AgentをDigital Twinsとして運用する |
+| 39 | Hermes Agentに最後まで作業を完遂させる |
+| 40 | Hermes Agentを用途別に使い分ける方法 |
+| 41 | Hermes AgentをDigital Twinsとして運用する |
 
 ### 第IX部　声と生活導線
 
 | 回 | 見出し |
 |----|--------|
-| 39 | Hermes Agentを音声で操作する方法 |
-| 40 | Hermes Agentに音声日報を自動作成させる方法 |
-| 41 | Hermes Agentの通知先を使い分ける方法 |
+| 42 | Hermes Agentを音声で操作する方法 |
+| 43 | Hermes Agentに音声日報を自動作成させる方法 |
+| 44 | Hermes Agentの通知先を使い分ける方法 |
+| 45 | Hermes Agentで毎日の自動運用を組み立てる方法 |
+| 46 | Hermes Agentに既存画像を加筆編集させる方法 |
 
 ### 第X部　安全・費用・保守
 
 | 回 | 見出し |
 |----|--------|
-| 42 | Hermes Agentの月額費用を把握する方法 |
-| 43 | Hermes Agentの運用コストを下げる方法 |
-| 44 | Hermes Agentの権限を安全に制限する方法 |
-| 45 | Hermes Agentのバックアップと復旧方法 |
-| 46 | Hermes Agentに何を任せるかを決める方法 |
+| 47 | Hermes Agentの月額費用を把握する方法 |
+| 48 | Hermes Agentの運用コストを下げる方法 |
+| 49 | Hermes Agentの権限を安全に制限する方法 |
+| 50 | Hermes Agentのバックアップと復旧方法 |
+| 51 | Hermes Agentを家族や同僚と安全に共有する方法 |
+| 52 | Hermes Agentに何を任せるかを決める方法 |
 
 この先も、段階を追って順次公開していく。最新回は[Substackの登録](https://sorabiz.substack.com/subscribe)か、Zennの著者フォローで追ってほしい。
 
