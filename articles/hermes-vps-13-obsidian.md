@@ -455,7 +455,7 @@ cd ~/hermes-vault-repo
 git pull origin main
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-git-pull.png -->
+![VPS側のターミナルで`git pull origin main`を実行した直後の画面。`From https://github.com/sora-bluesky/hermes-vault`+`a7c8cc2..02bef48  main       -> origin/main`+`Updating a7c8cc2..02bef48`+`Fast-forward`+`shared-ai/AGENT_INSTRUCTIONS.md | 2 ++`+`1 file changed, 2 insertions(+)`が表示され、母艦から送信したcommit `02bef48`がfast-forwardでマージされている。プロンプトのVPSホスト名は一部マスク済](/images/hermes-vps/hermes-vps-13-git-pull.png)
 
 編集のたびに両側で`git pull`→`git push`を回す。Hermes側が書き込んだら母艦で`git pull`、母艦で書いたら`git push`してVPSで`git pull`。最初は手動でいい。第18回予定のCurator+cronで自動化する道が見えている。
 
