@@ -34,7 +34,7 @@ published: false
 
 シリーズの全体像はこちら。
 
-:::detailsシリーズのもくじ(全45回・タップで開く)
+:::detailsシリーズのもくじ(全52回・タップで開く)
 
 **第I部体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
@@ -57,7 +57,7 @@ published: false
 - **第12回**(本記事) Hermes Agentに自分のことを覚えさせる
 - 第13回Hermes AgentとObsidianを連携して知識を共有する
 
-全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+全52回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 手を動かすのは、SSHで`hermes memory status`を1回打つことと、Telegramで「私について次のことを覚えて」と1通送ることだ。あとはエージェントが自分で書き込む。
@@ -109,7 +109,7 @@ Hermesのメモリは3層に分かれている。第12回はそのうち1層目(
 
 | 層 | 実体(実機v0.17.0で確認) | 誰が書くか | frozen snapshotに乗るか | 本連載で扱う回 |
 |---|---|---|---|---|
-| 1a. Markdown(人格) | `~/.hermes/SOUL.md`(直下・全大文字) | 私が書く(空ならデフォルトprompt) | 乗る(`hermes --ignore-rules`で除外可) | **第16回** |
+| 1a. Markdown(人格) | `~/.hermes/SOUL.md`(直下・全大文字) | 私が書く(空ならデフォルトprompt) | 乗る(`hermes --ignore-rules`で除外可) | **第17回** |
 | 1b. Markdown(人物カード) | `~/.hermes/memories/USER.md` | 私+エージェント | 乗る | **本回** |
 | 1c. Markdown(環境ファクト) | `~/.hermes/memories/MEMORY.md` | エージェント(主) | 乗る | **本回** |
 | 2. SQLite | `~/.hermes/state.db`(全session transcript+類似検索) | エージェント(自動) | 必要時にquery | **第14回Session Search** |

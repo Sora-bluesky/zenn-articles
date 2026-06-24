@@ -37,7 +37,7 @@ published: true
 
 シリーズの全体像はこちら。
 
-:::details シリーズのもくじ(全45回・タップで開く)
+:::details シリーズのもくじ(全52回・タップで開く)
 
 **第I部 体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
@@ -60,7 +60,7 @@ published: true
 - 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
 - 第13回 Hermes AgentとObsidianを連携して知識を共有する
 
-全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+全52回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 ## 概念整理──なぜWebとXを分けるか

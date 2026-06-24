@@ -51,67 +51,68 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 12 | Hermes AgentにMemoryで好みと前提を記憶させる |
 | 13 | Hermes AgentとObsidianを連携して知識を共有する |
 | 14 | Hermes Agentに過去の会話を自動で復元させる |
-| 15 | Hermes Agent専用の知識ベースを構築する方法 |
-| 16 | Hermes Agentに一貫した人格を与える方法 |
-| 17 | Hermes AgentのSkillsを定期的に最適化する |
-| 18 | Hermes Agentのスキルを整理・スリム化する方法 |
+| 15 | Hermes Agentに他のAIのセッションも吸収させる方法 |
+| 16 | Hermes Agent専用の知識ベースを構築する方法 |
+| 17 | Hermes Agentに一貫した人格を与える方法 |
+| 18 | Hermes AgentのSkillsを定期的に最適化する |
+| 19 | Hermes Agentのスキルを整理・スリム化する方法 |
 
 ### 第V部　他のAIを束ねる
 
 | 回 | 見出し |
 |----|--------|
-| 19 | Hermes Agentから自宅PCを操作できるようにする |
-| 20 | Hermes Agentにタスクを分担させる方法 |
-| 21 | Hermes Agentで作業を見える化するKanbanの導入 |
-| 22 | Hermes Agentに役割を割り振って運用する方法 |
-| 23 | Hermes AgentからローカルLLMを呼び出す方法 |
+| 20 | Hermes Agentから自宅PCを操作できるようにする |
+| 21 | Hermes Agentにタスクを分担させる方法 |
+| 22 | Hermes Agentで作業を見える化するKanbanの導入 |
+| 23 | Hermes Agentに役割を割り振って運用する方法 |
+| 24 | Hermes AgentからローカルLLMを呼び出す方法 |
 
 ### 第VI部　手足を増やす（道具）
 
 | 回 | 見出し |
 |----|--------|
-| 24 | Hermes Agentのツールを一括管理する方法 |
-| 25 | Hermes Agentにブラウザ操作をさせる方法 |
-| 26 | Hermes Agentに画像や画面を理解させる方法 |
-| 27 | Hermes Agentに画像生成をさせる方法 |
-| 28 | Hermes Agentに音声で返答させる方法 |
-| 29 | Hermes Agentに成果物を自動で出力させる方法 |
-| 30 | Hermes Agentにレポートや資料を作成させる方法 |
-| 31 | Hermes Agentに外部ツールを連携させる方法 |
+| 25 | Hermes Agentのツールを一括管理する方法 |
+| 26 | Hermes Agentにブラウザ操作をさせる方法 |
+| 27 | Hermes Agentに画像や画面を理解させる方法 |
+| 28 | Hermes Agentに画像生成をさせる方法 |
+| 29 | Hermes Agentに音声で返答させる方法 |
+| 30 | Hermes Agentに成果物を自動で出力させる方法 |
+| 31 | Hermes Agentにレポートや資料を作成させる方法 |
+| 32 | Hermes Agentに外部ツールを連携させる方法 |
 
 ### 第VII部　外部連携
 
 | 回 | 見出し |
 |----|--------|
-| 32 | Hermes AgentとNotion・Google Driveを連携させる方法 |
-| 33 | Hermes AgentをWebhooksで外部から起動させる方法 |
-| 34 | Hermes Agentで家電を操作する方法 |
+| 33 | Hermes AgentとNotion・Google Driveを連携させる方法 |
+| 34 | Hermes AgentをWebhooksで外部から起動させる方法 |
+| 35 | Hermes Agentで家電を操作する方法 |
 
 ### 第VIII部　自走させる
 
 | 回 | 見出し |
 |----|--------|
-| 35 | Hermes Agentに最後まで作業を完遂させる |
-| 36 | Hermes Agentを用途別に使い分ける方法 |
-| 37 | Hermes AgentをDigital Twinsとして運用する |
+| 36 | Hermes Agentに最後まで作業を完遂させる |
+| 37 | Hermes Agentを用途別に使い分ける方法 |
+| 38 | Hermes AgentをDigital Twinsとして運用する |
 
 ### 第IX部　声と生活導線
 
 | 回 | 見出し |
 |----|--------|
-| 38 | Hermes Agentを音声で操作する方法 |
-| 39 | Hermes Agentに音声日報を自動作成させる方法 |
-| 40 | Hermes Agentの通知先を使い分ける方法 |
+| 39 | Hermes Agentを音声で操作する方法 |
+| 40 | Hermes Agentに音声日報を自動作成させる方法 |
+| 41 | Hermes Agentの通知先を使い分ける方法 |
 
 ### 第X部　安全・費用・保守
 
 | 回 | 見出し |
 |----|--------|
-| 41 | Hermes Agentの月額費用を把握する方法 |
-| 42 | Hermes Agentの運用コストを下げる方法 |
-| 43 | Hermes Agentの権限を安全に制限する方法 |
-| 44 | Hermes Agentのバックアップと復旧方法 |
-| 45 | Hermes Agentに何を任せるかを決める方法 |
+| 42 | Hermes Agentの月額費用を把握する方法 |
+| 43 | Hermes Agentの運用コストを下げる方法 |
+| 44 | Hermes Agentの権限を安全に制限する方法 |
+| 45 | Hermes Agentのバックアップと復旧方法 |
+| 46 | Hermes Agentに何を任せるかを決める方法 |
 
 この先も、段階を追って順次公開していく。最新回は[Substackの登録](https://sorabiz.substack.com/subscribe)か、Zennの著者フォローで追ってほしい。
 
@@ -141,9 +142,9 @@ HuggingFace公式チャンネル提供の解説動画。約40分・英語(YouTub
 |---|---|---|
 | アーキテクチャの概要 | [0:57](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=57s) | 第1回(全体図) |
 | エージェントループ | [3:49](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=229s) | 第10回(Skills) / 第12回(Memory) |
-| コンテキスト | [7:31](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=451s) | 第12回(Memory) / 第16回(SOUL.md) |
-| コンテキスト圧縮 | [13:28](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=808s) | 第18回(Curator)周辺 |
-| コンテキスト圧縮プロンプト | [18:28](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1108s) | 第18回(Curator)周辺 |
+| コンテキスト | [7:31](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=451s) | 第12回(Memory) / 第17回(SOUL.md) |
+| コンテキスト圧縮 | [13:28](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=808s) | 第19回(Curator)周辺 |
+| コンテキスト圧縮プロンプト | [18:28](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1108s) | 第19回(Curator)周辺 |
 | ゲートウェイ | [19:59](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1199s) | 第5回(Discord) / 第6回(systemd) |
 | メモリ | [28:00](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=1680s) | 第12-14回(記憶系) |
 | cronジョブ | [34:37](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s) | 第9回(Cron) |

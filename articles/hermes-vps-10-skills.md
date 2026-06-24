@@ -34,7 +34,7 @@ published: true
 
 シリーズの全体像はこちら。
 
-:::details シリーズのもくじ(全45回・タップで開く)
+:::details シリーズのもくじ(全52回・タップで開く)
 
 **第I部 体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
@@ -57,7 +57,7 @@ published: true
 - 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
 - 第13回 Hermes AgentとObsidianを連携して知識を共有する
 
-全45回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+全52回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 ## 概念整理──Skillsで何が変わるか
@@ -422,7 +422,7 @@ botに、順に送ってみる。
 - **Security Scan**=各Skillにセキュリティスキャンが追加された(prompt injection等の検出)
 - **Connected Hubs**=複数のSkill Hubを横断ブラウズ
 
-本記事の`+ NEW SKILL`ボタンや`BROWSE HUB`の基本操作は変わらないが、v0.17.0のHub画面は本記事のスクショとは見た目が違う。新UIの解説と「育て直し」の運用は第17回(Skills育て直し)で扱う予定だ。`hermes update`で本体を最新に保ち続けていれば、自動で新UIに切り替わる。
+本記事の`+ NEW SKILL`ボタンや`BROWSE HUB`の基本操作は変わらないが、v0.17.0のHub画面は本記事のスクショとは見た目が違う。新UIの解説と「育て直し」の運用は第18回(Skills育て直し)で扱う予定だ。`hermes update`で本体を最新に保ち続けていれば、自動で新UIに切り替わる。
 
 ## まとめと第11回予告
 
