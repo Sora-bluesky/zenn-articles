@@ -36,7 +36,7 @@ published: true
 
 このシリーズは、VPS(=自分専用に契約するサーバー)1台にHermes AgentというAIエージェントを常駐させて、自分専用の相棒を育てていく連載。第7回までで「黒い画面でHermesと話す」「Telegram/Discordから話す」「母艦のDesktopアプリで話す」までを揃えた。第8回からは「ブラウザの管制室から設定を触る」段階に入る。
 
-:::details シリーズのもくじ(全52回・タップで開く)
+:::details シリーズのもくじ(タップで開く)
 
 **第I部 体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
@@ -56,10 +56,10 @@ published: true
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) Hermes Agentに最新情報を自動取得させる方法
 
 **第IV部 記憶を分けて育てる**
-- 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
+- [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) Hermes AgentにMemoryで好みと前提を記憶させる
 - 第13回 Hermes AgentとObsidianを連携して知識を共有する
 
-全52回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 所要時間の目安は60〜90分(うち画面を眺めて慣れる時間が大半)。第7回で常駐させた`hermes dashboard`を、今度はブラウザで開いて触っていく。

@@ -30,7 +30,7 @@ published: true
 
 シリーズの全体像はこちら。
 
-:::details シリーズのもくじ(全52回・タップで開く)
+:::details シリーズのもくじ(タップで開く)
 
 **第I部 体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
@@ -50,10 +50,10 @@ published: true
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) Hermes Agentに最新情報を自動取得させる方法
 
 **第IV部 記憶を分けて育てる**
-- 第12回 Hermes AgentにMemoryで好みと前提を記憶させる
+- [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) Hermes AgentにMemoryで好みと前提を記憶させる
 - 第13回 Hermes AgentとObsidianを連携して知識を共有する
 
-全52回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 手を動かすのは、第8回でブックマークしたDashboardのURLを開いて、「CRON」ペインの「作成」ボタンから新規ジョブを1つ登録するだけ。SSHでターミナルを開く必要はない。

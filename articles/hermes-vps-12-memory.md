@@ -1,9 +1,9 @@
 ---
-title: "【第12回】Hermes Agentに自分のことを覚えさせる"
+title: "【第12回】Hermes AgentにMemoryで好みと前提を記憶させる"
 emoji: "🧠"
 type: "tech"
 topics: ["ai", "hermes", "memory", "vps", "claude"]
-published: false
+published: true
 ---
 
 ## 目次
@@ -34,9 +34,9 @@ published: false
 
 シリーズの全体像はこちら。
 
-:::detailsシリーズのもくじ(全52回・タップで開く)
+:::details シリーズのもくじ(タップで開く)
 
-**第I部体を作る**
+**第I部 体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
@@ -44,20 +44,20 @@ published: false
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) Hermes Agentをsystemdで常時起動させる方法
 
-**第II部顔をつける**
+**第II部 顔をつける**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
 
-**第III部育てる**
+**第III部 育てる**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
-- 第10回Hermes Agentが使うほど賢くなるSkillsの登録方法
+- [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) Hermes Agentが使うほど賢くなるSkillsの登録方法
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) Hermes Agentに最新情報を自動取得させる方法
 
-**第IV部記憶を分けて育てる**
-- **第12回**(本記事) Hermes Agentに自分のことを覚えさせる
-- 第13回Hermes AgentとObsidianを連携して知識を共有する
+**第IV部 記憶を分けて育てる**
+- **第12回**(本記事) Hermes AgentにMemoryで好みと前提を記憶させる
+- 第13回 Hermes AgentとObsidianを連携して知識を共有する
 
-全52回の全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
+全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 手を動かすのは、SSHで`hermes memory status`を1回打つことと、Telegramで「私について次のことを覚えて」と1通送ることだ。あとはエージェントが自分で書き込む。
