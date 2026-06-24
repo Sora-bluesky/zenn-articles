@@ -365,30 +365,103 @@ AIまたは自分が次に何をすればいいか。
 
 ### git双方向push/pull(基本)
 
-母艦とVPSの両方で同じgitリポジトリをcloneし、変更があるたびに`git push`+`git pull`で同期する。GitHubでprivate repositoryを1つ作り、両方からcloneする想定だ(Vaultは個人所有の知識ベースなので必ずprivateにする)。
+母艦とVPSの両方で同じgitリポジトリをcloneし、変更があるたびに`git push`+`git pull`で同期する。GitHubでprivate repositoryを1つ作り、両方からcloneする想定だ(Vaultは個人所有の知識ベースなので必ずprivateにする)。認証はGitHubが提供する`gh` CLIに任せる(SSH鍵を別途生成して登録する手間を省ける・非エンジニアにとってブラウザでのWeb認証のほうが慣れている)。
+
+#### GitHubにprivate repoを1つ作る(母艦のターミナル)
+
+```bash
+# 母艦のターミナルで(ghは第3回1Passwordセットアップ時にinstall済の想定)
+gh repo create sora-bluesky/hermes-vault --private \
+  --description "Shared AI long-term memory Vault (Obsidian)"
+```
+
+#### 母艦Vaultをinitial pushする
+
+```bash
+cd ~/Documents/Hermes-Vault/
+
+# .gitignoreを用意して、端末固有の.obsidian/workspace.json等をexcludeする
+cat > .gitignore <<'EOF'
+.obsidian/*
+!.obsidian/app.json
+!.obsidian/appearance.json
+!.obsidian/core-plugins.json
+!.obsidian/community-plugins.json
+!.obsidian/hotkeys.json
+.trash/
+.DS_Store
+Thumbs.db
+EOF
+
+git init
+git add .gitignore \
+  .obsidian/app.json .obsidian/appearance.json .obsidian/core-plugins.json \
+  "AIメモ.md" "Hermes Agent調査.md"
+git commit -m "Initial Vault commit"
+git branch -M main
+git remote add origin https://github.com/sora-bluesky/hermes-vault.git
+git push -u origin main
+```
+
+#### VPSで`gh` CLIをインストールしてGitHub認証する
+
+VPS側にも`gh`を入れ、母艦と同じGitHubアカウントで認証する。
+
+```bash
+# VPS側で(sshで接続して実行・sudoパスワードを聞かれる)
+(type -p wget >/dev/null || (sudo apt update && sudo apt-get install wget -y)) \
+  && sudo mkdir -p -m 755 /etc/apt/keyrings \
+  && out=$(mktemp) && wget -nv -O$out https://cli.github.com/packages/githubcli-archive-keyring.gpg \
+  && cat $out | sudo tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
+  && sudo chmod go+r /etc/apt/keyrings/githubcli-archive-keyring.gpg \
+  && sudo mkdir -p -m 755 /etc/apt/sources.list.d \
+  && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" \
+     | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null \
+  && sudo apt update \
+  && sudo apt install gh -y
+
+# 認証(対話形式・8桁codeをコピーして、母艦のブラウザで貼り付ける)
+gh auth login -h github.com -p https -w
+```
+
+#### VPSにcloneする
+
+```bash
+# VPS側で続けて
+cd ~
+git clone https://github.com/sora-bluesky/hermes-vault.git hermes-vault-repo
+ls hermes-vault-repo  # 母艦と同じファイルが見える
+```
+
+#### 日常運用:push/pull
+
+母艦で書いたら:
 
 ```bash
 # 母艦のターミナルで
-cd ~/Documents/Obsidian\ Vault/
-git init
-git remote add origin git@github.com:sora-bluesky/obsidian-vault.git
-git add .
-git commit -m "Initial Vault commit"
+cd ~/Documents/Hermes-Vault/
+git add <変更したファイル>
+git commit -m "変更内容の説明"
 git push origin main
 ```
 
 <!-- 撮影後にここに画像挿入: hermes-vps-13-git-push.png -->
 
+VPSで取り込む:
+
 ```bash
 # VPS側で
-cd /home/admin/
-git clone git@github.com:sora-bluesky/obsidian-vault.git vault
-# /home/admin/hermes-vault は §7 でsymlinkとして用意済み
+cd ~/hermes-vault-repo
+git pull origin main
 ```
 
 <!-- 撮影後にここに画像挿入: hermes-vps-13-git-pull.png -->
 
 編集のたびに両側で`git pull`→`git push`を回す。Hermes側が書き込んだら母艦で`git pull`、母艦で書いたら`git push`してVPSで`git pull`。最初は手動でいい。第18回予定のCurator+cronで自動化する道が見えている。
+
+:::message
+ここで母艦↔VPS同期するのは`~/hermes-vault-repo`(VPS側の独立git repo dir)だ。§7でsymlinkとして用意した`/home/admin/hermes-vault`(HermesがDockerコンテナ越しに書き込む実体Vault)とは、いまの段階では別directoryになっている。「Hermesが書いたノートをそのままgit同期する」までの統合は連載後半(Curator+cronの回)で扱う。本回はまず母艦←→VPS間でgit syncが動くことを確認する段階にとどめる。
+:::
 
 ### Obsidian Sync(補足)
 
