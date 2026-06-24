@@ -294,7 +294,7 @@ ls -la /home/admin/hermes-vault/
 cat /home/admin/hermes-vault/Hermes動作テスト.md
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-vault-ls.png -->
+![ターミナルで`ls -la /home/admin/hermes-vault/`を実行した結果。`total 12`の下に`.`と`..`に続いて`-rw------- 1 admin admin 81 Jun 24 10:39 Hermes動作テスト.md`が並んでいる。所有者はadmin:adminで、sudoなしで読める。プロンプトのホスト名は黒塗りマスク済](/images/hermes-vps/hermes-vps-13-vault-ls.png)
 
 母艦のObsidianとVPSのVaultを§11のgit同期でつなげば、ここで作られたノートが母艦のObsidianアプリにも現れる。Hermesが「私の代わりにノートを書く」が動いた瞬間だ。
 
