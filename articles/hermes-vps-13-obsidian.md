@@ -326,7 +326,7 @@ Vault接続ができたら、次の問いは「で、何を書けばいいのか
 AIまたは自分が次に何をすればいいか。
 ```
 
-<!-- 撮影後にここに画像挿入: hermes-vps-13-template-applied-note.png -->
+![母艦のObsidianでVault「Hermes-Vault」を開き、5項目テンプレを当てた`Hermes Agent調査.md`を表示している画面。Title/Summary/Source/Context/Links/Next Actionの6見出しが本文中に並び、それぞれに雛形テキスト(「対象と用途が分かるもの」「3行以内」「URL・書籍名・会話・日付など」など)が入っている。左ペインはファイルリスト、左下にVault名「Hermes-Vault」、右下は文字数カウンタ](/images/hermes-vps/hermes-vps-13-template-applied-note.png)
 
 5項目それぞれが、AIにとって判断材料になる。SummaryでノートのID、Sourceで信頼度、Contextで目的、Linksで他文脈、Next Actionで作業指示。これらが分離して書かれていれば、AIは「事実」と「自分の解釈」と「次の作業」を取り違えない。
 
