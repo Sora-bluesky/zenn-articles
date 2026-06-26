@@ -154,7 +154,7 @@ systemctl --user status hermes-gateway          # active (running)
 
 ![ターミナルでhermes versionを実行した結果。Hermes Agent v0.17.0(2026.6.19)upstream bb7ff7dc、Project /home/admin/hermes-agent、Python 3.11.15、OpenAI SDK 2.24.0、Up to date が並ぶ画面](/images/hermes-vps/hermes-vps-13-version-check.png)
 
-v0.17.0より古いバージョンが出る場合は、`hermes update`で本体を最新に上げてからやり直す。v0.17.0ではOffice読み込みのread_file拡張やSubagent watch-windowsなど、本回のObsidian連携と相性のいい機能がいくつか追加されている。
+v0.17.0より古いバージョンが出る場合は、`hermes update`で本体を最新に上げてからやり直す。v0.17.0ではOffice読み込みのread_file拡張など、本回のObsidian連携と相性のいい機能がいくつか追加されている。
 
 ### 母艦のObsidian Vaultの場所を控える
 
@@ -567,8 +567,7 @@ git push origin main                            # 反映
 
 2026-06-19公開のv0.17.0「The Reach Release」では、本回のObsidian連携と相性のいい機能がいくつか追加されている。
 
-- **read_file拡張(Office対応)**:従来の.txt/.mdに加えて.docx/.xlsx/.pdfも直接読めるようになった。Vault内に貯めた論文PDFや会議メモのdocxをHermesがそのまま要約できる。
-- **Subagent watch-windows**:特定のフォルダの変更を監視してsubagentを発動させる仕組み。Vault内の特定サブフォルダ(例:`Inbox/`)に新規ノートが追加されたら自動で整理する、といった運用に使える。
+- **read_file拡張(Office対応)**:従来の.txt/.mdに加えて.docx/.xlsxも直接読めるようになった。Vault内に貯めた会議メモのdocxをHermesがそのまま要約できる(.pdfはそのままでは読めないので、テキストにしてから渡す)。
 - **secure login(Dashboard)**:Dashboardにtoken必須endpointが導入された。本回では使わないが、第19回予定のCuratorでVault整理を自動化するときに関連してくる。
 
 本回の手順はv0.17.0より前のバージョンでもskill+環境変数の2本柱で動くが、最新版に保つほどObsidian連携の活用幅が広がる。`hermes update`で本体を最新に保ち続けるのが基本だ。

@@ -460,15 +460,15 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 本記事のCron CLI(`hermes cron`)とDashboardのCRONペインは引き続き使える(後方互換)。Blueprintsは追加の選択肢だ。「`0 7 * * *`を覚えるのが面倒」「自然言語で組みたい」読者向けに、第IX部Voice周辺で別途扱う予定。`hermes update`で最新に保てば自動で使えるようになる。
 
-## 補足:Telegram Bot APIのRich Messages(v0.17.0でdefault ON)
+## 補足:Telegram Bot APIのRich Messages(v0.17.0で対応・日本語通知は従来表示)
 
 2026年6月13日、Telegram創業者の[Pavel Durovが正式に告知](https://x.com/durov/status/2065896953519484976)したとおり、Telegram Bot APIに**Rich Messages**が入った。表(tables)・入れ子の箇条書き(nested lists)・本文中に埋め込む画像や動画(inline media)・数式(formulas)・見出し(headers)などを、Telegramのチャット欄に直接表示できる新APIだ。仕様は[公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options)にまとまっている。
 
 同日、Hermesの[Tekniumも追従を予告](https://x.com/Teknium/status/2065777563356774688)し、画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math を追加」の方針を示している。
 
-**2026-06-19公開のHermes v0.17.0「The Reach Release」で正式に追従**された。Bot API 10.1のrich messagesでレンダリング・formatting改善・long message handling・native markupが**default ON**で動く。opt-outも可。`hermes update`で本体を最新に保ち続けていれば、cron通知のTelegram表示が自動でリッチになる(表・入れ子の箇条書き・本文中inline media・見出しが効く)。
+**2026-06-19公開のHermes v0.17.0「The Reach Release」で追従**された。ただし予告と違い、出荷時の挙動は**default OFF**(opt-in)だ。リッチ表示を使うには`config.yaml`で`telegram.extra.rich_messages: true`を明示的に設定する必要がある。さらに日本語を含むテキストは、表示崩れを避けるため従来表示(MarkdownV2)のまま送られる仕様になっている。
 
-設定変更は不要だ。古い導入時期の`config.yaml`に残っている`telegram.extra.rich_messages`等のキーは触らなくてよい(Hermes側の挙動とは独立)。
+つまり本連載のように日本語でcron通知を受け取る運用では、opt-inしてもしなくても通知は従来表示のままになる。リッチ表示が効くのは英語中心の運用で`rich_messages: true`を設定したときだと理解しておけばよい。
 
 ## 引用元と参考
 
