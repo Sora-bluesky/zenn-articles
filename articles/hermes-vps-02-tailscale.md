@@ -47,7 +47,7 @@ published: true
 
 **第IV部 記憶を分けて育てる**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) Hermes AgentにMemoryで好みと前提を記憶させる
-- 第13回 Hermes AgentとObsidianを連携して知識を共有する方法
+- [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) Hermes AgentとObsidianを連携して知識を共有する方法
 
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::

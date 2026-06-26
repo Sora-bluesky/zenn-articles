@@ -49,7 +49,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 回 | 見出し |
 |----|--------|
 | 12 | [Hermes AgentにMemoryで好みと前提を記憶させる](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) |
-| 13 | Hermes AgentとObsidianを連携して知識を共有する方法 |
+| 13 | [Hermes AgentとObsidianを連携して知識を共有する方法](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) |
 | 14 | Hermes Agentに過去の会話を自動で復元させる |
 | 15 | Hermes Agentに他のAIのセッションも吸収させる方法 |
 | 16 | Hermes Agent専用の知識ベースを構築する方法 |
