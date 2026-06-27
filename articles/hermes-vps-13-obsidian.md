@@ -54,6 +54,7 @@ published: true
 **第IV部 記憶を分けて育てる**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) Hermes AgentにMemoryで好みと前提を記憶させる
 - **第13回**(本記事) Hermes AgentとObsidianを連携して知識を共有する方法
+- [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) Hermes Agentに過去の会話を自動で復元させる
 
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
@@ -524,7 +525,7 @@ Memory(毎回使う前提)+Obsidian(長く残しておきたい情報)+Session S
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第12回 Hermes AgentにMemoryで好みと前提を記憶させる](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) | 第14回 Hermes Agentに過去の会話を自動で復元させる(近日公開) |
+| [第12回 Hermes AgentにMemoryで好みと前提を記憶させる](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) | [第14回 Hermes Agentに過去の会話を自動で復元させる](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

@@ -3,7 +3,7 @@ title: "【第14回】Hermes Agentに過去の会話を自動で復元させる"
 emoji: "🔍"
 type: "tech"
 topics: ["ai", "hermes", "sessionsearch", "vps", "claude"]
-published: false
+published: true
 ---
 
 ## 目次
