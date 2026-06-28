@@ -228,19 +228,33 @@ winsmux send worker-2 "src/auth.ts のリフレッシュトークン処理を実
 
 ![winsmuxの実機構成：左にオペレーターペイン(Opus 4.8)、右に6つのワーカーペイン(Claude Code/Codex/Antigravity CLI/Grok Build/kimi-k2.7-code/glm-5.2)](/images/winsmux-6workers-live.jpg)
 
+ロールは各モデルの特性と単価で振り分けている。最上位の Claude Opus 4.8 と GPT-5.5 は推論コストが高いので「重い判断」(設計レビュー・難所実装)を担当させ、Gemini 3.5 Flash / Grok / OpenRouter 経由の安価モデルに調査・並列実装・テスト生成を回す。
+
 | 位置 | スロット | ロール | 実行中のエージェント / モデル |
 | --- | --- | --- | --- |
-| オペレーターペイン | — | オペレーター | Claude Code(Opus 4.8) |
-| 右上 左 | worker-1 | 実装 | Claude Code(Opus 4.8 high effort) |
-| 右上 中 | worker-2 | 実装 | Codex(gpt-5.5 high) |
-| 右上 右 | worker-3 | 実装 | Antigravity CLI(Gemini 3.5 flash High) |
-| 右下 左 | worker-4 | 実装 | Grok Build(Grok 4.3) |
-| 右下 中 | worker-5 | 実装 | kimi-k2.7-code(OpenRouter経由) |
-| 右下 右 | worker-6 | 実装 | glm-5.2(OpenRouter経由) |
+| オペレーターペイン | — | オペレーター(指揮・最終承認) | Claude Code(Opus 4.8) |
+| 右上 左 | worker-1 | 設計レビュー・アーキ判定 | Claude Code(Opus 4.8 / Ultra effort) |
+| 右上 中 | worker-2 | メイン実装(難所) | Codex(gpt-5.5 / X High) |
+| 右上 右 | worker-3 | 調査・長文要約 | Antigravity CLI(Gemini 3.5 Flash / High) |
+| 右下 左 | worker-4 | リアルタイム情報リサーチ | Grok Build(Grok 4.3) |
+| 右下 中 | worker-5 | サブ実装(コード生成) | kimi-k2.7-code(OpenRouter経由) |
+| 右下 右 | worker-6 | 並列サブ実装 | glm-5.2(OpenRouter経由) |
 
 ペイン枠の色や状態(`live output` / `idle` / `ready`)が一目でわかるので、誰が止まっているか・誰が走っているかをオペレーターペインから眺めるだけで判断できる。
 
 ワーカースロットがデフォルト6つあるおかげで、Claude Code / Codex / Antigravity CLI などの公式 CLI 系と、Grok Build や OpenRouter 経由の hosted API モデルを同じ画面に並べられる。「同じタスクを 6 種類のモデルに並走させて、後で `winsmux compare runs` で結果を見比べる」みたいなこともそのまま組める。
+
+### ワーカーごとにモデルとエフォートを切り替える
+
+ロール分担を実現するための設定 UI は Settings → RUNTIME → Pane model settings にある。
+
+![winsmuxの設定画面:各worker paneにprovider/model/effortを個別に割り当てる](/images/winsmux-pane-settings.png)
+
+「All panes use the default」(全ペイン共通モデル)と「Set each pane individually」(ペインごとに別モデル)の 2 モードがあり、後者を選ぶと worker-1〜worker-6 それぞれに provider + model + effort を別々に割り当てられる。
+
+たとえば Sakana Fugu Ultra のように「能力は高いが単価も高い」モデルを worker-5 に当てて、`Auto` effort + コードレビュー専用として使うパターンが組める。実装は安価モデル(kimi / glm)に大量並列で投げて、レビューは Sakana や Opus にだけ通す。逆に試したいだけの軽い検証用ペインは Gemini 3.5 Flash のような低単価高速モデルで回す、という具合に「単価とロール」を 1:1 で結びつけられる。
+
+各行の右側には `runnable` / `setup-required` / `blocked` といった状態バッジと Source(`Official docs` / `Local CLI catalog` / `Provider API`)が出るので、API キー未設定や CLI 未インストールでハマることもなくなった。
 
 ### 並走させて比較する
 
