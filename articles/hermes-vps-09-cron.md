@@ -221,6 +221,10 @@ self-containedプロンプトで運用していくと、スケジュールを変
 
 新規作成モーダルとは別UIで、欄が4つに絞られている。スケジュールはCRON式の自由入力に切り替わり、`30 6 * * *`のように直接書ける。
 
+:::message
+v0.17.0以降のDashboardでは、基本4欄の下に「Advanced fields」という応用設定の欄が初期から開いた状態で表示される。本記事の手順では触らなくてよい。詳しくは末尾の補足「Dashboardのcronモーダルに『Advanced fields』が追加された」を参照。
+:::
+
 ### スケジュールを書き換える
 
 例として、ジョブの時刻を朝7時から朝6時30分に変えてみる。`morning-news`の行の鉛筆(✏)を押すと、EDIT JOBモーダルが開く。
@@ -471,6 +475,25 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 つまり本連載のように日本語でcron通知を受け取る運用では、opt-inしてもしなくても通知は従来表示のままになる。リッチ表示が効くのは英語中心の運用で`rich_messages: true`を設定したときだと理解しておけばよい。
 
+## 補足:Dashboardのcronモーダルに「Advanced fields」が追加された(2026-06-27)
+
+2026-06-27にDashboardのcron機能が拡張され([PR#53551](https://github.com/NousResearch/hermes-agent/pull/53551))、ジョブの作成/編集モーダル両方に「Advanced fields」というセクションが追加された。モーダルを開いた時点で初期から展開された状態で表示されるため、本記事の手順で開いた読者にも目に入る。
+
+出る欄は8つ。
+
+| 欄 | 用途 |
+|---|---|
+| `provider` / `model` / `base_url` | このジョブだけ別のproviderやmodelを使う |
+| `script` | 起動前に走らせるscript。出力をプロンプトの先頭にcontextとして渡せる |
+| `no_agent` | LLMを呼ばずscriptの結果だけを配信先に届ける(LLMコスト$0) |
+| `context_from` | 別ジョブの最終出力を自動でプロンプト先頭に付ける(複数ジョブのpipeline化) |
+| `toolsets` | このジョブで使えるtoolを限定(`web,file`等で軽量化) |
+| `workdir` | 実行ディレクトリを指定 |
+
+本記事の手順では基本4欄(名前/プロンプト/スケジュール/配信先)だけで完結する。Advanced fieldsは「同じHermesにジョブごとの別人格を持たせる」「LLMを呼ばずに通知だけ流す」「複数ジョブをpipeline化する」などの応用編で、第IX部Voice周辺のAutomation Blueprintsで詳しく扱う予定だ。
+
+第8回(Dashboard)で見たCRON新規作成モーダルのスクショはv0.16.0時点のもの。実機v0.17.0で開くと、同じモーダルの下に同じAdvanced fields欄が並ぶようになっているが、本記事の手順で入力する基本4欄の意味と動きは変わらない。
+
 ## 引用元と参考
 
 | 項目 | 引用元 |
@@ -482,6 +505,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 | 配信先(ローカル/Telegram/Discord等) | 同上「Delivery Targets」 |
 | `[SILENT]`による送信抑制 | 同上「When the agent's final response contains [SILENT], delivery is suppressed」 |
 | Cron配信先5択の実装 | [web/src/pages/CronPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/CronPage.tsx) |
+| Dashboard cron Advanced fields追加(2026-06-27) | [PR#53551 feat(dashboard): expose cron job execution fields](https://github.com/NousResearch/hermes-agent/pull/53551) — `provider`/`model`/`base_url`/`script`/`no_agent`/`context_from`/`enabled_toolsets`/`workdir`の8項目を新規作成/編集モーダル両方に追加 |
 | Cron内部実装の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§cronジョブ(34:37〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)(2026-06-16公開・英語・自動翻訳字幕で日本語可) |
 | Telegram Bot API Rich Messages追加(2026-06-13) | [Pavel Durov公式ポスト](https://x.com/durov/status/2065896953519484976) — `We now support rich formatting for all chatbots. Tables, nested lists, inline media, formulas, headers and more`+[Telegram公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options) |
 | Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688) — `Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math 追加」 |
