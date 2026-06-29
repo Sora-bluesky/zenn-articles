@@ -492,6 +492,8 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 本記事の手順では基本4欄(名前/プロンプト/スケジュール/配信先)だけで完結する。Advanced fieldsは「同じHermesにジョブごとの別人格を持たせる」「LLMを呼ばずに通知だけ流す」「複数ジョブをpipeline化する」などの応用編で、第IX部Voice周辺のAutomation Blueprintsで詳しく扱う予定だ。
 
+![新しいCRONジョブモーダル全体。基本4欄(名前/プロンプト/スケジュール/配信先)の下に「Advanced fields」セクションが初期から開いた状態で表示され、Provider/Model/Base URL override/script/no_agent/context_from/enabled_toolsets/workdirの8欄が縦に並ぶ画面](/images/hermes-vps/hermes-vps-08-dashboard-cron-new-job-modal-advanced-fields.png)
+
 第8回(Dashboard)で見たCRON新規作成モーダルのスクショはv0.16.0時点のもの。実機v0.17.0で開くと、同じモーダルの下に同じAdvanced fields欄が並ぶようになっているが、本記事の手順で入力する基本4欄の意味と動きは変わらない。
 
 ## 引用元と参考
