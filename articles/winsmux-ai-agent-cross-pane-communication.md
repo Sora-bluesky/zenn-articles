@@ -226,9 +226,9 @@ winsmux send worker-2 "src/auth.ts のリフレッシュトークン処理を実
 
 実際に僕が使っている構成がこれ。司令塔の Opus 4.8 が左のオペレーターペインに座り、右側の6つのワーカーペインに別々のエージェントを並走させている。
 
-![winsmuxの実機構成：左にオペレーターペイン(Opus 4.8)、右に6つのワーカーペイン(Claude Code/Codex/Antigravity CLI/Grok Build/kimi-k2.7-code/glm-5.2)](/images/winsmux-6workers-live.jpg)
+![winsmuxの実機構成:左にオペレーターペイン(Opus 4.8)、右に6つのワーカーペインが並んでいる](/images/winsmux-6workers-live.jpg)
 
-ロールは各モデルの特性と単価で振り分けている。最上位の Claude Opus 4.8 と GPT-5.5 は推論コストが高いので「重い判断」(設計レビュー・難所実装)を担当させ、Gemini 3.5 Flash / Grok / OpenRouter 経由の安価モデルに調査・並列実装・テスト生成を回す。
+ロールは各モデルの特性と単価で振り分けている。実装で手を動かすのは worker-2 だけで、残りはレビュー・調査・テスト生成・リサーチなど「コードを直接書かない」役割に寄せた。「高単価で能力の高いモデルは判断専用にし、実装は安価モデルに並列で投げる」という方針を 1 ペイン = 1 ロールに落とし込んでいる。
 
 | 位置 | スロット | ロール | 実行中のエージェント / モデル |
 | --- | --- | --- | --- |
@@ -237,12 +237,12 @@ winsmux send worker-2 "src/auth.ts のリフレッシュトークン処理を実
 | 右上 中 | worker-2 | メイン実装(難所) | Codex(gpt-5.5 / X High) |
 | 右上 右 | worker-3 | 調査・長文要約 | Antigravity CLI(Gemini 3.5 Flash / High) |
 | 右下 左 | worker-4 | リアルタイム情報リサーチ | Grok Build(Grok 4.3) |
-| 右下 中 | worker-5 | サブ実装(コード生成) | kimi-k2.7-code(OpenRouter経由) |
-| 右下 右 | worker-6 | 並列サブ実装 | glm-5.2(OpenRouter経由) |
+| 右下 中 | worker-5 | コードレビュー(2次・詳細) | Sakana Fugu Ultra(OpenRouter経由) |
+| 右下 右 | worker-6 | テスト生成・バグ再現 | Z.ai GLM-5.2(OpenRouter経由) |
 
 ペイン枠の色や状態(`live output` / `idle` / `ready`)が一目でわかるので、誰が止まっているか・誰が走っているかをオペレーターペインから眺めるだけで判断できる。
 
-ワーカースロットがデフォルト6つあるおかげで、Claude Code / Codex / Antigravity CLI などの公式 CLI 系と、Grok Build や OpenRouter 経由の hosted API モデルを同じ画面に並べられる。「同じタスクを 6 種類のモデルに並走させて、後で `winsmux compare runs` で結果を見比べる」みたいなこともそのまま組める。
+worker-1 の Opus 4.8 で大局的なレビュー(設計とアーキの妥当性)、worker-5 の Sakana Fugu Ultra でコードの詳細レビューと、レビューを 2 段構えにしている。Sakana Fugu Ultra は単価が高いぶん能力も高いので、メイン実装の代わりに「実装結果に対する詳細レビュー専用」として置いておくのが費用対効果がよい。
 
 ### ワーカーごとにモデルとエフォートを切り替える
 
@@ -250,9 +250,9 @@ winsmux send worker-2 "src/auth.ts のリフレッシュトークン処理を実
 
 ![winsmuxの設定画面:各worker paneにprovider/model/effortを個別に割り当てる](/images/winsmux-pane-settings.png)
 
-「All panes use the default」(全ペイン共通モデル)と「Set each pane individually」(ペインごとに別モデル)の 2 モードがあり、後者を選ぶと worker-1〜worker-6 それぞれに provider + model + effort を別々に割り当てられる。
+「All panes use the default」(全ペイン共通モデル)と「Set each pane individually」(ペインごとに別モデル)の 2 モードがあり、後者を選ぶと worker-1〜worker-6 それぞれに provider + model + effort を別々に割り当てられる。スクリーンショットは worker-5 を OpenRouter 経由の Sakana Fugu Ultra、worker-6 を Z.ai GLM-5.2 に切り替えた状態。
 
-たとえば Sakana Fugu Ultra のように「能力は高いが単価も高い」モデルを worker-5 に当てて、`Auto` effort + コードレビュー専用として使うパターンが組める。実装は安価モデル(kimi / glm)に大量並列で投げて、レビューは Sakana や Opus にだけ通す。逆に試したいだけの軽い検証用ペインは Gemini 3.5 Flash のような低単価高速モデルで回す、という具合に「単価とロール」を 1:1 で結びつけられる。
+実装は GLM-5.2 や Gemini 3.5 Flash のような安価高速モデルに大量並列で投げて、レビューは Sakana Fugu Ultra や Opus 4.8 にだけ通す。逆に試したいだけの軽い検証用ペインは Gemini 3.5 Flash のような低単価モデルで回す、という具合に「単価とロール」を 1:1 で結びつけられる。
 
 各行の右側には `runnable` / `setup-required` / `blocked` といった状態バッジと Source(`Official docs` / `Local CLI catalog` / `Provider API`)が出るので、API キー未設定や CLI 未インストールでハマることもなくなった。
 
