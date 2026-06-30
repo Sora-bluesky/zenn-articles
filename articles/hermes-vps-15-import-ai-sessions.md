@@ -3,29 +3,35 @@ title: "【第15回】Hermes AgentにClaude CodeやCodexの作業履歴を取り
 emoji: "📨"
 type: "tech"
 topics: ["hermes", "obsidian", "claudecode", "codex", "ai"]
-published: false
+published: true
 ---
 
-:::message
-**Hermes Agent VPSシリーズ**
+:::details シリーズのもくじ(タップで開く)
+
+**第I部 体を作る**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) Hermes Agentをsystemdで常時起動させる方法
+
+**第II部 顔と操作席**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
+
+**第III部 生活リズム**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) Hermes Agentに毎朝のタスクを自動実行させる
 - [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) Hermes Agentが使うほど賢くなるSkillsの登録方法
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) Hermes Agentに最新情報を自動取得させる方法
+
+**第IV部 記憶を分けて育てる**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) Hermes AgentにMemoryで好みと前提を記憶させる
 - [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) Hermes AgentとObsidianを連携して知識を共有する方法
 - [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) Hermes Agentに過去の会話を自動で復元させる
-- **第15回(今ここ):Hermes AgentにClaude CodeやCodexの作業履歴を取り込む方法**
-- 第16回(近日公開):取り込んだ作業履歴をllm-wikiで知識ベース化する
+- **第15回**(本記事) Hermes AgentにClaude CodeやCodexの作業履歴を取り込む方法
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
 ## この回の到達点
@@ -247,7 +253,7 @@ ls $env:USERPROFILE\.codex\sessions\$y\$m | Select-Object -First 5
 3. 「フォルダーをVaultとして開く」を押す
 4. `C:\Users\<name>\Documents\Hermes-Vault` を選ぶ
 
-<!-- 撮影02後にここに画像挿入: hermes-vps-15-vault-connection-alive.png (母艦のObsidianでHermes-Vaultを開いた画面。左下のVault名がHermes-Vault・左サイドバーに第13回の成果物が並ぶ・右側に5項目テンプレのmd) -->
+![母艦のObsidianでHermes-Vaultを開いた画面。左下のVault名が`Hermes-Vault`・左サイドバーに第13回で作った`shared-ai/`配下の`Hermes Agent調査`+本回作業で増えた`raw/transcripts/claude-code/`+`raw/transcripts/codex/`が並ぶ。右ペインに`Hermes Agent調査.md`の6項目テンプレ(Title/Summary/Source/Context/Links/Next Action)が表示されている](/images/hermes-vps/hermes-vps-15-vault-connection-alive.png)
 
 (画像の右側は第13回で作った5項目テンプレ=タイトル/要約/詳細/示唆/出典の5見出し構成のmdが見えていればOK)
 
