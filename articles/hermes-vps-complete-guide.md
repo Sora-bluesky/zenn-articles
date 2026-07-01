@@ -52,7 +52,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 13 | [Hermes AgentとObsidianを連携して知識を共有する方法](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) |
 | 14 | [Hermes Agentに過去の会話を自動で復元させる](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
 | 15 | [Hermes AgentにClaude CodeやCodexの作業履歴を取り込む方法](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) |
-| 16 | Hermes Agent専用の知識ベースを構築する方法 |
+| 16 | Hermes Agentでセカンドブレイン(第二の脳)を構築する方法 |
 | 17 | Hermes Agentに一貫した人格を与える方法 |
 | 18 | Hermes AgentのSkillsを定期的に最適化する |
 | 19 | Hermes Agentのスキルを整理・スリム化する方法 |
