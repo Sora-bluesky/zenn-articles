@@ -497,6 +497,18 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 第8回(Dashboard)で見たCRON新規作成モーダルのスクショはv0.16.0時点のもの。実機v0.17.0で開くと、同じモーダルの下に同じAdvanced fields欄が並ぶようになっているが、本記事の手順で入力する基本4欄の意味と動きは変わらない。
 
+:::message
+**2026-07-01追記**:pre-run scriptのdefaultタイムアウトが120秒から1時間(3600秒)へ引き上げられた([PR#55489](https://github.com/NousResearch/hermes-agent/pull/55489))。長時間かかるデータ収集scriptをcronから走らせるユースケースに合わせた変更で、以前のように「120秒で強制中断されて途中で止まる」ハマりが解消された。envや`cron.script_timeout_seconds`での明示上書きは引き続き有効で、そちらが優先される。scriptとエージェントは別の時間制限で動く点は変わらない(エージェント側は`HERMES_CRON_TIMEOUT`のidle基準で、default 600秒・0で無制限)。
+:::
+
+:::message
+**2026-07-01追記**:cronジョブ出力に含まれる秘密(APIキーやトークン)のredactionが失敗した場合の挙動が改善された(commit `da4f15cdd`)。以前は失敗を静かに握りつぶしてstdout/stderrがそのまま流れる可能性があったが、現在は警告ログを出したうえで出力を`[REDACTED - redaction failed]`で置き換える。cronの配信先や実行ログに秘密が漏れないよう安全側に倒れる。
+:::
+
+:::message
+**2026-07-01追記**:cron delivery経由でTelegramへ長文を送るとき、`Message is too long`で失敗する不具合が[PR#28557](https://github.com/NousResearch/hermes-agent/pull/28557)で修正された。MarkdownV2エスケープ後のUTF-16長を正しく計算するようになり、4096文字を超える整形済みメッセージも自動分割で届く。以前は生テキストのUTF-16長で判定していたため、`!`や`.`などが`\!`や`\.`に膨らんで上限超過する場合があった。長文の要約プロンプトを組んでも切れずに届く。
+:::
+
 ## 引用元と参考
 
 | 項目 | 引用元 |

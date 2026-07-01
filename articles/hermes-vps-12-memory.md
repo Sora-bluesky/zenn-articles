@@ -323,6 +323,10 @@ wc -m ~/.hermes/memories/MEMORY.md
 
 USER.md/MEMORY.mdは「自分の前提と現場のメモ」に絞り、知識ベースは次回のObsidianに分ける、という棲み分けが基本になる。
 
+:::message
+**2026-07-01追記**:容量到達時にconsolidateが失敗して、そのままエージェントの返信が返ってこない(turnが黙って停止する)不具合が[PR#42405](https://github.com/NousResearch/hermes-agent/pull/42405)で修正された。以前は、`add`/`replace`が容量オーバーで失敗するたびエージェントが「同じturn内で再試行しろ」と指示される仕組みだったため、うまく一致しないreplaceを何度も試みてiteration budgetを使い切って沈黙する場合があった。現在は同一turn内で連続3回失敗した時点で「今回は保存を諦めて返信は返す」に切り替わる。書き込みに失敗しても会話は止まらない。
+:::
+
 ### やり直したいときはreset
 
 ```bash
