@@ -344,10 +344,10 @@ Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN
 第2回で確立した経路を使う。手元PCのターミナル(WindowsならPowerShell、Macならターミナル)で:
 
 ```
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@<VPSのTailscale IP>
+ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
 ```
 
-Tailscale IPがわからなければ[login.tailscale.com/admin/machines](https://login.tailscale.com/admin/machines)で`hermes-vps`の`100.x.x.x`形式のIPを確認する。MagicDNSが有効なら`admin@hermes-vps`でも接続可能。
+TailscaleのMagicDNS(デフォルト有効)により`hermes-vps`というマシン名が`100.x.x.x`形式のTailscale IPに自動解決される。マシン名で繋がらない場合は[login.tailscale.com/admin/machines](https://login.tailscale.com/admin/machines)で`hermes-vps`の`100.x.x.x`形式のIPを確認して直接指定する(`admin@<Tailscale IP>`)。第4回以降も本記事と同じ`admin@hermes-vps`形で統一する。
 
 ### opのインストール
 
