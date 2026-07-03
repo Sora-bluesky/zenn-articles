@@ -380,6 +380,10 @@ Memoryは「毎日カバンに入れて持ち歩く必需品」、sessionsは「
 | state.dbが大きくなりすぎた | 古い会話が溜まっている | `hermes sessions prune`で古い履歴を整理(自動化は連載後半のCurator回で扱う) |
 | `state.db-wal`だけ巨大になる | Hermesが書き込み中に外から触った | Hermesを一度きれいに止めると本体側にまとまる。`systemctl --user restart hermes-gateway` |
 
+:::message
+**2026-07-03追記(v0.18.0)**:検索用インデックス(FTS5)の自動マージ(1000書き込みごと)+チェックポイント(50書き込みごと)が入り、通常運用で`state.db-wal`が放置されて肥大化することはほぼなくなった([#54752](https://github.com/NousResearch/hermes-agent/pull/54752)/[#54770](https://github.com/NousResearch/hermes-agent/pull/54770))。上記の対処は放置後の緊急復旧用として残しておく。
+:::
+
 ## 操作早見表
 
 ```bash

@@ -71,8 +71,8 @@ published: true
 | 記憶できる範囲 | 「私のこと」(USER.md 1,375字)+「環境ファクト」(MEMORY.md 2,200字) | +「世界のこと」(Obsidian Vault・字数無制限の知識ベース) |
 | 記憶の置き場 | VPS内の`~/.hermes/memories/`のみ | +母艦のObsidian Vault(VPSとgitで同期) |
 | HermesがVaultを読むか | 読まない | bundled `obsidian` skillでVault内.mdをファイル直アクセスで読み書き |
-| 3エージェント共有 | VaultはClaude Code/Codexの個別管理 | 同じVaultをHermes/Claude Code/Codexの3つで共用(本格実装は第20回予定) |
-| 配布対象 | USER.md/MEMORY.mdは個人所有で配布除外 | Vaultも同じく個人所有で配布除外(第37回Profile Distributionsで詳述) |
+| 3エージェント共有 | VaultはClaude Code/Codexの個別管理 | 同じVaultをHermes/Claude Code/Codexの3つで共用(本格実装は第21回予定) |
+| 配布対象 | USER.md/MEMORY.mdは個人所有で配布除外 | Vaultも同じく個人所有で配布除外(第43回Profile Distributionsで詳述) |
 
 一言でまとめると「Hermesに、Memoryに収まらない長く残しておきたい情報の置き場を持たせる」回だ。
 

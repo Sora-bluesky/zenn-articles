@@ -484,7 +484,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 | 欄 | 用途 |
 |---|---|
-| `provider` / `model` / `base_url` | このジョブだけ別のproviderやmodelを使う |
+| `provider` / `model` / `base_url` | このジョブだけ別のproviderやmodelを使う(v0.18.0以降、`base_url`のoverrideはcustom/BYOK用途に限定される制約あり。詳細は下記追記参照) |
 | `script` | 起動前に走らせるscript。出力をプロンプトの先頭にcontextとして渡せる |
 | `no_agent` | LLMを呼ばずscriptの結果だけを配信先に届ける(LLMコスト$0) |
 | `context_from` | 別ジョブの最終出力を自動でプロンプト先頭に付ける(複数ジョブのpipeline化) |
@@ -507,6 +507,14 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 :::message
 **2026-07-01追記**:cron delivery経由でTelegramへ長文を送るとき、`Message is too long`で失敗する不具合が[PR#28557](https://github.com/NousResearch/hermes-agent/pull/28557)で修正された。MarkdownV2エスケープ後のUTF-16長を正しく計算するようになり、4096文字を超える整形済みメッセージも自動分割で届く。以前は生テキストのUTF-16長で判定していたため、`!`や`.`などが`\!`や`\.`に膨らんで上限超過する場合があった。長文の要約プロンプトを組んでも切れずに届く。
+:::
+
+:::message alert
+**2026-07-03追記(v0.18.0・注意)**:`base_url`欄でこのジョブだけ別のproviderを使う設定は、v0.18.0以降**制約が入った**([PR#56196](https://github.com/NousResearch/hermes-agent/pull/56196))。`custom_providers`に事前登録したエントリ、またはoverride先のホストが元providerの正規endpointと一致する場合のみ許可され、それ以外の`base_url`上書きは資格情報漏洩防止のため拒否される。既知のprovider(OpenAI/Anthropic等)に対して勝手なホストを指定する実験は動かない仕様に変わった。既存のcron設定(base_urlを触っていないジョブ)には影響しない。
+:::
+
+:::message
+**2026-07-03追記(v0.18.0)**:cronの結果に返信して会話を続けられるようになった(thread-preferred continuation+DM-mirror fallback)。以前はcronの通知は一発配信で終わりだったが、届いた要約に「これについてもっと詳しく」のように返信すると、Hermesがその文脈を引き継いで応答する。本記事の手順(結果を受け取るだけ)は変わらず有効。
 :::
 
 ## 引用元と参考
