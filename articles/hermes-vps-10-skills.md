@@ -6,6 +6,10 @@ topics: ["ai", "hermes", "skills", "自動化", "vps"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第10回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 ## 目次
 
 - [概念整理──Skillsで何が変わるか](#概念整理──skillsで何が変わるか)
@@ -506,3 +510,7 @@ botに、順に送ってみる。
 | Trust Level(builtin/official/trusted/community) | 同上「Security Scanning & Trust Levels」 |
 | NEW SKILL+編集鉛筆・CRONのSKILLS添付欄 | 実機Dashboard v0.16.0で確認(2026-06-11)。[@Teknium告知](https://x.com/Teknium/status/2066185784332562605) |
 | 強制ロード方法(`/<skill-name>`+`hermes -s`エイリアス) | [@Tekniumリプライ(2026-06-18)](https://x.com/Teknium/status/2067672465678209501) |
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::

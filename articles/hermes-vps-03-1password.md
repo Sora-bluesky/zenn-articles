@@ -6,6 +6,10 @@ topics: ["1password", "vps", "hermes", "ubuntu", "secrets"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第3回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 APIキーやトークンを設定ファイルに直接書いて、なんとなく不安なまま動かしている——個人開発ではよくある状態だ。うっかり公開リポジトリに上げてキーを失効させた、という話も珍しくない。第2回までで通信の安全は固めたが、肝心の秘密情報は、まだ平文のテキストとしてサーバーに残っている。
 
 第3回は、その平文を1台から消す。鍵をファイルに置かず、起動するときだけ受け渡す仕組みに切り替える。
@@ -765,3 +769,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 | opコマンド(1Password CLI)の導入 | [1Password CLI](https://www.1password.dev/cli/get-started/) |
 | op://参照記法 | [Secret references](https://www.1password.dev/cli/secret-references/) |
 | op runで環境変数に秘密を注入 | [Load secrets into env vars](https://www.1password.dev/cli/secrets-environment-variables/) |
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::

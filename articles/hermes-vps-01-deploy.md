@@ -6,6 +6,10 @@ topics: ["ai", "vps", "hermes", "ubuntu", "個人開発"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これが第1回で、ここから順に読み進められる。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 「これ、前にも頼んだはずなんだけどな」——AIに向かってそう思った瞬間はないだろうか。ChatGPTもClaudeも、聞けば賢く答えてくれる。けれど明日になればまっさらで、また一から事情を説明させられる。昨日教えたやり方を、今日また伝え直す。賢いはずなのに、こちらのやり方は一向に覚えてくれない。しかもパソコンを閉じれば止まるし、出先のスマホからは細切れにしか頼れない。もし、頼むほどに自分の手順を覚えて自分専用に育っていくAIがいて、それがパソコンを閉じても止まらず、朝には結果を届けてくれたら。
 
 この連載は、それを月1,800円ほどのレンタルサーバー1台で作る記録だ。ターミナルに不慣れでも、実際の画面を1枚ずつ確かめながら進められるように書いた。第1回は最初の1台を借りて、安全にログインできるところまでをやる。
@@ -725,3 +729,7 @@ chmod 700 /home/admin/.ssh
 | Hermes Agent公式リポジトリ | [GitHub README](https://github.com/NousResearch/hermes-agent) |
 | 学習ループ設計の解説 | [Turing Post](https://www.turingpost.com/p/hermes) |
 | 内部架構の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§アーキテクチャの概要(0:57〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=57s)(2026-06-16公開・約40分・英語・YouTube設定で日本語自動翻訳字幕も可) |
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::

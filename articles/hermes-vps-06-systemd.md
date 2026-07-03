@@ -6,6 +6,10 @@ topics: ["ai", "hermes", "systemd", "linux", "vps"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第6回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 ## 目次
 
 - [この回の到達点](#この回の到達点)
@@ -512,3 +516,7 @@ Linger=yes
 | Arch Wiki:systemd/User | [wiki.archlinux.org/title/Systemd/User](https://wiki.archlinux.org/title/Systemd/User) |
 | Ubuntu 26.04:systemd公式 | [ubuntu.com/server/docs/service-management-with-systemd](https://ubuntu.com/server/docs/service-management-with-systemd) |
 | 1Password `op run`公式 | [developer.1password.com/docs/cli/secret-references](https://developer.1password.com/docs/cli/secret-references) |
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::

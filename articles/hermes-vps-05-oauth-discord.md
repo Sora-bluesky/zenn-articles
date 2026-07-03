@@ -6,6 +6,10 @@ topics: ["vps", "hermes", "discord", "oauth", "xai"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第5回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 ## 目次
 
 - [この回の到達点](#この回の到達点)
@@ -716,3 +720,7 @@ hermes setup agent
 | Discord Developer Portal | [discord.com/developers/applications](https://discord.com/developers/applications) |
 | Discord公式Getting Started | [discord.com/developers/docs/quick-start/getting-started](https://discord.com/developers/docs/quick-start/getting-started) |
 | MESSAGE CONTENT INTENT(必須設定) | [Privileged Intents](https://discord.com/developers/docs/topics/gateway#privileged-intents) |
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::

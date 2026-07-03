@@ -6,6 +6,10 @@ topics: ["ai", "hermes", "cron", "自動化", "vps"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第9回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 ## 目次
 
 - [この回の到達点](#この回の到達点)
@@ -532,3 +536,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 | Cron内部実装の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§cronジョブ(34:37〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)(2026-06-16公開・英語・自動翻訳字幕で日本語可) |
 | Telegram Bot API Rich Messages追加(2026-06-13) | [Pavel Durov公式ポスト](https://x.com/durov/status/2065896953519484976) — `We now support rich formatting for all chatbots. Tables, nested lists, inline media, formulas, headers and more`+[Telegram公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options) |
 | Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688) — `Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math 追加」 |
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::

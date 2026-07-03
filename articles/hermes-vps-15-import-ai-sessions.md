@@ -6,6 +6,10 @@ topics: ["hermes", "obsidian", "claudecode", "codex", "ai"]
 published: true
 ---
 
+:::message
+この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第15回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
+
 :::details シリーズのもくじ(タップで開く)
 
 **第I部 体を作る**
@@ -1094,3 +1098,7 @@ Claude Code/Codexのjsonl構造(`type`フィールド・1行1JSON形式)は2026-
 | [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) Hermes Agentに過去の会話を自動で復元させる | 第16回(近日公開):Hermes Agentでセカンドブレイン(第二の脳)を構築する方法 |
 
 📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
+:::message
+この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+:::
