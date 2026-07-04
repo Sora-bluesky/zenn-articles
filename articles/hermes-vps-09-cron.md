@@ -1,5 +1,5 @@
 ---
-title: "【第9回】Hermes Agentに毎朝のタスクを自動実行させる"
+title: "【第9回】毎朝の作業を自分でやるな。Hermes Agentは7時にCronで始める。"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "cron", "自動化", "vps"]
@@ -37,27 +37,27 @@ published: true
 :::details シリーズのもくじ(タップで開く)
 
 **第I部 体を作る**
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) Hermes AgentをVPSにデプロイする方法
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) Hermes Agentの接続を安全にする方法
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) Hermes Agentの認証情報を安全に管理する方法
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける。
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる。
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) パスワードを一切書くな。Hermes Agentの秘密は1Passwordが預かる。
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) Hermes AgentにGrokとDiscordを連携させる
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) Hermes Agentをsystemdで常時起動させる方法
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く。
+- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 再起動で消させるな。Hermes Agentはsystemdで自分で起き上がる。
 
 **第II部 顔と操作席**
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes Agentをデスクトップアプリで操作する方法
-- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) Hermes AgentをWeb Dashboardで管理する方法
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる。
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える。
 
 **第III部 生活リズム**
-- **第9回**(本記事) Hermes Agentに毎朝のタスクを自動実行させる
-- [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) Hermes Agentが使うほど賢くなるSkillsの登録方法
-- [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) Hermes Agentに最新情報を自動取得させる方法
+- **第9回**(本記事) 毎朝の作業を自分でやるな。Hermes Agentは7時にCronで始める。
+- [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる。
+- [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 新聞は自分で読むな。Hermes Agentは毎朝7時に朝刊を用意する。
 
 **第IV部 記憶を分けて育てる**
-- [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) Hermes AgentにMemoryで好みと前提を記憶させる
-- [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) Hermes AgentとObsidianを連携して知識を共有する方法
-- [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) Hermes Agentに過去の会話を自動で復元させる
-- [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) Hermes AgentにClaude CodeやCodexの作業履歴を取り込む方法
+- [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている。
+- [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む。
+- [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く。
+- [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ。
 
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
@@ -401,7 +401,7 @@ hermes cron remove <job_id>       # 削除
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第8回 Hermes AgentをWeb Dashboardで管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) | [第10回 Hermes Agentが使うほど賢くなるSkillsの登録方法](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
+| [第8回 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える。](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) | [第10回 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる。](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

@@ -22,103 +22,106 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 | 回 | 見出し |
 |----|--------|
-| 1 | [Hermes AgentをVPSにデプロイする方法](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) |
-| 2 | [Hermes Agentの接続を安全にする方法](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
-| 3 | [Hermes Agentの認証情報を安全に管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) |
+| 1 | [サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける。](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) |
+| 2 | [パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる。](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
+| 3 | [パスワードを一切書くな。Hermes Agentの秘密は1Passwordが預かる。](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) |
 | 4 | [Hermes AgentをDockerで隔離して動かす方法](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) |
-| 5 | [Hermes AgentにGrokとDiscordを連携させる](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
-| 6 | [Hermes Agentをsystemdで常時起動させる方法](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
+| 5 | [コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く。](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
+| 6 | [再起動で消させるな。Hermes Agentはsystemdで自分で起き上がる。](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
 ### 第II部　顔と操作席
 
 | 回 | 見出し |
 |----|--------|
-| 7 | [Hermes Agentをデスクトップアプリで操作する方法](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
-| 8 | [Hermes AgentをWeb Dashboardで管理する方法](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
+| 7 | [SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる。](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
+| 8 | [手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える。](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
 
 ### 第III部　生活リズム
 
 | 回 | 見出し |
 |----|--------|
-| 9 | [Hermes Agentに毎朝のタスクを自動実行させる](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
-| 10 | [Hermes Agentが使うほど賢くなるSkillsの登録方法](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
-| 11 | [Hermes Agentに最新情報を自動取得させる方法](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
+| 9 | [毎朝の作業を自分でやるな。Hermes Agentは7時にCronで始める。](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
+| 10 | [毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる。](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
+| 11 | [新聞は自分で読むな。Hermes Agentは毎朝7時に朝刊を用意する。](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
 
 ### 第IV部　記憶を分けて育てる
 
 | 回 | 見出し |
 |----|--------|
-| 12 | [Hermes AgentにMemoryで好みと前提を記憶させる](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) |
-| 13 | [Hermes AgentとObsidianを連携して知識を共有する方法](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) |
-| 14 | [Hermes Agentに過去の会話を自動で復元させる](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
-| 15 | [Hermes AgentにClaude CodeやCodexの作業履歴を取り込む方法](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) |
-| 16 | Hermes Agentでセカンドブレイン(第二の脳)を構築する方法 |
-| 17 | Hermes Agentに一貫した人格を与える方法 |
-| 18 | Hermes AgentのSkillsを定期的に最適化する |
-| 19 | Hermes Agentのスキルを整理・スリム化する方法 |
+| 12 | [好みを毎回言うな。Hermes AgentはMemoryで覚えている。](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) |
+| 13 | [メモを自分で探すな。Hermes AgentはObsidianを記憶として読む。](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) |
+| 14 | [毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く。](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
+| 15 | [記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ。](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) |
+| 16 | 記憶を自分で残すな。Hermes Agentは会話とメモを自動で繋ぐ。 |
+| 17 | 口調をブレさせるな。Hermes Agentは設定でいつも同じ口調を保つ。 |
+| 18 | 技を放置するな。Hermes Agentは定期的にSkillsを磨き直す。 |
+| 19 | 技を増やしすぎるな。Hermes Agentは自動で整理して動きを軽く保つ。 |
 
 ### 第V部　他のAIを束ねる
 
 | 回 | 見出し |
 |----|--------|
-| 20 | Hermes Agentから自宅PCを操作できるようにする |
-| 21 | Hermes Agentにタスクを分担させる方法 |
-| 22 | Hermes Agentで作業を見える化するKanbanの導入 |
-| 23 | Hermes Agentに役割を割り振って運用する方法 |
-| 24 | Hermes AgentからローカルLLMを呼び出す方法 |
-| 25 | Hermes AgentからGrok Composerを直接呼び出す方法 |
+| 20 | 画面を増やすな。Hermes Desktopは1枚でコードを束ねる。 |
+| 21 | PCの前に行くな。Hermes Agentは自宅のClaude Codeを触れる。 |
+| 22 | 全部自分で指示するな。Hermes Agentはタスクを自分で振り分ける。 |
+| 23 | 作業を追うな。Hermes Agentは1枚のボードで進捗が全部見える。 |
+| 24 | 役割を1つに絞るな。Hermes Agentは何役も同時にこなせる。 |
+| 25 | 1つのAIに頼るな。Hermes Agentは自宅GPUのAIも使い分ける。 |
+| 26 | 長文は自分で書くな。Hermes AgentはGrokを呼んで書いてくれる。 |
+| 27 | 1つの答えを信じるな。Hermes Agentは複数のAIで比べて決める。 |
+| 28 | 確認なしで渡すな。Hermes Agentは自分でチェックしてから出す。 |
 
 ### 第VI部　手足を増やす
 
 | 回 | 見出し |
 |----|--------|
-| 26 | Hermes Agentのツールを一括管理する方法 |
-| 27 | Hermes Agentにブラウザ操作をさせる方法 |
-| 28 | Hermes Agentに画像や画面を理解させる方法 |
-| 29 | Hermes Agentに画像生成をさせる方法 |
-| 30 | Hermes Agentに音声で返答させる方法 |
-| 31 | Hermes Agentに成果物を自動で出力させる方法 |
-| 32 | Hermes Agentにレポートや資料を作成させる方法 |
-| 33 | Hermes Agentに外部ツールを連携させる方法 |
+| 29 | 道具を散らかすな。Hermes Agentは1箇所にまとめてすぐ出せる。 |
+| 30 | クリックは自分でするな。Hermes Agentはブラウザ作業を全部引き受ける。 |
+| 31 | スクショを説明するな。Hermes Agentは画像の中身を自分で読む。 |
+| 32 | 画像を探し回るな。Hermes Agentが指示だけで絵を描いてくれる。 |
+| 33 | 画面は見なくていい。Hermes Agentは声で返事をしてくれる。 |
+| 34 | 口だけで済ませるな。Hermes Agentは成果をファイルで渡してくれる。 |
+| 35 | 報告書は自分で書くな。Hermes Agentが最後の1枚まで書いてくれる。 |
+| 36 | 1社だけで揃えるな。Hermes Agentは外部サービスと繋いで道具を増やす。 |
 
 ### 第VII部　外部サービス連携
 
 | 回 | 見出し |
 |----|--------|
-| 34 | Hermes AgentとNotion・Google Driveを連携させる方法 |
-| 35 | Hermes AgentをWebhooksで外部から起動させる方法 |
-| 36 | Hermes Agentで家電を操作する方法 |
-| 37 | Hermes AgentにiMessageを送受信させる方法 |
-| 38 | Hermes Agentを複数台で連携運用する方法 |
+| 37 | 往復して探すな。Hermes AgentはNotionとDriveの両方を触れる。 |
+| 38 | 自分で呼び出すな。Hermes Agentは合図が来たら勝手に動き出す。 |
+| 39 | リモコンを探すな。Hermes Agentが家電を指示で動かしてくれる。 |
+| 40 | 返事を後回しにするな。Hermes AgentはiMessageですぐ返してくれる。 |
+| 41 | 1台だけで動かすな。Hermes Agentは複数台で仕事を分け合う。 |
 
 ### 第VIII部　自走させる
 
 | 回 | 見出し |
 |----|--------|
-| 39 | Hermes Agentに最後まで作業を完遂させる |
-| 40 | Hermes Agentを用途別に使い分ける方法 |
-| 41 | Hermes AgentをDigital Twinsとして運用する |
+| 42 | 途中でやめさせるな。Hermes Agentは作業を最後までやり遂げる。 |
+| 43 | 1つの人格で済ますな。Hermes Agentは場面ごとに顔を切り替える。 |
+| 44 | 1台に縛るな。Hermes Agentは分身を他のマシンにも置ける。 |
 
 ### 第IX部　声と生活導線
 
 | 回 | 見出し |
 |----|--------|
-| 42 | Hermes Agentを音声で操作する方法 |
-| 43 | Hermes Agentに音声日報を自動作成させる方法 |
-| 44 | Hermes Agentの通知先を使い分ける方法 |
-| 45 | Hermes Agentで毎日の自動運用を組み立てる方法 |
-| 46 | Hermes Agentに既存画像を加筆編集させる方法 |
+| 45 | 手で操作するな。Hermes Agentは声だけで指示を受けて動く。 |
+| 46 | 日報は自分で書くな。Hermes Agentは声で1日の作業を報告する。 |
+| 47 | 通知を一律に送るな。Hermes Agentは急ぎだけ手元に届ける。 |
+| 48 | 毎日ゼロから動くな。Hermes Agentは型を決めて勝手に回る。 |
+| 49 | 撮り直すな。Hermes Agentは元の1枚から画像を直してくれる。 |
 
 ### 第X部　安全・費用・保守
 
 | 回 | 見出し |
 |----|--------|
-| 47 | Hermes Agentの月額費用を把握する方法 |
-| 48 | Hermes Agentの運用コストを下げる方法 |
-| 49 | Hermes Agentの権限を安全に制限する方法 |
-| 50 | Hermes Agentのバックアップと復旧方法 |
-| 51 | Hermes Agentを家族や同僚と安全に共有する方法 |
-| 52 | Hermes Agentに何を任せるかを決める方法 |
+| 50 | 費用をざっくり済ますな。Hermes Agentの月額は内訳まで数字で見える。 |
+| 51 | 払いすぎを放置するな。Hermes Agentは無駄なリソースを削って安くする。 |
+| 52 | 何でも許可するな。Hermes Agentは権限設定で範囲を制限する。 |
+| 53 | 壊れたまま放っておくな。Hermes Agentはバックアップで数分で戻せる。 |
+| 54 | 自分だけで抱え込むな。Hermes Agentは権限を絞って安全に渡せる。 |
+| 55 | 全部を任せるな。Hermes Agentには任せない一線を先に決める。 |
 
 この先も、段階を追って順次公開していく。最新回は[Substackの登録](https://sorabiz.substack.com/subscribe)か、Zennの著者フォローで追ってほしい。
 
