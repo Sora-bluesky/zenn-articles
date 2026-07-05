@@ -27,7 +27,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 3 | [APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) |
 | 4 | [Hermes AgentをDockerで隔離して動かす方法](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) |
 | 5 | [コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
-| 6 | [止まるたびに立ち上げ直すな。Hermes Agentはsystemdで自分から立ち上がる](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
+| 6 | [気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
 ### 第II部　顔と操作席
 
