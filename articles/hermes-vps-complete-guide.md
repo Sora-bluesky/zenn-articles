@@ -22,36 +22,36 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 | 回 | 見出し |
 |----|--------|
-| 1 | [サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける。](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) |
-| 2 | [パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる。](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
-| 3 | [パスワードを一切書くな。Hermes Agentの秘密は1Passwordが預かる。](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) |
+| 1 | [サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) |
+| 2 | [パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) |
+| 3 | [APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) |
 | 4 | [Hermes AgentをDockerで隔離して動かす方法](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) |
-| 5 | [コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く。](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
-| 6 | [再起動で消させるな。Hermes Agentはsystemdで自分で起き上がる。](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
+| 5 | [コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
+| 6 | [止まるたびに立ち上げ直すな。Hermes Agentはsystemdで自分から立ち上がる](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
 ### 第II部　顔と操作席
 
 | 回 | 見出し |
 |----|--------|
-| 7 | [SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる。](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
-| 8 | [手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える。](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
+| 7 | [SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
+| 8 | [手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
 
 ### 第III部　生活リズム
 
 | 回 | 見出し |
 |----|--------|
-| 9 | [毎朝の作業を自分でやるな。Hermes Agentは7時にCronで始める。](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
-| 10 | [毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる。](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
-| 11 | [新聞は自分で読むな。Hermes Agentは毎朝7時に朝刊を用意する。](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
+| 9 | [いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
+| 10 | [毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
+| 11 | [気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
 
 ### 第IV部　記憶を分けて育てる
 
 | 回 | 見出し |
 |----|--------|
-| 12 | [好みを毎回言うな。Hermes AgentはMemoryで覚えている。](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) |
-| 13 | [メモを自分で探すな。Hermes AgentはObsidianを記憶として読む。](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) |
-| 14 | [毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く。](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
-| 15 | [記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ。](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) |
+| 12 | [好みを毎回言うな。Hermes AgentはMemoryで覚えている](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) |
+| 13 | [メモを自分で探すな。Hermes AgentはObsidianを記憶として読む](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) |
+| 14 | [毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
+| 15 | [記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) |
 | 16 | 記憶を自分で残すな。Hermes Agentは会話とメモを自動で繋ぐ。 |
 | 17 | 口調をブレさせるな。Hermes Agentは設定でいつも同じ口調を保つ。 |
 | 18 | 技を放置するな。Hermes Agentは定期的にSkillsを磨き直す。 |

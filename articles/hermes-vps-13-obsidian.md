@@ -1,5 +1,5 @@
 ---
-title: "【第13回】メモを自分で探すな。Hermes AgentはObsidianを記憶として読む。"
+title: "【第13回】メモを自分で探すな。Hermes AgentはObsidianを記憶として読む"
 emoji: "📚"
 type: "tech"
 topics: ["ai", "hermes", "obsidian", "vps", "claude"]
@@ -39,27 +39,27 @@ published: true
 :::details シリーズのもくじ(タップで開く)
 
 **第I部 体を作る**
-- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける。
-- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる。
-- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) パスワードを一切書くな。Hermes Agentの秘密は1Passwordが預かる。
+- [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
+- [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
+- [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
 - [第4回](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) Hermes AgentをDockerで隔離して動かす方法
-- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く。
-- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 再起動で消させるな。Hermes Agentはsystemdで自分で起き上がる。
+- [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く
+- [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 止まるたびに立ち上げ直すな。Hermes Agentはsystemdで自分から立ち上がる
 
 **第II部 顔と操作席**
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる。
-- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える。
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
+- [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
 **第III部 生活リズム**
-- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) 毎朝の作業を自分でやるな。Hermes Agentは7時にCronで始める。
-- [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる。
-- [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 新聞は自分で読むな。Hermes Agentは毎朝7時に朝刊を用意する。
+- [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす
+- [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる
+- [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる
 
 **第IV部 記憶を分けて育てる**
-- [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている。
-- **第13回**(本記事) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む。
-- [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く。
-- [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ。
+- [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている
+- **第13回**(本記事) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む
+- [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く
+- [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ
 
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
@@ -530,7 +530,7 @@ Memory(毎回使う前提)+Obsidian(長く残しておきたい情報)+Session S
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第12回 好みを毎回言うな。Hermes AgentはMemoryで覚えている。](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) | [第14回 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く。](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
+| [第12回 好みを毎回言うな。Hermes AgentはMemoryで覚えている](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) | [第14回 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
