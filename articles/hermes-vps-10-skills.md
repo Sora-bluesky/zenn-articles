@@ -498,6 +498,10 @@ botに、順に送ってみる。
 
 たとえばTeknium本人は自身のhermes開発作業で`alias hermes-dev='hermes -s hermes-agent-dev'`を仕込んでいるとリプライで共有している(2026-06-18)。Hermesは関連skillを自動で選んでくれるが、「いつも必ず使ってほしい」場面ではこの2つで明示的にロードさせる。
 
+:::message
+**2026-07-07追記**:強制ロードは複数まとめてもできるようになった([PR#57987](https://github.com/NousResearch/hermes-agent/pull/57987))。`/skill-a /skill-b 続けて指示文`のようにメッセージの先頭へスラッシュ名を並べると、先頭のスキルが最大5個まで一括でロードされる(以前は最初の1個だけだった)。TelegramでもCLIでも同じに動き、CLI側には入力補完も付いた。
+:::
+
 ## 引用元と参考
 
 | 項目 | 引用元 |

@@ -668,6 +668,10 @@ hermes setup agent
 **2026-07-01追記**:承認プロンプトに`curl -H 'Authorization: Bearer sk-...'`や`psql postgres://user:pw@host`のようなコマンドが含まれるとき、表示だけ自動マスクされる仕様が追加された(commit `4a7a6fd40`)。実行は元のコマンドのまま・approvals allowlistは`pattern_key`で判定するので許可判定にも影響しない。Discord/Slackの承認通知経由でスクリーンショット・転送されても秘密が漏れにくくなる。
 :::
 
+:::message
+**2026-07-07追記**:承認まわりが3点進化した。(1)`/deny 理由`と打つと却下理由がエージェントに伝わり、ただ止まるのでなく計画を直して出直してくる([PR#54518](https://github.com/NousResearch/hermes-agent/pull/54518))。(2)Discordの承認ボタンを管理者だけが押せるように限定できる([PR#51751](https://github.com/NousResearch/hermes-agent/pull/51751))。(3)`approvals.deny`に禁止パターンを書いておくと、承認を全部スキップする運用(yolo)に切り替えても**そのコマンドだけは必ずブロック**される([PR#59164](https://github.com/NousResearch/hermes-agent/pull/59164))。本記事の構成(Docker隔離+manual固定)はそのままでよく、いずれも「将来設定を緩めたくなったときの追加の壁」にあたる。
+:::
+
 ただし**コンテナの中なら何をしても安全、ではない**。隔離が守るのはホストであって、コンテナの中ではエージェントがファイルの作成・上書き・削除を確認なしで行える。だから「誰がエージェントに指示できるか」をallowlist(本記事で設定した数値ユーザーID)で絞ることが、隔離と並ぶもう一本の防御線になる。第10回(自宅GPU連携)等でリモート操作が増えるほど、この**コンテナ隔離+allowlist**の二重の壁が効いてくる。
 
 ## まとめと第6回予告
