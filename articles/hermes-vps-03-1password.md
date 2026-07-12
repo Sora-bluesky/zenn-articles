@@ -659,6 +659,10 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 冒頭の漏れ方一覧で「systemdの`EnvironmentFile`に平文」を危険例として挙げた。ここで`EnvironmentFile=%h/.hermes/service-account.env`を使うことに矛盾を感じるかもしれないが、ここに入っているのはbotトークンではなく**スコープが`Hermes-Prod` read-onlyに絞られたサービスアカウントトークンだけ**。万が一`systemctl show`経由で漏れても、被害は`Hermes-Prod`保管庫の読み取りに限定される(書き込みも他Vaultへのアクセスもできない)。本番のbotトークンは`op run`が子プロセスにだけ渡す経路を守る。
 :::
 
+:::message
+**2026-07-12追記**:1Passwordから秘密を渡す公式のネイティブ対応が本体に入った([PR#59498](https://github.com/NousResearch/hermes-agent/pull/59498))。`hermes secrets onepassword setup`で設定すると、`op://`参照を起動時にHermes自身が公式op CLI経由で解決して環境変数に注入する(`status`/`sync`等の専用サブコマンドつき)。本記事の「op runでラップする」方式は現行でも動き、秘密が平文で残らない仕組みの理解としても無駄にならない。これから新しく組む人は、ネイティブ対応から始める道もあると頭に置いておけばよい。
+:::
+
 ## 平文ファイルが消えたか最終確認する
 
 第3回の完了条件は以下。
