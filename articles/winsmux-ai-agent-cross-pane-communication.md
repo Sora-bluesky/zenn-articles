@@ -88,7 +88,7 @@ winsmux workers status
 # ...
 ```
 
-一時期 Google Colab の GPU ワーカー（H100/A100）にも対応していたが、この経路は廃止された。ローカル CLI で動かないクラウド側モデルは、OpenRouter 経由の外部 API ワーカーとして統一的に扱う。
+ローカル CLI で動かないクラウド側モデルは、OpenRouter 経由の外部 API ワーカーとして統一的に扱う。
 
 ラベルの命名で悩む必要がなくなったし、worktree も slot ごとに自動的に分離される。
 
