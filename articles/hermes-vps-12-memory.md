@@ -373,7 +373,7 @@ Telegramで新しいセッションを開いて、「私の名前は？」「私
 | mem0 | API key / local | OSS・人気プロバイダ |
 | openviking | API key / local | クラウド |
 | retaindb | API key / local | クラウド |
-| supermemory | requires API key | クラウド |
+| supermemory | requires API key | クラウド・自己ホスト可 |
 
 導入するなら`hermes memory setup`(インタラクティブ)で対話的に選ぶ。built-inに戻したくなったら`hermes memory off`。本連載では当面built-inのMEMORY.md/USER.mdで運用し、Obsidian Vaultを次回つなぐことで「外付けの脳」を別カテゴリで持つ方針を採る。
 
