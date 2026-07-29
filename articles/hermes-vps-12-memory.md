@@ -169,6 +169,10 @@ hermes memory status
 
 8プロバイダが見えるが、今は全部使わない。本回はbuilt-inのMEMORY.md/USER.mdだけで完結させる。`holographic`だけが完全ローカル、`byterover`と`supermemory`はAPI Key必須、それ以外は両対応、という温度差を頭に置いておけば足りる。
 
+:::message
+2026-07末の更新で、この出力の上段が変わった。「Built-in: always active」は実際の設定を読まない決め打ち表示だったことが修正され、今はMemory injection/User profile/Memory toolの3項目を実際の設定から読んで表示する。下段のプロバイダ一覧は変わらない。スクショは撮影時点の実機(v0.17.0)の表示だ。
+:::
+
 ## TelegramでUSER.mdを育てる
 
 記憶を入れる一番自然な方法は、Telegramでエージェントに話しかけて、覚えるべきことを伝えることだ。エージェントが内部の`memory` toolを呼んでUSER.md/MEMORY.mdに書き込む。

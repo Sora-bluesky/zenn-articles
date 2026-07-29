@@ -231,7 +231,7 @@ ls $env:USERPROFILE\.codex\sessions\$y\$m | Select-Object -First 5
 
 中身を全部理解する必要はないが、参考に1画面に並べて見ておくと§6の理解が早い。
 
-![PowerShellで`$env:USERPROFILE\.claude\projects`と`$env:USERPROFILE\.codex\sessions\<年>\<月>`を続けて実行した画面。上半分にClaude Codeのエンコード済み(=特殊文字を変換した)プロジェクトディレクトリ名($env:USERPROFILE\.claude\projects\C--Users-...-Documents-Projects-...形式・社内名はマスク)、下半分にCodex側の日付フォルダ名が並ぶ。プロンプト内の`C:\Users\<name>`もマスク](/images/hermes-vps/hermes-vps-15-jsonl-locations.png)
+![PowerShellで`$env:USERPROFILE\.claude\projects`と`$env:USERPROFILE\.codex\sessions\<年>\<月>`を続けて実行した画面。上半分にClaude Codeのエンコード済み(=特殊文字を変換した)プロジェクトディレクトリ名($env:USERPROFILE\.claude\projects\C--Users-...-Documents-Projects-...形式)、下半分にCodex側の日付フォルダ名が並ぶ](/images/hermes-vps/hermes-vps-15-jsonl-locations.png)
 
 1行目はClaude Codeの保存先で、長いディレクトリ名が並ぶ。これは作業対象のディレクトリ(cwd)のパスを、ファイル名で使える形に変換した名前だ。**作業対象のディレクトリ1個につき1ディレクトリ**作られる仕組みで、中に各セッションの `<uuid>.jsonl`(uuid=ランダムな識別子の文字列)が貯まる。一方2行目はCodexの保存先で、**日付ごとに2桁数字のフォルダ**が並ぶ。手元では今日時点で `01〜30` の範囲が見えるが、欠番もあるし、後日試せば現在日まで自然に増えていく。同じ作業履歴でも、Claude Codeは「ディレクトリごと」、Codexは「日付ごと」と切り方が違う。
 
@@ -830,7 +830,7 @@ Hermesの応答(Telegramに届いたmarkdown整形済みメッセージをその
 >
 > トークン、ウィンドウattach、dispatchのどこから深掘る?
 
-![soraがTelegramに「昨日winsmuxで何か困ってなかった?」と日本語1行で送信。Hermesが「Vaultの2026-06-29 transcriptから確認」と引用元を最初に示した上で、3つの問題を箇条書きで構造化して返している応答画面。bot名・表示名・chat IDはマスク済み、winsmuxキーワードはsoraの公開OSSなのでマスクなし](/images/hermes-vps/hermes-vps-15-telegram-recall-claude.png)
+![soraがTelegramに「昨日winsmuxで何か困ってなかった?」と日本語1行で送信。Hermesが「Vaultの2026-06-29 transcriptから確認」と引用元を最初に示した上で、3つの問題を箇条書きで構造化して返している応答画面](/images/hermes-vps/hermes-vps-15-telegram-recall-claude.png)
 
 ここで起きていることを分解する。Hermesはまず「昨日」をシステム日付から「2026-06-29」と解決した。次に「winsmux」をキーワードに`raw/transcripts/`配下のmdから該当ファイルを引き当てた。続いてuserとassistantの会話ターンを読み込み、最後に3つの問題を抽出して構造化した。
 
@@ -862,7 +862,7 @@ Hermesの応答(Telegramに届いたmarkdown整形済みメッセージをその
 > **P2**(運用改善・将来の自分を救う)
 > エラーメッセージの明確化+起動前preflight(事前確認)の追加。次に同じ罠を踏んだとき、原因特定までの時間を短縮する。
 
-![soraがTelegramに「次のリリースで取り組むべき優先順位はどう整理する?君の意見を聞きたい」と送信。Hermesが「(私の意見)」と明示してP0/P1/P2の3階層で構造化して返している応答画面。各階層に「今回エラーの直接原因」「関連issueの核心」「将来の自分を救う」と判断の根拠が併記されている。bot名・表示名・chat IDはマスク済み、winsmuxキーワードはマスクなし](/images/hermes-vps/hermes-vps-15-telegram-next-step.png)
+![soraがTelegramに「次のリリースで取り組むべき優先順位はどう整理する?君の意見を聞きたい」と送信。Hermesが「(私の意見)」と明示してP0/P1/P2の3階層で構造化して返している応答画面。各階層に「今回エラーの直接原因」「関連issueの核心」「将来の自分を救う」と判断の根拠が併記されている](/images/hermes-vps/hermes-vps-15-telegram-next-step.png)
 
 応答冒頭で「私の意見」と書いてくる。これがポイントだ。Hermesは過去Claude Code会話を「引用」しただけでなく、その中身を踏まえて自分の判断としてP0/P1/P2を提示している。各階層に「今回エラーの直接原因」「核心」「将来の自分を救う」と理由を併記してくる。検索ボットでは返せない応答だ。
 
@@ -939,7 +939,7 @@ du -sh ~/hermes-vault/raw/transcripts/claude-code/
 du -sh ~/hermes-vault/raw/transcripts/codex/
 ```
 
-![撮影13:VPS sshで`du -sh`を3回叩いた出力。`~/hermes-vault/raw/transcripts/`合計が65MB、`claude-code/`が35MB、`codex/`が31MB。sshプロンプトのホスト名はマスク済み。サイズ数値はマスクなし。duコマンドはサイズしか出さないため、件数はスクショには写っていない(件数は別途wcで取得した値)。](/images/hermes-vps/hermes-vps-15-du-sh-vault.png)
+![VPS sshで`du -sh`を3回叩いた出力。`~/hermes-vault/raw/transcripts/`合計が65MB、`claude-code/`が35MB、`codex/`が31MB。duコマンドはサイズしか出さないため、件数はスクショには写っていない(件数は別途wcで取得した値)](/images/hermes-vps/hermes-vps-15-du-sh-vault.png)
 
 撮影時点の実測は**claude-code側35MB**+**codex側31MB**=合計**約65MB**。別途`find ~/hermes-vault/raw/transcripts/claude-code -name '*.md' | wc -l`で数えると、Claude Code 1272件・Codex 2218件で合計3490件だった。母艦で日常的にClaude CodeとCodexを使ってきた結果、本回時点で3490件・65MB前後で収まっている。
 
@@ -970,6 +970,12 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 - **raw/transcripts/**(本回)──他のAIで書いたノート(Claude Code/Codexの作業履歴)
 
 これらの層を第16回以降でどう使い、どう整えていくかは順次扱う。連載の構成は調整中のため、第19回などの数字は最新の目次で確認してほしい。
+:::
+
+:::message
+**設定ごと引っ越す姉妹コマンドが増えた**
+
+本回が取り込んだのは「会話・作業の履歴」だが、2026-07末の更新で、履歴ではなく設定側を丸ごと移す`hermes import-agent`コマンドが追加された。Claude Code/Codexの指示書(CLAUDE.md/AGENTS.md)・権限の許可リスト・MCPサーバー・skills・memoriesをHermes相当の形に変換して取り込む。「Claude Codeの続きを引き継ぐ」を履歴と設定の両面から揃えられるようになったわけだ。使い方はリポジトリの公式ドキュメントに任せる。
 :::
 
 ## まとめと第16回予告
@@ -1008,7 +1014,7 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 | 同じセッションのmdが日付違いで複数できる | ファイル名の日付にjsonl(1行1JSON・会話履歴の保存形式)の`LastWriteTime`(ファイルの最終更新日時)を使ってしまった。深夜0時をまたいで会話を続けると別ファイルに分かれる | 本回§6-1のスクリプトどおり、日付はjsonl内**最初のセッション開始時刻**から取る。重複が出たら`raw/transcripts/<agent>/`を空にして再実行 |
 | `git push`後にVPS側で`git pull`しても変化なし | VPS側のclone元と母艦のpush先が違うリポを指している | VPS側`git remote -v`と母艦側`git remote -v`を見比べて同じremote URLか確認。第13回設定が今も生きているか再確認 |
 | Hermesから「該当する会話が見当たらない」と返る | Vault配下に該当mdが無い・git pullが届いていない・第13回Vault接続が切れている | 順番に確認する。(1)VPS側で`ls ~/hermes-vault/raw/transcripts/<agent>/`を実行 → (2)ファイルが無ければ`git pull`+rsync → (3)あれば第13回§7のVault接続確認手順に戻る |
-| 変換mdにAPIキーやトークンが混入していた | Claude Code/Codexの作業中に秘密情報をpasteしていた | 本回では深追いせず、`git push`する前に該当mdを目視して問題があれば手で削除。秘密情報の自動マスクは連載後半のCurator(自動保守の回・予定)で扱う |
+| 変換mdにAPIキーやトークンが混入していた | Claude Code/Codexの作業中に秘密情報をpasteしていた | 本回では深追いせず、`git push`する前に該当mdを目視して問題があれば手で削除。秘密情報を自動で伏せ字にする仕組みは連載後半のCurator(自動保守の回・予定)で扱う |
 | 古いjsonlが大量にあって初回実行が遅い | 初回は全件処理 | 初回だけ時間がかかるのは正常。本回実機は3490件で数分程度(母艦のスペックとjsonl総量で変動)。2回目以降は既存スキップで一瞬 |
 | `git commit`時に`warning: in the working copy of 'raw/transcripts/...', LF will be replaced by CRLF`が大量に出る | Windows gitの改行コード自動変換の警告。動作には無害だが大量に流れて見づらい | 抑制したければVault直下に`.gitattributes`を作って`raw/transcripts/** text eol=lf`を1行入れる(LF=Unix系の改行で固定する明示)。何もしなくてもcommit/pushは成功する |
 | `git commit`時に`ERROR: Potential secret detected in raw/transcripts/...`でブロックされる | 変換md内に取り込まれたClaude Code/Codexセッション本文に`password=<value>`/`api_key=<value>`形式の文字列(右辺が一定の長さを超える値)が含まれていた場合、母艦のglobal pre-commit hook(全リポ共通でcommit前に走るチェックスクリプト・git-guard等)が秘密と誤検知する | **(注意:このVaultリポがプライベートであることが前提。public化するならhookを絶対に切らない。)** プライベートを確認したうえで、このVaultリポだけhook継承(母艦の他リポで設定したcommit前チェックがこのリポにも自動で効く仕組み)を切る。手順:(1)`mkdir .git/hooks-empty` (2)`git config --local core.hooksPath .git/hooks-empty`。他リポは影響なし |
