@@ -350,6 +350,10 @@ Update available: 18 commits behind — run 'hermes update'
 
 第6回までずっとCLIで`hermes --continue`していた作業が、ここで一気に視覚化された。`cron`から起動された会話、Telegramからの会話、Discordからの会話、CLIから打った会話──すべてが同じセッションリストに混ざって並ぶ。
 
+:::message
+**2026-07-30追記**:現行版ではセッション一覧に**Chats/Automation/Allの3タブ**が入り([PR#73865](https://github.com/NousResearch/hermes-agent/pull/73865))、最初に開く**Chatsタブにはcronなど自動実行のセッションが表示されなくなった**(人との会話だけに絞られる)。第9回で作るcronの会話が見当たらなくても、動いていないわけではない。**Automation**タブ(またはAll)に切り替えれば上の記述どおり全部並ぶ。
+:::
+
 ### ログ(Logs)
 
 「ログ」ペインは裏方の動作確認。第6回で`journalctl --user -u hermes-gateway`で見ていたものが、ここで完結する。
@@ -842,6 +846,7 @@ Hermesは「分散」したのではなく、「窓を増やした」だけ。�
 4. **VS Code Marketplace Theme導入**=任意のVS Codeテーマをそのままインストールできる。プロファイル別テーマ割り当ても可能。
 5. **承認モードの選択肢表記が修正**(v0.18系・[PR#31933](https://github.com/NousResearch/hermes-agent/pull/31933))=以前のブラウザ画面には実在しない選択肢(`ask`/`yolo`/`deny`)が表示されるバグがあったが、実際の設定値に合わせて`manual`/`smart`/`off`の3択に修正された。`smart`は2026-07以降の新規セットアップの既定値(第5回参照)。
 6. **セッション画面にインポート機能追加**(v0.18系・[PR#63699](https://github.com/NousResearch/hermes-agent/pull/63699))=`sessions export`でエクスポートしたJSON/JSONLファイルを、別のHermesインスタンスのセッション画面から読み込めるようになった。壊れたデータや循環参照を検知して安全に取り込む。第15回で扱う「他のAIツールの会話をVaultに取り込む」話とは別物で、こちらは**Hermes自身のセッションを他のHermesへ引っ越す**ための機能だ。
+7. **PAIRINGペインの承認ボタンが修理された**(2026-07末・[PR#74446](https://github.com/NousResearch/hermes-agent/pull/74446))=実はこのページの承認ボタンは登場以来ずっと機能しておらず、承認をクリックしても成立せず、5回押すとそのmessengerの承認が1時間ロックされるバグがあった(正しいコードをCLIから入れても拒否される)。`hermes update`で最新にしてあれば本文の記述どおり承認できる。あわせてDesktopアプリのメッセージングページからも承認できるようになった。
 
 本記事のスクショ・手順はv0.16.0時点の画面なので、v0.17.0以降では一部UIが変わっている。`hermes update`で本体を最新に保ち続けていれば、自動で反映される。
 
