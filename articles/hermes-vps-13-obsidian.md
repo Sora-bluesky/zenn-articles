@@ -573,7 +573,7 @@ git push origin main                            # 反映
 
 2026-06-19公開のv0.17.0「The Reach Release」では、本回のObsidian連携と相性のいい機能がいくつか追加されている。
 
-- **read_file拡張(Office対応)**:従来の.txt/.mdに加えて.docx/.xlsxも直接読めるようになった。Vault内に貯めた会議メモのdocxをHermesがそのまま要約できる(.pdfはそのままでは読めないので、テキストにしてから渡す)。
+- **read_file拡張(Office対応)**:従来の.txt/.mdに加えて.docx/.xlsxも直接読めるようになった。Vault内に貯めた会議メモのdocxをHermesがそのまま要約できる(v0.17.0時点では.pdfは読めず、テキストにしてから渡す必要があった)。**2026-08の更新でここがさらに広がり、PDF・旧Office(.doc/.ppt/.xls)・EPUBなども初回読み取り時に変換部品を自動で入れてMarkdown化して読めるようになった**([read_file拡張のcommit](https://github.com/NousResearch/hermes-agent/commit/b2598b41e)・実機で抽出動作を確認済み)。Vaultに放り込んだPDF資料もそのまま読ませられる。
 - **secure login(Dashboard)**:Dashboardにtoken必須endpointが導入された。本回では使わないが、第19回予定のCuratorでVault整理を自動化するときに関連してくる。
 
 本回の手順はv0.17.0より前のバージョンでもskill+環境変数の2本柱で動くが、最新版に保つほどObsidian連携の活用幅が広がる。`hermes update`で本体を最新に保ち続けるのが基本だ。
