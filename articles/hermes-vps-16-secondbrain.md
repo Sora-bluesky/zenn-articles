@@ -3,7 +3,7 @@ title: "【第16回】同じことを二度調べさせるな。Hermes Agentは�
 emoji: "🧠"
 type: "tech"
 topics: ["hermes", "obsidian", "claudecode", "codex", "ai"]
-published: false
+published: true
 ---
 
 :::message

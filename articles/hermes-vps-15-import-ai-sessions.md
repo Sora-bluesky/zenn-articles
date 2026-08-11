@@ -924,7 +924,7 @@ llm-wikiは、ある著名なAI研究者(Andrej Karpathy。ChatGPTの基礎研�
 - 第13回──書庫を建てる
 - 第14回──司書を雇う
 - 第15回(本回)──他のAIで書いたノートを清書して棚に並べる
-- 第16回──司書がノートを読んでセカンドブレイン(第二の脳)を作る
+- [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain)──司書がノートを読んでセカンドブレイン(第二の脳)を作る
 
 比喩は連続している。本回で書庫の在庫が増え、次の回でそれが索引化される。
 :::
@@ -1001,7 +1001,7 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く | 第16回(近日公開):記憶を自分で残すな。Hermes Agentは会話とメモを自動で繋ぐ。 |
+| [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く | [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) 同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
@@ -1101,7 +1101,7 @@ Claude Code/Codexのjsonl構造(`type`フィールド・1行1JSON形式)は2026-
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く | 第16回(近日公開):記憶を自分で残すな。Hermes Agentは会話とメモを自動で繋ぐ。 |
+| [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く | [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) 同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る |
 
 📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
