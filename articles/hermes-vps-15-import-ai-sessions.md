@@ -7,6 +7,16 @@ published: true
 ---
 
 :::message
+**この記事をAIに読ませる**
+
+この記事はGitHubの公開リポジトリで管理していて、本文のMarkdownをそのまま取得できる。Claude CodeやCodexなどのAIエージェントに手順を任せたいときは、次のURLを渡すだけでいい。
+
+https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/hermes-vps-15-import-ai-sessions.md
+
+頼み方の例:「この記事を読んで、私の環境で手順を順番に実行して」に上のURLを添える。
+:::
+
+:::message
 この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第15回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
 :::
 
@@ -182,7 +192,6 @@ git pushとrsyncを並べる理由は役割が違うからだ。git pushは「�
 :::message
 **未来の自動化**: cronで毎晩棚卸しまで自動化する話は、連載後半のCurator回で扱う予定だ(連載の回数は前後する可能性がある)。本回は手で持ち込む段階にとどめ、運用が安定してから自動化する道を残す。
 :::
-
 
 ## 構成図──母艦で整え、VPSで読ませる
 
@@ -1107,14 +1116,4 @@ Claude Code/Codexのjsonl構造(`type`フィールド・1行1JSON形式)は2026-
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
-:::
-
-:::message
-**この記事をAIに読ませる**
-
-この記事はGitHubの公開リポジトリで管理していて、本文のMarkdownをそのまま取得できる。Claude CodeやCodexなどのAIエージェントに手順を任せたいときは、次のURLを渡すだけでいい。
-
-https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/hermes-vps-15-import-ai-sessions.md
-
-頼み方の例:「この記事を読んで、私の環境で手順を順番に実行して」に上のURLを添える。
 :::

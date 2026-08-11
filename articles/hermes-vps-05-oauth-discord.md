@@ -7,6 +7,16 @@ published: true
 ---
 
 :::message
+**この記事をAIに読ませる**
+
+この記事はGitHubの公開リポジトリで管理していて、本文のMarkdownをそのまま取得できる。Claude CodeやCodexなどのAIエージェントに手順を任せたいときは、次のURLを渡すだけでいい。
+
+https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/hermes-vps-05-oauth-discord.md
+
+頼み方の例:「この記事を読んで、私の環境で手順を順番に実行して」に上のURLを添える。
+:::
+
+:::message
 この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第5回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
 :::
 
@@ -61,7 +71,6 @@ published: true
 
 ## この回の到達点
 
-
 第4回完了時と第5回完了後の差分を表にする。動作確認(`hermes gateway`起動+疎通)は第4回でやったので、第5回では繰り返さない。常駐化と「Grokもmessengerも実際に動く」確認は第6回で一気通貫でやる。
 
 | 項目 | 第4回完了時 | 第5回完了後 |
@@ -77,7 +86,6 @@ published: true
 第4回末尾で `hermes setup` のProvider選択(OpenAI Codex)時に**デバイスコードフローでOAuth登録も同時に走る**ので、`hermes auth list`を打つと既に `openai-codex (1 credentials): #1 device_code oauth` のように出ているはずだ。第5回で再登録する必要はない。
 
 ## なぜ頭脳も出入口も2系統持つのか
-
 
 「Codexが動いてTelegramで会話できてるんだから、十分じゃないか」と思うかもしれない。実際、第4回時点でHermes Agentとしては動く。
 
@@ -96,7 +104,6 @@ published: true
 
 ## 用語の最低限の理解
 
-
 第5回で出てくる用語をざっくり押さえておく。
 
 | 用語 | 意味 |
@@ -108,7 +115,6 @@ published: true
 | 承認モード(`approvals.mode`) | エージェントがコマンドを実行する前に「これ実行していい?」と人間に確認する設定。`manual`(=旧名ask)で固定する設定。ただしDocker backend(本シリーズ既定)では承認は原則出ず、これはlocal backendに戻したときの保険(第6回参照) |
 
 ## 第5回終了時点の構成図
-
 
 provider・messenger・承認モードの3つに焦点を絞った構成。
 
@@ -147,7 +153,6 @@ provider・messenger・承認モードの3つに焦点を絞った構成。
 動作確認(`op run -- hermes gateway`+Telegram/Discord疎通)は第6回(systemd常駐化)に統合する。第4回で1度見せた疎通フローを本回で繰り返さない方針だ。
 
 ## 事前準備
-
 
 VPSにadminでSSHログインしてHermes作業環境に入る。
 
@@ -192,7 +197,6 @@ openai-codex (1 credentials):
 :::
 
 ## Grokを2つ目のAIとして登録する
-
 
 Grokの認証は**loopback OAuth**(OAuth 2.0 PKCE)。xAI側でログインしたあと、ブラウザが `http://127.0.0.1:56121/callback?code=...&state=...` に**端末自身の56121ポート**へリダイレクトして承認完了する仕組みだ。
 
@@ -282,9 +286,7 @@ hermes auth add xai-oauth --manual-paste
 
 ## Discordを2つ目の窓口として追加する
 
-
 Telegram単独で運用するなら、この章はまるごと飛ばして次章の「[providerとmessengerの選び方](#providerとmessengerの選び方)」に進んでよい。後でDiscordを足したくなったらここに戻ればいい。
-
 
 ここからの章はオプションだ。**Telegramだけで運用しても、Hermes Agentの7割以上の機能は損なわれない**。ボイスモード・image/file入出力・stream応答・skill自動ロード・cron配信・DM topicによるskill切替、すべてTelegram単独で動く。ソロ運用ならむしろTelegramのほうが軽量・モバイル可読性が高い。
 
@@ -516,7 +518,6 @@ Discord本体で`Hermes VPS Server`を開き、右上のメンバーアイコン
 **迷ったら、頭脳はCodex・出入口はTelegram**でいい。Codexはコードと日本語が安定し、Telegramは設定が手軽で1メッセージの文字数上限も大きい(4096)。下の比較表は「なぜそれが最初の無難な選択か」「どんなときに足すか」を理解するためのものだ。完璧に選ぼうとせず、まず動かしてから足せばいい。
 :::
 
-
 ### provider(頭脳)2系統のメリット
 
 | メリット | 具体例 |
@@ -607,7 +608,6 @@ Telegramの会話とDiscordの会話は別チャンネル扱いで履歴は混�
 
 ## 実行前に承認を挟む設定を確認する
 
-
 第4回でコマンドの実行場所(backend)を`docker`にした。エージェントのコマンドは隔離されたDockerコンテナの中で実行される。**このコンテナ自体が安全境界**なので、コンテナ内では危険コマンドのチェックはスキップされる——つまり本シリーズの構成では、承認プロンプトは原則出ない。
 
 公式ドキュメントはこう明記している。
@@ -684,7 +684,6 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 
 ## まとめと第6回予告
 
-
 第5回完了時点で以下が揃った。
 
 - `hermes auth list`で`openai-codex`と`xai-oauth`の両方にcredentialが付いている
@@ -707,7 +706,6 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 
 ## よくあるエラーと対処
 
-
 | 症状 | 対処 |
 |---|---|
 | `hermes auth add xai-oauth`のブラウザURLが開けない | SSHトンネリング(`ssh -N -L 56121:127.0.0.1:56121`)未実行か終了済み |
@@ -718,7 +716,6 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 | 状態確認が一括でやりたい | `hermes doctor`を実行。`Auth Providers`欄で`openai-codex` / `xai-oauth`の認証状態が一覧表示される |
 
 ## 引用元と参考
-
 
 | 項目 | 引用元 |
 |---|---|
@@ -735,14 +732,4 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
-:::
-
-:::message
-**この記事をAIに読ませる**
-
-この記事はGitHubの公開リポジトリで管理していて、本文のMarkdownをそのまま取得できる。Claude CodeやCodexなどのAIエージェントに手順を任せたいときは、次のURLを渡すだけでいい。
-
-https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/hermes-vps-05-oauth-discord.md
-
-頼み方の例:「この記事を読んで、私の環境で手順を順番に実行して」に上のURLを添える。
 :::
