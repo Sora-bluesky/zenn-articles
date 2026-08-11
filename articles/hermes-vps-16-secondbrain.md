@@ -135,9 +135,9 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 
 本回の作業は第15回と違い、VPS側で完結する。母艦の役目はTelegramでのやり取りと、Obsidianでの目視確認だけだ。raw/transcripts/(第15回の出力)を入力に、llm-wikiがentities/concepts/queries/(本回の出力)を生み出す。
 
-![第16回の統合フロー図。VPS上の.envにWIKI_PATHとOBSIDIAN_VAULT_PATHを本回追記し、~/hermes-vault内でLayer 1(raw/transcripts・不変の原本)からllm-wiki skillを経てLayer 2(SCHEMA.md/index.md/log.md/entities/concepts/comparisons/queries)が育ち、Telegram経由のqueryとlintでHermes Agentが過去事実と一般化された教訓で応答する。母艦WindowsのObsidianが同じVaultを別経路で読んでGraph Viewで可視化する構図](/images/hermes-vps/hermes-vps-16-architecture.png)
+![第16回の構成図「Hermes Agent × Obsidian:知識が育つ仕組み」。VPSに常駐するHermesの.envにWIKI_PATHとOBSIDIAN_VAULT_PATHの2行を追記し、①貯める=Vault配下のLayer 1(raw/)に原本を不変のまま保存、②整理する=llm-wiki skillがVault直下にLayer 2のwiki本体(SCHEMA.md・index.md・log.md・entities/・concepts/・comparisons/・queries/)を新設、③引き出す=Telegramで質問するとHermesが過去の事実と一般化された教訓で答える、④俯瞰する=母艦のObsidianが同じVaultを読んでGraph Viewで相互参照を眺める、の4ステップを示す](/images/hermes-vps/hermes-vps-16-architecture.png)
 
-第15回の構成図は「母艦→Vault→VPSのHermesがraw/を読む」までだった。本回はそのVPS側を拡張する。Vault配下のraw/から、llm-wikiがLayer 2(entities/concepts/queries/)を生み出す。母艦のObsidianは同じVaultを別経路で読むので、Hermesが書いたwikiページはそのまま母艦のGraph Viewに表示される。分業の構図が1枚で見える。
+図の流れは4つだ。①raw/に原本のまま貯める(第15回の成果物)、②llm-wikiがVault直下にwiki本体を作って構造化する(本回)、③Telegramで質問すると教訓つきの答えが返る、④母艦のObsidianのGraph Viewで相互参照を俯瞰する。母艦のObsidianは同じVaultを別経路で読むので、Hermesが書いたwikiページはそのまま母艦のGraph Viewに表示される。分業の構図が1枚で見える。
 
 ## 事前準備:WIKI_PATHの設定とllm-wiki skillの確認
 
