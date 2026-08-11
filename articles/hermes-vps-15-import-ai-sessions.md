@@ -195,7 +195,7 @@ git pushとrsyncを並べる理由は役割が違うからだ。git pushは「�
 
 ## 構成図──母艦で整え、VPSで読ませる
 
-本回は作業の置き場が2つに分かれる。母艦Windowsで他のAIの作業履歴を整え、VPS側でHermesがそれを読む。1枚の図で全体像を先に押さえると、§5以降の手順がどこに効くかが見える。
+本回は作業の置き場が2つに分かれる。母艦Windowsで他のAIの作業履歴を整え、VPS側でHermesがそれを読む。1枚の図で全体像を先に押さえると、§5以降の手順がどこに対応するかが見える。
 
 ![【構成図】左カラム=母艦Windows:Claude Code(~/.claude/projects配下のjsonl)とCodex CLI(~/.codex/sessions配下のjsonl)をPowerShell変換スクリプトでMarkdownに整え、Obsidian Vaultのraw/transcripts/配下に出力する。git pushでGitHub経由でVPSへ届ける。右カラム=VPS:git pullで~/hermes-vault-repoに取り込み、rsyncで~/hermes-vault(コンテナのマウント元へのホスト側symlink)へ反映する。Hermesがbundled obsidian skillでmdを読み、Telegramから自然言語で呼び出せる。下部=次回(第16回予定)でllm-wiki skillが同じraw/transcripts/を入力にentities/concepts/queriesのセカンドブレイン(第二の脳)を組み立てる。](/images/hermes-vps/hermes-vps-15-architecture.png)
 
@@ -1026,7 +1026,7 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 | 変換mdにAPIキーやトークンが混入していた | Claude Code/Codexの作業中に秘密情報をpasteしていた | 本回では深追いせず、`git push`する前に該当mdを目視して問題があれば手で削除。秘密情報を自動で伏せ字にする仕組みは連載後半のCurator(自動保守の回・予定)で扱う |
 | 古いjsonlが大量にあって初回実行が遅い | 初回は全件処理 | 初回だけ時間がかかるのは正常。本回実機は3490件で数分程度(母艦のスペックとjsonl総量で変動)。2回目以降は既存スキップで一瞬 |
 | `git commit`時に`warning: in the working copy of 'raw/transcripts/...', LF will be replaced by CRLF`が大量に出る | Windows gitの改行コード自動変換の警告。動作には無害だが大量に流れて見づらい | 抑制したければVault直下に`.gitattributes`を作って`raw/transcripts/** text eol=lf`を1行入れる(LF=Unix系の改行で固定する明示)。何もしなくてもcommit/pushは成功する |
-| `git commit`時に`ERROR: Potential secret detected in raw/transcripts/...`でブロックされる | 変換md内に取り込まれたClaude Code/Codexセッション本文に`password=<value>`/`api_key=<value>`形式の文字列(右辺が一定の長さを超える値)が含まれていた場合、母艦のglobal pre-commit hook(全リポ共通でcommit前に走るチェックスクリプト・git-guard等)が秘密と誤検知する | **(注意:このVaultリポがプライベートであることが前提。public化するならhookを絶対に切らない。)** プライベートを確認したうえで、このVaultリポだけhook継承(母艦の他リポで設定したcommit前チェックがこのリポにも自動で効く仕組み)を切る。手順:(1)`mkdir .git/hooks-empty` (2)`git config --local core.hooksPath .git/hooks-empty`。他リポは影響なし |
+| `git commit`時に`ERROR: Potential secret detected in raw/transcripts/...`でブロックされる | 変換md内に取り込まれたClaude Code/Codexセッション本文に`password=<value>`/`api_key=<value>`形式の文字列(右辺が一定の長さを超える値)が含まれていた場合、母艦のglobal pre-commit hook(全リポ共通でcommit前に走るチェックスクリプト・git-guard等)が秘密と誤検知する | **(注意:このVaultリポがプライベートであることが前提。public化するならhookを絶対に切らない。)** プライベートを確認したうえで、このVaultリポだけhook継承(母艦の他リポで設定したcommit前チェックがこのリポにも自動で適用される仕組み)を切る。手順:(1)`mkdir .git/hooks-empty` (2)`git config --local core.hooksPath .git/hooks-empty`。他リポは影響なし |
 
 :::message alert
 **秘密情報の取り扱い**: 変換mdの中身はClaude CodeやCodexで自分が打ち込んだ作業ログそのものだ。APIキーやトークンを手で貼り付けて作業した履歴があれば、md内にも残る。`git push`する前にmdの目視確認は必須。Vaultリポはprivateで運用し、publicへの切り替えは行わない。

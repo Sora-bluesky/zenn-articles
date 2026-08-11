@@ -294,7 +294,7 @@ echo "via Tailscale ($(echo $SSH_CONNECTION | awk '{print $1}'))"
 
 ![タブBでTailscale経由adminログイン+via Tailscale echoで接続元IP確認](/images/hermes-vps/hermes-vps-02-tab-b-via-tailscale-echo.png)
 
-`sudo whoami`で`root`が返ることも確認しておく。Tailscale経由ログインでもsudoが効く=Hermes運用で必要な管理権限が同じく通ることの裏取りだ。ここで聞かれるのは、ログイン時に入れたSSH鍵のパスフレーズ(`Hermes VPS - SSH key passphrase`)ではなく、adminアカウント自体のログインパスワード(1Passwordの`Hermes VPS - admin`)。同じ「パスワード入力」に見えて別物なので、貼り付けるアイテムを間違えないこと。
+`sudo whoami`で`root`が返ることも確認しておく。Tailscale経由ログインでもsudoが使える=Hermes運用で必要な管理権限が同じく通ることの裏取りだ。ここで聞かれるのは、ログイン時に入れたSSH鍵のパスフレーズ(`Hermes VPS - SSH key passphrase`)ではなく、adminアカウント自体のログインパスワード(1Passwordの`Hermes VPS - admin`)。同じ「パスワード入力」に見えて別物なので、貼り付けるアイテムを間違えないこと。
 
 これでタブAとタブBの両方でadminセッションが生きている状態になった。グローバルIP経由とTailscale IP経由の2系統が同時に動いている。
 
@@ -339,7 +339,7 @@ sudo ufw status verbose
 | コマンド | 意味 |
 |---|---|
 | `sudo ufw allow in on tailscale0` | `tailscale0`(Tailscaleが作る仮想ネットワークインターフェース)からの入力を許可。それ以外の入口は遮断される(出典:[Tailscale公式ufwガイド](https://tailscale.com/kb/1077/secure-server-ubuntu)) |
-| `sudo ufw enable` | UFW(ファイアウォール)を有効化。実行した瞬間にデフォルト拒否ポリシーが効く |
+| `sudo ufw enable` | UFW(ファイアウォール)を有効化。実行した瞬間にデフォルト拒否ポリシーが適用される |
 | `sudo ufw status verbose` | 現在のファイアウォール設定を詳しく表示 |
 
 `sudo ufw enable`の実行時に以下が出る。

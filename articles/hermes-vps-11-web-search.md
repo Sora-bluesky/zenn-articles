@@ -27,7 +27,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [検索と本文抽出の考え方──このシリーズの選択](#検索と本文抽出の考え方──このシリーズの選択)
 - [FirecrawlのAPIキーを取得して1Passwordに入れる](#firecrawlのapiキーを取得して1passwordに入れる)
 - [secrets.envとconfig.yamlで設定を反映](#secrets.envとconfig.yamlで設定を反映)
-- [動作確認──検索と本文抽出が効くか](#動作確認──検索と本文抽出が効くか)
+- [動作確認──検索と本文抽出が通るか](#動作確認──検索と本文抽出が通るか)
 - [無料枠を使い切ったらTavilyに切り替える──web-failover skillで自動化](#無料枠を使い切ったらtavilyに切り替える──web-failover-skillで自動化)
 - [X Searchの設定──hermes doctorの落とし穴と--platform telegramの罠](#x-searchの設定──hermes-doctorの落とし穴と--platform-telegramの罠)
 - [morning-news Skillをハイブリッド検索に育てる](#morning-news-skillをハイブリッド検索に育てる)
@@ -257,7 +257,7 @@ systemctl --user is-active hermes-gateway        # active が返れば再起動�
 
 `active`が返れば設定が反映された。`status=1/FAILURE`の表示が混じることがあるが、旧プロセスがSIGKILLされた表示で、再起動自体は正常だ。`is-active`が`active`を返すかで判断する。
 
-## 動作確認──検索と本文抽出が効くか
+## 動作確認──検索と本文抽出が通るか
 
 ### Telegram検索が返るか
 
@@ -287,7 +287,7 @@ https://www.freedesktop.org/software/systemd/man/latest/systemd.service.html の
 
 ![Telegramでextract指示を出し、指定URLがbot対策で阻まれた後、エージェントがweb_extractを2回(freedesktop / GitHub raw)とexecute_codeで自律的に迂回し、公式原本XMLから7つの主要セクション見出しを抽出した画面](/images/hermes-vps/hermes-vps-11-telegram-extract.png)
 
-これがエージェントの真価=自律的迂回だ。素のHTMLは`curl`で足り、`backend`に設定したFirecrawlが効くのはJS描画や本文をきれいに取り出す必要がある複雑なページだが、阻まれたときに代替経路を自分で見つけて完遂できるかは別の能力で、ここで初めて見える。
+これがエージェントの真価=自律的迂回だ。素のHTMLは`curl`で足り、`backend`に設定したFirecrawlが役立つのはJS描画や本文をきれいに取り出す必要がある複雑なページだが、阻まれたときに代替経路を自分で見つけて完遂できるかは別の能力で、ここで初めて見える。
 
 ## 無料枠を使い切ったらTavilyに切り替える──web-failover skillで自動化
 
@@ -645,7 +645,7 @@ SearXNGは「複数の検索engineをまとめて叩くメタ検索エンジン�
 |---|---|
 | Firecrawlで「Insufficient credits」「402 Payment Required」 | 無料500クレジット/月を使い切った。Tavilyに切替(web-failover skillが自動でランブックを提示する)。月初にリセットされたら戻してもよい |
 | Firecrawlキーが認識されない | 1) `secrets.env`の`op://`パス間違い(保管庫名/アイテム名/credential)、2) 1Password側のアイテム名と一致確認、3) `op run --env-file=~/.hermes/secrets.env -- bash -c 'echo ${FIRECRAWL_API_KEY:0:6}'`で実値が展開されるか確認 |
-| 抽出が空 or 期待と違う | v0.17.0 rolling以降は大きいページは先頭+末尾だけが返り、中略部分は`cache/web`配下にフルテキストが保存される([PR#54843](https://github.com/NousResearch/hermes-agent/pull/54843)で2026-06-29にLLM要約→truncate+store方式へ変更・char budget初期15000は`config.yaml`の`web.extract_char_limit`で調整可)。SKILL.mdで「特定セクションだけ抜き出す」と明示するか、応答末尾の`read_file`案内に従って`cache/web`内のフルテキストを深掘りする。FirecrawlはJS描画や複雑なページに効く(素のHTMLはcurlで足りる) |
+| 抽出が空 or 期待と違う | v0.17.0 rolling以降は大きいページは先頭+末尾だけが返り、中略部分は`cache/web`配下にフルテキストが保存される([PR#54843](https://github.com/NousResearch/hermes-agent/pull/54843)で2026-06-29にLLM要約→truncate+store方式へ変更・char budget初期15000は`config.yaml`の`web.extract_char_limit`で調整可)。SKILL.mdで「特定セクションだけ抜き出す」と明示するか、応答末尾の`read_file`案内に従って`cache/web`内のフルテキストを深掘りする。FirecrawlはJS描画や複雑なページで役立つ(素のHTMLはcurlで足りる) |
 | X Searchで`degraded: true` | xAI側のレート制限。少し時間を置く+クエリを単純化 |
 | 再起動で`status=1/FAILURE`表示 | 旧プロセスがSIGKILLされた表示で再起動では正常。`is-active`が`active`を返せば成功 |
 | SearXNGに切り替えたら検索結果が薄い/エラー | 主要engineがbot対策で停止している可能性が高い(コラム参照)。Brave Search APIキー追加、または本線のFirecrawlに戻す |

@@ -666,7 +666,7 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 | 層 | 役割 |
 |---|---|
 | 第4回のコンテナ隔離(主) | エージェントのコマンドをコンテナ内に閉じ込め、ホスト(VPS本体・SSH鍵・トークン)に触れさせない。安全の本体はこれ |
-| `approvals.mode=manual`(従) | backendを`local`に戻したときだけ効く保険。`off`だと`rm -rf /`のような指示も無確認で通り、`smart`(新デフォルト)でもAIの評価だけで通る余地が残るので、本記事は`manual`で固定しておく |
+| `approvals.mode=manual`(従) | backendを`local`に戻したときだけ役立つ保険。`off`だと`rm -rf /`のような指示も無確認で通り、`smart`(新デフォルト)でもAIの評価だけで通る余地が残るので、本記事は`manual`で固定しておく |
 
 :::message
 **2026-06-28追記**:v0.17.0以降のrollingで`approvals.mode`の未知値(`auto`等)は警告ログを出した上で`manual`へfallbackされるようになった([PR#54469](https://github.com/NousResearch/hermes-agent/pull/54469))。「`auto`にすれば全自動」という挙動は現行では成立しない。本記事の方針(`manual`で固定する)は変わらず正しい。

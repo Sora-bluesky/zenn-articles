@@ -137,7 +137,7 @@ X(旧Twitter)・開発者コミュニティで頻出する反応は以下の3つ
 
 - 「OpenClawから乗り換えて、初期設定の手間が減った」(Reddit/Medium複数)
 - 「LLMのモデル選択肢が広い(Nous Portal経由なら300+モデル、OpenRouter経由で200+)。1サブスクで複数モデル切替えができる」
-- 「自己生成スキルが地味に効く。同じ調査を二度しなくて済む」
+- 「自己生成スキルが地味に役立つ。同じ調査を二度しなくて済む」
 
 OpenClawが2026年初頭にセキュリティ問題とリーダー離脱で揺れた時期と、Hermes Agentの台頭が重なったタイミングの要素も大きいが、技術的な勝因は**学習ループの設計**にあると見られている([Turing Post解説](https://www.turingpost.com/p/hermes))。
 
@@ -537,7 +537,7 @@ sudo grep -r "PermitRootLogin" /etc/ssh/
 
 | 行のパス | 種類 | 効力 |
 |---|---|---|
-| `/etc/ssh/sshd_config:PermitRootLogin no` | 有効な設定行 | 効く |
+| `/etc/ssh/sshd_config:PermitRootLogin no` | 有効な設定行 | 反映される |
 | `/etc/ssh/sshd_config:# the setting of "..."` | コメント(`#`始まり) | 効力なし |
 | `/etc/ssh/sshd_config.d/*.conf:PermitRootLogin ...` | cloud-init等が書いた上書き設定 | **要編集** |
 | `/etc/ssh/sshd_config.ucf-dist:...` | ucfツールの配布元バックアップ | **無視してOK** |

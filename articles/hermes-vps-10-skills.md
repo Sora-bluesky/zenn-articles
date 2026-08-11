@@ -117,7 +117,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ![母艦のブラウザからTailscale経由でVPSのhermes-dashboardとhermes-gatewayにつなぐ構成図。Dashboardのスキルペインからは新規スキルの作成(NEW SKILL)と編集鉛筆で~/.hermes/skills/summarize-to-japaneseのSKILL.mdを書き、BROWSE HUBからresearch/duckduckgo-searchを導入し、CRON編集モーダルのSKILLS欄でスキルをCronジョブに添付する。Telegramからは/summarize_to_japaneseでスキルを呼び出す。すべてDashboardで完結しSSH不要であることが伝わる図](/images/hermes-vps/hermes-vps-10-skills-architecture-diagram.png)
 
-ポイントは、`SKILL.md`を一度置けば、あとはTelegramからもCronからも同じ手順を呼べること。手順の本体は1箇所にしかないので、直す時もそこだけ直せば全部に効く。
+ポイントは、`SKILL.md`を一度置けば、あとはTelegramからもCronからも同じ手順を呼べること。手順の本体は1箇所にしかないので、直す時もそこだけ直せば全部に反映される。
 
 ## 事前準備
 
@@ -234,7 +234,7 @@ Hubは内部でGitHubを見にいくので、たくさん操作するとレー�
 
 作り方は2通りある。**自分で`SKILL.md`を書く**(Dashboard)と、**Hermesにざっくり頼んで書かせる**(Telegram)だ。同じ「スキルを作る」でも入口が違うのが分かるよう、別々のスキルで体験する。
 
-- 5-1〜5-2:自分でDashboardから`summarize-to-japanese`を書く。英語の記事やYouTubeのURLを放り込むと、日本語3〜5行で要点が返る。毎朝のニュースチェックや海外記事の下読みに効くスキルだ
+- 5-1〜5-2:自分でDashboardから`summarize-to-japanese`を書く。英語の記事やYouTubeのURLを放り込むと、日本語3〜5行で要点が返る。毎朝のニュースチェックや海外記事の下読みに役立つスキルだ
 - 5-3:出先でTelegramからHermesに`plain-japanese`を書かせる。役所の通知や利用規約のような硬い文章を投げると、中学生にもわかる言葉で返る。スマホから頼めるのが要点だ
 
 ### 自分でSKILL.mdを書く(Dashboard)
