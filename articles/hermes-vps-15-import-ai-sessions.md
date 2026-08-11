@@ -1108,3 +1108,13 @@ Claude Code/Codexのjsonl構造(`type`フィールド・1行1JSON形式)は2026-
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
 :::
+
+:::message
+**この記事をAIに読ませる**
+
+この記事はGitHubの公開リポジトリで管理していて、本文のMarkdownをそのまま取得できる。Claude CodeやCodexなどのAIエージェントに手順を任せたいときは、次のURLを渡すだけでいい。
+
+https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/hermes-vps-15-import-ai-sessions.md
+
+頼み方の例:「この記事を読んで、私の環境で手順を順番に実行して」に上のURLを添える。
+:::
