@@ -137,7 +137,7 @@ systemd・hermes gateway・messengerの3層に焦点を絞った構成。
 PowerShell(またはWindows Terminal)から、第2回で設定した鍵+ホスト名でVPSに入る。
 
 ```powershell
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 ```
 
 第2回でTailscaleを入れた読者は、`hermes-vps`がTailnetのMagicDNS名で解決される。第1回までで止まっている読者はTailscale経由ではなくグローバルIP+22番(または変更後ポート)でアクセスする必要がある。
@@ -432,7 +432,7 @@ systemctl --user is-active hermes-gateway.service
 sudo reboot
 
 # 3. 1〜2分待ってからSSH再ログイン
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 
 # 4. hermesが自動で起動しているか確認
 systemctl --user is-active hermes-gateway.service

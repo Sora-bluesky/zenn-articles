@@ -156,7 +156,7 @@ YAMLは慣れないとインデント(字下げ)で詰まりやすい書式。Da
 第7回でVPSの`hermes dashboard`は認証つきでsystemd常駐済みのはず。まずそれが生きているか確認する。
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 tailscale ip -4
 systemctl --user status hermes-dashboard
 curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_providers'

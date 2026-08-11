@@ -359,7 +359,7 @@ SSHのターミナルから直接登録したい人向けの代替手順。Dashb
 
 ```bash
 # VPSにSSH接続(第1〜2回で設定したTailscale経由)
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 
 # 1行コマンドで登録(スケジュール・プロンプト・名前・配信先)
 hermes cron add '0 7 * * *' '今日のニュースとX上のAI関連の話題を要約して(本文はプロンプト章を参照)' --name 'morning-news' --deliver telegram

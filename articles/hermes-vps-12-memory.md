@@ -136,7 +136,7 @@ Markdownの3ファイルが「いつもそこにある記憶」、SQLiteが「�
 第11回までが完了していれば、追加で入れるものはない。VPSへSSHで入って稼働を確認する。
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 
 hermes version                                  # v0.17.0(2026.6.19・The Reach Release)以降を確認
 systemctl --user status hermes-gateway          # active (running)

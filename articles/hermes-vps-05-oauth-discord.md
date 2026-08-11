@@ -152,7 +152,7 @@ provider・messenger・承認モードの3つに焦点を絞った構成。
 VPSにadminでSSHログインしてHermes作業環境に入る。
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 cd ~/hermes-agent
 source venv/bin/activate
 hermes version

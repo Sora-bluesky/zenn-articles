@@ -117,7 +117,7 @@ Web検索は「過去のページから情報を拾う」もの。X Searchは「
 次の4つは「動いているか」の確認用だ。
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 hermes version                                  # v0.16.0 を確認
 systemctl --user status hermes-gateway          # active (running)
 docker ps                                       # Docker engine 稼働(第4回)

@@ -348,8 +348,10 @@ Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN
 第2回で確立した経路を使う。手元PCのターミナル(WindowsならPowerShell、Macならターミナル)で:
 
 ```
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 ```
+
+第1回で使っていた鍵の指定が消えて、ずいぶん短くなった。第2回で`--ssh`付きでTailscaleを有効化してあるので、Tailnet内からの接続は**Tailscale SSHが本人確認を代行してくれる**——`-i`で鍵を指定する必要はもうない(付けても動くが、実際に使われるのはTailscale側の認証)。第1回で作った鍵は、万一Tailscaleが使えなくなったときにグローバルIPで直結するための非常用として手元に残しておく。
 
 TailscaleのMagicDNS(デフォルト有効)により`hermes-vps`というマシン名が`100.x.x.x`形式のTailscale IPに自動解決される。マシン名で繋がらない場合は[login.tailscale.com/admin/machines](https://login.tailscale.com/admin/machines)で`hermes-vps`の`100.x.x.x`形式のIPを確認して直接指定する(`admin@<Tailscale IP>`)。第4回以降も本記事と同じ`admin@hermes-vps`形で統一する。
 

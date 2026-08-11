@@ -160,7 +160,7 @@ VPSに接続して稼働を確認し、過去会話の記録ファイル(`state.
 ### VPSの実機バージョン確認
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 hermes version                                  # v0.17.0(2026.6.19 The Reach Release)以降を確認
 ```
 

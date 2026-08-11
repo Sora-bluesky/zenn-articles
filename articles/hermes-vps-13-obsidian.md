@@ -152,7 +152,7 @@ HermesとObsidian Vaultがどう繋がるかを俯瞰する。第12回で書い�
 ### VPSの実機バージョン確認
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 
 hermes version                                  # v0.17.0(2026.6.19 The Reach Release)以降を確認
 systemctl --user status hermes-gateway          # active (running)
@@ -219,7 +219,7 @@ Hermes本体は標準で`~/Documents/Obsidian Vault`という場所にVaultが�
 VPSにSSHで入った状態で、Hermesが書く実体ディレクトリを作る。
 
 ```bash
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 mkdir -p ~/.hermes/sandboxes/docker/default/home/Documents/Obsidian\ Vault
 ```
 

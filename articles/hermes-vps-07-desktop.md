@@ -121,7 +121,7 @@ Hermes Desktopは2026-06-05のv0.16.0で正式リリースされた、macOS/Wind
 まずVPSにSSHで入り直し、第6回の常駐が生きていることを確認する。あわせて、この回で何度も使うVPSのTailscale IPを控えておく(後でdashboardのbind先・Desktopの接続先になる)。
 
 ```powershell
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 ```
 
 入れたら、バージョンとgatewayの稼働を1画面で確認する。

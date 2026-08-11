@@ -149,7 +149,7 @@ Telegramから飛んできた指示が`rm -rf /`のような破壊コマンド�
 第2回で確立した経路を使う。
 
 ```
-ssh -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
+ssh admin@hermes-vps
 ```
 
 MagicDNSが有効でない場合は[Tailscale admin console](https://login.tailscale.com/admin/machines)で`hermes-vps`の`100.x.x.x`形式のIPを確認して使う。
