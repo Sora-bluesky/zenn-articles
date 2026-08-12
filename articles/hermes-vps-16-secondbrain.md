@@ -79,7 +79,7 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 
 ## この回の到達点
 
-「先週Codexで詰まった件、今後同じ問題が出たら最初にどこを見る?」とHermesに頼むと、過去事実(raw/transcripts/の生履歴)だけでなく、**一般化された教訓**(llm-wikiが整理したconcept page)を引いて答える状態を作る。本回でVault配下に`entities/`・`concepts/`・`queries/`の3フォルダが生まれる。
+「先週Codexで詰まった件、今後同じ問題が出たら最初にどこを見る?」とHermesに頼むと、過去事実(raw/transcripts/の生履歴)だけでなく、**一般化された教訓**(llm-wikiが整理したconcept page)を引いて答える状態を作る。本回でVault配下に`entities/`・`concepts/`・`comparisons/`・`queries/`の4フォルダが生まれる(comparisonsとqueriesは初回は空のこともある)。
 
 第15回完了時点との差分を表にする。
 
@@ -88,7 +88,7 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 | Hermesがraw/transcripts/を引く方法 | 毎回mdファイルを直接読む(検索と読み込みの繰り返し・数千件相手だと重い) | llm-wikiが整理した`entities/`(人物・ツール)・`concepts/`(概念)・`queries/`(よくある問い)から引く。入口が「索引」になる |
 | 「先週のエラー、今後どう対処?」への応答 | 該当sessionのmdから事実だけを引いて答える(過去事実の再生) | 該当事実に加えて、llm-wikiが他のsessionと相互参照して作ったconceptを引いて答える(教訓の一般化) |
 | 追加した道具 | 母艦の変換スクリプト1本(自前) | Hermes純正の`llm-wiki`skill(bundled・research・自前コードはゼロ)と`.env`への2行追記 |
-| 次の回への橋渡し | 第16回でllm-wikiがraw/transcripts/をセカンドブレイン化する前提を作った | 本回で生まれた`entities/concepts/queries/`を、第17回以降が「整理されたwiki」前提で扱う |
+| 次の回への橋渡し | 第16回でllm-wikiがraw/transcripts/をセカンドブレイン化する前提を作った | 本回で生まれた`entities/concepts/comparisons/queries/`を、第17回以降が「整理されたwiki」前提で扱う |
 
 この回で出てくる用語を先に押さえておく。
 
@@ -98,6 +98,7 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 | raw層(本回で再利用) | Vault配下の`raw/`。第15回で作った不変の原本置き場。llm-wikiはここを読むだけで書き換えない |
 | entities(本回で新設) | Vault配下の`entities/`。人物・組織・製品・モデル・ツールのページ置き場。1ページ1エンティティ |
 | concepts(本回で新設) | Vault配下の`concepts/`。概念・技術トピックのページ置き場 |
+| comparisons(本回で新設) | Vault配下の`comparisons/`。2つ以上の対象を比べた記事の置き場。初回ingestでは空でもよく、運用の中で増えていく |
 | queries(本回で新設) | Vault配下の`queries/`。よくある問いと、wikiが答えた結果の保存 |
 | wikilink(`[[page-name]]`) | wiki内ページ同士のリンク。Hermesが「関連ページ」を辿れる。Obsidianで開けばクリックで遷移する |
 | SCHEMA.md(本回で新設) | Vault直下に置く規約ファイル。domain(このwikiが何を扱うか)・ファイル名規則・frontmatter形式・tag taxonomy(タグの分類体系)・ページ作成の閾値を1ファイルに集約する。Hermesはwikiに触るたびにこれを最初に読む |
@@ -187,6 +188,16 @@ grep -E "^(WIKI_PATH|OBSIDIAN_VAULT_PATH)=" ~/.hermes/.env
 
 2行ずつ出たら追記が二重に入っている。nanoで下の余分な2行を消してから確認し直す。`grep`を緩い書き方にすると第13回で設定した別の環境変数の行も一緒に引っかかるので、上の行頭固定形で書くのがコツだ。
 
+ここで1つ、先に押さえておきたいことがある。同じVaultでも、立場によって見えるパスが違う。
+
+| 立場 | パス |
+|---|---|
+| `.env`に書くパス(VPSホスト側) | `/home/admin/hermes-vault` |
+| Hermesの端末ツールが動くDockerコンテナの中 | `/root/hermes-vault` |
+| 母艦のObsidianで開く場所 | 第13回で作った同期先(例:`Documents\Hermes-Vault`) |
+
+`.env`に書いたからといって、コンテナの中も同じパスになるわけではない(この落とし穴は後半の「着手前の事前確認」で実際に踏む)。TelegramでHermesにファイル操作を頼むときは、**コンテナから見える絶対パスで書く**のが必須だ。迷ったらHermes本人に「Vaultはどこに見えている?」と聞くのが確実で、返ってきたパスを依頼文に使う。
+
 ### hermes updateでbundled skillを最新化
 
 llm-wiki skillはbundled(Hermes本体に同梱)なので、本来は別途インストール不要だ。だが第6回でHermesを最初に入れた時点から日数が経っているなら、`hermes update`でコード本体とbundled skillを同期する。
@@ -237,7 +248,7 @@ echo "最新: $(ls ~/hermes-vault/raw/transcripts/claude-code/ | sort | tail -1)
 :::
 
 :::message
-このVaultは「中継リポからrsyncでコピーする」構成をやめ、Hermesが読む場所とgitリポを同一にしてある。第15回で使ったrsyncの工程は、今の構成では不要になった。
+筆者はこのVaultで「中継リポからrsyncでコピーする」工程をやめ、Hermesが読む場所とgitリポを同一にする方向へ寄せている。git往復が本線だ。ただし完全な一本化はまだ進行中で、第15回のrsync手順が使えなくなったわけではない。構成を変えていない読者は第15回のままでよい。
 :::
 
 ## Hermesにwikiを初期化させて、作業履歴を取り込ませる
@@ -329,17 +340,17 @@ Hermesはllm-wiki skillの手順に従い、各mdを読んで既存のentities/c
 
 ![Telegramでのingest完了報告。14ページ(entities5+concepts9)の全ページ名と、wikilink壊れなし・孤児なしの自己検査結果、最下部にSelf-improvement reviewの1行が見える](/images/hermes-vps/hermes-vps-16-telegram-ingest-summary.jpg)
 
-筆者の環境では直近2週間分で14ページ(entities5+concepts9)ができた。何ページできるかは持っている素材の量と密度次第で、数ページのこともあれば数十ページのこともある。ページ数の多い少ないより、`[[wikilinks]]`で繋がった状態になっているかを見るとよい。
+筆者の環境では直近2週間分で14ページ(entities5+concepts9)ができた。何ページできるかは持っている素材の量と密度次第で、数ページのこともあれば数十ページのこともある。ページ数の多い少ないより、`[[wikilinks]]`で繋がった状態になっているかを見るとよい。なおこの14ページは初回seedの一例で、完成形ではない。運用を続けるとentitiesやcomparisonsのページは増えていく(筆者の環境でも公開後に17ページを超えた)。
 
 ![Obsidianでlog.mdを開いた画面。createエントリとingestエントリが時系列で並び、左サイドバーにentities・conceptsフォルダが出現している](/images/hermes-vps/hermes-vps-16-log-timeline.jpg)
 
-生成されたページは、母艦のObsidianで実体を確認する。左サイドバーをリフレッシュすると`entities/`・`concepts/`・`queries/`(初回ingestではqueriesは空のこともある)が見え、各フォルダ配下にmdが並んでいる。代表1ページを開いて、ちゃんと「読める形」になっているか確かめる。
+生成されたページは、母艦のObsidianで実体を確認する。左サイドバーをリフレッシュすると`entities/`・`concepts/`・`comparisons/`・`queries/`(初回ingestではcomparisonsやqueriesは空のこともある)が見え、各フォルダ配下にmdが並んでいる。代表1ページを開いて、ちゃんと「読める形」になっているか確かめる。
 
 ![Obsidianでconceptページを開いた画面。title/created/updated/type/tags/sources/confidenceのプロパティ、関連リンク、原本へのsourcesリンク、試して駄目だった方式とその理由を書いた表が見える](/images/hermes-vps/hermes-vps-16-concept-page-content.jpg)
 
 sourcesには原本パスへのリンクが入っている。どの会話から導いた記述かを辿れるということだ。「失敗した方式とその理由」まで残っているページもあり、原本を読み返すだけでは得られない形で情報が整理されているのがわかる。
 
-最後にGraph Viewで、ページ同士のつながりを俯瞰する。
+最後にGraph Viewで、ページ同士のつながりを俯瞰する。その前に1つだけ。VPSで書けた=母艦のObsidianで見えている、ではない。gitのpushとpull(前節の運び方)を済ませてから開く。運んでいない状態のGraph Viewは、古い景色を映しているだけだ。
 
 ![ObsidianのGraph View。設定でraw層を除外しconcepts/entitiesだけを表示するフィルタをかけた状態で、本回生成したノードが名前付きで表示され、wikilinkのエッジで繋がっている](/images/hermes-vps/hermes-vps-16-obsidian-graph-view.jpg)
 
@@ -442,6 +453,12 @@ Source列が`local`になっているのがポイントだ。最初から同梱�
 中身で本文に引用する価値があるのは、パスの正本を宣言している箇所だ。「必ずコンテナから見える`/root/hermes-vault`を正として読む・書く。ホスト側のパスはdocker端末から見えない」という一文が書かれている。これは、今日の作業で自分が事前確認まで踏んで突き止めたことを、Hermesが同じ結論として自分の言葉で残していたことになる。
 
 これは頼んでいないのに起きたことなので、必ず読者の環境で同じことが起きるとは限らない。今回の環境ではこうなった、という実例として捉えてほしい。「自分で技を作る」という発想は、第10回のSkillsや、この先のSkills育て直し・Curatorの回に繋がっていく。書庫が整い、司書が索引を作り、その司書自身が次の自分への手順書まで残す。ここまで来ると、Hermesは単なる記憶装置ではなく、育っていく相棒に近づいている。
+
+## コラム:第16回のあとに起きていること(公開後追記)
+
+本回の物語は「他AIの作業履歴(raw/transcripts/)→wiki」だった。その後の運用では、もう1本の合流が始まっている。X上のGrok Botとのやり取りの成果も、同じwikiへ入れる流れだ。
+
+経路は「Grok Botの成果→母艦の受け取り箱→Hermesが取り込み→wiki」で、人間がチャット画面から全文をコピペして運ぶ工程は挟まない。成果の正本をチャットに置かない・人間を配達係にしない、という方針は、本回の「二度同じことを調べさせない」と同じ型である。詳しい手順は、材料が溜まったら別の回で扱う。
 
 ## 早見表+引用元+第17回予告
 
