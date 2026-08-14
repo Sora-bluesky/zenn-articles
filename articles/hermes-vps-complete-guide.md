@@ -53,7 +53,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 14 | [毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) |
 | 15 | [記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) |
 | 16 | [同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) |
-| 17 | 口調をブレさせるな。Hermes Agentは設定でいつも同じ口調を保つ。 |
+| 17 | 口調をブレさせるな。Hermes Agentの話し方は実は変えられる |
 | 18 | 技を放置するな。Hermes Agentは定期的にSkillsを磨き直す。 |
 | 19 | 技を増やしすぎるな。Hermes Agentは自動で整理して動きを軽く保つ。 |
 

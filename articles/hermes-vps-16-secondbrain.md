@@ -547,7 +547,7 @@ cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本�
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ | 第17回 整理した知識をどんな声で返すか。Hermesの文体を仕立てる(近日公開) |
+| [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ | 第17回 口調をブレさせるな。Hermes Agentの話し方は実は変えられる(近日公開) |
 
 📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
