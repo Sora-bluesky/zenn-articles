@@ -15,12 +15,13 @@ published: true
 :::
 
 :::message
-2026年3月時点の情報。Claude Code の仕様変更により動作が変わる可能性がある。
+2026年9月時点の情報。Claude Code の仕様変更により動作が変わる可能性がある。
 :::
 
 :::details 修正履歴
 | 日付 | 内容 |
 |------|------|
+| 2026-09-02 | 現行の Claude Code に合わせて全体を見直し。`stop-check.sh` に `stop_hook_active` のガードを追加（Stop Hook が8回連続でブロックすると上書きされるため）。スキルのディレクトリ形式、`transcript_path` が全イベント共通であること、`SessionStart` の `compact` matcher による再注入、公式の再開手段と transcript の保持期間、圧縮で何が残るかを追記 |
 | 2026-03-05 | 公式メモリ機能（CLAUDE.md + auto memory）との違いを説明するセクションを追加 |
 | 2026-03-04 | `session-start.sh` を `node -e` JSON 方式から `cat` プレーンテキスト方式に修正。SessionStart Hook は標準出力がそのまま `additionalContext` になるため、JSON ラップは不要だった |
 :::
