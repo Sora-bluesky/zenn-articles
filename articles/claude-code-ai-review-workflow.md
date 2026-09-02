@@ -331,7 +331,7 @@ GitHub でコードの変更を提案・レビューする仕組み。チーム�
 :::message
 **カスタムコマンドの設定**
 `/review {PR番号}` を使うには、`.claude/commands/review.md` を作成する必要がある。
-詳細は「[発展編：GitHub Actions連携](#発展編github-actions連携)」を参照。
+詳細は「[発展編：GitHub Actions連携](#発展編：github-actions連携)」を参照。
 :::
 
 ---

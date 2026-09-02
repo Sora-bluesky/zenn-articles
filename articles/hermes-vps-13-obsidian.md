@@ -30,7 +30,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [bundled obsidian skillの確認](#bundled-obsidian-skillの確認)
 - [Vault実体の準備](#vault実体の準備)
 - [4経路の整理](#4経路の整理)
-- [動作確認──HermesにVault参照を依頼](#動作確認hermesにvault参照を依頼)
+- [動作確認──HermesにVault参照を依頼](#動作確認──hermesにvault参照を依頼)
 - [AIが読めるノートの書き方](#aiが読めるノートの書き方)
 - [母艦とVPSのVault同期](#母艦とvpsのvault同期)
 - [3エージェントで同じVaultを読む](#3エージェントで同じvaultを読む)

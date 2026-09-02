@@ -439,7 +439,7 @@ flowchart TB
 
 設計判断・デバッグ・レビューを Codex に委譲するための核心スキル。
 
-> このスキルを使うには [Step 2: パスの設定](#step-2-パスの設定) が必要です。
+> このスキルを使うには [Step 2: パスの設定](#step-2%3A-パスの設定) が必要です。
 
 **いつ使うか（キーワード検出）：**
 
@@ -606,7 +606,7 @@ sudo apt install git -y
 git clone https://github.com/Sora-bluesky/antigravity-orchestra.git my-project
 ```
 
-リポジトリをクローンして、[パスを設定](#step-2-パスの設定)すれば準備完了です。
+リポジトリをクローンして、[パスを設定](#step-2%3A-パスの設定)すれば準備完了です。
 
 **Star をいただけると励みになります！**
 :::

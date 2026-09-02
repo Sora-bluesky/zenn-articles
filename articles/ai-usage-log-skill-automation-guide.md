@@ -6,7 +6,6 @@ topics: ["ai", "codex", "claudecode", "運用", "自動化"]
 published: false
 ---
 
-<a id="position"></a>
 ## この記事の位置づけ
 
 この記事は、以下の関連記事にある「毎日1分記録」を実運用できる形にした詳細版。
@@ -17,23 +16,21 @@ published: false
 
 ---
 
-<a id="toc"></a>
 ## 目次
 
-1. [この記事で得られること](#what-you-get)
-2. [結論](#conclusion)
-3. [この記事で採用する運用方式](#approach)
-4. [最初のセットアップ（初回1回）](#setup)
-5. [役割分担（Claude Code側 / Codex CLI側）](#roles)
-6. [毎日の運用手順（準自動フロー）](#daily-flow)
-7. [日次ログのテンプレ](#template)
-8. [検証が終わったら](#after-validation)
-9. [公式で確認すべきポイント](#official-points)
-10. [最後に](#closing)
+1. [この記事で得られること](#この記事で得られること)
+2. [結論](#結論)
+3. [この記事で採用する運用方式](#この記事で採用する運用方式)
+4. [最初のセットアップ（初回1回）](#最初のセットアップ（初回1回）)
+5. [役割分担（Claude Code側 / Codex CLI側）](#役割分担（claude-code側-%2F-codex-cli側）)
+6. [毎日の運用手順（準自動フロー）](#毎日の運用手順（準自動フロー）)
+7. [日次ログのテンプレ](#日次ログのテンプレ)
+8. [検証が終わったら](#検証が終わったら)
+9. [公式で確認すべきポイント](#公式で確認すべきポイント)
+10. [最後に](#最後に)
 
 ---
 
-<a id="what-you-get"></a>
 ## この記事で得られること
 
 - `Claude Max 20x` から `Claude Max 5x` への移行判断に必要な最小ログ項目
@@ -51,7 +48,6 @@ published: false
 
 ---
 
-<a id="conclusion"></a>
 ## 結論
 
 この運用は「準自動」。
@@ -60,11 +56,10 @@ published: false
 - 毎日は `/status` を確認して短いコマンドを実行するだけ
 - 検証期間が終わったら、更新を止めてOK
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="approach"></a>
 ## この記事で採用する運用方式
 
 対象は、次の運用。
@@ -73,11 +68,10 @@ published: false
 - 使用量ログは「集約ログリポジトリ」1か所にまとめる
 - 追記先は `logs/usage-log.md` に統一する
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="setup"></a>
 ## 最初のセットアップ（初回1回）
 
 ### 1. 集約ログリポジトリと初期ログを作る
@@ -182,11 +176,10 @@ $root = Join-Path $HOME "Documents/Ops/ai-ops-log"
 $root = "D:\\work\\ai-ops-log"
 ```
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="roles"></a>
 ## 役割分担（Claude Code側 / Codex CLI側）
 
 | 担当 | やること | 実行コマンド |
@@ -207,11 +200,10 @@ flowchart LR
   H --> I[logs/usage-log.md に1行追記]
 ```
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="daily-flow"></a>
 ## 毎日の運用手順（準自動フロー）
 
 ### 実行手順（開始時）
@@ -248,11 +240,10 @@ ulog-commit -stop_count 0 -stop_min 0 -rework_count 1 -memo "価格比較セク�
   `codex` を起動して対話内で `/status` を実行する
 - 同時に2つのツールから同じファイルを編集しない
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="template"></a>
 ## 日次ログのテンプレ
 
 このテンプレのヘッダ行は、初回セットアップのスクリプトで自動作成される。  
@@ -270,22 +261,20 @@ ulog-commit -stop_count 0 -stop_min 0 -rework_count 1 -memo "価格比較セク�
 ただし、この値は運用判断のための実務目安。  
 モデル、会話長、タスク複雑さで変動するため、最終判断は「参考値」として扱うのが安全。
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="after-validation"></a>
 ## 検証が終わったら
 
 このログ運用は、`Claude Max 20x` から `Claude Max 5x` への移行検証期間だけ回せば十分。  
 検証が終わったら、`/status` 取得と `ulog-capture` / `ulog-commit` の日次実行を止めればよい。  
 特別な停止コマンドは不要で、追記フローを回さなければ `logs/usage-log.md` の更新は自然に止まる。
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="official-points"></a>
 ## 公式で確認すべきポイント
 
 - Codexの上限と usage dashboard: https://developers.openai.com/codex/pricing
@@ -293,11 +282,10 @@ ulog-commit -stop_count 0 -stop_min 0 -rework_count 1 -memo "価格比較セク�
 - Claude Codeの利用上限の考え方: https://support.claude.com/en/articles/11145838-using-claude-code-with-your-pro-or-max-plan
 - Claude Codeカスタムコマンド: https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/slash-commands
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="closing"></a>
 ## 最後に
 
 移行判断は「感覚」ではなく「ログ」。  

@@ -6,7 +6,6 @@ topics: ["claudecode", "codex", "vscode", "生成ai", "個人開発"]
 published: false
 ---
 
-<a id="conclusion"></a>
 ## 結論
 
 この記事の結論はシンプル。
@@ -19,7 +18,6 @@ published: false
 
 ---
 
-<a id="what-you-get"></a>
 ## この記事で得られること
 
 - `Claude Max 20x -> Claude Max 5x` 移行を判断する、実測ベースの基準
@@ -28,28 +26,26 @@ published: false
 
 ---
 
-<a id="toc"></a>
 ## 目次
 
-1. [結論](#conclusion)
-2. [この記事で得られること](#what-you-get)
-3. [経緯](#sec-background)
-4. [この記事の前提（Plusユーザー向け）](#sec-prereq)
-5. [コストの見立て（2026-02-09時点）](#sec-cost)
-6. [まず用語整理（ここ重要）](#sec-terms)
-7. [先にハマった点：`codex /status` で使用量が見えない](#sec-status-gotcha)
-8. [残量の確認方法（/status と VS Code UI）](#sec-usage-check)
-9. [運用ルール（20x依存を落とす）](#sec-rules)
-10. [併用運用のデメリットと対策（Claude / Codex / Gemini）](#sec-multi-tool-risks)
-11. [5x移行の判断基準（公式値ベース）](#sec-criteria)
-12. [1週間の検証プラン](#sec-plan)
-13. [まとめ](#sec-summary)
-14. [関連記事](#sec-related)
-15. [参考](#references)
+1. [結論](#結論)
+2. [この記事で得られること](#この記事で得られること)
+3. [経緯](#経緯)
+4. [この記事の前提（Plusユーザー向け）](#この記事の前提（plusユーザー向け）)
+5. [コストの見立て（2026-02-09時点）](#コストの見立て（2026-02-09時点）)
+6. [まず用語整理（ここ重要）](#まず用語整理（ここ重要）)
+7. [先にハマった点：`codex /status` で使用量が見えない](#先にハマった点：codex-%2Fstatus-で使用量が見えない)
+8. [残量の確認方法（/status と VS Code UI）](#残量の確認方法（%2Fstatus-と-vs-code-ui）)
+9. [運用ルール（20x依存を落とす）](#運用ルール（20x依存を落とす）)
+10. [併用運用のデメリットと対策（Claude / Codex / Gemini）](#併用運用のデメリットと対策（claude-%2F-codex-%2F-gemini）)
+11. [5x移行の判断基準（公式値ベース）](#5x移行の判断基準（公式値ベース）)
+12. [1週間の検証プラン](#1週間の検証プラン)
+13. [まとめ](#まとめ)
+14. [関連記事](#関連記事)
+15. [参考](#参考)
 
 ---
 
-<a id="sec-background"></a>
 ## 経緯
 
 システム開発、記事作成、検証メモ整理まで、ほぼ全部を Claude Code で回していた。
@@ -63,11 +59,10 @@ published: false
 - VS Code拡張のCodexも併用する
 - コストを抑えつつ品質を保てるか検証する
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-prereq"></a>
 ## この記事の前提（Plusユーザー向け）
 
 この記事は、**ChatGPT Plusをすでに契約している人** を対象にしている。
@@ -81,7 +76,6 @@ published: false
 
 ---
 
-<a id="sec-cost"></a>
 ## コストの見立て（2026-02-09時点）
 
 | プラン構成 | 月額 |
@@ -92,11 +86,10 @@ published: false
 
 年間では **-$1,200** の削減余地。
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-terms"></a>
 ## まず用語整理（ここ重要）
 
 - ChatGPTの通常チャット: ChatGPT側の枠を消費
@@ -120,7 +113,6 @@ ChatGPT本体は、Codexの`/status`のように「残量○%」を常時表示�
 
 ---
 
-<a id="sec-status-gotcha"></a>
 ## 先にハマった点：`codex /status` で使用量が見えない
 
 最初にターミナルで次を実行して失敗した。
@@ -139,10 +131,9 @@ codex
 /status
 ```
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
-<a id="sec-usage-check"></a>
 ## 残量の確認方法（/status と VS Code UI）
 
 ### 実測スクリーンショット（Plus）
@@ -172,11 +163,10 @@ codex
 ![残りのレート制限の表示](/images/codex-rate-limit-panel.png)
 *`/status` と同様に、残量とリセット時刻をUI上で確認できる。*
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-rules"></a>
 ## 運用ルール（20x依存を落とす）
 
 役割を分ける。
@@ -188,11 +178,10 @@ codex
 
 - **CodexはLocal中心、Cloudは必要時のみ**
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-multi-tool-risks"></a>
 ## 併用運用のデメリットと対策（Claude / Codex / Gemini）
 
 結論として、併用は有効だが「放置すると破綻しやすい」。
@@ -229,11 +218,10 @@ codex
 詳細手順は別記事に分離した。この記事では判断軸だけに集中する。  
 → [指示資産の散乱を防ぐ設定共有ガイド](ai-tooling-skills-rules-sharing-guide)
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-criteria"></a>
 ## 5x移行の判断基準（公式値ベース）
 
 先に結論だけ。
@@ -291,20 +279,18 @@ codex
 
 公式上、`reasoning.effort` は使用量に影響するが、増加率の固定値は公開されていない。
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
-<a id="sec-plan"></a>
 ## 1週間の検証プラン
 
 1. まず3日間、現状（20x中心）で記録
 2. 次の4日間、役割分担運用に変更（Claude実装中心 + Codexレビュー中心）
 3. 毎日、Claude/Codexの`/status`で5時間枠と週次枠を記録
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-summary"></a>
 ## まとめ
 
 この検証は「新しい課金を増やす話」ではない。
@@ -312,21 +298,19 @@ codex
 
 まずは1週間、役割分担だけ変えて記録してみるのがいちばん確実。
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="sec-related"></a>
 ## 関連記事
 
 - 設定共有の詳細: [指示資産の散乱を防ぐ設定共有ガイド](ai-tooling-skills-rules-sharing-guide)
 - ログ自動化: [使用量ログを1分で自動化する手順](ai-usage-log-skill-automation-guide)
 
-↑ [目次に戻る](#toc)
+↑ [目次に戻る](#目次)
 
 ---
 
-<a id="references"></a>
 ## 参考
 
 - Claude Max pricing: https://claude.com/pricing/max

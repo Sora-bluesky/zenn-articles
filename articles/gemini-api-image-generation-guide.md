@@ -22,7 +22,7 @@ published: true
 1. [この記事の結論](#この記事の結論)
 2. [Gemini アプリと Gemini API は別物](#gemini-アプリと-gemini-api-は別物)
 3. [画像生成に使えるモデル一覧](#画像生成に使えるモデル一覧)
-4. [モデル比較 - Nano Banana / Nano Banana Pro / Imagen 4](#モデル比較---nano-banana--nano-banana-pro--imagen-4)
+4. [モデル比較 - Nano Banana / Nano Banana Pro / Imagen 4](#モデル比較---nano-banana-%2F-nano-banana-pro-%2F-imagen-4)
 5. [料金の全体像](#料金の全体像)
 6. [画像生成を試せる場所](#画像生成を試せる場所)
 7. [API キーのセキュリティ](#api-キーのセキュリティ)

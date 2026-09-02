@@ -6,8 +6,6 @@ topics: ["cloudflare", "cloudflared", "tunnel", "windows", "tailscale"]
 published: false
 ---
 
-<a id="position"></a>
-
 ## この記事の位置づけ
 
 自宅 PC で動かしているアプリ（Claude Code のダッシュボード、家計簿アプリ、作りかけのサービスなど）に、外出先のスマホや会社の PC から確認したい。でも VPS を借りたり、グローバル IP を晒したりはしたくない。
@@ -24,31 +22,27 @@ published: false
 
 ---
 
-<a id="toc"></a>
-
 ## 目次
 
-- [Cloudflare Tunnel とは何か](#what-is-tunnel)
-- [全体像を先に把握する（構成図）](#overview)
-- [費用まとめ](#cost)
-- [Step 1: Cloudflare アカウント作成](#step1)
-- [Step 2: ドメインを用意する](#step2)
-- [Step 3: cloudflared をインストールする（Windows）](#step3)
-- [Step 4: Tunnel を作成する（ダッシュボード方式）](#step4)
-- [Step 5: Public Hostname を設定する](#step5)
-- [Step 6: 接続を確認する](#step6)
-- [Step 7: Cloudflare Access で認証を追加する](#step7)
-- [Step 8: Windows サービス化（PC 起動時に自動接続）](#step8)
-- [補足: Quick Tunnel（ドメイン不要・1 コマンドで試す）](#quick-tunnel)
-- [補足: CLI 方式で Tunnel を管理する](#cli-method)
-- [代替手段: Tailscale Funnel（ドメイン不要・完全無料）](#tailscale-funnel)
-- [トラブルシューティング](#troubleshooting)
-- [よくある質問（FAQ）](#faq)
-- [公式リンク集](#links)
+- [Cloudflare Tunnel とは何か](#cloudflare-tunnel-とは何か)
+- [全体像を先に把握する（構成図）](#全体像を先に把握する（構成図）)
+- [費用まとめ](#費用まとめ)
+- [Step 1: Cloudflare アカウント作成](#step-1%3A-cloudflare-アカウント作成)
+- [Step 2: ドメインを用意する](#step-2%3A-ドメインを用意する)
+- [Step 3: cloudflared をインストールする（Windows）](#step-3%3A-cloudflared-をインストールする（windows）)
+- [Step 4: Tunnel を作成する（ダッシュボード方式）](#step-4%3A-tunnel-を作成する（ダッシュボード方式）)
+- [Step 5: Public Hostname を設定する](#step-5%3A-public-hostname-を設定する)
+- [Step 6: 接続を確認する](#step-6%3A-接続を確認する)
+- [Step 7: Cloudflare Access で認証を追加する](#step-7%3A-cloudflare-access-で認証を追加する)
+- [Step 8: Windows サービス化（PC 起動時に自動接続）](#step-8%3A-windows-サービス化（pc-起動時に自動接続）)
+- [補足: Quick Tunnel（ドメイン不要・1 コマンドで試す）](#補足%3A-quick-tunnel（ドメイン不要・1-コマンドで試す）)
+- [補足: CLI 方式で Tunnel を管理する](#補足%3A-cli-方式で-tunnel-を管理する)
+- [代替手段: Tailscale Funnel（ドメイン不要・完全無料）](#代替手段%3A-tailscale-funnel（ドメイン不要・完全無料）)
+- [トラブルシューティング](#トラブルシューティング)
+- [よくある質問（FAQ）](#よくある質問（faq）)
+- [公式リンク集](#公式リンク集)
 
 ---
-
-<a id="what-is-tunnel"></a>
 
 ## Cloudflare Tunnel とは何か
 
@@ -64,7 +58,7 @@ Cloudflare Tunnel（旧 Argo Tunnel）は、自宅やオフィスの PC で動�
 | **Cloudflare Tunnel** | **不要** | **不要** | **自動** | **Access（無料）** | **必要** | **年 $5〜** |
 
 :::message
-**ドメインにお金をかけたくないなら Tailscale Funnel が最有力候補。** ドメイン不要・完全無料で固定 URL（`*.ts.net`）が使える。詳しくは[記事末尾の比較セクション](#tailscale-funnel)を参照。
+**ドメインにお金をかけたくないなら Tailscale Funnel が最有力候補。** ドメイン不要・完全無料で固定 URL（`*.ts.net`）が使える。詳しくは[記事末尾の比較セクション](#代替手段%3A-tailscale-funnel（ドメイン不要・完全無料）)を参照。
 :::
 
 Cloudflare Tunnel のポイントは 3 つ:
@@ -76,8 +70,6 @@ Cloudflare Tunnel のポイントは 3 つ:
 > 公式ドキュメント: [Cloudflare Tunnel overview](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/)
 
 ---
-
-<a id="overview"></a>
 
 ## 全体像を先に把握する（構成図）
 
@@ -103,8 +95,6 @@ Cloudflare Tunnel のポイントは 3 つ:
 
 ---
 
-<a id="cost"></a>
-
 ## 費用まとめ
 
 始める前に、かかる費用を整理しておく。
@@ -121,14 +111,12 @@ Cloudflare Tunnel のポイントは 3 つ:
 ドメインを既に持っていればゼロ円で始められる。
 
 :::message
-**ドメイン代すら払いたくない場合は [Tailscale Funnel](#tailscale-funnel) を検討しよう。** 完全無料で固定 URL + HTTPS + 認証が手に入る。Cloudflare Tunnel は「カスタムドメインで運用したい」「Cloudflare Access のメール認証を使いたい」場合の選択肢だ。
+**ドメイン代すら払いたくない場合は [Tailscale Funnel](#代替手段%3A-tailscale-funnel（ドメイン不要・完全無料）) を検討しよう。** 完全無料で固定 URL + HTTPS + 認証が手に入る。Cloudflare Tunnel は「カスタムドメインで運用したい」「Cloudflare Access のメール認証を使いたい」場合の選択肢だ。
 :::
 
 > 公式料金: [Zero Trust pricing](https://www.cloudflare.com/plans/zero-trust-services/) / [Cloudflare Registrar](https://www.cloudflare.com/products/registrar/)
 
 ---
-
-<a id="step1"></a>
 
 ## Step 1: Cloudflare アカウント作成
 
@@ -145,8 +133,6 @@ Cloudflare Tunnel のポイントは 3 つ:
 > 公式手順: [Create a Cloudflare account](https://developers.cloudflare.com/fundamentals/account/create-account/)
 
 ---
-
-<a id="step2"></a>
 
 ## Step 2: ドメインを用意する
 
@@ -193,8 +179,6 @@ Cloudflare Registrar はドメインを**卸値**（at-cost）で販売してい
 
 ---
 
-<a id="step3"></a>
-
 ## Step 3: cloudflared をインストールする（Windows）
 
 `cloudflared` は Cloudflare Tunnel のクライアントソフト。PC にインストールして常駐させる。
@@ -227,8 +211,6 @@ winget upgrade --id Cloudflare.cloudflared
 > 公式リポジトリ: [cloudflare/cloudflared (GitHub)](https://github.com/cloudflare/cloudflared)
 
 ---
-
-<a id="step4"></a>
 
 ## Step 4: Tunnel を作成する（ダッシュボード方式）
 
@@ -269,8 +251,6 @@ cloudflared.exe service install eyJhIjoixxxx...
 
 ---
 
-<a id="step5"></a>
-
 ## Step 5: Public Hostname を設定する
 
 Tunnel が接続されたら、どのドメインでどのローカルサービスにアクセスするかを設定する。
@@ -304,8 +284,6 @@ Public Hostname を追加するだけで、Tunnel は 1 つで済む。
 
 ---
 
-<a id="step6"></a>
-
 ## Step 6: 接続を確認する
 
 ### ブラウザで確認
@@ -333,8 +311,6 @@ Cloudflare One → Networks → Tunnels で、作成した Tunnel のステー�
 :::
 
 ---
-
-<a id="step7"></a>
 
 ## Step 7: Cloudflare Access で認証を追加する
 
@@ -410,8 +386,6 @@ PIN メールが届かない場合、メールフィルタ・迷惑メールフ�
 
 ---
 
-<a id="step8"></a>
-
 ## Step 8: Windows サービス化（PC 起動時に自動接続）
 
 ### ダッシュボード方式の場合（Step 4 で完了済み）
@@ -442,8 +416,6 @@ Get-Service cloudflared
 
 ---
 
-<a id="quick-tunnel"></a>
-
 ## 補足: Quick Tunnel（ドメイン不要・1 コマンドで試す）
 
 ドメインもアカウントもなしで、とりあえず試したいなら Quick Tunnel が使える。
@@ -471,8 +443,6 @@ Quick Tunnel は**開発・テスト専用**。本格利用には Named Tunnel +
 > 公式: [TryCloudflare (Quick Tunnels)](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/trycloudflare/)
 
 ---
-
-<a id="cli-method"></a>
 
 ## 補足: CLI 方式で Tunnel を管理する
 
@@ -543,8 +513,6 @@ C:\Windows\System32\config\systemprofile\.cloudflared\cert.pem
 > 公式: [Create a locally-managed tunnel](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/local-management/create-local-tunnel/) / [Configuration file](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/do-more-with-tunnels/local-management/configuration-file/)
 
 ---
-
-<a id="tailscale-funnel"></a>
 
 ## 代替手段: Tailscale Funnel（ドメイン不要・完全無料）
 
@@ -635,8 +603,6 @@ tailscale funnel --bg 3000
 
 ---
 
-<a id="troubleshooting"></a>
-
 ## トラブルシューティング
 
 ### 502 Bad Gateway
@@ -681,8 +647,6 @@ tailscale funnel --bg 3000
 
 ---
 
-<a id="faq"></a>
-
 ## よくある質問（FAQ）
 
 ### Q: PC がスリープ / シャットダウンしたら？
@@ -719,8 +683,6 @@ Public Hostname の Type を `HTTPS` に変更し、TLS 設定で「**No TLS Ver
 Cloudflare Tunnel 自体に帯域制限は公表されていない。ただし、大量のトラフィックを流す場合は Cloudflare の AUP（Acceptable Use Policy）に注意。
 
 ---
-
-<a id="links"></a>
 
 ## 公式リンク集
 

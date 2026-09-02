@@ -6,7 +6,6 @@ topics: ["claudecode", "codex", "生成ai", "個人開発", "windows"]
 published: false
 ---
 
-<a id="position"></a>
 ## この記事の位置づけ
 
 Claude Code / Codex / Google Antigravity を併用していると、Skills・Rules・Commands などの「指示資産」がツールごとに散乱しがちになる。この記事では、3ツール間で指示資産を安全に共有する設計と手順をまとめた。
@@ -17,32 +16,30 @@ Claude Code / Codex / Google Antigravity を併用していると、Skills・Rul
 **検証環境**: Windows 11 + PowerShell 7.x（2026年2月時点）
 :::
 
-急ぐ方は、末尾の [コピペ用指示書](#gift-prompt) だけ使ってください。
+急ぐ方は、末尾の [コピペ用指示書](#コピペ用指示書（そのまま使える版）) だけ使ってください。
 設計意図まで押さえたい方は、本文を順に読むのがおすすめです。
 
 ---
 
-<a id="toc"></a>
 ## 目次
 
-- [この記事で得られること](#what-you-get)
-- [結論](#conclusion)
-- [想定環境の前提（構成イメージ）](#assumptions)
-- [先に押さえる公式仕様（最新版）](#official-specs)
-- [移植の設計方針（事故を防ぐ）](#design-policy)
-- [共有リポジトリの推奨レイアウト（先に完成形を確認）](#target-layout)
-- [手順A: Claude Codeの資産をCodexグローバルへ移植](#step-a)
-- [手順B: 同じ資産をGoogle Antigravityグローバルへ展開](#step-b)
-- [手順C: グローバル資産を共有リポジトリへ落とし込む](#step-c)
-- [検証チェックリスト（実行順）](#checklist)
-- [よくある失敗と回避策](#pitfalls)
-- [公式リンク（再掲）](#links)
-- [コピペ用指示書（そのまま使える版）](#gift-prompt)
-- [最後に](#closing)
+- [この記事で得られること](#この記事で得られること)
+- [結論](#結論)
+- [想定環境の前提（構成イメージ）](#想定環境の前提（構成イメージ）)
+- [先に押さえる公式仕様（最新版）](#先に押さえる公式仕様（最新版）)
+- [移植の設計方針（事故を防ぐ）](#移植の設計方針（事故を防ぐ）)
+- [共有リポジトリの推奨レイアウト（先に完成形を確認）](#共有リポジトリの推奨レイアウト（先に完成形を確認）)
+- [手順A: Claude Codeの資産をCodexグローバルへ移植](#手順a%3A-claude-codeの資産をcodexグローバルへ移植)
+- [手順B: 同じ資産をGoogle Antigravityグローバルへ展開](#手順b%3A-同じ資産をgoogle-antigravityグローバルへ展開)
+- [手順C: グローバル資産を共有リポジトリへ落とし込む](#手順c%3A-グローバル資産を共有リポジトリへ落とし込む)
+- [検証チェックリスト（実行順）](#検証チェックリスト（実行順）)
+- [よくある失敗と回避策](#よくある失敗と回避策)
+- [公式リンク（再掲）](#公式リンク（再掲）)
+- [コピペ用指示書（そのまま使える版）](#コピペ用指示書（そのまま使える版）)
+- [最後に](#最後に)
 
 ---
 
-<a id="what-you-get"></a>
 ## この記事で得られること
 
 - Claude Code のグローバル設定・Skills・Rules・Commands を Codex へ安全に移植する手順
@@ -51,7 +48,6 @@ Claude Code / Codex / Google Antigravity を併用していると、Skills・Rul
 
 ---
 
-<a id="conclusion"></a>
 ## 結論
 
 3ツール併用で崩れにくい設計は、指示資産を3層に分けること。
@@ -64,7 +60,6 @@ Claude Code / Codex / Google Antigravity を併用していると、Skills・Rul
 
 ---
 
-<a id="assumptions"></a>
 ## 想定環境の前提（構成イメージ）
 
 本記事のコマンドは、以下のような構成をイメージしています。
@@ -87,7 +82,6 @@ C:\Users\username\
 
 ---
 
-<a id="official-specs"></a>
 ## 先に押さえる公式仕様（最新版）
 
 ### Codex（OpenAI公式）
@@ -113,7 +107,6 @@ C:\Users\username\
 
 ---
 
-<a id="design-policy"></a>
 ## 移植の設計方針（事故を防ぐ）
 
 1. まずバックアップを取る（復元可能性を確保）
@@ -124,7 +117,6 @@ C:\Users\username\
 
 ---
 
-<a id="target-layout"></a>
 ## 共有リポジトリの推奨レイアウト（先に完成形を確認）
 
 `手順A/B` はグローバル環境の整備、`手順C` で共有リポジトリへ反映します。
@@ -158,7 +150,6 @@ repo/
 
 ---
 
-<a id="step-a"></a>
 ## 手順A: Claude Codeの資産をCodexグローバルへ移植
 
 ### 1. バックアップを作成
@@ -244,7 +235,6 @@ Copy-Item "$HOME\.claude\design-rules\core.md" "$HOME\.codex\rules\design-rules-
 
 ---
 
-<a id="step-b"></a>
 ## 手順B: 同じ資産をGoogle Antigravityグローバルへ展開
 
 ### 1. Rules（GEMINI.md / .agent/rules）へ変換
@@ -281,7 +271,6 @@ prompt = """
 
 ---
 
-<a id="step-c"></a>
 ## 手順C: グローバル資産を共有リポジトリへ落とし込む
 
 以下は「共有してよい資産だけ」をリポジトリへ同期する例です。  
@@ -331,7 +320,6 @@ if (Test-Path "$HOME\.gemini\skills")   { robocopy "$HOME\.gemini\skills"   ".ag
 
 ---
 
-<a id="checklist"></a>
 ## 検証チェックリスト（実行順）
 
 1. Codexで `rules/skills/AGENTS.md` が見えるか確認（`~/.codex/rules/philosophy-global.md` など）
@@ -343,7 +331,6 @@ if (Test-Path "$HOME\.gemini\skills")   { robocopy "$HOME\.gemini\skills"   ".ag
 
 ---
 
-<a id="pitfalls"></a>
 ## よくある失敗と回避策
 
 1. 全設定を機械的に移植して壊す  
@@ -357,7 +344,6 @@ if (Test-Path "$HOME\.gemini\skills")   { robocopy "$HOME\.gemini\skills"   ".ag
 
 ---
 
-<a id="links"></a>
 ## 公式リンク（再掲）
 
 - Codex Rules  
@@ -387,7 +373,6 @@ if (Test-Path "$HOME\.gemini\skills")   { robocopy "$HOME\.gemini\skills"   ".ag
 
 ---
 
-<a id="gift-prompt"></a>
 ## コピペ用指示書（そのまま使える版）
 
 下の指示書をCodexにそのまま貼れば、移植を実行依頼できる。
@@ -477,7 +462,6 @@ Task F: 認識確認と最終報告
 
 ---
 
-<a id="closing"></a>
 ## 最後に
 
 モデルを跨いだ運用で効くのは、モデル性能差より「指示資産の整備品質」。この記事は実運用の出発点であり、環境差分で想定外の問題が起きる可能性はある。検証結果にもとづいて順次調整していく運用をおすすめする。
