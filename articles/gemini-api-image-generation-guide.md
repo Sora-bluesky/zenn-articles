@@ -10,6 +10,8 @@ published: true
 この記事の情報は **2026 年 2 月時点** のものである。モデル ID・料金・無料枠は変更される可能性があるため、最新情報は各セクションに記載した公式リンクを参照してほしい。
 :::
 
+この記事を読むと、Gemini API の画像生成が無料でできるのか、料金・著作権・透かしがどうなっているのかが分かる。API を呼び出すコードの書き方やプロンプトの作り方は扱わない。
+
 ## この記事の対象読者
 
 - Gemini API で画像生成をしたいが、無料でできるのか有料なのか分からない人
@@ -63,7 +65,7 @@ Google Cloud の課金全般について知りたい方は、こちらの記事�
 **「Gemini で画像が無料で作れた」という体験は、Gemini アプリ（gemini.google.com）での話である。** API 経由で同じことをするには、Google Cloud の有料課金が必要になる。
 
 > 公式料金ページにて、すべての画像生成モデルの Free tier（無料枠） 列に "Not available" と明記されている。
-> — 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+> 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 ---
 
@@ -81,10 +83,10 @@ Gemini API で画像生成に使えるモデルは、大きく **2 つのファ�
 | `gemini-3-pro-image-preview` | **Nano Banana Pro** | 4K（4096px） | $0.134（1K/2K）、$0.24（4K） |
 
 :::message
-「Nano Banana」は、Google が AI モデルの性能比較サイト「LMSYS Chatbot Arena」に匿名で投稿した際のコードネームだった。Midjourney や Flux を上回る評価を受け、そのまま通称として定着した。公式のモデル ID は上記の `gemini-2.5-flash-image` 等である。
+「Nano Banana」は、Google が AI モデルの性能比較サイト「LMSYS Chatbot Arena」に匿名で投稿した際のコードネームだった。それがそのまま通称として定着した。公式のモデル ID は上記の `gemini-2.5-flash-image` 等である。
 :::
 
-— 出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 ### Imagen 4
 
@@ -96,7 +98,7 @@ Gemini API で画像生成に使えるモデルは、大きく **2 つのファ�
 | `imagen-4.0-generate-001` | Standard | 2K | $0.04 |
 | `imagen-4.0-ultra-generate-001` | Ultra | 2K | $0.06 |
 
-— 出典：[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 :::message alert
 **廃止予定に注意：** `gemini-2.5-flash-image` は 2026/10/02、Imagen 4 系は 2026/06/24 に廃止予定。`gemini-3-pro-image-preview` は現時点で廃止予定なし。最新の廃止スケジュールは [Deprecations](https://ai.google.dev/gemini-api/docs/deprecations) を確認してほしい。
@@ -132,7 +134,7 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 **Imagen 4（5 種類）：**
 `1:1` / `3:4` / `4:3` / `9:16` / `16:9`
 
-— 出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)、[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)
+出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)、[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)
 
 ### 選び方の目安
 
@@ -144,7 +146,7 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 **新規開発には Nano Banana 系を推奨する。** Imagen 4 系は全バリアント（Fast / Standard / Ultra）が 2026/06/24 に廃止予定のため、長期的に使うなら Nano Banana 系を選ぶのが安全だ。
 :::
 
-— 出典：[DeepMind - Gemini Image Flash](https://deepmind.google/models/gemini-image/flash/)、[DeepMind - Gemini Image Pro](https://deepmind.google/models/gemini-image/pro/)、[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)
+出典：[DeepMind - Gemini Image Flash](https://deepmind.google/models/gemini-image/flash/)、[DeepMind - Gemini Image Pro](https://deepmind.google/models/gemini-image/pro/)、[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)
 
 ---
 
@@ -156,19 +158,19 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 |---|---|---|---|---|
 | **Nano Banana** | `gemini-2.5-flash-image` | なし | $0.039（約 6 円） | $0.0195 |
 | **Nano Banana Pro** | `gemini-3-pro-image-preview` | なし | $0.134〜$0.24（約 20〜36 円） | $0.067 / $0.12 |
-| **Imagen 4 Fast** | `imagen-4.0-fast-generate-001` | なし | $0.02（約 3 円） | — |
-| **Imagen 4 Standard** | `imagen-4.0-generate-001` | なし | $0.04（約 6 円） | — |
-| **Imagen 4 Ultra** | `imagen-4.0-ultra-generate-001` | なし | $0.06（約 9 円） | — |
+| **Imagen 4 Fast** | `imagen-4.0-fast-generate-001` | なし | $0.02（約 3 円） | 非対応 |
+| **Imagen 4 Standard** | `imagen-4.0-generate-001` | なし | $0.04（約 6 円） | 非対応 |
+| **Imagen 4 Ultra** | `imagen-4.0-ultra-generate-001` | なし | $0.06（約 9 円） | 非対応 |
 
 > すべての画像生成モデルの Free tier（無料枠） 列は "Not available" と記載されている。
-> — 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+> 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 :::message
 **Batch API（まとめ割）とは：** リクエストを一括で送信し、最大 24 時間以内に結果を受け取る方式。即時応答の通常 API に対して**料金が半額**になる。「急ぎではないが大量に画像を生成したい」場合に有効だ。Imagen 4 は Batch API に非対応。
 
 > "The Gemini Batch API processes large volumes of requests asynchronously at 50% of the standard cost."
 > （和訳：Gemini Batch API は、大量のリクエストを非同期で処理し、標準料金の 50% で利用できる。）
-> — 出典：[Batch API | Gemini API](https://ai.google.dev/gemini-api/docs/batch-api)
+> 出典：[Batch API | Gemini API](https://ai.google.dev/gemini-api/docs/batch-api)
 :::
 
 ### コスト感覚
@@ -197,10 +199,10 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 **Google AI Studio は「UI の利用自体は無料」だが、画像生成機能は Free tier（無料枠） では使えない。** 料金ページで明確に "Not available" と記載されており、Free tier（無料枠） で画像生成を試すとクォータエラーになる。「AI Studio 無料 ＝ 画像生成も無料」ではない点に注意。
 
 > "Google AI Studio usage is free of charge in all available regions."
-> （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料です。）
+> （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料である。）
 
 この「利用」はテキスト生成モデルの無料枠を指しており、画像生成モデルには適用されない。
-— 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 :::
 
 ---
@@ -220,7 +222,7 @@ API キーを作成したら、**使用する API だけに制限をかける**�
 
 設定方法：[Google Cloud Console](https://console.cloud.google.com/apis/credentials) の「認証情報」ページで、API キーの横にある「編集」をクリック。
 
-— 出典：[API キーに制限を追加する](https://cloud.google.com/docs/authentication/api-keys?hl=ja)
+出典：[API キーに制限を追加する](https://cloud.google.com/docs/authentication/api-keys?hl=ja)
 
 ### API キーの保管
 
@@ -233,7 +235,7 @@ API キーをソースコード（プログラムの中身）に直接書き込�
 
 Secret Manager は [無料枠で 6 アクティブシークレットまで使える](https://cloud.google.com/free)。
 
-— 出典：[Secret Manager の概要](https://cloud.google.com/secret-manager/docs/overview?hl=ja)
+出典：[Secret Manager の概要](https://cloud.google.com/secret-manager/docs/overview?hl=ja)
 
 ---
 
@@ -249,7 +251,7 @@ API で生成した画像を使う前に、権利関係を確認しておこう�
 > "You acknowledge that Google may generate the same or similar content for others and that we reserve all rights to do so."
 > （和訳：Google が他のユーザーに対して同一または類似のコンテンツを生成する可能性があることを了承する。）
 
-— 出典：[Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
+出典：[Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
 
 つまり、**Google は所有権を主張しないが、同じ画像が他のユーザーにも生成される可能性がある**。独占的な権利はない。
 
@@ -258,7 +260,7 @@ API で生成した画像を使う前に、権利関係を確認しておこう�
 > "Use of Google AI Studio and Gemini API is for developers building with Google AI models for professional or business purposes, not for consumer use."
 > （和訳：Google AI Studio および Gemini API は、プロフェッショナルまたはビジネス目的で Google AI モデルを使って開発する開発者向けであり、消費者向けではない。）
 
-— 出典：[Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
+出典：[Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
 
 **規約上、商用利用は禁止されていない。** むしろビジネス目的での利用が前提として記載されている。ただし、生成コンテンツの利用責任はユーザーにある。
 
@@ -278,7 +280,7 @@ API で生成した画像を使う前に、権利関係を確認しておこう�
 > **有料枠：** "Google doesn't use your prompts or responses to improve our products."
 > （和訳：Google はプロンプトや応答を製品の改善に使用しない。）
 
-— 出典：[Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
+出典：[Gemini API Additional Terms of Service](https://ai.google.dev/gemini-api/terms)
 
 
 ### 透かし
@@ -288,7 +290,7 @@ API で生成した画像を使う前に、権利関係を確認しておこう�
 > "All generated images include a SynthID watermark."
 > （和訳：すべての生成画像に SynthID 透かしが含まれる。）
 
-— 出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)
+出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)
 
 | 項目 | 内容 |
 |---|---|
@@ -301,7 +303,7 @@ API で生成した画像を使う前に、権利関係を確認しておこう�
 > "SynthID embeds digital watermarks directly into AI-generated images...The watermarks are...imperceptible to humans — but can be detected by SynthID's technology."
 > （和訳：SynthID は AI 生成画像にデジタル透かしを直接埋め込む。透かしは人間には見えないが、SynthID の技術で検出可能。）
 
-— 出典：[SynthID | Google DeepMind](https://deepmind.google/technologies/synthid/)
+出典：[SynthID | Google DeepMind](https://deepmind.google/technologies/synthid/)
 
 ---
 
@@ -323,6 +325,8 @@ AI 生成コンテンツの著作権保護は各国の法律によって異な�
 ---
 
 ## まとめ
+
+Gemini API の画像生成は無料枠がなく、有料の課金設定が必要だと分かった状態になる。料金・モデル・著作権・透かしの要点は次のとおり。
 
 | 知りたいこと | 答え |
 |---|---|

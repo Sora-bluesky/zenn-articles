@@ -6,6 +6,8 @@ topics: ["openclaw", "discord", "line", "ai", "個人開発"]
 published: true
 ---
 
+この記事の手順を終えると、DiscordまたはLINEからOpenClawに話しかけて返信をもらえる状態になる。OpenClaw本体のインストールとVPSの契約はこの記事では扱わない。
+
 :::message alert
 **2026年2月 重要な注意**
 2026年2月22-23日、OpenClaw経由でGoogle Antigravityを利用していたユーザーのGoogleアカウント全体が停止される事件が発生した。Discord/LINE連携自体は直接影響を受けないが、OpenClawの外部サービス連携にはリスクがあることを認識しておくこと。最新のセキュリティ情報は[公式ドキュメント](https://docs.openclaw.ai/gateway/security)で確認。
@@ -13,8 +15,8 @@ published: true
 
 :::message alert
 OpenClawのインストールが完了している前提で進める。まだの場合は先に導入ガイドを参照：
-- [XServer VPSで安全に動かす](openclaw-setup-guide) — VPSを契約して24/7稼働させたい場合
-- [WSL2で無料で試してみた](openclaw-wsl2-setup-guide) — まず無料で試したい場合
+- [XServer VPSで安全に動かす](openclaw-setup-guide)（VPSを契約して24/7稼働させたい場合）
+- [WSL2で無料で試してみた](openclaw-wsl2-setup-guide)（まず無料で試したい場合）
 :::
 
 :::message
@@ -32,29 +34,16 @@ OpenClawのインストールが完了している前提で進める。まだの
 ## チャット連携で何が変わるのか
 
 連携前：
-- AIを使うにはPCでブラウザを開く必要がある
+- OpenClawを使うには、OpenClawが動いている環境（自分のパソコンやVPS）にログインする必要がある
 - 外出先ではスマホアプリでチャットするだけ
-- AIに「これやって」と言っても、実際の作業は自分でやる
+- 「これやって」と頼んでも、実際の作業は自分でやる
 - 過去の会話内容は覚えていない
 
 連携後：
-- いつも使っているDiscordやLINEがAIアシスタントの窓口になる
-- 外出先から「〇〇のファイルを確認して」と送るだけ
-- AIが実際にPCを操作して結果を報告してくれる
+- いつも使っているDiscordやLINEがOpenClawへの窓口になる
+- 外出先から「〇〇のファイルを確認して」と送れる
+- OpenClawが動いている環境上で操作し、結果を報告する
 - 過去の会話や決定事項を覚えている
-
-### 活用シーン
-
-外出先で急にファイルが必要になった：
-> 「デスクトップの企画書.docxの内容を教えて」
-> → OpenClawがファイルを開いて内容を要約して返信
-
-毎朝の情報整理を自動化：
-> 毎朝9時に「今日のカレンダー + やることリスト」が自動でLINEに届く
-
-開発者向け（Claude Code連携）：
-> 「プロジェクトXのテストを実行して結果を教えて」
-> → OpenClawがClaude Codeと連携してテスト実行、結果をDiscordに報告
 
 ---
 
@@ -107,7 +96,7 @@ Intent（インテント）は、ボットがどの情報にアクセスでき�
 4. ページ下部の「Save Changes」をクリック
 
 :::message alert
-「ボットが反応しない」という場合は、まずIntentを確認。ここが原因のケースが圧倒的に多い。
+「ボットが反応しない」という場合は、まずIntentを確認。ここが原因になりやすい。
 :::
 
 ### 4. サーバーに招待する
@@ -152,13 +141,13 @@ openclaw gateway
 
 この表示が出ればGatewayは正常に起動している。`ws://127.0.0.1:18789` はローカルの通信先アドレスで、外部には公開されない。
 
-Discordサーバーでボットがオンラインになっているか確認し、任意のチャンネルで `@MyOpenClaw こんにちは` とメンションする。AIから返信が来れば成功。
+Discordサーバーでボットがオンラインになっているか確認し、任意のチャンネルで `@MyOpenClaw こんにちは` とメンションする。OpenClawから返信が来れば成功。
 
 ---
 
 ## Discordセキュリティ設定
 
-セキュリティ設定は `~/.openclaw/openclaw.json` を編集する。`~` はホームディレクトリ（Linuxなら `/home/ユーザー名/`、WindowsのWSL2も同様）の省略記号。以下のコマンドで開ける：
+セキュリティ設定は `~/.openclaw/openclaw.json` を編集する。`~` はホームディレクトリ（Linuxなら `/home/ユーザー名/`、WSL側（Ubuntu）も同様）の省略記号。以下のコマンドで開ける：
 
 ```bash
 nano ~/.openclaw/openclaw.json
@@ -230,7 +219,7 @@ IDの調べ方：Discordの設定（歯車アイコン）→「アプリの設�
 
 ## LINE連携
 
-LINEは日本で最も使われているメッセージアプリ。OpenClawと連携すれば、スマホのLINEからAIアシスタントに指示を出せるようになる。
+LINEは日本で最も使われているメッセージアプリ。OpenClawと連携すれば、スマホのLINEからOpenClawに指示を出せるようになる。
 
 Discordと違い、LINEはプラグインのインストールとHTTPS環境（暗号化通信）が必要になる。LINEにメッセージが届くと、LINE側からOpenClawに「メッセージが来たよ」と自動通知する仕組み（Webhook）を使う。この通知経路にHTTPSが必須となる。
 
@@ -312,7 +301,7 @@ LINE Messaging APIはWebhookの受信先にHTTPSを要求する。自分で作�
 #### ngrokのインストール
 
 ```bash
-# ngrokのインストール（WSL2 / VPSのUbuntu共通）
+# ngrokのインストール（WSL側（Ubuntu）でもVPS側でも共通）
 sudo snap install ngrok
 
 # インストール確認
@@ -397,7 +386,7 @@ openclaw gateway
 1. スマホのLINEアプリで、作成したLINE公式アカウントを友だち追加
 2. 何かメッセージを送信
 3. ペアリングコードを求められた場合は、ターミナルに表示されるコードを入力
-4. AIから返信が来れば成功
+4. OpenClawから返信が来れば成功
 
 ---
 
@@ -511,10 +500,10 @@ openclaw plugins doctor
 
 ### 個人アシスタント（LINE）
 
-LINEは日本のユーザー9,600万人が使っている。新しいアプリのインストールが不要で、スマホからそのままAIに指示を出せる。
+LINEは新しいアプリのインストールが不要で、スマホからそのままOpenClawに指示を出せる。機能上できることの例：
 
-- 外出先からスマホでAIに質問
-- 調べ物、翻訳、要約をサクッと依頼
+- 外出先からスマホで質問
+- 調べ物、翻訳、要約の依頼
 - メモ代わりに情報を送って後で整理
 
 ### グループ利用（Discord）
@@ -541,13 +530,13 @@ DiscordとLINEを同時に起動し、それぞれのチャットにOpenClawが�
 
 ## Gatewayの常駐化
 
-PCを再起動してもOpenClawが自動で動くようにする。
+自分のパソコンやVPSを再起動しても、OpenClawが自動で動くようにする。
 
 :::message
 導入ガイドの `openclaw onboard --install-daemon` で既にデーモンが設定済みの場合、この手順は不要。`openclaw status` で状態を確認できる。
 :::
 
-### VPSの場合
+### VPS側の場合
 
 systemdサービス（Linuxでバックグラウンドのプログラムを自動管理する仕組み）として登録されている。以下で管理する：
 
@@ -562,9 +551,9 @@ systemctl --user restart openclaw-gateway.service
 systemctl --user stop openclaw-gateway.service
 ```
 
-### WSL2の場合
+### WSL側（Ubuntu）の場合
 
-WSL2はWindowsのスリープ/再起動時にプロセスが終了する。手動で再起動が必要：
+WSL2はWindows側のスリープ/再起動時にプロセスが終了する。WSL側（Ubuntu）で手動で再起動が必要：
 
 ```bash
 # Gatewayを起動

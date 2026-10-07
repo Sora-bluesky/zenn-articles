@@ -8,6 +8,8 @@ published: true
 
 ## Windows 開発者の「tmux 使いたい問題」
 
+この記事の手順を終えると、WSL なしの Windows で、ペイン分割・セッション永続化・AI エージェントの並列実行ができるようになる。macOS / Linux 本家の tmux の使い方や、psmux 内部の実装には踏み込まない。
+
 tmux はターミナルの画面分割とセッション管理を行うツールで、macOS / Linux 開発者の間では定番の存在だ。
 
 macOS や Linux のチームメイトが tmux でペインを分割し、サーバーにセッションを残して（デタッチ）、翌日つなぎ直して（アタッチ）続きから作業している。その横で僕は Windows Terminal のタブを 8 枚開き、どのタブで何を動かしていたか見失い、リモートデスクトップが切れるたびにセッションを作り直していた。
@@ -33,7 +35,7 @@ macOS や Linux のチームメイトが tmux でペインを分割し、サー�
 | スター数 | 792（2026 年 3 月時点） |
 | 最新バージョン | v3.3.1（2026-03-26） |
 
-一言でまとめると **Windows ネイティブの tmux**。Windows の ConPTY API を直接使い、WSL・Cygwin・MSYS2 は一切不要。76 個の tmux コマンドを実装し、`.tmux.conf` をそのまま読み込む。`psmux`・`pmux`・`tmux` の 3 つのコマンド名で起動できるので、tmux ユーザーは手癖を変えずに移行できる。
+psmux は **Windows ネイティブの tmux**。Windows の ConPTY API を直接使い、WSL・Cygwin・MSYS2 は一切不要。76 個の tmux コマンドを実装し、`.tmux.conf` をそのまま読み込む。`psmux`・`pmux`・`tmux` の 3 つのコマンド名で起動できるので、tmux ユーザーは手癖を変えずに移行できる。
 
 :::message
 **ConPTY とは？**
@@ -106,7 +108,7 @@ psmux select-pane -t 0        # 最初のペインに戻る（-t = target）
 
 :::message
 **-h と -v が直感と逆に感じる場合**
-`-h` は「水平方向に分割線を引く」のではなく「水平方向にペインを並べる」つまり左右分割。`-v` は「垂直方向にペインを並べる」つまり上下分割。tmux と同じ仕様で、最初は混乱するが慣れる。
+`-h` は「水平方向にペインを並べる」つまり左右分割。`-v` は「垂直方向にペインを並べる」つまり上下分割。tmux と同じ仕様で、最初は混乱するが慣れる。
 :::
 
 Prefix キー（デフォルトは `Ctrl+b`）を使ったキーバインドでも操作できる。`Ctrl+b` を押してから次のキーを押す、という 2 ステップ操作になる。
@@ -175,7 +177,7 @@ notepad $HOME\.psmux.conf
 メモ帳が開いたら、以下の内容を貼り付けて保存する。
 
 ```conf
-# ~/.psmux.conf — psmux 設定ファイル
+# ~/.psmux.conf : psmux 設定ファイル
 # tmux 互換の記法がそのまま使える
 
 # === 基本設定 ===
@@ -210,7 +212,7 @@ bind-key -n M-u next-window       # Alt+u: 次のウィンドウ
 bind-key -n M-h previous-window   # Alt+h: 前のウィンドウ
 ```
 
-ポイントは `bind-key -n M-*` の行。`-n` を付けると Prefix キー（`Ctrl+b`）なしで直接操作できる。`Alt+j/l` で左右移動、`Alt+n` で新しいペインを追加 -- Prefix を経由しないぶん操作が圧倒的に速い。この Alt キーバインドに変えた瞬間、Ctrl+b を毎回押していたのがバカバカしくなった。
+注目するのは `bind-key -n M-*` の行。`-n` を付けると Prefix キー（`Ctrl+b`）なしで直接操作できる。`Alt+j/l` で左右移動、`Alt+n` で新しいペインを追加 -- Prefix を経由しないぶん操作が圧倒的に速い。この Alt キーバインドに変えた瞬間、Ctrl+b を毎回押していたのがバカバカしくなった。
 
 ### チートシート
 
@@ -257,7 +259,7 @@ bind-key -n M-h previous-window   # Alt+h: 前のウィンドウ
 
 ## Level 3: AI エージェントを並列実行する
 
-ここが psmux の最大の差別化ポイント。2026 年現在、AI エージェント CLI を複数同時に走らせたい需要が急増している。psmux ならそれが Windows ネイティブでできる。
+ここでは、AI エージェント CLI を複数同時に走らせる。psmux なら Windows ネイティブでできる。
 
 ### なぜ psmux で AI エージェントなのか
 
@@ -383,14 +385,14 @@ set -g allow-predictions on
 
 ## まとめ
 
-Windows 開発者が tmux ワークフローを手に入れるのに、もう WSL は要らない。
+この記事の手順を終えた状態では、WSL なしの Windows で tmux ワークフローが動いている。必要なのは次の 2 行だ。
 
 ```powershell
 winget install psmux
 psmux new-session -s work
 ```
 
-この 2 行で始まる。ペイン分割、セッション永続化、AI エージェント並列実行 -- 全部 PowerShell ネイティブで動く。
+ペイン分割、セッション永続化、AI エージェント並列実行 -- 全部 PowerShell ネイティブで動く。
 
 僕自身、psmux に切り替えてからタブ地獄とは無縁になった。Claude Code と Codex CLI を並べて走らせる作業環境は、一度体験すると戻れない。
 
@@ -403,6 +405,6 @@ psmux new-session -s work
 - [Claude Code 日本語ドキュメント](https://code.claude.com/docs/ja) -- Claude Code 全般
 :::
 
-*本記事は 2026 年 3 月 29 日時点の情報に基づいています。最新情報は [psmux 公式リポジトリ](https://github.com/marlocarlo/psmux) を参照してください。*
+*本記事は 2026 年 3 月 29 日時点の情報に基づく。最新情報は [psmux 公式リポジトリ](https://github.com/marlocarlo/psmux) を参照してほしい。*
 
 *著者: sora（[@sora_biz](https://x.com/sora_biz)）*

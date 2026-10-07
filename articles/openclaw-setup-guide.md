@@ -6,6 +6,8 @@ topics: ["openclaw", "ai", "vps", "生成ai", "個人開発"]
 published: true
 ---
 
+この記事の手順を終えると、XServer VPSでOpenClawが動き、DiscordのBotから返信が来る状態になる。Discord/LINEの詳細設定とWSL2での構築は別記事で扱い、この記事では触れない。
+
 :::message alert
 OpenClawは強力だが、セキュリティ対策なしに使うと危険なツールでもある。「OpenClawとは」「おすすめ構成」を読んでから導入に進んでほしい。
 :::
@@ -39,10 +41,10 @@ OpenClawは、オーストリアの開発者 Peter Steinberger 氏が作った�
 | 2026年1月27日〜 | Moltbot | Anthropic からの商標要請で変更 |
 | 2026年1月30日〜 | OpenClaw | 旧Xアカウント乗っ取りにより再度変更 |
 
-2026年2月時点でGitHubスター 215,000超。史上最速ペースで伸びたOSSプロジェクトの1つになった。
+公開から短期間でGitHubのスターを大きく伸ばしたOSSプロジェクトの1つになった。
 
 > 「New shell, same lobster.」（新しい殻、同じロブスター）
-> — [OpenClaw 公式](https://x.com/openclawai/status/2017505983678976021)
+> 出典: [OpenClaw 公式](https://x.com/openclawai/status/2017505983678976021)
 
 ### 導入前に確認すること
 
@@ -66,22 +68,22 @@ OpenClawは万人向けのツールではない。導入を決める前に、自
 
 > 「It still isn't ready to be installed by normies, to be fair.」
 > （正直なところ、まだ一般ユーザーがインストールできる状態ではない）
-> — [Peter Steinberger](https://x.com/steipete)（OpenClaw 開発者）
+> 出典: [Peter Steinberger](https://x.com/steipete)（OpenClaw 開発者）
 
 Ciscoのセキュリティチームも警告を出した：
 
 > 「From a capability perspective, OpenClaw is groundbreaking. [...] From a security perspective, it's an absolute nightmare.」
 > （機能面では画期的。セキュリティ面では完全な悪夢）
-> — [Cisco セキュリティチーム](https://blogs.cisco.com/ai/personal-ai-agents-like-openclaw-are-a-security-nightmare)
+> 出典: [Cisco セキュリティチーム](https://blogs.cisco.com/ai/personal-ai-agents-like-openclaw-are-a-security-nightmare)
 
 ### 従来のAIとの違い
 
-ChatGPTやClaude.aiには「継続性がない」という共通の弱点がある。昨日の会話は消え、先週のリサーチはどこかに埋もれる。OpenClawはここを根本から変えにきた。
+ChatGPTやClaude.aiには「継続性がない」という共通の弱点がある。昨日の会話は消え、先週のリサーチはどこかに埋もれる。OpenClawは永続的なメモリでこの弱点に対応している。
 
 | 項目 | 従来のAI（ChatGPT / Claude.ai等） | OpenClaw |
 |------|----------------------------------|----------|
 | 記憶 | セッション終了で消える | 永続的なメモリを保持 |
-| データ | クラウド（運営会社のサーバー） | 自分のPC/VPS（手元に残る） |
+| データ | クラウド（運営会社のサーバー） | 自分のパソコン/VPS（自分の管理下に残る） |
 | 動作 | 受動的（質問に答えるだけ） | 能動的（タスクを自律実行） |
 | 稼働 | 人間が常に指示 | スケジュール実行（定期的な自動実行 + 死活監視） |
 | 操作対象 | チャットUI内で完結 | ファイルシステム + コマンド操作 + チャットアプリ |
@@ -95,7 +97,7 @@ ChatGPTやClaude.aiは「賢いチャットボット」。OpenClawは「24/7稼�
 導入を決めたなら、次は環境選び。
 
 :::message
-OpenClawの核は「24/7稼働の自律エージェント」で、[公式FAQ](https://docs.openclaw.ai/help/faq)でも「24/7の信頼性が必要ならVPSを使え」と書いてある。ローカルPC（WSL2）だとスリープでGatewayが止まり、メッセージを受信できない。
+OpenClawは「24/7稼働の自律エージェント」として作られていて、[公式FAQ](https://docs.openclaw.ai/help/faq)でも「24/7の信頼性が必要ならVPSを使え」と書いてある。自分のパソコン（WSL2）だとスリープでGatewayが止まり、メッセージを受信できない。
 :::
 
 ### 構成比較
@@ -348,7 +350,7 @@ openclaw pairing approve discord <code>
 
 `<code>` にはDiscord側に表示されたペアリングコードを入力する。承認が完了すると、Botとの通常のやり取りが可能になる。
 
-DiscordでBotにメンション（`@Bot名 こんにちは`）を送り、AIから返信が来れば連携成功。
+DiscordでBotにメンション（`@Bot名 こんにちは`）を送り、OpenClawから返信が来れば連携成功。
 
 #### 動作確認
 
@@ -374,7 +376,7 @@ OpenClawのWeb UI（ダッシュボード）にはSSHトンネル経由でアク
 
 :::message
 **SSHトンネルとは**
-VPSの特定のポート（この場合18789番）を、自分のPC経由でだけアクセスできるようにする技術。イメージとしては「自分のPCからVPSまでの秘密のトンネルを掘る」感覚。トンネルを通さないと管理画面は見えないので、インターネットから直接アクセスされる心配がない。
+VPSの特定のポート（この場合18789番）を、自分のパソコン経由でだけアクセスできるようにする技術。自分のパソコンからVPSまで専用の通信路を張り、その通信路を通さないと管理画面は見えないので、インターネットから直接アクセスされる心配がない。
 :::
 
 **方法1：PowerShell / ターミナルから（推奨）**
@@ -456,7 +458,7 @@ OpenClawが動いたら、次はセキュリティを固める。
 ### 公開鍵認証に切り替える
 
 :::message alert
-XServer VPSの公開データによると、VPS公開後1時間で約400件の不正アクセスが発生し、その69.2%がrootユーザーへの攻撃。パスワード認証はブルートフォース攻撃（総当たり攻撃）で突破されるリスクがあるため、公開鍵認証への切り替えを推奨する。
+VPSは公開直後から不正ログインの試行を受けやすく、rootユーザーが狙われる。パスワード認証はブルートフォース攻撃（総当たり攻撃）で突破されるリスクがあるため、公開鍵認証への切り替えを推奨する。
 :::
 
 Windows PowerShellで以下を実行する。
@@ -592,7 +594,7 @@ XServer VPS：
 - [ ] ダッシュボードにはSSHトンネル経由でアクセスしている（18789番を直接開放していない）
 - [ ] Docker sandboxが有効（`sandbox.mode: "non-main"` 以上）
 - [ ] チャンネル権限を「Allowlist」に設定
-- [ ] Moltbookに接続していない（Moltbookは旧名称「Moltbot」時代のクラウドダッシュボード。現在は非推奨で、Gateway認証なしでインターネットに公開されるリスクがある。2026年1月には150万件のAPIトークンが露出する事件が発生した。名称変更の経緯は記事冒頭を参照）
+- [ ] Moltbookに接続していない（Moltbookは旧名称「Moltbot」時代のクラウドダッシュボード。現在は非推奨で、Gateway認証なしでインターネットに公開されるリスクがある。名称変更の経緯は記事冒頭を参照）
 
 DigitalOcean 1-Click：
 
@@ -670,7 +672,7 @@ OpenClawは20のチャットサービスに対応している。Discord/LINEだ�
 日本のユーザーなら、まずDiscordかSlackで試すのが手軽。LINEも使えるが、LINE Developersアカウントの作成とMessaging APIチャネルの設定が必要になるので、やや手間がかかる。
 
 :::message
-複数チャネルを1つのGatewayで同時運用できる。たとえばDiscordとSlackとLINEを同時に起動し、それぞれのチャットにOpenClawが自動で応答する構成も可能。
+複数チャネルを1つのGatewayで同時運用できる。Discord、Slack、LINEを同時に起動し、それぞれのチャットにOpenClawが自動で応答する構成も可能。
 :::
 
 Discord/LINEでの具体的なセットアップ手順は別記事にまとめた：

@@ -6,6 +6,8 @@ topics: ["googlecloud", "ai", "生成ai", "GeminiAPI", "初心者"]
 published: true
 ---
 
+この記事の手順を終えると、どの Google アカウントが Google Cloud に課金しているかを確認し、不要な課金を止められる。Google Cloud 全般の無料枠の仕組みや、Gemini API を使うコードの書き方は扱わない。
+
 ## この記事の結論
 
 - **課金中のアカウントは Cloud Console の「課金」メニューで確認できる**（5 分で完了）
@@ -60,8 +62,6 @@ Google Cloud をいくつかのアカウントで触っていたら、**どの�
 - **コンソールに「無料トライアルが終了します」と表示されて、焦ってアップグレードした**
 - **X（Twitter）のポストや note の記事を読んで、「とりあえず課金しておけば安心」と思った**
 - **Gemini API を使うために課金が必要だと勘違いした**
-
-同じような経験をした方、いないだろうか。
 
 まず「どのアカウントが課金されてるか調べる方法」を説明して、その後「そもそも本当に課金する必要があったのか？」を一次情報から振り返る。
 
@@ -118,7 +118,7 @@ Google Cloud をいくつかのアカウントで触っていたら、**どの�
 |---|---|
 | プロジェクト名に見覚えがあるか | 不明なプロジェクトは要注意 |
 | 最終利用日はいつか | 長期間使っていなければ不要の可能性が高い |
-| 実際にリソースが動いているか | VM（仮想マシン：クラウド上のパソコンのようなもの）やストレージ（クラウド上のデータ保存場所）が残っていると課金される |
+| 実際にリソースが動いているか | VM（仮想マシン：クラウド上で動く仮想のパソコン）やストレージ（クラウド上のデータ保存場所）が残っていると課金される |
 
 **「使っていないけど紐づいたまま」のプロジェクトが課金の原因になっていることが多い。**
 
@@ -287,7 +287,7 @@ gcloud alpha billing accounts list --format="csv(displayName,masterBillingAccoun
 
 > 無料トライアルを終了するために特別な操作は不要だ。$300 のクレジットを使い切るか、91 日が経過すると自動的に終了する。**手動で有料アカウントにアップグレードしない限り、請求されることはない。**
 
-— 出典：[Google Cloud Free Trial FAQs](https://cloud.google.com/signup-faqs)
+出典：[Google Cloud Free Trial FAQs](https://cloud.google.com/signup-faqs)
 
 :::message alert
 **無料トライアル → 有料アカウントへのアップグレードは不可逆だ。** 一度アップグレードすると無料トライアルには戻せない。
@@ -295,7 +295,7 @@ gcloud alpha billing accounts list --format="csv(displayName,masterBillingAccoun
 > 公式 FAQ：「If you unintentionally upgraded to a paid account, follow these steps to close your account.」
 > （和訳：意図せず有料アカウントにアップグレードしてしまった場合は、以下の手順でアカウントを閉じてください。）
 
-— 出典：[Google Cloud Free Trial FAQs](https://cloud.google.com/signup-faqs)
+出典：[Google Cloud Free Trial FAQs](https://cloud.google.com/signup-faqs)
 :::
 
 ---
@@ -315,7 +315,7 @@ Google Cloud 全般の無料枠・無料トライアルの詳細は、[Google Cl
 | **データの学習利用を拒否** | 無料枠はモデル改善に使用される可能性あり |
 | **EU/EEA/UK/スイスのユーザー向けサービス提供** | 有料枠でないと提供不可 |
 
-— 出典：[Gemini API 課金ドキュメント](https://ai.google.dev/gemini-api/docs/billing?hl=ja)、[料金ページ](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Gemini API 課金ドキュメント](https://ai.google.dev/gemini-api/docs/billing?hl=ja)、[料金ページ](https://ai.google.dev/gemini-api/docs/pricing)
 
 #### Gemini API - 課金しなくても使えること
 
@@ -328,9 +328,9 @@ Google Cloud 全般の無料枠・無料トライアルの詳細は、[Google Cl
 Google AI Studio の UI 利用自体は無料だ。ただし **画像生成は無料枠の対象外** であり、課金設定が必要。詳細は [Gemini API 画像生成ガイド](gemini-api-image-generation-guide) を参照してほしい。
 
 > "Google AI Studio usage is free of charge in all available regions."
-> （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料です。）
+> （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料である。）
 
-— 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 :::
 
 ---
@@ -395,7 +395,7 @@ Gemini API を使いたい
 **注意**：確約利用割引（CUD：Committed Use Discounts。1〜3年の利用を約束する代わりに割引を受ける契約）がアクティブまたは保留中の場合、課金を無効にできない。先に CUD の状態を確認してほしい。
 :::
 
-— 参考：[プロジェクトの課金の変更・無効化 | Google Cloud](https://cloud.google.com/billing/docs/how-to/modify-project)
+参考：[プロジェクトの課金の変更・無効化 | Google Cloud](https://cloud.google.com/billing/docs/how-to/modify-project)
 
 ---
 
@@ -425,7 +425,7 @@ Gemini API を使いたい
 請求書払い（インボイス）アカウントの場合は、オンラインでの閉鎖ができない。Google Cloud の営業担当またはサポートに連絡してほしい。
 :::
 
-— 参考：[請求先アカウントの閉鎖・再開 | Google Cloud](https://cloud.google.com/billing/docs/how-to/close-or-reopen-billing-account)
+参考：[請求先アカウントの閉鎖・再開 | Google Cloud](https://cloud.google.com/billing/docs/how-to/close-or-reopen-billing-account)
 
 ---
 
@@ -447,7 +447,7 @@ Gemini API を使いたい
 - **削除したプロジェクトのプロジェクト ID は再利用できない。**
 :::
 
-— 参考：[プロジェクトのシャットダウン | Google Cloud](https://cloud.google.com/resource-manager/docs/creating-managing-projects#shutting_down_projects)
+参考：[プロジェクトのシャットダウン | Google Cloud](https://cloud.google.com/resource-manager/docs/creating-managing-projects#shutting_down_projects)
 
 ---
 
@@ -469,13 +469,13 @@ Gemini API を使いたい
 
 ### まとめ - 学んだこと
 
+課金アカウントの確認方法が分かり、「課金が必要なのか」の判断と、不要な課金の止め方まで終わった状態になる。内訳は次のとおり。
+
 1. **「無料トライアルが終了します」に焦る必要はなかった。** 放置しても課金されない。
 2. **Gemini API のテキスト生成は課金なしで使える。** 無料枠のレート制限が足りなくなるまで課金不要。
 3. **X や note の情報を鵜呑みにせず、公式ドキュメントで確認すべきだった。** 「課金必須」と書いてある記事の多くは、特定のユースケース（高レート、画像生成、EU 向け）の話だった。
 4. **Google Cloud の「課金を有効にする」は「お金がかかる」とイコールではない。** 無料枠内ならコストゼロ。
 5. **不要な課金は「プロジェクトの課金無効化」「請求先アカウントの閉鎖」「プロジェクト削除」で止められる。**
-
-「どのアカウントで課金してたっけ？」「そもそもこれ課金する必要あった？」という地味だけど困る問題、同じ悩みを持った方の参考になれば幸いだ。
 
 :::message
 **予算アラートと異常検知アラートの違い**
@@ -488,7 +488,7 @@ Gemini API を使いたい
 
 **両方設定するのが最も安全だ。**
 
-— 出典：[予算とアラートの設定](https://cloud.google.com/billing/docs/how-to/budgets?hl=ja)、[異常検知アラート](https://cloud.google.com/billing/docs/how-to/manage-anomalies?hl=ja)
+出典：[予算とアラートの設定](https://cloud.google.com/billing/docs/how-to/budgets?hl=ja)、[異常検知アラート](https://cloud.google.com/billing/docs/how-to/manage-anomalies?hl=ja)
 :::
 
 ### 今すぐやること
@@ -496,8 +496,8 @@ Gemini API を使いたい
 1. [Cloud Console](https://console.cloud.google.com/) にログインして、「課金」メニューでアカウント状態を確認する
 2. 「有料のアカウント」で不要なプロジェクトがあれば、課金を無効にする
 3. 不安なら [予算アラート](https://cloud.google.com/billing/docs/how-to/budgets) を設定しておく
-4. **異常検知アラートを確認する。** Google Cloud には、急な利用料金の増加を自動検知して通知する機能がある。予算アラートと違い、**事前に金額を設定する必要がない**ため、「いくらに設定すればいいか分からない」という場合に便利だ — [Billing anomaly detection and alerting](https://cloud.google.com/billing/docs/how-to/manage-anomalies?hl=ja)
-5. **Essential Contacts（重要な連絡先）を設定する。** セキュリティや課金に関する Google からの重要な通知メールが、適切なメールアドレスに届くようにする設定だ。設定しないと、プロジェクトオーナーにしか通知が届かない — [Essential Contacts の管理](https://cloud.google.com/resource-manager/docs/managing-notification-contacts?hl=ja)
+4. **異常検知アラートを確認する。** Google Cloud には、急な利用料金の増加を自動検知して通知する機能がある。予算アラートと違い、**事前に金額を設定する必要がない**ため、「いくらに設定すればいいか分からない」という場合に便利だ。参考：[Billing anomaly detection and alerting](https://cloud.google.com/billing/docs/how-to/manage-anomalies?hl=ja)
+5. **Essential Contacts（重要な連絡先）を設定する。** セキュリティや課金に関する Google からの重要な通知メールが、適切なメールアドレスに届くようにする設定だ。設定しないと、プロジェクトオーナーにしか通知が届かない。参考：[Essential Contacts の管理](https://cloud.google.com/resource-manager/docs/managing-notification-contacts?hl=ja)
 
 ---
 

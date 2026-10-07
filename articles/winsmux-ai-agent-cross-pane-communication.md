@@ -6,6 +6,8 @@ topics: ["claudecode", "ai", "windows", "powershell", "個人開発"]
 published: true
 ---
 
+この記事を読むと、Windows で複数のコーディングエージェントを別ペインで並走させる winsmux の構成・導入手順・使い方が分かる。macOS / Linux 向けの smux 自体の導入は扱わない。
+
 Claude Code を司令塔にして、Codex に実装させ、別の Codex にレビューさせたい。調査は Antigravity CLI に回してコストも抑えたい。それぞれが何をやっているか、ペインで見える化もしたい。macOS なら smux がある。でも僕の環境は Windows だ。
 
 WSL2 を経由すれば tmux は使える。ただ、Windows Terminal と PowerShell で完結させたかった。ネイティブで動かないと、結局もう一枚レイヤーを噛ませることになる。それが嫌だった。
@@ -26,11 +28,11 @@ smux は [ShawnPana](https://github.com/ShawnPana) が作った AI エージェ�
 
 この「ターミナルペインを通信チャネルにする」という発想がいい。ただし tmux は macOS と Linux 限定。Windows では動かない。
 
-同じ領域のツールは 20 以上ある。cmux、claude-squad、Claude Code Bridge、Agent Deck、dmux……。だが「Windows ネイティブ」「ターミナルマルチプレクサ」「AI エージェント間のクロスペイン通信」の 3 つを同時に満たすツールは、調べた限り存在しなかった。
+同じ領域のツールには cmux、claude-squad、Claude Code Bridge、Agent Deck、dmux などがある。だが「Windows ネイティブ」「ターミナルマルチプレクサ」「AI エージェント間のクロスペイン通信」の 3 つを同時に満たすツールは、調べた限り存在しなかった。
 
 ## winsmux のいま
 
-winsmux は smux の「移植」ではなく、psmux-bridge という Windows 用 PowerShell ブリッジから始まり、その後 Rust 製ランタイム `winsmux-core` を取り込み、Tauri 製のデスクトップアプリまで持つ管制デスクに進化した。
+winsmux は psmux-bridge という Windows 用 PowerShell ブリッジから始まり、その後 Rust 製ランタイム `winsmux-core` を取り込み、Tauri 製のデスクトップアプリまで持つ管制デスクに進化した。
 
 現在の構成は3層になっている。
 
@@ -42,7 +44,7 @@ winsmux は smux の「移植」ではなく、psmux-bridge という Windows �
 
 最近の版では、記録済みセッションの復元候補（Agent Vault で検索して、選んだ実行をワーカーペインへドラッグして復元）と、外部自動化クライアント向けのローカル named pipe JSON-RPC（外部コントロールプレーン API）も入った。
 
-「自分は smux の Windows 移植が欲しかっただけなんだが？」と聞かれたら、その通りだと答える。ただ、Windows でエージェントを並列稼働させ続けて分かったのは、ペインの読み書きだけでは足りないということだった。誰がどのファイルを触ったか、どっちの結果を採用するか、どこに資格情報を置くか。そこまで面倒を見ないと、結局オペレーターが消耗する。
+最初の動機は smux の Windows 移植が欲しかっただけだった。ただ、Windows でエージェントを並列稼働させ続けて分かったのは、ペインの読み書きだけでは足りないということだった。誰がどのファイルを触ったか、どっちの結果を採用するか、どこに資格情報を置くか。そこまで面倒を見ないと、結局オペレーターが消耗する。
 
 ### アーキテクチャ
 
@@ -95,7 +97,7 @@ winsmux workers status
 ## インストール
 
 :::message alert
-PowerShell 7（pwsh）と Windows Terminal、Node.js + `npm` が必要です。`pwsh --version` と `node --version` で確認してください。未インストールの場合は `winget install Microsoft.PowerShell` と `winget install OpenJS.NodeJS.LTS` で入る。
+PowerShell 7（pwsh）と Windows Terminal、Node.js + `npm` が必要。`pwsh --version` と `node --version` で確認する。未インストールの場合は `winget install Microsoft.PowerShell` と `winget install OpenJS.NodeJS.LTS` で入る。
 :::
 
 公式ドキュメント上の推奨経路はデスクトップアプリのインストーラーに変わったが、この記事は CLI 中心の運用を扱うので npm 経路で説明する。CLI 中心で入れる場合の最短手順は次の 4 行だ。
@@ -134,8 +136,6 @@ winsmux doctor
 ## 使い方
 
 ここからはコマンドの詳細だが、正直、全部覚える必要はない。`winsmux skills` でエージェントが読めるコマンド仕様を出力できるので、Claude Code や Codex はそれを読んで勝手に使う。人間が叩くのは最初の4行（`npm install` から `winsmux launch` まで）と、たまの `list` / `read` / `send` / `compare runs` くらいだ。
-
-コマンドを暗記する必要はない。わからないことをエージェントに素直に聞ける人が、いちばん速く動ける時代になった。
 
 ### コマンド一覧
 
@@ -227,15 +227,15 @@ winsmux send worker-2 "src/auth.ts のリフレッシュトークン処理を実
 
 ### 6 ワーカー体制
 
-実際に僕が使っている構成がこれ。司令塔の Opus 4.8 が左のオペレーターペインに座り、右側の6つのワーカーペインに別々のエージェントを並走させている。
+実際に使っている構成がこれ。司令塔の Opus 4.8 が左のオペレーターペインに座り、右側の6つのワーカーペインに別々のエージェントを並走させている。
 
-![winsmuxの実機構成:左にオペレーターペイン(Opus 4.8)、右に6つのワーカーペインが並んでいる](/images/winsmux-6workers-live.jpg)
+![winsmuxの実際の画面構成:左にオペレーターペイン(Opus 4.8)、右に6つのワーカーペインが並んでいる](/images/winsmux-6workers-live.jpg)
 
 ロールは各モデルの特性と単価で振り分けている。実装で手を動かすのは worker-2 だけで、残りはレビュー・調査・テスト生成・リサーチなど「コードを直接書かない」役割に寄せた。「高単価で能力の高いモデルは判断専用にし、実装は安価モデルに並列で投げる」という方針を 1 ペイン = 1 ロールに落とし込んでいる。
 
 | 位置 | スロット | ロール | 実行中のエージェント / モデル |
 | --- | --- | --- | --- |
-| オペレーターペイン | — | オペレーター(指揮・最終承認) | Claude Code(Opus 4.8) |
+| オペレーターペイン | なし | オペレーター(指揮・最終承認) | Claude Code(Opus 4.8) |
 | 右上 左 | worker-1 | 設計レビュー・アーキ判定 | Claude Code(Opus 4.8 / Ultra effort) |
 | 右上 中 | worker-2 | メイン実装(難所) | Codex(GPT-5.6 Sol / X High) |
 | 右上 右 | worker-3 | 調査・長文要約 | Antigravity CLI(Gemini 3.5 Flash / High) |
@@ -276,9 +276,9 @@ winsmux compare promote auth-a
 
 `compare runs` は 2 つの記録済み実行を、変更ファイルの重なり、レビュー状態、検証状態、チェックポイントの観点で並べる。レビュー材料を出すだけで、採用するか捨てるかは人間が決める。
 
-### AI エージェントと手動作業の併用
+### エージェントと手動作業の併用
 
-1 つのペインで自分がコードを書き、隣のペインで AI にテスト生成やリント修正をさせる。エージェントペインだけでなく、普通のシェルペインの出力も `winsmux read` で取得できるから、ビルドログを AI に読ませて修正案を出させるといった使い方もできる。
+1 つのペインで自分がコードを書き、隣のペインでエージェントにテスト生成やリント修正をさせる。エージェントペインだけでなく、普通のシェルペインの出力も `winsmux read` で取得できるから、ビルドログをエージェントに読ませて修正案を出させるといった使い方もできる。
 
 ## list コマンドの子プロセス検出
 
@@ -325,7 +325,7 @@ Claude Code には Agent Teams という公式のマルチエージェント機�
 
 ただし Windows では isTTY gate という制約により、Agent Teams がブロックされるケースがある(2026-07-18時点で [Issue #24384](https://github.com/anthropics/claude-code/issues/24384) は open のまま、関連する Issue #26244 は stale 扱いで打ち切られている)。winsmux はこの穴を埋める。Agent Teams とは別のレイヤーで、任意のエージェント間の対等な通信を実現する。Claude Code 同士だけでなく、Codex と Antigravity CLI、あるいはエージェントと普通のシェルの間でも通信できる。
 
-## 認証の境界
+## 認証の扱い
 
 winsmux 自身は AI サービスへ代理ログインしない。各 CLI エージェントは、それぞれ自分のサインインや API キー設定を使う。
 
@@ -351,7 +351,7 @@ https://zenn.dev/sora_biz/articles/psmux-windows-native-tmux
 
 ## 終わりに
 
-smux が示した「ターミナルペインを通信チャネルにする」というコンセプトは OS に依存しない。Windows でも AI エージェントのマルチペイン協調はできるし、そこにワーカースロット、worktree 分離、Vault、compare runs を足せば、「司令塔はコードを触らない」体制を 1 人で運用できる。
+この記事の手順を終えると、Windows で winsmux のワークスペースが立ち上がり、複数のエージェントを別ペインで並走させられる。smux が示した「ターミナルペインを通信チャネルにする」というコンセプトは OS に依存しない。Windows でも AI エージェントのマルチペイン協調はできるし、そこにワーカースロット、worktree 分離、Vault、compare runs を足せば、「司令塔はコードを触らない」体制を 1 人で運用できる。
 
 試してみてほしい。
 

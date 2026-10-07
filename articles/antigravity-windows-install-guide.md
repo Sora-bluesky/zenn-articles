@@ -8,8 +8,8 @@ published: true
 
 ## はじめに
 
-Windows環境でGoogle Antigravityをセットアップする手順をまとめた。
-非エンジニアでもできるように、すべての操作をステップごとに説明する。
+この記事の手順を終えると、Windowsの自分のパソコンにGoogle Antigravityが入り、Googleアカウントでログインして `hello.txt` を作らせるところまで動く。
+操作はすべてステップごとに分けて書く。Codex CLIとの連携は扱わない（下のシリーズ構成の別記事で書く）。初回起動時に選ぶ承認モード（Review-driven）までは、この記事で扱う。
 
 :::message
 **シリーズ構成**
@@ -247,7 +247,7 @@ Rate limit exceeded. Please wait and try again.
 :::message
 **レート制限とは？**
 サーバーへの負荷を防ぐため、一定時間内のリクエスト数に制限がかけられている。
-これはエラーではなく、サービスを安定運用するための仕組み。
+これは故障ではなく、サービスを安定運用するための制限だ。
 :::
 
 ---
@@ -307,7 +307,7 @@ Antigravity を削除したい場合：
 
 ## 次のステップ
 
-インストールが完了したら、次は実際に使ってみよう。
+インストールが終わったら、次は2つのAIを組み合わせる記事に進む。
 
 - [Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)
 - [Google Antigravity × Codex CLI 協調開発：Orchestra方式でタスク自動振り分け](antigravity-orchestra-guide)

@@ -6,6 +6,8 @@ topics: ["openclaw", "ai", "wsl2", "docker", "windows"]
 published: true
 ---
 
+この記事の手順を終えると、Windows側のWSL2（Ubuntu）でOpenClawが動き、`openclaw status --all`と`openclaw doctor`でDiscordとの接続を確認できる状態になる。24時間の常時稼働（VPS）とDiscord/LINEの詳細設定は、それぞれ別記事で扱い、この記事では触れない。
+
 :::message alert
 OpenClawは強力だが、セキュリティ対策なしに使うと危険。「セキュリティ対策」を読んでから利用してほしい。
 :::
@@ -36,7 +38,7 @@ OpenClawの本質は「24/7稼働の自律エージェント」で、[公式FAQ]
 | 利点 | 欠点 |
 |------|------|
 | 無料で使える | スリープ時にGatewayが停止する |
-| 公式推奨の構成（Windowsローカル環境として） | 自宅PCにOpenClawが同居するリスク |
+| 公式推奨の構成（Windowsローカル環境として） | 自分のパソコンにOpenClawが同居するリスク |
 | Docker sandboxで隔離できる | セキュリティ設定は手動 |
 
 ### スリープ時の挙動
@@ -89,22 +91,24 @@ PowerShellネイティブは「untested and more problematic」。依存関係�
 
 既にWSL2を使っている場合はスキップ。詳細は [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide) を参照。
 
-管理者PowerShellで：
+Windows側の管理者PowerShellで：
 
 ```powershell
 wsl --install -d Ubuntu-24.04
 ```
 
-インストール後、PCを再起動。再起動後にUbuntuが自動起動するので、ユーザー名とパスワードを設定する。
+インストール後、自分のパソコンを再起動する。再起動後にUbuntuが自動起動するので、ユーザー名とパスワードを設定する。
 
 ### Docker Desktopのインストール
+
+Windows側で作業する。
 
 1. [Docker Desktop for Windows](https://docs.docker.com/desktop/setup/install/windows-install/) をダウンロード・インストール
 2. インストール時に「WSL 2 backend」を選択
 3. Docker Desktop を起動し、Settings → Resources → WSL Integration で Ubuntu-24.04 を有効化
 4. Apply & Restart
 
-Ubuntuターミナルで動作確認：
+ここからはWSL側（Ubuntu）のターミナルで動作確認する：
 
 ```bash
 docker --version
@@ -113,7 +117,7 @@ docker run hello-world
 
 ### Node.js 22のインストール
 
-WSL2のUbuntu内で実行する。
+WSL側（Ubuntu）で実行する。
 
 現在のバージョンを確認：
 
@@ -238,7 +242,7 @@ openclaw doctor
 :::
 
 :::message
-`~/.openclaw/openclaw.json` はonboardウィザードが自動生成する設定ファイル。直接編集してカスタマイズできる。WSL2のUbuntuターミナルから `nano ~/.openclaw/openclaw.json` で開ける。
+`~/.openclaw/openclaw.json` はonboardウィザードが自動生成する設定ファイル。直接編集してカスタマイズできる。WSL側（Ubuntu）のターミナルから `nano ~/.openclaw/openclaw.json` で開ける。
 :::
 
 ### Gateway認証の確認

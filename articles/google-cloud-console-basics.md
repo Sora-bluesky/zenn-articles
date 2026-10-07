@@ -10,6 +10,8 @@ published: true
 この記事の情報は **2026 年 2 月時点** のものである。料金・無料枠は変更される可能性があるため、最新情報は各セクションに記載した公式リンクを参照してほしい。
 :::
 
+この記事を読むと、Google Cloud の「無料トライアル・無料枠・有料アカウント」の違いと、登録しただけでは請求されない理由が分かる。課金中のアカウントの特定や解約の手順は扱わない（別記事で解説している）。
+
 ## この記事の結論
 
 - **Google Cloud の「無料」は 3 種類ある。** 無料トライアル（$300 クレジット）/ 有料アカウント（従量課金）/ 無料枠（Always Free）
@@ -45,11 +47,11 @@ published: true
 
 > "Build a free proof of concept with $300 in free credit and try over 150 products in the Google Cloud console."
 > （和訳：$300 の無料クレジットで概念実証を構築し、Google Cloud Console で 150 以上のプロダクトを試せる。）
-> — 出典：[Google Cloud Console](https://cloud.google.com/cloud-console)
+> 出典：[Google Cloud Console](https://cloud.google.com/cloud-console)
 
 ### どんなときに使うのか
 
-「自分には関係なさそう」と思うかもしれないが、以下のような場面で Cloud Console を使うことになる。
+次のような場面で Cloud Console を使うことになる。
 
 | やりたいこと | Cloud Console での操作 |
 |---|---|
@@ -59,9 +61,9 @@ published: true
 | **ファイルをクラウドに保存したい** | Cloud Storage でファイルを保存・共有できる（5 GB/月 まで無料） |
 | **大量のデータを分析したい** | BigQuery で SQL（データベースの操作言語）を使ってデータ分析ができる（1 TB/月 まで無料） |
 
-つまり Cloud Console は **「Google Cloud で何かやるときの入口」** だ。直接ここで何かを作るというより、**設定・管理・確認** をする場所である。
+つまり Cloud Console は、Google Cloud の **設定・管理・確認** をする画面だ。サービスの中身を作る場所ではない。
 
-— 出典：[Google Cloud overview](https://cloud.google.com/docs/overview)
+出典：[Google Cloud overview](https://cloud.google.com/docs/overview)
 
 ---
 
@@ -87,7 +89,7 @@ Google Cloud には「無料」に関する仕組みが 3 つあり、混同し�
 | 放置した場合 | 課金されない | **課金される可能性あり** |
 
 :::message alert
-**最も重要なポイント：** 無料トライアル → 有料アカウントへのアップグレードは**不可逆**だ。一度アップグレードすると無料トライアルには戻せない。
+**最も重要な点：** 無料トライアル → 有料アカウントへのアップグレードは**不可逆**だ。一度アップグレードすると無料トライアルには戻せない。
 :::
 
 ### 課金を有効にしても即請求ではない
@@ -98,11 +100,11 @@ Google Cloud の多くのサービスは、**無料枠の範囲内でも請求�
 
 ### 請求の仕組み
 
-有料アカウントにアップグレードした場合、料金体系は**従量課金**（pay-as-you-go）だ。事前にチャージする方式ではなく、**使った分だけ後から請求される**。
+有料アカウントにアップグレードした場合、料金体系は**従量課金**（pay-as-you-go）だ。事前にチャージする方式は取らず、**使った分だけ後から請求される**。
 
 > "You only pay for what you use with no lock-in."
 > （和訳：ロックインなしで、使った分だけ支払う。）
-> — 出典：[Google Cloud Pricing](https://cloud.google.com/pricing)
+> 出典：[Google Cloud Pricing](https://cloud.google.com/pricing)
 
 | 項目 | 内容 |
 |---|---|
@@ -117,14 +119,14 @@ Google Cloud の多くのサービスは、**無料枠の範囲内でも請求�
 
 > "Budget alerts are used to track your actual Google Cloud spend against your planned spend. (...) Budget alerts do not cap your Google Cloud spend."
 > （和訳：予算アラートは、計画した支出に対して実際の Google Cloud 支出を追跡するために使用する。（中略）予算アラートは Google Cloud の支出に上限を設けるものではない。）
-> — 出典：[Set budgets and budget alerts](https://cloud.google.com/billing/docs/how-to/budgets)
+> 出典：[Set budgets and budget alerts](https://cloud.google.com/billing/docs/how-to/budgets)
 :::
 
 ---
 
 ## 課金しないとできないこと
 
-「無料トライアルで何ができないの？」が一番気になるところだと思う。正直、ほとんどの人には関係ない制限ばかりだ。
+無料トライアル中にできないことは、ほとんどの人には関係ない制限ばかりだ。
 
 ### Gemini API
 
@@ -140,7 +142,7 @@ Google Cloud の多くのサービスは、**無料枠の範囲内でも請求�
 👉 [その Gemini 画像、透かし入ってるよ？API画像生成の著作権・料金を公式情報で整理](gemini-api-image-generation-guide)
 :::
 
-— 出典：[Gemini API Billing](https://ai.google.dev/gemini-api/docs/billing)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Gemini API Billing](https://ai.google.dev/gemini-api/docs/billing)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 ### Google Cloud 全般
 
@@ -156,7 +158,7 @@ Google Cloud の多くのサービスは、**無料枠の範囲内でも請求�
 > "You cannot create VM instances that are based on Windows Server images."
 > "You cannot use Google Cloud Marketplace."
 > "You cannot request a quota increase."
-> — 出典：[Free cloud features](https://cloud.google.com/free/docs/free-cloud-features)
+> 出典：[Free cloud features](https://cloud.google.com/free/docs/free-cloud-features)
 
 :::message
 上記はすべて **無料トライアル中の制限** だ。ほとんどの人には関係ない。「GPU で AI を学習させたい」「Windows サーバーを立てたい」といった明確な目的がなければ、無料トライアルのままで十分である。
@@ -179,7 +181,7 @@ Google Cloud には、**無料トライアル終了後も毎月無料で使い�
 | **Cloud Vision** | 1,000 ユニット/月 | 画像の中身を AI が分析（ラベル付け、文字認識） |
 | **Speech-to-Text** | 60 分/月 | 音声をテキストに変換 |
 
-— 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)、[Google Cloud 無料枠の一覧](https://cloud.google.com/free)
+出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)、[Google Cloud 無料枠の一覧](https://cloud.google.com/free)
 
 ### ストレージ / Web アプリ系
 
@@ -191,7 +193,7 @@ Google Cloud には、**無料トライアル終了後も毎月無料で使い�
 | **Compute Engine** | e2-micro（最小構成の仮想サーバー）1 台/月（米国リージョン） | 小さな仮想サーバーを 1 台無料で動かせる |
 | **Cloud Shell** | 5 GB 永続ディスク | ブラウザ上でコマンド操作ができるツール |
 
-— 出典：[Google Cloud 無料枠の一覧](https://cloud.google.com/free)
+出典：[Google Cloud 無料枠の一覧](https://cloud.google.com/free)
 
 :::details その他の無料枠サービス（クリックで展開）
 
@@ -208,7 +210,7 @@ Google Cloud には、**無料トライアル終了後も毎月無料で使い�
 | Video Intelligence API | 1,000 ユニット/月 |
 | Cloud Observability | ログ 50 GB/月 |
 
-— 出典：[Google Cloud 無料枠の一覧](https://cloud.google.com/free)
+出典：[Google Cloud 無料枠の一覧](https://cloud.google.com/free)
 
 :::
 
@@ -216,15 +218,17 @@ Google Cloud には、**無料トライアル終了後も毎月無料で使い�
 Google AI Studio の UI 利用自体は無料だが、**画像生成は無料枠の対象外** で課金設定が必要。「完全無料」はテキスト生成モデルに限った話だ。
 
 > "Google AI Studio usage is free of charge in all available regions."
-> （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料です。）
+> （和訳：Google AI Studio の利用は、提供されているすべてのリージョンで無料である。）
 
 また、無料枠は無料トライアル終了後も継続的に使える。ただし、無料枠を利用するにもアクティブな請求先アカウントへのリンクは必要である。
-— 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
+出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 :::
 
 ---
 
 ## まとめ
+
+Google Cloud の「無料」が 3 種類あり、登録しただけでは請求されないと分かった状態になる。内訳は次の表のとおり。
 
 | 知りたいこと | 答え |
 |---|---|

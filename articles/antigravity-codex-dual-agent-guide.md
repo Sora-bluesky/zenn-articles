@@ -8,14 +8,14 @@ published: true
 
 ## はじめに
 
-この記事では、 **2つの AI を組み合わせた開発スタイル** を紹介する。
+この記事の手順を終えると、Antigravity に指示を出すだけで、Codex CLI によるレビューと修正のサイクルが自動で回る環境ができる。**2つの AI を組み合わせた開発スタイル**で、役割は次の通り。
 
 - **書く係（Builder）**: Google Antigravity（Gemini）
 - **チェックする係（Auditor）**: OpenAI Codex CLI（GPT）
 
 1つの AI に全部任せると、「自分が作ったものには甘くなりがち」という問題がある。人間の開発チームでも「作る人」と「チェックする人」を分けるのと同じで、 **AI でも役割分担すると品質が上がる**。
 
-この記事では、Google 製 AI がコードを書き、OpenAI 製 AI が自動でチェックするワークフローを構築する。**ユーザーは Antigravity に指示を出すだけで、レビューと修正のサイクルが自動で回る。**
+この記事で扱うのは、WSL2 上の Codex CLI と review.ps1 によるレビューサイクルの構築まで。Orchestra 方式のタスク振り分けは扱わない。
 
 ### 自動レビューサイクルの全体像
 
@@ -138,7 +138,7 @@ npm i -g @openai/codex
 
 :::message
 **コマンドの意味**
-- `npm`: Node.js のパッケージ管理ツール（アプリストアのようなもの）
+- `npm`: Node.js のパッケージ管理ツール（Node.js 用の部品を検索して入れる仕組み）
 - `i`: install の略
 - `-g`: グローバル（システム全体で使える場所）にインストール
 - `@openai/codex`: OpenAI が公開している Codex CLI パッケージ
@@ -214,7 +214,7 @@ git config --global user.name "Taro Yamada"
 ```
 
 :::message
-この設定は PC ごとに一度だけ行えば OK です。
+この設定は PC ごとに一度だけ行えばよい。
 :::
 
 ---
@@ -323,7 +323,7 @@ Codex が 🔴 重大 の指摘を出した場合、Antigravity は自動的に�
 *問題がなくなると「レビュー通過」と表示される*
 
 :::message
-**ポイント**
+**指示の書き方**
 「自動レビューサイクルを回して」というフレーズを指示に含めることで、Antigravity が `.agent/workflows/review-cycle.md` のワークフローに従って動作する。
 :::
 
@@ -334,7 +334,7 @@ Codex が 🔴 重大 の指摘を出した場合、Antigravity は自動的に�
 Codex CLI のレビュー結果は、緊急度別に整理されて出力される。
 
 ![Codex CLI による日本語レビュー結果](/images/dual-agent-codex-review-ja.png)
-*Codex CLI のレビュー結果。🔴重大 → 🟡注意 → 🟢軽微 → 💡改善提案 の順に、緊急度別で表示されます*
+*Codex CLI のレビュー結果。🔴重大 → 🟡注意 → 🟢軽微 → 💡改善提案 の順に、緊急度別で表示される*
 
 | 記号 | 意味 | 対応 |
 |------|------|------|
@@ -372,7 +372,7 @@ C:\Users\<ユーザー名>\Documents\Projects\
 └── ...
 ```
 
-**ポイント**:
+配置の決まり:
 - `review.ps1` は Projects フォルダ直下に1つだけ配置（全プロジェクト共通）
 - `.agent/workflows/review-cycle.md` は各プロジェクトごとに配置
 - これにより、どのプロジェクトでも自動レビューサイクルが使える
@@ -486,6 +486,8 @@ Rate limit exceeded
 
 ## まとめ
 
+Antigravity に指示を出すだけで、Codex CLI によるレビューと修正が自動で回る環境ができた。メリットとデメリットは次の通り。
+
 ### メリット
 
 | メリット | 説明 |
@@ -521,7 +523,7 @@ Rate limit exceeded
 - [nvm (Node Version Manager) GitHub](https://github.com/nvm-sh/nvm)
 
 :::message
-リンク切れの場合は各公式サイトで検索してください。
+リンク切れの場合は各公式サイトで検索する。
 :::
 
 ---

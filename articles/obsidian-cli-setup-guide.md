@@ -8,38 +8,40 @@ published: true
 
 ## この記事で分かること
 
+この記事の手順を終えると、Windows上でObsidian公式CLIが動き、`obsidian help` でコマンド一覧が表示される。MCP連携は扱わない（前編で扱っている）。
+
 - **2026年2月10日リリースのObsidian公式CLI**（v1.12.0 Early Access）のセットアップ手順
-- **Windows環境で実際にハマった5つの罠** と、その回避方法
-- CLIで何ができるのか ── 100以上のコマンドの概要
+- **Windows環境で実際につまずいた5つの問題**と、その回避方法
+- CLIで何ができるのか（100以上のコマンドの概要）
 
 :::message
 **シリーズ構成**
-- [ObsidianをAIの「司令塔」にする ── MCP連携で39ソース自動収集の全貌](obsidian-mcp-integration) ── MCP接続の手順と自動ニュース収集の実例
-- **Obsidian CLI セットアップ完全ガイド ── Windows環境でハマった全記録**（この記事）
+- [前編：ObsidianをAIの「司令塔」にする](obsidian-mcp-integration)：MCP接続の手順と自動ニュース収集の実例
+- **Obsidian CLI セットアップ完全ガイド**（この記事）
 
 **関連記事**
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide) ── iCloud経由のVault同期手順
+- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
 :::
 
 :::message alert
 **検証環境**: Windows 11 / Obsidian v1.12.1 / PowerShell 7
 **検証日**: 2026年2月11日
-本記事の情報は検証日時点のものです。最新情報は[Obsidian公式サイト](https://obsidian.md)を確認してください。
+本記事の情報は検証日時点のもの。最新情報は[Obsidian公式サイト](https://obsidian.md)で確認する。
 :::
 
 ## はじめに
 
 > **Anything you can do in Obsidian you can do from the command line.**
 > Obsidian CLI is now available in 1.12 (early access).
-> ── [Obsidian公式 (@obsdmd)](https://x.com/obsdmd/status/2021241384057930224) 2026年2月11日
+> 出典: [Obsidian公式 (@obsdmd)](https://x.com/obsdmd/status/2021241384057930224) 2026年2月11日
 
-「Obsidianでできることは、すべてコマンドラインからもできる」── 2026年2月11日、Obsidian公式がCLIのリリースを発表した。
+「Obsidianでできることは、すべてコマンドラインからもできる」。2026年2月11日、Obsidian公式がCLIのリリースを発表した。
 
 ObsidianにはMCPプラグイン（前編で紹介）を使えばAIツールからノートを読み書きできる。しかし、**テンプレート適用、プラグイン管理、JavaScript実行**といったObsidian内部の機能にはアクセスできなかった。
 
-2026年2月10日、Obsidianが**公式CLI（コマンドラインインターフェース ── キーボードだけでアプリを操作する方法）** をリリースした。バージョン1.12.0のEarly Access（正式リリース前の先行公開）機能として提供されている。
+2026年2月10日、Obsidianが**公式CLI**（コマンドラインインターフェース。キーボードだけでアプリを操作する方法）をリリースした。バージョン1.12.0のEarly Access（正式リリース前の先行公開）機能として提供されている。
 
-本記事では、Windows環境でCLIをセットアップする手順を、**実際にハマったポイントも含めて**すべて記録する。
+Windows環境でCLIをセットアップする手順を、**つまずいた箇所も含めて**すべて記録する。
 
 :::message
 **料金について**
@@ -164,7 +166,7 @@ C:\Users\[ユーザー名]\AppData\Local\Programs\Obsidian\
 **重要**: 「Get Discord badge」を**先にクリック**しないと、Discordサーバーに参加しても `#insider-desktop-release` チャンネルが表示されない。この手順を飛ばすと「チャンネルが見つからない」で詰む。
 :::
 
-#### 4b. 管理者権限の罠（最大のハマりポイント）
+#### 4b. 管理者権限だと出力が空になる（最大のつまずき）
 
 `Obsidian.com` を正しく配置しても、以下のように出力が空になることがある：
 
@@ -176,7 +178,7 @@ Loading updated app package...
 
 **原因**: ターミナルが**管理者権限**で起動している。
 
-Obsidian CLIは**通常のユーザー権限**で動作する必要がある。管理者権限のターミナルでは、Obsidianアプリとの通信（IPC ── プロセス間通信）が正しく行われない。
+Obsidian CLIは**通常のユーザー権限**で動作する必要がある。管理者権限のターミナルでは、Obsidianアプリとの通信（IPC。プロセス間通信）が正しく行われない。
 
 **解決方法**:
 
@@ -254,7 +256,7 @@ obsidian-local-rest-api    3.4.2
 
 ## TUIモード
 
-CLI にはTUI（Terminal User Interface ── ターミナル上で動くGUI風の操作画面）モードも搭載されている。引数なしで実行すると起動する：
+CLI にはTUI（Terminal User Interface。ターミナル上で動くGUI風の操作画面）モードも搭載されている。引数なしで実行すると起動する：
 
 ```powershell
 PS> obsidian
@@ -285,17 +287,17 @@ GUIを使わずにターミナルだけでVaultを操作できる。SSH接続先
 | 5 | Insider builds トグルが見えない | バージョンが古い/未ログイン | ログイン → 設定確認 |
 
 :::message
-**最大のハマりポイント**は間違いなく**管理者権限の罠**（#1）である。エラーメッセージが一切出ず、ただ「何も表示されない」だけなので、原因の特定に時間がかかる。Discord上でも同じ問題を報告しているユーザーが複数いた。
+**最もつまずいたのは管理者権限**（#1）だ。エラーメッセージが一切出ず、ただ「何も表示されない」だけなので、原因の特定に時間がかかる。Discord上でも同じ問題を報告しているユーザーが複数いた。
 :::
 
 ## まとめ
 
-2026年2月10日にリリースされたObsidian CLI（v1.12.0 Early Access）をWindows環境でセットアップした。
+Windows 11でObsidian CLI（v1.12.0 Early Access）が動き、`obsidian help` でコマンド一覧を確認できる状態になった。
 
 **やってみた所感：**
 
 - **セットアップはやや面倒**。特にWindowsは `Obsidian.com` の取得とDiscord badge手順が分かりにくい
-- **管理者権限の罠**はエラーが出ないため原因特定が難しい。最大のハマりポイント
+- **管理者権限**ではエラーが出ないため原因特定が難しい。最もつまずいた箇所
 - **動いてしまえばシンプル**。`obsidian help` で全コマンドが一覧できる
 - **100以上のコマンド**でテンプレート適用、タスク管理、プラグイン管理、JavaScript実行など、GUIでしかできなかった操作がターミナルから可能に
 
@@ -308,13 +310,13 @@ GUIを使わずにターミナルだけでVaultを操作できる。SSH接続先
 - [Obsidian 公式サイト](https://obsidian.md/)
 - [Obsidian 公式Discord](https://discord.gg/obsidianmd)
 - [Obsidian Catalyst ページ](https://obsidian.md/pricing)
-- [前編: ObsidianをAIの「司令塔」にする ── MCP連携で39ソース自動収集の全貌](obsidian-mcp-integration)
+- [前編：ObsidianをAIの「司令塔」にする](obsidian-mcp-integration)
 
-※公式ドキュメントは英語です。ブラウザの翻訳機能で日本語に変換して読めます。
+※公式ドキュメントは英語。ブラウザの翻訳機能で日本語に変換して読める。
 
 ---
 
 ## 関連記事
 
-- [ObsidianをAIの「司令塔」にする ── MCP連携で39ソース自動収集の全貌](obsidian-mcp-integration) ── MCP接続の手順と自動ニュース収集の実例
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide) ── iCloud経由のVault同期手順
+- [ObsidianをAIの「司令塔」にする](obsidian-mcp-integration)：MCP接続の手順と自動ニュース収集の実例
+- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順

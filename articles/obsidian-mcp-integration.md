@@ -8,46 +8,46 @@ published: true
 
 ## この記事で分かること
 
+この記事の手順（Step 1〜3）を終えると、Claude CodeからObsidianのノートを読み書きできる。39ソースの収集に使うソース定義とカスタムコマンドの配布は、この記事では扱わない。
+
 - **MCP** を使えば、AIツールからObsidianのノートを直接読み書きできる
-- **39の公式ソース** からAIニュースを毎日自動収集する仕組みの全貌
+- **39の公式ソース** からAIニュースを自動収集する仕組みの全貌
 - **コマンド一発・約3分** で4社のニュースが日次レポートとしてObsidianに保存される
 
 :::message
 **シリーズ構成**
-- **ObsidianをAIの「司令塔」にする ── MCP連携で39ソース自動収集の全貌**（この記事）
-- [Obsidian CLI セットアップ完全ガイド ── Windows環境でハマった全記録](obsidian-cli-setup-guide)
+- **ObsidianをAIの「司令塔」にする**（この記事）
+- [Obsidian CLI セットアップ完全ガイド](obsidian-cli-setup-guide)
 
 **関連記事**
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide) ── iCloud経由のVault同期手順
+- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
 :::
 
 :::message alert
 **検証環境**: Windows 11 / Claude Code v2.1.39 / Obsidian v1.12.1 / Node.js v20
 **検証日**: 2026年2月11日
-本記事の情報は検証日時点のものです。最新情報は各公式ドキュメントを確認してください。
+本記事の情報は検証日時点のもの。最新情報は各公式ドキュメントで確認する。
 :::
 
 ## Before / After
 
-| | Before（手動） | After（MCP連携） |
+| | Before（手動の場合） | After（MCP連携） |
 |--|---------------|-----------------|
-| 情報収集 | 毎朝39サイトをブラウザで巡回 | **コマンド一発、約3分** |
+| 情報収集 | 39サイトをブラウザで巡回 | **コマンド一発、約3分** |
 | 整理 | コピペでメモに転記 | **Obsidianに自動保存** |
-| 重複チェック | 「これ昨日も見た？」と記憶頼り | **自動で既読スキップ** |
+| 重複チェック | 記憶頼り | **自動で既読スキップ** |
 | 要約 | 自分で読んで要点をまとめる | **AIが3段構成で要約** |
 
 ## はじめに
 
-「AIツールを使いこなしたい。でも情報が散らばって追いきれない」
+OpenAI、Google、Anthropicなど主要AI企業は、API、アプリ、研究論文の更新を頻繁に出している。全部を手作業でチェックするのは現実的ではない。
 
-OpenAI、Google、Anthropicなど主要AI企業は、毎日のように新機能をリリースしている。APIの変更、アプリのアップデート、研究論文の発表──全部を手作業でチェックするのは現実的ではない。
-
-本記事では、**Obsidian**をAI情報の「司令塔」として活用し、**39の公式ソースから毎日自動でニュースを収集・整理する仕組み**を紹介する。
+**Obsidian**に**39の公式ソースからニュースを自動で収集・整理する仕組み**を作ったので、その構成を紹介する。
 
 使うのは以下の3つだけだ：
 - **Obsidian**（ノートアプリ。無料）
 - **Claude Code**（AIコーディングツール。Pro $20/月 または Max $100/月〜）
-- **MCP**（Model Context Protocol ── AIとアプリをつなぐ標準規格。無料）
+- **MCP**（Model Context Protocol。AIとアプリをつなぐ標準規格。無料）
 
 :::message
 **料金について**
@@ -167,8 +167,8 @@ Claude Codeが**4社分の担当を同時に起動**し、各ベンダーのソ�
 各記事に一意のID（識別子）を付与し、処理済みの記事をJSONファイルで管理する。次回実行時にこのリストと照合し、**既読記事はスキップ**する。
 
 さらに安全策として二重チェックを行う：
-1. **前日のノートも確認** ── タイトルの一致でもスキップ判定
-2. **ID + タイトル の二重チェック** ── どちらか一致でスキップ
+1. **前日のノートも確認**: タイトルの一致でもスキップ判定
+2. **ID + タイトル の二重チェック**: どちらか一致でスキップ
 
 ## 出力フォーマット
 
@@ -212,7 +212,7 @@ Claude Codeが**4社分の担当を同時に起動**し、各ベンダーのソ�
 | Anthropic | 2件 | Claude Code v2.1.38/39 |
 | WordPress | 1件 | WP 7.0 Beta 1向け開発者まとめ |
 
-Claude Codeで `/ai-news`（筆者が作成したカスタムコマンド）を実行すると、4社39ソースから**14件の新規記事**を収集し、Obsidianに日次レポートとして自動保存した。所要時間は約3分である。
+Claude Codeで `/ai-news`（自作のカスタムコマンド）を実行すると、4社39ソースから**14件の新規記事**を収集し、Obsidianに日次レポートとして自動保存した。所要時間は約3分である。
 
 :::message
 **再現性について**
@@ -327,7 +327,9 @@ claude mcp list
 
 ## まとめ
 
-- **MCP** を使えば、ObsidianをAIツールの「外部記憶装置」として活用できる
+ObsidianとClaude Codeを MCP でつなぎ、ノートの読み書きと39ソースの日次収集（約3分）が動く状態になった。
+
+- **MCP** を使えば、Obsidianのノートを AIツールから読み書きできる
 - **39ソース** をLayer別に分類し、最適な取得方法で並列収集
 - **重複排除** で同じ記事が何度も出てこない
 - **3段構成の要約** で、流し読みから深掘りまで対応
@@ -348,11 +350,11 @@ claude mcp list
 - [Claude Code MCP ドキュメント](https://code.claude.com/docs/en/mcp)
 - [obsidian-mcp（npm）](https://www.npmjs.com/package/obsidian-mcp)
 
-※公式ドキュメントは英語です。ブラウザの翻訳機能で日本語に変換して読めます。
+※公式ドキュメントは英語。ブラウザの翻訳機能で日本語に変換して読める。
 
 ---
 
 ## 関連記事
 
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide) ── iCloud経由のVault同期手順
+- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
 - [Claude Code 実践Tips 1：コンテキスト管理が全ての土台](claude-code-context-management)

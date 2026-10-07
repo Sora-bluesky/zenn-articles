@@ -8,9 +8,9 @@ published: true
 
 ## はじめに
 
-この記事では、Windows に WSL2（Windows Subsystem for Linux 2）をインストールする手順を解説する。
+この記事の手順を終えると、Windows側にWSL2（Windows Subsystem for Linux 2）が入り、WSL側（Ubuntu）のターミナルでコマンドを打てる状態になる。Claude Codeなどのツールのインストールはこの記事では扱わず、次の記事で行う。
 
-WSL2 を入れると、Windows 上で Linux（Ubuntu）が使えるようになる。Claude Code や ClawdBot など、Linux 環境を前提としたツールを動かすために必要。
+WSL2 を入れると、Windows 上で Linux（Ubuntu）が使えるようになる。Claude Code や OpenClaw（旧称 ClawdBot）など、Linux 環境を前提としたツールを動かすために必要。
 
 :::message
 **シリーズ構成**
@@ -99,9 +99,9 @@ Ubuntu 24.04 LTS はインストールされました。
 - `-d Ubuntu-24.04`: Ubuntu 24.04 を指定してインストール
 :::
 
-### Step 3: PC を再起動
+### Step 3: 自分のパソコンを再起動
 
-インストール完了後、PC を再起動する。
+インストール完了後、自分のパソコンを再起動する。
 
 スタートメニュー → 電源 → 再起動。
 
@@ -152,7 +152,7 @@ username@DESKTOP-XXXXX:~$
 
 ### 基本コマンドの確認
 
-Ubuntu ターミナルで以下を実行してみる。
+WSL側（Ubuntu）のターミナルで以下を実行してみる。
 
 ```bash
 # 現在のディレクトリを表示
@@ -204,9 +204,9 @@ ls
 
 ## 別の PC に環境を構築する場合
 
-### Q: 他の PC ですでに WSL2 を使っています。同じユーザー名・パスワードにしても大丈夫？
+### Q: 他の PC ですでに WSL2 を使っている場合、同じユーザー名・パスワードにしても大丈夫か
 
-**A: 全く問題ありません。**
+**A: 全く問題ない。**
 
 WSL2 の Linux ユーザーは、各 PC・各ディストリビューションで完全に独立している。Windows アカウントや他 PC の WSL 環境との紐付けは一切ない。
 
@@ -216,17 +216,17 @@ WSL2 の Linux ユーザーは、各 PC・各ディストリビューション�
 
 これで全く問題なく動作する。むしろ同じにしておいた方が、複数 PC 間で作業するときに混乱しない。
 
-### Q: 旧 PC の環境をそのまま移行したい場合は？
+### Q: 旧 PC の環境をそのまま移行したい場合は
 
 WSL の Export / Import 機能を使う。
 
-**旧 PC でエクスポート：**
+**旧 PC（Windows側）でエクスポート：**
 
 ```powershell
 wsl --export Ubuntu-24.04 ubuntu-backup.tar
 ```
 
-**新 PC でインポート：**
+**新 PC（Windows側）でインポート：**
 
 ```powershell
 wsl --import Ubuntu-24.04 C:\WSL\Ubuntu ubuntu-backup.tar
@@ -237,7 +237,7 @@ wsl --import Ubuntu-24.04 C:\WSL\Ubuntu ubuntu-backup.tar
 インポート後はデフォルトユーザーが root になる。以下の手順でデフォルトユーザーを設定し直す必要がある。
 :::
 
-Ubuntu 内で設定ファイルを編集する：
+WSL側（Ubuntu）で設定ファイルを編集する：
 
 ```bash
 sudo nano /etc/wsl.conf
@@ -250,7 +250,7 @@ sudo nano /etc/wsl.conf
 default=あなたのユーザー名
 ```
 
-保存後、PowerShell で `wsl --shutdown` を実行し、再度 Ubuntu を起動すると反映される。
+保存後、Windows側のPowerShellで `wsl --shutdown` を実行し、再度 Ubuntu を起動すると反映される。
 
 :::message
 **nano エディタの操作方法**
@@ -342,14 +342,16 @@ WSL2 のインストールが完了したら、以下の記事に進む。
 
 ## まとめ
 
+Windows側にWSL2とUbuntu 24.04が入り、WSL側（Ubuntu）でユーザー名とパスワードを設定した状態になった。手順は次の4つ。
+
 | ステップ | 内容 |
 |---------|------|
 | 1 | PowerShell を管理者として起動 |
 | 2 | `wsl --install -d Ubuntu-24.04` を実行 |
-| 3 | PC を再起動 |
-| 4 | Ubuntu でユーザー名・パスワードを設定 |
+| 3 | 自分のパソコンを再起動 |
+| 4 | WSL側（Ubuntu）でユーザー名・パスワードを設定 |
 
-WSL2 があれば、Windows 上で Linux 向けのツールが使えるようになる。Claude Code、ClawdBot、その他多くの開発ツールの基盤として活用できる。
+WSL2 があれば、Windows 上で Linux 向けのツールが使える。Claude Code や OpenClaw など、Linux 環境を前提とするツールの土台になる。
 
 ---
 
