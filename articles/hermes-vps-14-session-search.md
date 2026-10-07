@@ -216,6 +216,8 @@ Telegramの同じDMは標準では1つの連続セッションとして続く。
 
 :::message alert
 **2026-07-12追記**:このデフォルトが変わった([PR#60194](https://github.com/NousResearch/hermes-agent/pull/60194))。「気づかないうちに会話が切れて文脈が消えるほうが困る」という利用者の声を受け、**自動リセットは標準で無効**(`mode: none`)になった。`config.yaml`に`session_reset`を書いていない環境では、方式B(idle)と方式C(daily)は発動しない。試すなら`session_reset`の`mode`を`idle`/`daily`/`both`に明示設定してからになる。方式A(`/new`)は従来どおり使えるので、本回の本筋(方式Aで区切って自動発火を体感する)は影響を受けない。
+
+**2026-10-07追記**:2026年9月7日の更新で、時間による自動リセット(方式B・方式C)の仕組みが本体から外れた。いまの版では、会話が新しいセッションに切り替わるのは`/new`か`/reset`を送ったときだけだ。`hermes doctor`も「session_reset.mode: both is no longer applied」と表示する。時間で自動的に区切りたい場合は、`hermes plugins install hermes-session-reset-policy`でプラグインを入れる。本回が採る方式A(`/new`)は、そのまま使える。
 :::
 :::
 
