@@ -8,15 +8,12 @@ published: true
 
 ## はじめに
 
+この記事の手順を終えると、スマホの Discord か Telegram からメッセージを送って、自分のパソコン（この記事ではWindows）で動いている Claude Code に作業させられる。
+
 2026年3月19日、Claude Code v2.1.80 で **Channels** という新機能が追加された。
-Discord や Telegram からメッセージを送ると、PCで動いている Claude Code が反応して作業してくれる。結果もチャットアプリに返ってくる。
+Discord や Telegram からメッセージを送ると、Claude Code が反応して作業し、結果もチャットアプリに返ってくる。**スマホから Claude Code を遠隔操作できる**ようになる。
 
-つまり、**スマホから Claude Code を遠隔操作できる**。
-
-電車の中からコードの修正を指示したり、外出先からビルド結果を確認したり。
-ターミナルの前に座っていなくても、Claude Code に仕事をさせられる。
-
-この記事では、Windows 環境に限定して Channels のセットアップから実用的な使い方までを解説する。
+この記事で扱わないこと：macOS・Linux での設定、自作チャネルの作り方。Windows でのセットアップと使い方にしぼる。
 
 :::message
 **シリーズ構成**
@@ -30,7 +27,7 @@ Discord や Telegram からメッセージを送ると、PCで動いている Cl
 :::
 
 :::message alert
-**Channels はリサーチプレビュー（実験的機能）です。** `--channels` フラグの仕様やプロトコルは、フィードバックに基づいて変更される可能性があります。最新情報は [公式ドキュメント](https://code.claude.com/docs/en/channels) を確認してください。
+**Channels はリサーチプレビュー（実験的機能）だ。** `--channels` フラグの仕様やプロトコルは、フィードバックに基づいて変更される可能性がある。最新情報は [公式ドキュメント](https://code.claude.com/docs/en/channels) で確認する。
 :::
 
 :::message
@@ -48,7 +45,7 @@ Channels は、外部のチャットアプリと Claude Code セッションを�
 
 :::message
 **MCP とは？**
-MCP（Model Context Protocol）は、AIツールが外部サービスと通信するための共通ルール。Claude Code が Discord や Telegram と「会話」するための翻訳機のようなもの。
+MCP（Model Context Protocol）は、Claude Code のようなツールが外部サービスと通信するための共通ルール。Channels では、Claude Code が Discord や Telegram とメッセージをやり取りするために使われる。
 :::
 
 ```
@@ -62,9 +59,9 @@ MCP（Model Context Protocol）は、AIツールが外部サービスと通信�
                                                      結果を返信
 ```
 
-**ポイント：**
+**押さえておくこと：**
 
-- チャネルサーバーは **自分のPC上** で動く。クラウドではない
+- チャネルサーバーは **自分のパソコン上** で動く。クラウドではない
 - Claude Code のセッションが **開いている間だけ** メッセージを受信できる
 - セッションを閉じるとメッセージは届かない
 
@@ -375,7 +372,7 @@ Claude Code がファイルの書き込みやコマンドの実行をする時�
 
 v2.1.81 以降、許可プロンプトをチャットアプリに転送する **Permission Relay** が使える。公式の Discord / Telegram プラグイン（v0.0.2 以降）で対応済み。
 
-**動作イメージ：**
+**許可までの流れ：**
 
 1. Claude Code がファイル編集やコマンド実行の許可を求める
 2. Telegram / Discord に「〇〇を実行していい？」というメッセージが届く
@@ -436,7 +433,7 @@ Channels はセッションが開いている間だけ動作する。ターミ�
 
 「常に待ち受けたい」場合は、**Windows Terminal のタブを1つ専用にして開きっぱなしにする**のが一番シンプルで確実。
 
-Claude Code を `--channels` で起動したタブを、他の作業用タブとは別のウィンドウにしておく。PCがスリープしない限り、タブを開いている間はずっとメッセージを受信できる。
+Claude Code を `--channels` で起動したタブを、他の作業用タブとは別のウィンドウにしておく。パソコンがスリープしない限り、タブを開いている間はずっとメッセージを受信できる。
 
 :::details 上級者向け：WSL2 + tmux / 起動時自動実行
 **WSL2 + tmux**
@@ -466,9 +463,9 @@ Windows Terminal の設定で、起動時に Claude Code を立ち上げるプ�
 
 公式プラグインは **送信者ホワイトリスト** を実装している。ペアリングしたユーザー ID だけがメッセージを送信でき、それ以外は無視される。
 
-### 注意すべきポイント
+### 注意すること
 
-- **ペアリング済みユーザーは、あなたの PC 上で Claude Code にコマンドを実行させられる。** 信頼できる人だけペアリングすること
+- **ペアリング済みユーザーは、自分のパソコン上で Claude Code にコマンドを実行させられる。** 信頼できる人だけペアリングすること
 - チャネル経由の返答は外部プラットフォーム（Discord / Telegram のサーバー）を経由する。機密性の高いコードやトークンは、チャネル経由で出力させないこと
 - **ペアリング後すぐに `allowlist` ポリシーに変更する**。デフォルトのまま放置すると、Bot にメッセージを送った第三者がペアリングコードを取得できる
 - 定期的にペアリング済みユーザーの一覧を確認する
@@ -523,6 +520,8 @@ Claude Code のセッションを終了しても、Fakechat の `bun.exe` プロ
 
 ## 活用例
 
+以下は送る指示文の例で、実際に動かした記録ではない。
+
 ### 外出先からファイルを修正
 
 ```
@@ -568,6 +567,8 @@ src/ 以下で TODO コメントが残っているファイルを一覧にして
 
 ## まとめ
 
+Fakechat での動作確認から Discord か Telegram との連携までを終えると、パソコンの前にいなくても、スマホから Claude Code に仕事を頼める状態になる。まずは Fakechat で動作確認してから、Discord か Telegram を設定する順にする。
+
 | やること | コマンド / 操作 |
 |----------|----------------|
 | Bun インストール | `powershell -c "irm bun.sh/install.ps1 \| iex"` |
@@ -576,9 +577,6 @@ src/ 以下で TODO コメントが残っているファイルを一覧にして
 | Telegram 連携 | `/plugin install telegram@claude-plugins-official` → トークン設定 → `--channels` で起動 → ペアリング |
 | Permission Relay | v2.1.81 以降で自動有効。スマホから `yes/no` で許可・拒否 |
 | セキュリティ強化 | ペアリング後に `/〇〇:access policy allowlist` |
-
-Channels を使えば、PCの前にいなくても Claude Code に仕事を頼める。
-まずは Fakechat で動作確認してから、Discord か Telegram を設定するのがおすすめ。
 
 ---
 

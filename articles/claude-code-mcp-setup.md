@@ -8,19 +8,11 @@ published: true
 
 ## はじめに
 
-Claude Code は単体でもファイルの読み書きや検索ができる強力なツールだ。
+この記事の手順を終えると、`claude mcp add` で外部サービスを Claude Code に接続し、接続状態を確認できる。
 
-しかし、こんな場面はないだろうか。
+Claude Code は単体でもファイルの読み書きや検索ができる。GitHub、Notion、データベースなどの外部サービスと連携するのが **MCP（Model Context Protocol）** だ。MCPを設定すると、Claude Code が外部サービスと直接やり取りできる。コピペで情報を渡す必要がなくなる。
 
-> 「GitHub の Issue を確認して、関連するコードを修正して」
-> 「Notion のドキュメントを参考にして、この機能を実装して」
-> 「データベースの中身を見て、バグの原因を調べて」
-
-こうした「外部ツールとの連携」を実現するのが **MCP（Model Context Protocol）** だ。
-
-MCPを設定すると、Claude Code が GitHub、Notion、データベースなどの外部サービスと直接やり取りできるようになる。コピペで情報を渡す必要がなくなり、「調べて → 判断して → 実行して」の流れをAIに一気通貫で任せられる。
-
-ただ、MCPの設定方法は公式ドキュメントを読んでも分かりにくい部分がある。この記事では、MCPの仕組みから具体的な設定コマンドまで、体系的に整理した。
+この記事ではMCPの仕組み、接続方式、設定コマンド、スコープ、認証、権限設定、確認方法を順に整理する。個別のMCPサーバーの使い方の詳細は扱わない。
 
 :::message
 **この記事の対象読者**
@@ -43,9 +35,9 @@ Claude Code のインストールがまだの場合は、先に[インストー�
 
 **MCP（Model Context Protocol）** は、AIツールと外部サービスを接続するためのオープンソース標準だ。
 
-分かりやすく言えば、Claude Code に「手」を増やすようなもの。
+Claude Code が操作できる対象を、外部サービスまで広げる仕組みだ。
 
-素の Claude Code にできることは、目の前のファイルの読み書きとターミナルでのコマンド実行だ。MCPを使うと、ここに「GitHub の Issue を読む手」「Notion のページを取得する手」「データベースにクエリを投げる手」が追加される。
+素の Claude Code にできることは、目の前のファイルの読み書きとターミナルでのコマンド実行だ。MCPを使うと、ここに「GitHub の Issue を読む」「Notion のページを取得する」「データベースにクエリを投げる」操作が追加される。
 
 ```mermaid
 flowchart LR
@@ -70,7 +62,7 @@ MCPで接続される外部サービスのことを **MCPサーバー** と呼�
 
 ## MCPサーバーの接続方式（トランスポート）
 
-MCPサーバーには3つの接続方式がある。**結論から言えば、HTTP方式が使えるサーバーはHTTP方式一択**だ。
+MCPサーバーには3つの接続方式がある。HTTP方式が使えるサーバーは、HTTP方式を選ぶ。
 
 | 方式 | 特徴 | おすすめ度 |
 |:-----|:-----|:----------|
@@ -90,7 +82,7 @@ claude mcp add --transport http サーバー名 URL
 
 ### stdio方式
 
-ローカルPC上でプログラム（MCPサーバー）を起動し、Claude Code と直接通信する。データベース接続やローカルファイル操作など、PCの中のリソースにアクセスする場合に使う。
+自分のパソコン上でプログラム（MCPサーバー）を起動し、Claude Code と直接通信する。データベース接続やローカルファイル操作など、パソコンの中のリソースにアクセスする場合に使う。
 
 ```bash
 claude mcp add --transport stdio サーバー名 -- コマンド 引数...
@@ -109,7 +101,7 @@ claude mcp add --transport stdio my-server -- cmd /c npx -y @some/mcp-package
 claude mcp add --transport stdio my-server -- npx -y @some/mcp-package
 ```
 
-`cmd /c` は「コマンドプロンプト経由で実行する」という意味だ。Windows の環境変数やパスの解決に必要なおまじないと考えてほしい。
+`cmd /c` は「コマンドプロンプト経由で実行する」という意味だ。Windows の環境変数やパスの解決に必要になる。
 :::
 
 ### SSE方式（非推奨）
@@ -277,7 +269,7 @@ claude mcp add --transport stdio --env DB_HOST=localhost --env DB_PORT=5432 db-s
 | `${API_KEY}` | 環境変数 `API_KEY` の値を使う |
 | `${DB_HOST:-localhost}` | 環境変数 `DB_HOST` が未設定なら `localhost` を使う |
 
-こうすることで、`.mcp.json` をGitにコミットしても認証情報が漏れない。各メンバーが自分のPCで環境変数を設定する。
+こうすることで、`.mcp.json` をGitにコミットしても認証情報が漏れない。各メンバーが自分のパソコンで環境変数を設定する。
 
 :::message alert
 **APIキーの取り扱い注意**
@@ -503,7 +495,7 @@ claude mcp add --transport http --scope project github https://api.githubcopilot
 
 ## まとめ
 
-この記事で解説した内容を表にまとめる。
+`claude mcp add` でMCPサーバーを追加し、再起動して `/mcp` で接続を確認できる状態になった。内訳は次のとおり。
 
 | 項目 | 内容 |
 |:-----|:-----|
@@ -515,7 +507,7 @@ claude mcp add --transport http --scope project github https://api.githubcopilot
 | **確認コマンド** | `claude mcp list`（設定確認）、`/mcp`（接続確認、要再起動） |
 | **設定反映** | Claude Code の**再起動が必要**（セッション中の変更は反映されない） |
 
-MCPを使いこなすと、Claude Code が「目の前のファイルだけ見えるAI」から「外部サービスと連携できるAI」に進化する。まずは GitHub や Notion など、普段使っているサービスから試してみてほしい。
+まずは GitHub や Notion など、普段使っているサービスの1つをHTTP方式で追加して試すとよい。
 
 ---
 
