@@ -139,7 +139,7 @@ ssh admin@hermes-vps
 入れたら、バージョンとgatewayの稼働を1画面で確認する。
 
 ```bash
-hermes version; echo; systemctl --user status hermes-gateway --no-pager | head -8
+hermes --version; echo; systemctl --user status hermes-gateway --no-pager | head -8
 # → v0.16系 + Active: active (running) が出ればOK
 
 tailscale ip -4   # VPS上で実行。出たTailscale IP(100.x.x.x)を控える(あとで自分のパソコンのDesktopの接続先になる)

@@ -130,13 +130,13 @@ Web検索は「過去のページから情報を拾う」もの。X Searchは「
 
 ```bash
 ssh admin@hermes-vps
-hermes version                                  # v0.16.0 を確認
+hermes --version                                  # v0.16.0 を確認
 systemctl --user status hermes-gateway          # active (running)
 docker ps                                       # Docker engine 稼働(第4回)
 systemctl --user cat hermes-gateway | grep -i exec   # op run経由で起動しているか(第6回)
 ```
 
-`hermes version`が`v0.16.0`、hermes-gatewayが`active (running)`、Docker engineが動いていて、起動コマンドが`op run --env-file=~/.hermes/secrets.env -- hermes gateway run`になっていれば、第10回までの構成は崩れていない。Telegramからbotに何か話しかけて返事が来ることもあわせて確認しておく。
+`hermes --version`が`v0.16.0`、hermes-gatewayが`active (running)`、Docker engineが動いていて、起動コマンドが`op run --env-file=~/.hermes/secrets.env -- hermes gateway run`になっていれば、第10回までの構成は崩れていない。Telegramからbotに何か話しかけて返事が来ることもあわせて確認しておく。
 
 ### 今のweb:セクションを確認する(出発点)
 

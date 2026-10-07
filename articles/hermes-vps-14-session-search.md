@@ -159,7 +159,7 @@ VPSに接続して稼働を確認し、過去会話の記録ファイル(`state.
 
 ```bash
 ssh admin@hermes-vps
-hermes version                                  # v0.17.0(2026.6.19 The Reach Release)以降を確認
+hermes --version                                  # v0.17.0(2026.6.19 The Reach Release)以降を確認
 ```
 
 ![ターミナルでhermes versionを実行した結果。Hermes Agent v0.17.0(2026.6.19)upstream 4362c1a3、Project /home/admin/hermes-agent、Python 3.11.15、OpenAI SDK 2.24.0、Up to dateが並ぶ画面](/images/hermes-vps/hermes-vps-14-version-check.png)

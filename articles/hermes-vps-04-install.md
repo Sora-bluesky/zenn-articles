@@ -316,13 +316,13 @@ Hermes Agent本体とその依存パッケージを入れる。**本シリーズ
 
 ```bash
 which hermes
-hermes version
+hermes --version
 ```
 
-`which hermes`で`~/.local/bin/hermes`(`~/hermes-agent/venv/bin/hermes`へのシンボリックリンク)が返り、`hermes version`で`0.14.0`系が表示されればOK。`source venv/bin/activate`でvenvを有効化した後はvenv内のパスが直接返る。
+`which hermes`で`~/.local/bin/hermes`(`~/hermes-agent/venv/bin/hermes`へのシンボリックリンク)が返り、`hermes --version`で`0.14.0`系が表示されればOK。`source venv/bin/activate`でvenvを有効化した後はvenv内のパスが直接返る。
 
 :::message
-Hermes Agentは`hermes version`(サブコマンド形式)でも`hermes --version`(ダッシュ付き)でも同じバージョンが表示される。`hermes doctor`(自己診断)、`hermes auth list`(認証一覧)等の機能はサブコマンド形式が標準(出典:[hermes_cli/main.py@v2026.5.16](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py))。
+バージョンは`hermes --version`で表示する。執筆時点(v0.14系)では`hermes version`(サブコマンド形式)でも同じ表示が出たが、現在の版(v0.21系)ではこの書き方は使えず「'version' is not a `hermes` command」と返る。`hermes doctor`(自己診断)、`hermes auth list`(認証一覧)等の機能はサブコマンド形式が標準(出典:[hermes_cli/main.py@v2026.5.16](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py))。
 :::
 
 ## 対話ウィザードで初期設定する
@@ -546,7 +546,7 @@ uv pip install -e ".[all]"
 - [ ] Docker engine+admin権限で`docker`コマンド実行可能(`docker run hello-world`成功)
 - [ ] Hermes Agentクローン+main pull完了
 - [ ] `./setup-hermes.sh`(または`uv pip install -e ".[all]"`)でインストール完了
-- [ ] `hermes version`で0.14系が表示される
+- [ ] `hermes --version`で0.14系が表示される
 - [ ] `hermes setup`の5パート完了(Full setup選択、backend=docker)
 - [ ] `~/.hermes/config.yaml`と`~/.hermes/.env`が生成されている
 - [ ] `~/.hermes/auth.json`が存在(`hermes auth list`で`openai-codex`が表示される)

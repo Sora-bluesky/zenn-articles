@@ -155,10 +155,10 @@ VPSにadminでSSHログインしてHermes作業環境に入る。
 ssh admin@hermes-vps
 cd ~/hermes-agent
 source venv/bin/activate
-hermes version
+hermes --version
 ```
 
-`(venv) admin@hermes-vps:~/hermes-agent$` のプロンプトになり、`hermes version`でv0.14系が表示されればOK。
+`(venv) admin@hermes-vps:~/hermes-agent$` のプロンプトになり、`hermes --version`でv0.14系が表示されればOK。
 
 :::message
 「Update available: N commits behind」が出ても気にしない。第4回末尾で`git pull origin main`済みなので必要な修正(`43a3f119f`)は既に取り込まれている。mainは不安定なので、動作確認済みの第4回時点のHEADで進める。第5回作業開始時の基準commit SHAだけ`git rev-parse HEAD`で記録しておくと、トラブル時の比較対象になる。

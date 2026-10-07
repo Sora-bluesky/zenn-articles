@@ -166,7 +166,7 @@ VPSにSSHで入り、Hermesのバージョンと常駐サービスの稼働を�
 ```bash
 ssh admin@hermes-vps
 
-hermes version                                  # v0.17.0(2026.6.19 The Reach Release)以降を確認
+hermes --version                                  # v0.17.0(2026.6.19 The Reach Release)以降を確認
 systemctl --user status hermes-gateway          # active (running)
 ```
 

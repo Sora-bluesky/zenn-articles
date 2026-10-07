@@ -102,7 +102,7 @@ v0.16.0(コードネーム"Surface Release")でWeb Dashboardが大きく進化�
 | Cronジョブ追加 | `hermes cron add`をSSHで | ブラウザの「作成」ボタン |
 | プラットフォーム(Telegram等)有効化 | `.env`+`config.yaml`を手書き | ブラウザでSAVE & ENABLE |
 | 公式docを読む | ブラウザの別タブ | Dashboard内のドキュメントペインで |
-| バージョン確認 | SSH+`hermes version` | ログイン直後に常時表示 |
+| バージョン確認 | SSH+`hermes --version` | ログイン直後に常時表示 |
 
 「ターミナルがダメ」「黒い画面が苦手」というだけで、ここまで作ってきた一切をあきらめなくていい。それを実際の画面で示すのがこの回。
 
@@ -225,7 +225,7 @@ http://<tailscale-ip>:9119
 VPSで動いている本体のバージョンをCLIで確認するため、VPSのターミナルで次を打つ。
 
 ```bash
-hermes version
+hermes --version
 ```
 
 出力:
@@ -244,13 +244,13 @@ Update available: 18 commits behind — run 'hermes update'
 
 ![Dashboard SYSTEMペイン(Host+Nous Portal+Skill curator+Gateway+Memory+Credential pool+Operations+Share debug report+Checkpoints+Shell hooks)](/images/hermes-vps/hermes-vps-08-dashboard-version-gui.png)
 
-`Host`セクションの`HERMES v0.16.0`+`18 behind`バッジが、CLIで打った`hermes version`の結果とぴったり一致する。それだけじゃなく:
+`Host`セクションの`HERMES v0.16.0`+`18 behind`バッジが、CLIで打った`hermes --version`の結果とぴったり一致する。それだけじゃなく:
 
 - ターミナルでは見えなかった**OS/CPU/メモリ/ディスク/UPTIME**が一覧で出る
 - ターミナルでは別途打つ必要があった**Check for updates**と**Update now**がボタンで並ぶ
 - さらに下にスクロールすると**Skill curator**や**Gateway**の状態、**Operations**(`doctor`/`security audit`/`backup`等のワンクリック保守)、**Memory**(MEMORY.md/USER.mdのリセット)まで一望できる
 
-つまり「**`hermes version`を打たなくても、ログインした瞬間からバージョンも更新状況も全部見える**」。これがDashboardの本領で、第8回の主題そのものだ。
+つまり「**`hermes --version`を打たなくても、ログインした瞬間からバージョンも更新状況も全部見える**」。これがDashboardの本領で、第8回の主題そのものだ。
 
 :::message
 左サイドバーの最下部にも小さく`v0.16.0`+`Nous Research`が表示されている(常時表示)。どのペインを開いていてもバージョンが視界に入る設計。
