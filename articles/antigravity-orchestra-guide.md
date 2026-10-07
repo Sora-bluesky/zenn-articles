@@ -32,7 +32,7 @@ Claude Code Orchestra は、Claude Code をオーケストレーター（指揮�
 
 :::message
 **参考にした資料**
-- [Claude Code Orchestra: Claude Code × Codex CLI × Gemini CLIの最適解を探る](https://zenn.dev/mkj/articles/claude-code-orchestra_20260120) by @mkj（松尾研究所）
+- [Claude Code Orchestra: Claude Code × Codex CLI × Gemini CLIの最適解を探る](https://zenn.dev/mkj/articles/claude-code-orchestra_20260120) by 松尾研究所テックブログ
 - [GitHub: DeL-TaiseiOzaki/claude-code-orchestra](https://github.com/DeL-TaiseiOzaki/claude-code-orchestra)
 
 素晴らしいアーキテクチャを公開してくださった原著者の方々に感謝します。
@@ -45,14 +45,14 @@ Claude Code Orchestra は、Claude Code をオーケストレーター（指揮�
 | オリジナル | この記事 |
 |-----------|---------|
 | Claude Code がオーケストレーター | **Google Antigravity** がオーケストレーター |
-| Gemini CLI でリサーチ | Antigravity 自身がリサーチ（Gemini 3 Pro） |
+| Gemini CLI でリサーチ | Antigravity 自身がリサーチ（Gemini 3.1 Pro 等の現行モデル。[対応モデル](https://antigravity.google/docs/models)） |
 | Hooks で自動協調提案 | **Rules で判断ルールを定義** |
 | 13 Skills + 6 Hooks | **6 Workflows + 5 Skills + 8 Rules** |
 
 :::message alert
 **Antigravity はパブリックプレビュー版です**
 
-Antigravity には、無料枠が大きいことと、1Mトークンのコンテキストを使えるという利点があります。
+Antigravity には、週ごとに更新される無料枠があるという利点があります（[プラン](https://antigravity.google/docs/plans)）。
 
 一方で、頻繁なアップデートやバグ報告があり、前日まで動いた手順が動かなくなることがあります。最新情報の確認が必要です。この記事も随時更新するので、**GitHub や X のフォロー** をお願いします。
 :::
@@ -110,7 +110,7 @@ flowchart TB
         U["指示を出す"]
     end
 
-    subgraph Antigravity["Google Antigravity<br/>Gemini 3 Pro / 1Mトークン"]
+    subgraph Antigravity["Google Antigravity<br/>Gemini 3.1 Pro 等"]
         A1["Orchestrator<br/>タスク管理"]
         A2["Researcher<br/>ライブラリ調査"]
         A3["Builder<br/>コード実装"]
@@ -135,7 +135,7 @@ flowchart TB
 | 役割 | 担当 | タスク |
 |------|------|--------|
 | **Orchestrator** | Antigravity | ユーザー対話、タスク管理、ワークフロー制御 |
-| **Researcher** | Antigravity | ライブラリ調査、ドキュメント検索（1Mトークン活用） |
+| **Researcher** | Antigravity | ライブラリ調査、ドキュメント検索 |
 | **Builder** | Antigravity | Codex の設計に基づくコード実装、ファイル編集 |
 | **Designer** | Codex CLI | アーキテクチャ設計、実装計画、トレードオフ分析 |
 | **Debugger** | Codex CLI | 根本原因分析、複雑なバグ調査 |
@@ -585,7 +585,7 @@ Antigravity だけと対話し、設計・デバッグ・レビューは Codex C
 | **視点の多様性** | Google と OpenAI、2社の AI の視点でチェック |
 | **自動振り分け** | ルールに基づいて適切なエージェントに委譲 |
 | **知識の蓄積** | docs/ に設計決定を記録、次回以降も参照可能 |
-| **1Mトークン活用** | Antigravity 自身がリサーチを担当 |
+| **リサーチの分担** | Antigravity 自身がリサーチを担当 |
 
 ### 次のステップ
 
@@ -630,7 +630,7 @@ Antigravity はパブリックプレビュー版のため、仕様変更やバ�
 
 | 資料 | 著者 | 内容 |
 |------|------|------|
-| [Claude Code Orchestra](https://zenn.dev/mkj/articles/claude-code-orchestra_20260120) | @mkj（松尾研究所） | マルチエージェント協調の概念とアーキテクチャ |
+| [Claude Code Orchestra](https://zenn.dev/mkj/articles/claude-code-orchestra_20260120) | 松尾研究所テックブログ | マルチエージェント協調の概念とアーキテクチャ |
 | [GitHub: claude-code-orchestra](https://github.com/DeL-TaiseiOzaki/claude-code-orchestra) | DeL-TaiseiOzaki | 実装例とディレクトリ構成 |
 
 ### 関連ツール

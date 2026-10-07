@@ -79,7 +79,7 @@ Claude Code には「サブエージェント」という機能があり、Claud
 
 :::message alert
 **料金について**
-この方式では Google AI Pro（$19.99/月）と ChatGPT Plus/Pro（$20/月〜）の両方が必要になる可能性がある。既に契約中でなければ、まずどちらか一方を試すことを推奨する。
+この方式では Google AI Pro（日本では月額¥2,900。2026年10月時点。[公式ページ](https://one.google.com/intl/ja_jp/about/google-ai-plans/)）と ChatGPT Plus/Pro（$20/月〜）の両方が必要になる可能性がある。既に契約中でなければ、まずどちらか一方を試すことを推奨する。
 :::
 
 ---

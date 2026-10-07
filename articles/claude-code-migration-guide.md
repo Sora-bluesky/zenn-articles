@@ -100,7 +100,7 @@ Claude Codeの存在は知っていました。でも「CLIツールはエンジ
 
 > *"All memory files are automatically loaded into Claude Code's context when launched."*
 > （すべてのメモリファイルは、Claude Code起動時に自動でコンテキストに読み込まれます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 
 「起動時に自動で読み込んでくれるファイルがある？」
 
@@ -125,7 +125,7 @@ Claude Codeの存在は知っていました。でも「CLIツールはエンジ
 
 > *"Claude Code offers four memory locations in a hierarchical structure, each serving a different purpose."*
 > （Claude Codeは階層構造の4つのメモリ格納場所を提供し、それぞれ異なる目的を持ちます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 
 ### Skillsって何？（例え話）
 
@@ -137,7 +137,7 @@ CLAUDE.mdが「常に頭に入れておく基本情報」なら、Skillsは「�
 
 > *"Skills extend what Claude can do. Create a SKILL.md file with instructions, and Claude adds it to its toolkit. Claude uses skills when relevant, or you can invoke one directly with /skill-name."*
 > （SkillsはClaudeができることを拡張します。SKILL.mdファイルに手順を書くと、Claudeはそれをツールキットに追加します。Claudeは関連するときに自動で使うか、/skill-nameで直接呼び出せます）
-> 出典: [Extend Claude with skills](https://docs.anthropic.com/en/docs/claude-code/slash-commands)
+> 出典: [Extend Claude with skills](https://code.claude.com/docs/en/slash-commands)
 
 ### わからないことの聞き方
 
@@ -212,7 +212,7 @@ CLAUDE.mdが「常に頭に入れておく基本情報」なら、Skillsは「�
 
 > *"Install, authenticate, and start using Claude Code on your development machine."*
 > （開発マシンにClaude Codeをインストール、認証、使用開始します）
-> 出典: [Set up Claude Code](https://docs.anthropic.com/en/docs/claude-code/setup)
+> 出典: [Set up Claude Code](https://code.claude.com/docs/en/setup)
 
 **対応OS：**
 - macOS 13.0以上
@@ -247,7 +247,7 @@ curl -fsSL https://claude.ai/install.sh | sh
 
 > *"Claude Pro or Max plan (recommended): Subscribe to Claude's Pro or Max plan for a unified subscription that includes both Claude Code and Claude on the web."*
 > （Claude ProまたはMaxプラン（推奨）：Claude CodeとWeb版Claudeの両方を含む統合サブスクリプション）
-> 出典: [Set up Claude Code](https://docs.anthropic.com/en/docs/claude-code/setup)
+> 出典: [Set up Claude Code](https://code.claude.com/docs/en/setup)
 
 | プラン | Claude Code | Web版Claude | 月額 |
 |--------|-------------|-------------|------|
@@ -376,7 +376,7 @@ Claude Code用の設定ファイルに変換します。
 
 > *"Plan Mode instructs Claude to create a plan by analyzing the codebase with read-only operations, perfect for exploring codebases, planning complex changes, or reviewing code safely."*
 > （Plan Modeは読み取り専用の操作でコードベースを分析し、計画を作成するようClaudeに指示します。コードベースの探索、複雑な変更の計画、安全なコードレビューに最適です）
-> 出典: [Common workflows](https://docs.anthropic.com/en/docs/claude-code/tutorials)
+> 出典: [Common workflows](https://code.claude.com/docs/en/tutorials)
 
 :::details 実行例：Claude Codeの応答（クリックで展開）
 
@@ -536,7 +536,7 @@ my-project/
 
 > *"CLAUDE.local.md files are automatically added to .gitignore, making them ideal for private project-specific preferences that shouldn't be checked into version control."*
 > （CLAUDE.local.mdファイルは自動的に.gitignoreに追加されるため、バージョン管理にチェックインすべきでないプライベートなプロジェクト固有の設定に最適です）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 
 :::message alert
 **⚠️ ~/.claude/CLAUDE.md はグローバル設定です**
@@ -567,7 +567,7 @@ my-project/
 
 > *"You can see what memory files are loaded by running /memory command."*
 > （/memoryコマンドを実行すると、どのメモリファイルが読み込まれているか確認できます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 :::
 
 :::message
@@ -581,7 +581,7 @@ my-project/
 
 > *"Use the /memory command during a session to open any memory file in your system editor for more extensive additions or organization."*
 > （セッション中に/memoryコマンドを使用して、システムエディタでメモリファイルを開き、より広範な追加や整理を行えます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 :::
 
 :::message
@@ -616,7 +616,7 @@ claude --permission-mode plan
 
 > *"Plan Mode instructs Claude to create a plan by analyzing the codebase with read-only operations, perfect for exploring codebases, planning complex changes, or reviewing code safely."*
 > （Plan Modeは読み取り専用の操作でコードベースを分析し、計画を作成するようClaudeに指示します。コードベースの探索、複雑な変更の計画、安全なコードレビューに最適です）
-> 出典: [Common workflows](https://docs.anthropic.com/en/docs/claude-code/common-workflows)
+> 出典: [Common workflows](https://code.claude.com/docs/en/common-workflows)
 
 **使い方の例：**
 
@@ -728,7 +728,7 @@ conversations.jsonから、特定のプロジェクト「〇〇」に関する�
 
 > *"The /compact command summarizes the current conversation. If you include specific instructions in your /compact command, those instructions will be used for the summary."*
 > （/compactコマンドは現在の会話を要約します。/compactコマンドに具体的な指示を含めると、その指示が要約に使用されます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 
 ```bash
 /compact プロジェクト〇〇に関する設定情報だけ残して
@@ -740,7 +740,7 @@ conversations.jsonから、特定のプロジェクト「〇〇」に関する�
 
 > *"When Claude Code encounters a task that matches a subagent's expertise, it can delegate that task to the specialized subagent, which works independently and returns results. Each subagent operates in its own context, preventing pollution of the main conversation."*
 > （Claude Codeがサブエージェントの専門分野に一致するタスクに遭遇すると、その専門サブエージェントにタスクを委任できます。各サブエージェントは独自のコンテキストで動作し、メイン会話の汚染を防ぎます）
-> 出典: [Subagents](https://docs.anthropic.com/en/docs/claude-code/sub-agents)
+> 出典: [Subagents](https://code.claude.com/docs/en/sub-agents)
 :::
 
 ---
@@ -749,7 +749,7 @@ conversations.jsonから、特定のプロジェクト「〇〇」に関する�
 
 > *"Correct course early: If Claude starts going in the wrong direction, press Escape to stop it immediately. /rewind or pressing Escape twice will restore both the conversation and any file changes to a previous checkpoint."*
 > （早めに軌道修正：Claudeが間違った方向に進み始めたら、Escapeを押してすぐに停止。/rewindまたはEscapeを2回押すと、会話とコードを以前のチェックポイントに復元できます）
-> 出典: [Manage costs effectively](https://docs.anthropic.com/en/docs/claude-code/costs)
+> 出典: [Manage costs effectively](https://code.claude.com/docs/en/costs)
 
 | 状況 | 対処 |
 |------|------|
@@ -767,7 +767,7 @@ conversations.jsonから、特定のプロジェクト「〇〇」に関する�
 
 > *"Project memory can be stored in either ./CLAUDE.md or ./.claude/CLAUDE.md."*
 > （プロジェクトメモリは ./CLAUDE.md または ./.claude/CLAUDE.md に保存できます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 
 ```markdown
 # プロジェクト概要
@@ -790,14 +790,14 @@ React + TypeScript のWebアプリケーション。
 
 > *"Keep SKILL.md under 500 lines. Move detailed reference material to separate files."*
 > （SKILL.mdは500行以下に。詳細な参照資料は別ファイルに移動）
-> 出典: [Extend Claude with skills](https://docs.anthropic.com/en/docs/claude-code/slash-commands)
+> 出典: [Extend Claude with skills](https://code.claude.com/docs/en/slash-commands)
 :::
 
 ### Skills（定型作業のマニュアル）
 
 > *"Every skill needs a SKILL.md file with two parts: YAML frontmatter (between --- markers) that tells Claude when to use the skill, and markdown content with instructions Claude follows when the skill is invoked."*
 > （すべてのスキルには2つの部分で構成されるSKILL.mdファイルが必要です：YAMLフロントマター（---マーカーの間）はClaudeにいつスキルを使用するかを伝え、マークダウンコンテンツはスキルが呼び出されたときにClaudeが従う指示です）
-> 出典: [Extend Claude with skills](https://docs.anthropic.com/en/docs/claude-code/slash-commands)
+> 出典: [Extend Claude with skills](https://code.claude.com/docs/en/slash-commands)
 
 `.claude/skills/generate-report/SKILL.md`:
 
@@ -820,7 +820,7 @@ description: 週次レポートを生成する。「レポート作って」と�
 
 > *"Place markdown files in your project's .claude/rules/ directory... All .md files in .claude/rules/ are automatically loaded as project memory."*
 > （プロジェクトの .claude/rules/ ディレクトリにマークダウンファイルを配置... .claude/rules/ 内のすべての.mdファイルはプロジェクトメモリとして自動読み込みされます）
-> 出典: [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory)
+> 出典: [Manage Claude's memory](https://code.claude.com/docs/en/memory)
 
 `.claude/rules/api-standards.md`:
 
@@ -861,35 +861,33 @@ Web版で育てた知識は、履歴をエクスポートし、Claude Codeで設
 
 | 項目 | 説明 |
 |------|------|
-| Claude Code | [Set up Claude Code](https://docs.anthropic.com/en/docs/claude-code/setup) |
+| Claude Code | [Set up Claude Code](https://code.claude.com/docs/en/setup) |
 | 認証 | Claude Pro/Max または APIキー |
-| 使用モデル | **Sonnet 4.5**（デフォルト、変更不要） |
+| 使用モデル | アカウントの既定モデル（変更不要） |
 
 :::message
 **モデルについて**
 
-Claude Codeは **Proプランの場合、デフォルトでSonnet 4.5を使用** します。特別な設定は不要です。Maxプランの場合はOpus系モデルが優先的に使用されます。
+Claude Codeの既定モデルは、アカウントの種類によって決まります。特別な設定は不要です。どのモデルが選ばれているかは、Claude Code内で `/model` を実行すると確認できます。
 
-> *"If you're unsure which model to use, we recommend starting with Claude Sonnet 4.5. It offers the best balance of intelligence, speed, and cost for most use cases, with exceptional performance in coding and agentic tasks."*
-> （どのモデルを使うか迷ったら、Claude Sonnet 4.5から始めることをお勧めします。ほとんどのユースケースでインテリジェンス、スピード、コストの最良のバランスを提供し、コーディングとエージェントタスクで卓越したパフォーマンスを発揮します）
-> 出典: [Models overview](https://docs.anthropic.com/en/docs/about-claude/models/overview)
+出典: [Model configuration](https://code.claude.com/docs/en/model-config)
 
-今回の移行作業（JSONファイルの分析→設定ファイルの作成）はSonnet 4.5で十分です。
+今回の移行作業（JSONファイルの分析→設定ファイルの作成）は、既定のモデルで十分です。
 :::
 
-:::details Opus 4.5に変更したい場合（上級者向け）
+:::details モデルを変更したい場合（上級者向け）
 
 Claude Code内で `/model` コマンドを実行すると、モデルを変更できます：
 
 ```bash
-/model opus      # Opus 4.5に変更
-/model sonnet    # Sonnet 4.5に戻す
+/model opus      # Opusに変更
+/model sonnet    # Sonnetに変更
 /model opusplan  # Plan ModeのみOpus、実行はSonnet（ハイブリッド）
 ```
 
 > *"The opusplan model alias provides an automated hybrid approach: In plan mode - Uses opus for complex reasoning and architecture decisions. In execution mode - Automatically switches to sonnet for code generation and implementation."*
 > （opusplanモデルエイリアスは自動化されたハイブリッドアプローチを提供します：Plan ModeではOpusを使用し、実行モードではSonnetに自動切り替えします）
-> 出典: [Model configuration](https://docs.anthropic.com/en/docs/claude-code/model-config)
+> 出典: [Model configuration](https://code.claude.com/docs/en/model-config)
 
 **注意：** Opusは複雑なアーキテクチャ決定や多段階推論向けです。今回のような変換作業ではSonnetで十分であり、Opusに変更するメリットはほとんどありません。
 :::
@@ -953,10 +951,10 @@ JSONファイルを読み込んで、プロジェクト「〇〇」の設定フ�
 
 | リンク | 内容 |
 |--------|------|
-| [Manage Claude's memory](https://docs.anthropic.com/en/docs/claude-code/memory) | CLAUDE.md、メモリの階層構造 |
-| [Extend Claude with skills](https://docs.anthropic.com/en/docs/claude-code/slash-commands) | Skills、カスタムコマンド |
-| [Common workflows](https://docs.anthropic.com/en/docs/claude-code/tutorials) | Plan Mode、セッション継続 |
-| [Set up Claude Code](https://docs.anthropic.com/en/docs/claude-code/setup) | インストール、認証 |
+| [Manage Claude's memory](https://code.claude.com/docs/en/memory) | CLAUDE.md、メモリの階層構造 |
+| [Extend Claude with skills](https://code.claude.com/docs/en/slash-commands) | Skills、カスタムコマンド |
+| [Common workflows](https://code.claude.com/docs/en/tutorials) | Plan Mode、セッション継続 |
+| [Set up Claude Code](https://code.claude.com/docs/en/setup) | インストール、認証 |
 | [How can I export my Claude data?](https://support.anthropic.com/en/articles/9450526-how-can-i-export-my-claude-ai-data) | 履歴エクスポート |
 
 ---

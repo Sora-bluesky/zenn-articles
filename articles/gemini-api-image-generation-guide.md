@@ -7,7 +7,7 @@ published: true
 ---
 
 :::message
-この記事の情報は **2026 年 2 月時点** のものである。モデル ID・料金・無料枠は変更される可能性があるため、最新情報は各セクションに記載した公式リンクを参照してほしい。
+この記事の情報は **2026 年 10 月時点** のものである。モデル ID・料金・無料枠は変更される可能性があるため、最新情報は各セクションに記載した公式リンクを参照してほしい。
 :::
 
 この記事を読むと、Gemini API の画像生成が無料でできるのか、料金・著作権・透かしがどうなっているのかが分かる。API を呼び出すコードの書き方やプロンプトの作り方は扱わない。
@@ -79,8 +79,10 @@ Gemini API で画像生成に使えるモデルは、大きく **2 つのファ�
 
 | モデル ID | 通称 | 最大解像度 | 料金（1 画像あたり） |
 |---|---|---|---|
-| `gemini-2.5-flash-image` | **Nano Banana** | 1K（1024px） | $0.039 |
-| `gemini-3-pro-image-preview` | **Nano Banana Pro** | 4K（4096px） | $0.134（1K/2K）、$0.24（4K） |
+| `gemini-2.5-flash-image` | **Nano Banana**（旧2.5系。非推奨） | 1K（1024px） | $0.039 |
+| `gemini-3-pro-image` | **Nano Banana Pro** | 4K（4096px） | $0.134（1K/2K）、$0.24（4K） |
+| 公式のモデル一覧で確認 | **Nano Banana 2.1** | 公式の料金表を参照 | $0.0336〜 |
+| 公式のモデル一覧で確認 | **Gemini 3.1 Flash Image** | 公式の料金表を参照 | $0.045〜（0.5K画像）・1Kは$0.067 |
 
 :::message
 「Nano Banana」は、Google が AI モデルの性能比較サイト「LMSYS Chatbot Arena」に匿名で投稿した際のコードネームだった。それがそのまま通称として定着した。公式のモデル ID は上記の `gemini-2.5-flash-image` 等である。
@@ -88,11 +90,11 @@ Gemini API で画像生成に使えるモデルは、大きく **2 つのファ�
 
 出典：[Image generation | Gemini API](https://ai.google.dev/gemini-api/docs/image-generation)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
-### Imagen 4
+### Imagen 4（2026年8月17日に提供終了）
 
-**専用画像生成モデル。** テキストプロンプトから画像のみを生成する。**英語プロンプトのみ対応**。
+**専用画像生成モデル。** テキストプロンプトから画像のみを生成していた。**英語プロンプトのみ対応**。Imagen 4 は全バリアントが 2026 年 8 月 17 日に提供を終了し、現行の料金表からも消えている。下の表は提供終了前の情報であり、新規には使えない。画像生成には上の Nano Banana 系を使う。
 
-| モデル ID | バリアント | 最大解像度 | 料金（1 画像あたり） |
+| モデル ID | バリアント | 最大解像度 | 提供終了前の料金（1 画像あたり） |
 |---|---|---|---|
 | `imagen-4.0-fast-generate-001` | Fast | 1K | **$0.02**（最安） |
 | `imagen-4.0-generate-001` | Standard | 2K | $0.04 |
@@ -101,7 +103,7 @@ Gemini API で画像生成に使えるモデルは、大きく **2 つのファ�
 出典：[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)、[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
 
 :::message alert
-**廃止予定に注意：** `gemini-2.5-flash-image` は 2026/10/02、Imagen 4 系は 2026/06/24 に廃止予定。`gemini-3-pro-image-preview` は現時点で廃止予定なし。最新の廃止スケジュールは [Deprecations](https://ai.google.dev/gemini-api/docs/deprecations) を確認してほしい。
+**廃止情報に注意：** Imagen 4 系は 2026 年 8 月 17 日に提供を終了した。`gemini-3-pro-image-preview` は 2026 年 6 月 25 日に廃止済みで、後継は `gemini-3-pro-image` である。`gemini-2.5-flash-image` の廃止日は、公式の廃止予定ページを参照してほしい。[Deprecations](https://ai.google.dev/gemini-api/docs/deprecations)
 :::
 
 ---
@@ -112,7 +114,7 @@ Gemini API で画像生成に使えるモデルは、大きく **2 つのファ�
 
 | 比較項目 | Nano Banana | Nano Banana Pro | Imagen 4 |
 |---|---|---|---|
-| **モデル ID** | `gemini-2.5-flash-image` | `gemini-3-pro-image-preview` | `imagen-4.0-*-generate-001` |
+| **モデル ID** | `gemini-2.5-flash-image` | `gemini-3-pro-image` | `imagen-4.0-*-generate-001`（提供終了） |
 | **コンセプト** | 高速・低コスト | 高品質・プロ向け | 画像生成専用・最安 |
 | **最大解像度** | 1K | **4K** | 2K（Fast は 1K のみ） |
 | **料金（1 画像）** | $0.039 | $0.134〜$0.24 | **$0.02〜$0.06** |
@@ -140,10 +142,10 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 
 - **日本語プロンプトで手軽に画像生成したい** → Nano Banana（$0.039/画像）
 - **4K が必要、テキストの読みやすさが重要** → Nano Banana Pro（$0.134〜$0.24/画像）
-- **英語 OK で最安を求める（短期利用向け）** → Imagen 4 Fast（$0.02/画像。ただし 2026/06 廃止予定）
+- **できるだけ安く使いたい** → Nano Banana 2.1（$0.0336〜/画像）
 
 :::message
-**新規開発には Nano Banana 系を推奨する。** Imagen 4 系は全バリアント（Fast / Standard / Ultra）が 2026/06/24 に廃止予定のため、長期的に使うなら Nano Banana 系を選ぶのが安全だ。
+**新規開発には Nano Banana 系を使う。** Imagen 4 系は全バリアント（Fast / Standard / Ultra）が 2026 年 8 月 17 日に提供を終了している。
 :::
 
 出典：[DeepMind - Gemini Image Flash](https://deepmind.google/models/gemini-image/flash/)、[DeepMind - Gemini Image Pro](https://deepmind.google/models/gemini-image/pro/)、[Imagen | Gemini API](https://ai.google.dev/gemini-api/docs/imagen)
@@ -157,10 +159,11 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 | 通称 | モデル ID | 無料枠 | 料金（1 画像） | Batch API |
 |---|---|---|---|---|
 | **Nano Banana** | `gemini-2.5-flash-image` | なし | $0.039（約 6 円） | $0.0195 |
-| **Nano Banana Pro** | `gemini-3-pro-image-preview` | なし | $0.134〜$0.24（約 20〜36 円） | $0.067 / $0.12 |
-| **Imagen 4 Fast** | `imagen-4.0-fast-generate-001` | なし | $0.02（約 3 円） | 非対応 |
-| **Imagen 4 Standard** | `imagen-4.0-generate-001` | なし | $0.04（約 6 円） | 非対応 |
-| **Imagen 4 Ultra** | `imagen-4.0-ultra-generate-001` | なし | $0.06（約 9 円） | 非対応 |
+| **Nano Banana Pro** | `gemini-3-pro-image` | なし | $0.134〜$0.24（約 20〜36 円） | $0.067 / $0.12 |
+| **Nano Banana 2.1** | 公式のモデル一覧を参照 | 公式の料金表を参照 | $0.0336〜 | 公式の料金表を参照 |
+| **Gemini 3.1 Flash Image** | 公式のモデル一覧を参照 | 公式の料金表を参照 | $0.045〜（0.5K画像）・1Kは$0.067 | 公式の料金表を参照 |
+
+Imagen 4 は 2026 年 8 月 17 日に提供を終了したため、この表から外した。`gemini-2.5-flash-image`（旧 2.5 系）は非推奨である。
 
 > すべての画像生成モデルの Free tier（無料枠） 列は "Not available" と記載されている。
 > 出典：[Gemini API Pricing](https://ai.google.dev/gemini-api/docs/pricing)
@@ -177,7 +180,6 @@ Midjourney の `--ar 16:9` のようにプロンプト内で指定する方式�
 
 | 用途 | モデル | 100 画像のコスト | 1,000 画像のコスト |
 |---|---|---|---|
-| とにかく安く | Imagen 4 Fast | $2.00（約 300 円） | $20（約 3,000 円） |
 | 日本語 + 編集 | Nano Banana | $3.90（約 585 円） | $39（約 5,850 円） |
 | 高品質 4K | Nano Banana Pro | $24.00（約 3,600 円） | $240（約 36,000 円） |
 
@@ -331,10 +333,10 @@ Gemini API の画像生成は無料枠がなく、有料の課金設定が必要
 | 知りたいこと | 答え |
 |---|---|
 | API で画像生成は無料でできる？ | **できない。** 全モデルの Free tier（無料枠） は "Not available" |
-| 一番安いモデルは？ | Imagen 4 Fast（$0.02/画像 ≒ 約 3 円） |
-| 日本語プロンプトで使えるモデルは？ | Nano Banana / Nano Banana Pro（Imagen 4 は英語のみ） |
+| 一番安いモデルは？ | Nano Banana 2.1（$0.0336〜/画像。2026 年 10 月時点） |
+| 日本語プロンプトで使えるモデルは？ | Nano Banana / Nano Banana Pro（Imagen 4 は英語のみで、すでに提供終了） |
 | 4K 画像が必要なら？ | Nano Banana Pro（$0.134〜$0.24/画像） |
-| 新規開発にはどのモデルがおすすめ？ | Nano Banana 系（Imagen 4 は 2026/06 廃止予定） |
+| 新規開発にはどのモデルがおすすめ？ | Nano Banana 系（Imagen 4 は 2026 年 8 月 17 日に提供終了） |
 | 商用利用は OK？ | 規約上、禁止されていない |
 | 透かしは入る？ | 全画像に SynthID が自動付与（不可視・除去不可） |
 | 無料で画像生成を試したいなら？ | Gemini アプリ（gemini.google.com）を使う（API とは別物） |

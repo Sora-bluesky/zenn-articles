@@ -399,7 +399,7 @@ llms.txt は Claude Code 以外にも多くのサービスが提供している�
 
 ### llms.txtでは足りない（Google Developer Knowledge API）
 
-Googleは一部サービス（Gemini API・ADK・Chrome等）で llms.txt を提供しているが、Firebase・Cloud Run・Google Chat API などは404を返す。2026年2月、その理由がわかった。Googleの本命は **Developer Knowledge API + MCPサーバー**だ。1つのMCPサーバーを接続するだけで、11以上のGoogleドメインのドキュメントを横断検索できる。llms.txtを1つずつ探して回る必要がない。
+Googleは一部サービス（Gemini API・ADK・Chrome等）で llms.txt を提供しているが、Cloud Run・Google Chat API などは404を返す。2026年2月、その理由がわかった。Googleの本命は **Developer Knowledge API + MCPサーバー**だ。1つのMCPサーバーを接続するだけで、20以上のGoogleドメインのドキュメントを横断検索できる。llms.txtを1つずつ探して回る必要がない。
 
 僕も実際にこのMCPサーバーをセットアップしたが、設定ファイルまわりやAPIキーのプロジェクトの不一致で何度かつまずいた。セットアップ手順とつまずいた点は別記事にまとめている。
 

@@ -44,7 +44,7 @@ OpenClawは、オーストリアの開発者 Peter Steinberger 氏が作った�
 公開から短期間でGitHubのスターを大きく伸ばしたOSSプロジェクトの1つになった。
 
 > 「New shell, same lobster.」（新しい殻、同じロブスター）
-> 出典: [OpenClaw 公式](https://x.com/openclawai/status/2017505983678976021)
+> 出典: [OpenClaw 公式ドキュメント Lore](https://docs.openclaw.ai/start/lore)
 
 ### 導入前に確認すること
 
@@ -64,11 +64,7 @@ OpenClawは万人向けのツールではない。導入を決める前に、自
 - 本番環境や機密データがある環境で使いたい
 - 「インストールして放置」で使いたい
 
-開発者自身がこう言っている：
-
-> 「It still isn't ready to be installed by normies, to be fair.」
-> （正直なところ、まだ一般ユーザーがインストールできる状態ではない）
-> 出典: [Peter Steinberger](https://x.com/steipete)（OpenClaw 開発者）
+開発者自身も、技術に詳しくない一般ユーザー向けのツールではないという趣旨の発言をしている。
 
 Ciscoのセキュリティチームも警告を出した：
 
@@ -97,7 +93,7 @@ ChatGPTやClaude.aiは「賢いチャットボット」。OpenClawは「24/7稼�
 導入を決めたなら、次は環境選び。
 
 :::message
-OpenClawは「24/7稼働の自律エージェント」として作られていて、[公式FAQ](https://docs.openclaw.ai/help/faq)でも「24/7の信頼性が必要ならVPSを使え」と書いてある。自分のパソコン（WSL2）だとスリープでGatewayが止まり、メッセージを受信できない。
+OpenClawは「24/7稼働の自律エージェント」として作られていて、[公式FAQ](https://docs.openclaw.ai/help/faq)にもリモートGateway（VPS）で動かす項目がある。自分のパソコン（WSL2）だとスリープでGatewayが止まり、メッセージを受信できない。
 :::
 
 ### 構成比較
@@ -444,7 +440,7 @@ Gateway（18789番ポート）をパケットフィルターで外部に開放�
 | TLS暗号化（Caddy + LE） | 自動 | 不要（SSHトンネル前提） |
 
 :::message
-**XServer VPSの設計上の利点**: XServer VPSではWeb UI（ダッシュボード）をインターネットに公開せず、SSHトンネル経由のローカルアクセスのみを推奨している。2026年初頭にOpenClawのControl UIに[RCE脆弱性（CVE-2026-25253、v2026.1.29で修正済み）](https://adversa.ai/blog/openclaw-security-101-vulnerabilities-hardening-2026/)が報告され、インターネットに露出した[42,000件以上のインスタンス](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)が影響を受けた。SSHトンネル前提の設計はWeb UIが外部に露出しないため、この種の脆弱性の影響を受けにくい。
+**XServer VPSの設計上の利点**: XServer VPSではWeb UI（ダッシュボード）をインターネットに公開せず、SSHトンネル経由のローカルアクセスのみを推奨している。2026年初頭にOpenClawのControl UIに[RCE脆弱性（CVE-2026-25253、v2026.1.29で修正済み）](https://adversa.ai/blog/openclaw-security-101-vulnerabilities-hardening-2026/)が報告された。同じ時期の調査では、インターネットに露出したインスタンスが[4万件超](https://adversa.ai/blog/openclaw-security-101-vulnerabilities-hardening-2026/)（2026年2月時点、SecurityScorecardの調査で40,214件）見つかっている。SSHトンネル前提の設計はWeb UIが外部に露出しないため、この種の脆弱性の影響を受けにくい。
 :::
 
 DigitalOceanのようなフル自動セキュリティが必要なら、Docker/Fail2ban/Caddyの手動インストールも可能。詳細は[OpenClaw公式セキュリティガイド](https://docs.openclaw.ai/gateway/security)と[DigitalOcean技術解説ブログ](https://www.digitalocean.com/blog/technical-dive-openclaw-hardened-1-click-app)を参照。
@@ -594,7 +590,7 @@ XServer VPS：
 - [ ] ダッシュボードにはSSHトンネル経由でアクセスしている（18789番を直接開放していない）
 - [ ] Docker sandboxが有効（`sandbox.mode: "non-main"` 以上）
 - [ ] チャンネル権限を「Allowlist」に設定
-- [ ] Moltbookに接続していない（Moltbookは旧名称「Moltbot」時代のクラウドダッシュボード。現在は非推奨で、Gateway認証なしでインターネットに公開されるリスクがある。名称変更の経緯は記事冒頭を参照）
+- [ ] Moltbookに接続していない（Moltbookは隣接するサービス。Gateway認証なしでインターネットに公開されるリスクがある）
 
 DigitalOcean 1-Click：
 

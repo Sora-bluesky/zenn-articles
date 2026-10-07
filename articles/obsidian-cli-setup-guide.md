@@ -33,9 +33,9 @@ published: true
 
 > **Anything you can do in Obsidian you can do from the command line.**
 > Obsidian CLI is now available in 1.12 (early access).
-> 出典: [Obsidian公式 (@obsdmd)](https://x.com/obsdmd/status/2021241384057930224) 2026年2月11日
+> 出典: [Obsidian公式 (@obsdmd)](https://x.com/obsdmd/status/2021241384057930224) 2026年2月10日（米国時間）
 
-「Obsidianでできることは、すべてコマンドラインからもできる」。2026年2月11日、Obsidian公式がCLIのリリースを発表した。
+「Obsidianでできることは、すべてコマンドラインからもできる」。2026年2月10日（米国時間）、Obsidian公式がCLIのリリースを発表した。
 
 ObsidianにはMCPプラグイン（前編で紹介）を使えばAIツールからノートを読み書きできる。しかし、**テンプレート適用、プラグイン管理、JavaScript実行**といったObsidian内部の機能にはアクセスできなかった。
 

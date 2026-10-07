@@ -142,6 +142,7 @@ Obsidian公式フォーラムでは、Windows + iCloudの組み合わせは**フ
 
 > "Using iCloud on Windows is known to lead to file duplication and corruption issues."
 
+（フォーラムの投稿で公式声明として引用された文）
 出典: [Official Guidelines for Use of Obsidian use in iCloud](https://forum.obsidian.md/t/official-guidelines-for-use-of-obsidian-use-in-icloud/83058)
 
 それでもiCloud同期を使う場合は、以下の手順に従ってください。**手順の順番が重要**です。
@@ -366,8 +367,10 @@ Obsidianのデフォルトは英語です。日本語で操作したい場合は
 
 | プラグイン | 特徴 |
 |-----------|------|
-| Local REST API | オープンソース、GitHub 500+ Star、活発にメンテナンス |
-| MCP Tools | オープンソース、GitHub 100+ Star、活発にメンテナンス |
+| Local REST API | オープンソース、GitHub 約3,000 Star（2026年10月時点）、活発にメンテナンス |
+| MCP Tools | オープンソース、GitHub 800 Star超（2026年10月時点）、活発にメンテナンス |
+
+Star数の出典: [obsidian-local-rest-api](https://github.com/coddingtonbear/obsidian-local-rest-api)、[obsidian-mcp-tools](https://github.com/jacksteamdev/obsidian-mcp-tools)
 
 両プラグインとも**ソースコードが公開**されており、コミュニティで広く利用されています。不安な場合は、記事末尾のGitHubリンクからコードを確認できます。
 :::

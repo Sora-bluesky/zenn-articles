@@ -37,11 +37,11 @@ MCP 経由ならこの一言で、IDE が Developer Knowledge API を叩いて�
 - ✅ `ai.google.dev/gemini-api/docs/llms.txt`
 - ❌ Google Chat API → 404
 - ❌ Cloud Run → 404
-- ❌ Firebase → 404
+- ❌ Firebase の llms.txt → 404（Firebase のドキュメント自体は、後述の Developer Knowledge API の対象に含まれる）
 
 僕は Google Chat ボットの不具合を調べようとして llms.txt を探したが、9 個の URL を試してすべて 404 だった。**Google のドキュメントは多くのサブドメインに分散しており、llms.txt で網羅するのは現実的ではない**。
 
-Google の出した回答が Developer Knowledge API。11 以上の Google ドメインを横断して、自動で再インデックスされる。
+Google の出した回答が Developer Knowledge API。20 以上の Google ドメインを横断して、自動で再インデックスされる（対象は公式の[コーパスリファレンス](https://developers.google.com/knowledge/reference/corpus-reference)で確認できる）。
 
 ### llms.txt との比較
 
@@ -51,7 +51,7 @@ Google の出した回答が Developer Knowledge API。11 以上の Google ド�
 | 更新頻度 | サイト側が手動更新 | 自動再インデックス |
 | 検索機能 | なし（全文ダウンロード） | 自然言語で検索可能 |
 | AI 統合 | ファイルをコンテキストに注入 | MCP で IDE / エージェントに直結 |
-| 対象範囲 | サイト単位 | 11+ Google ドメイン横断 |
+| 対象範囲 | サイト単位 | 20+ Google ドメイン横断 |
 | コスト | 無料 | 無料（Public Preview） |
 
 ---
@@ -216,7 +216,23 @@ claude mcp add google-dev-knowledge \
 **2026年3月時点の既知の問題**: firebase-tools の `developerknowledge_search_documents` ツールは `invalid argument` エラーで動作しない。バグが修正されるまでは REST API 直接利用を推奨。
 :::
 
-Antigravity は `httpUrl` 型の MCP Server を認識しない場合がある。その代わり、Firebase MCP が Developer Knowledge API をラップして提供している。バグが修正されれば、以下の手順で使えるようになる:
+公式の Antigravity 向け設定は、`serverUrl` と `.agents/mcp_config.json` を使う形式だ（出典：[Developer Knowledge MCP](https://developers.google.com/knowledge/mcp)）。
+
+```json
+// .agents/mcp_config.json
+{
+  "mcpServers": {
+    "google-developer-knowledge": {
+      "serverUrl": "https://developerknowledge.googleapis.com/mcp",
+      "headers": {
+        "X-Goog-Api-Key": "YOUR_API_KEY"
+      }
+    }
+  }
+}
+```
+
+Gemini CLI 用の `httpUrl` 形式は Antigravity では使わない。このほか、Firebase MCP が Developer Knowledge API をラップして提供している。上のバグが修正されれば、以下の手順で使えるようになる:
 
 1. `npm install -g firebase-tools` でインストール
 2. Antigravity の MCP Store で「Firebase」を検索して Install
@@ -374,7 +390,7 @@ Public Preview 中は無料。GA 後の料金体系は未発表（最新情報�
 
 API キーを作り、REST API で Google の公式ドキュメントを検索できる状態になった。要点は次の4つ。
 
-1. **Google のドキュメント検索には Developer Knowledge API を使う**。llms.txt は Google のドメイン分散に対応できない。Developer Knowledge API なら 11+ ドメインを横断検索できる
+1. **Google のドキュメント検索には Developer Knowledge API を使う**。llms.txt は Google のドメイン分散に対応できない。Developer Knowledge API なら 20+ ドメインを横断検索できる
 2. **REST API 直接利用が最も確実**。API キーさえあれば動く。MCP 経由は環境によって接続トラブルが起きやすい（2026年3月時点）
 3. **0 件が返ったらクエリではなく設定を疑う**。僕の検証ではどんなクエリでもほぼ 5 件返った。0 件の原因は API キー・プロジェクト設定・レスポンスのパースミスのいずれか
 4. **MCP が繋がらないときはサーバーとクライアントを切り分ける**。MCP プロトコルを直接叩いてサーバー側を検証すれば、設定ファイル違いや型の非対応に振り回されずに済む

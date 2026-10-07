@@ -311,7 +311,7 @@ Enter to confirm · Esc to cancel
 ? for shortcuts                    ✓ Anthropic marketplace installed
 ```
 
-`>` のプロンプトが表示されたら、Claude Code が使える状態。
+`>` のプロンプトが表示されたら、Claude Code が使える状態。画面のバージョンやモデル名は撮影時の例で、実際の表示は環境によって変わる。
 
 ---
 
