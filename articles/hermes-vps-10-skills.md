@@ -308,7 +308,11 @@ version: 1.0.0
 :::message alert
 **落とし穴1:`platforms: [any]`だとDashboardに出ない**
 作ったはずのスキルが一覧に出ないことがある。Hermesが`skill_manage`で自動生成すると、frontmatterが`platforms: [any]`になることがある。Hermesは仕様上`any`を有効と見なさず「このプラットフォームでは非対応」扱いにするため、**Dashboardの一覧に出ず、スラッシュでも呼べない**。その時は編集鉛筆で`platforms: [linux, macos, windows]`に直し、リロードする(それでもダメならゲートウェイを再起動)。5-1のように自分で書く時は、`platforms`行を入れなければこの問題は起きない。入れるなら3つを明記する。
+
+2026年10月の版で同じ頼み方(名前は`plain-japanese-v2`)をしたところ、承認は求められずにそのまま作成・保存され、frontmatterは`platforms: [linux, macos, windows]`で作られた。`hermes skills list`にも出た。ただし生成のたびに同じになる保証はないので、一覧に出ないときはこの落とし穴を疑う。
 :::
+
+![hermes skills listをplainで絞り込んだ画面。plain-japaneseとplain-japanese-v2が並んでenabledになっている](/images/hermes-vps/hermes-vps-10-recheck-skills-list.png)
 
 :::message alert
 **落とし穴2:呼び出しはアンダースコア**

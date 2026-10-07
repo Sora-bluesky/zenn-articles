@@ -494,6 +494,13 @@ Error: ERROR: Playwright does not support chromium on ubuntu26.04-x64
 
 Ubuntu 26.04(2026年4月リリース)が新しすぎてPlaywright未対応(2026年5月時点)。**Browser toolsはHermes Agentに「このページを見てきて」と頼むと、VPS内のChromiumでサイトを開いて情報を取ってくる機能**だが、これが使えなくなる。一方で**Hermes Agent本体のテキスト応答とDuckDuckGo検索は問題なく動く**ので、本シリーズの第5-7回の範囲では支障なし。Playwrightのバージョンアップ待ち、または旧Ubuntu(22.04/24.04)を選ぶ判断が必要だが、Browser toolsを多用する予定がなければそのままで構わない。本シリーズではUbuntu 26.04のまま、Browser toolsはオプション扱いで進める。
 
+:::message
+**2026年10月の再確認**
+2026年10月の版(Hermes v0.21.5+8509)で確かめると、Hermesは自分用のNode.js(v26.7.0)を`~/.hermes/tools`の下に入れて使う。VPSに元から入っているNode.js(v22.22.3)とは別のものだ。サンドボックスのDockerイメージ(`nikolaik/python-nodejs:python3.11-nodejs20`)は、この版でもそのまま動いた。読者がやることは変わらない。Node.jsを自分で入れ直す必要はない。
+:::
+
+![~/.hermes/toolsの下にHermes用のNode.js 26.7.0があることと、VPSのNode.jsがv22.22.3であることを並べて確認したターミナル画面](/images/hermes-vps/hermes-vps-04-recheck-node-versions.png)
+
 ### つまずきポイント5:Telegram「Chat not found」エラー
 
 `hermes gateway`起動時に以下のエラーで失敗することがある。
