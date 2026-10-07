@@ -18,7 +18,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 連載は続いており、回の順番や数は内容の充実に合わせて変わることがある。ここでは公開済みの回をまとめておく。以降の回は、公開しだいこのページに追加していく。
 
-### 第I部　体を作る
+### 第I部　VPSで24時間動かす
 
 | 回 | 見出し |
 |----|--------|
@@ -29,14 +29,14 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 5 | [コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) |
 | 6 | [気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) |
 
-### 第II部　顔と操作席
+### 第II部　デスクトップアプリとブラウザから操作する
 
 | 回 | 見出し |
 |----|--------|
 | 7 | [SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
 | 8 | [手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
 
-### 第III部　生活リズム
+### 第III部　定時実行・スキル・Web検索を足す
 
 | 回 | 見出し |
 |----|--------|
@@ -44,7 +44,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 10 | [毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) |
 | 11 | [気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) |
 
-### 第IV部　記憶を分けて育てる
+### 第IV部　記憶・話し方・スキルを管理する
 
 | 回 | 見出し |
 |----|--------|
@@ -57,7 +57,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 18 | 技を放置するな。Hermes Agentは定期的にSkillsを磨き直す。 |
 | 19 | 技を増やしすぎるな。Hermes Agentは自動で整理して動きを軽く保つ。 |
 
-### 第V部　他のAIを束ねる
+### 第V部　Claude Code・Grok・ローカルモデルと分担する
 
 | 回 | 見出し |
 |----|--------|
@@ -71,7 +71,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 27 | 1つの答えを信じるな。Hermes Agentは複数のAIで比べて決める。 |
 | 28 | 確認なしで渡すな。Hermes Agentは自分でチェックしてから出す。 |
 
-### 第VI部　手足を増やす
+### 第VI部　ブラウザ操作・画像・音声・ファイルを扱う
 
 | 回 | 見出し |
 |----|--------|
@@ -84,7 +84,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 35 | 報告書は自分で書くな。Hermes Agentが最後の1枚まで書いてくれる。 |
 | 36 | 1社だけで揃えるな。Hermes Agentは外部サービスと繋いで道具を増やす。 |
 
-### 第VII部　外部サービス連携
+### 第VII部　外部サービスと連携する
 
 | 回 | 見出し |
 |----|--------|
@@ -94,7 +94,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 40 | 返事を後回しにするな。Hermes AgentはiMessageですぐ返してくれる。 |
 | 41 | 1台だけで動かすな。Hermes Agentは複数台で仕事を分け合う。 |
 
-### 第VIII部　自走させる
+### 第VIII部　長い作業・人格の切り替え・複数マシン
 
 | 回 | 見出し |
 |----|--------|
@@ -102,7 +102,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 | 43 | 1つの人格で済ますな。Hermes Agentは場面ごとに顔を切り替える。 |
 | 44 | 1台に縛るな。Hermes Agentは分身を他のマシンにも置ける。 |
 
-### 第IX部　声と生活導線
+### 第IX部　音声操作と通知
 
 | 回 | 見出し |
 |----|--------|

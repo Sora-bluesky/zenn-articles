@@ -28,7 +28,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第12回終了時点の構成図](#第12回終了時点の構成図)
 - [事前準備](#事前準備)
 - [現状確認(hermes memory status)](#現状確認(hermes-memory-status))
-- [TelegramでUSER.mdを育てる](#telegramでuser.mdを育てる)
+- [TelegramでUSER.mdに書き足す](#telegramでuser.mdに書き足す)
 - [Dashboardで保存を確認](#dashboardで保存を確認)
 - [ファイル実体を覗く](#ファイル実体を覗く)
 - [暴走を止める仕組み(Write Gate)](#暴走を止める仕組み(write-gate))
@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 体を作る**
+**第I部 VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -60,16 +60,16 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
-**第II部 顔と操作席**
+**第II部 デスクトップアプリとブラウザから操作する**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
-**第III部 生活リズム**
+**第III部 定時実行・スキル・Web検索を足す**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす
 - [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる
 
-**第IV部 記憶を分けて育てる**
+**第IV部 記憶・話し方・スキルを管理する**
 - **第12回**(本記事) 好みを毎回言うな。Hermes AgentはMemoryで覚えている
 - [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む
 - [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く
@@ -185,7 +185,7 @@ hermes memory status
 2026-07末の更新で、この出力の上段が変わった。「Built-in: always active」は実際の設定を読まない決め打ち表示だったことが修正され、今はMemory injection/User profile/Memory toolの3項目を実際の設定から読んで表示する。下段のプロバイダ一覧は変わらない。スクショは撮影時点(v0.17.0)の実際の画面だ。
 :::
 
-## TelegramでUSER.mdを育てる
+## TelegramでUSER.mdに書き足す
 
 記憶を入れる一番自然な方法は、Telegramでエージェントに話しかけて、覚えるべきことを伝えることだ。エージェントが内部の`memory` toolを呼んでUSER.md/MEMORY.mdに書き込む。
 

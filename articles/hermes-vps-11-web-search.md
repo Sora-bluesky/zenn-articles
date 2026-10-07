@@ -30,7 +30,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [動作確認(検索と本文抽出が通るか)](#動作確認(検索と本文抽出が通るか))
 - [無料枠を使い切ったらTavilyに切り替える(web-failover skillで自動化)](#無料枠を使い切ったらtavilyに切り替える(web-failover-skillで自動化))
 - [X Searchの設定(hermes doctorと--platform telegramの注意点)](#x-searchの設定(hermes-doctorと--platform-telegramの注意点))
-- [morning-news Skillをハイブリッド検索に育てる](#morning-news-skillをハイブリッド検索に育てる)
+- [morning-news Skillをハイブリッド検索に切り替える](#morning-news-skillをハイブリッド検索に切り替える)
 - [最終確認チェックリスト(第11回)](#最終確認チェックリスト(第11回))
 - [まとめ](#まとめ)
 - [実検証コラム(SearXNGの自己ホストで起きた問題)](#実検証コラム(searxngの自己ホストで起きた問題))
@@ -55,7 +55,7 @@ SearXNGを自己ホストして完全無料の検索を作る検証も行い、�
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 体を作る**
+**第I部 VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -63,16 +63,16 @@ SearXNGを自己ホストして完全無料の検索を作る検証も行い、�
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
-**第II部 顔と操作席**
+**第II部 デスクトップアプリとブラウザから操作する**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
-**第III部 生活リズム**
+**第III部 定時実行・スキル・Web検索を足す**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす
 - [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる
 - **第11回**(本記事) 気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる
 
-**第IV部 記憶を分けて育てる**
+**第IV部 記憶・話し方・スキルを管理する**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている
 - [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む
 - [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く
@@ -454,7 +454,7 @@ x_searchを使って、Hermes Agent(NousResearch)についてXで最近どんな
 
 返ってきた投稿URL(`x.com/<ユーザー名>/status/<数字>`形式)が実在するかをクリックして確認する。`x_search`は捏造URLを返さない設計だが、念のため本物に飛ぶかを最初の1回は確かめる。出力に「いいね○件」「RT○件」のような数値が混じっていたら、それは捏造なので採用しない。プロンプトを「数値なしで」と書き直して再実行する。
 
-## morning-news Skillをハイブリッド検索に育てる
+## morning-news Skillをハイブリッド検索に切り替える
 
 第10回で作った`~/.hermes/skills/morning-news/SKILL.md`を、新しい検索の役割分担(Firecrawl検索+Firecrawl抽出+x_search)に合わせて全文置換する。末尾に取得状況を必ず残す形にする。
 

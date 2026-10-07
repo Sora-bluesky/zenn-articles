@@ -41,7 +41,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 体を作る**
+**第I部 VPSで24時間動かす**
 - **第1回**(本記事) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -49,16 +49,16 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
-**第II部 顔と操作席**
+**第II部 デスクトップアプリとブラウザから操作する**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
-**第III部 生活リズム**
+**第III部 定時実行・スキル・Web検索を足す**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす
 - [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる
 
-**第IV部 記憶を分けて育てる**
+**第IV部 記憶・話し方・スキルを管理する**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている
 - [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む
 - [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く
@@ -83,13 +83,13 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 Hermes AgentはNous Researchが公開しているオープンソースの自律型AIエージェントだ。永続的なメモリと自己生成スキルを持ち、Telegramなどのメッセージングから話しかけて使える。
 
-構成を役割で分けると、3つの登場人物がいる。
+構成を役割で分けると、3つになる。
 
 | 役割 | 担当 | 説明 |
 |------|------|------|
-| 司令塔 | Hermes Agent本体 | 指示を受け、計画を立て、実行を差配する |
-| 考える役 | AIモデル(Codex gpt-5.5 / Grok 4.3) | 実際の思考を担当。複数モデルを切り替え可能 |
-| 手足 | 作業用マシン | 重い処理・長時間タスクを実際にこなす |
+| 段取り | Hermes Agent本体 | 指示を受け、計画を立て、実行を割り振る |
+| 思考 | AIモデル(Codex gpt-5.5 / Grok 4.3) | 実際の思考を担当。複数モデルを切り替え可能 |
+| 重い処理 | 作業用マシン | 重い処理・長時間タスクを実際にこなす |
 
 Hermes本体は「段取り役」で、思考そのものは外部のAIモデルに委ねている。私の環境では既存のChatGPT/CodexサブスクリプションをOAuthで繋ぎ、`openai-codex`プロバイダ(2026年5月時点での最新Codexモデル)で動かしている。xAIの最新Grokに切り替えたい場合は`xai-oauth`プロバイダを選ぶ。具体的な切り替えコマンドは第5回(Grok OAuth登録の回)で扱う。
 
@@ -147,24 +147,24 @@ OpenClawが2026年初頭にセキュリティ問題とリーダー離脱で揺�
 
 この連載の構成はこうだ。
 
-![Hermes Agent運用の全体像(VPS司令塔+自宅デスクトップ手足の2層分離)](/images/hermes-vps/hermes-architecture.png)
+![Hermes Agent運用の全体像(VPSにHermes本体、自宅デスクトップに重い処理を置く2層構成)](/images/hermes-vps/hermes-architecture.png)
 
 第1回でやるのは、上の図の左上「VPS(クラウド上)」のうち、契約してadminユーザーで安全にログインできる状態を作るところまで。第1回終了時点で見える範囲はこちら。
 
 ![第1回終了時点の構成図(契約からadminログインまで)](/images/hermes-vps/hermes-vps-01-architecture.png)
 
-- **VPS（クラウド上）= 司令塔**：Hermes本体を常駐させる。24時間起きている安価な受付係
-- **自宅のデスクトップ = 手足**：重い処理やGPUを使うタスクだけ、必要なときに引き受ける
-- **Tailscale = 専用通路**：VPSと自宅マシンを、インターネットに晒さずに繋ぐ非公開トンネル
-- **1Password = 保管庫**(英語UIではVault)：APIキー・botトークン・SSH鍵などの秘密情報を平文に出さず保管
-- **Telegram = 窓口**：自分のスマホ/パソコンからHermesに話しかけて応答を受ける
-- **考える役 = Codex**(gpt-5.5)：Hermesが思考を委ねる外部のAIモデル。OAuthで接続
+- **VPS（クラウド上）**：Hermes本体を常駐させる。24時間動かしても月額が安い
+- **自宅のデスクトップ**：重い処理やGPUを使うタスクだけ、必要なときに引き受ける
+- **Tailscale**：VPSと自宅マシンを、インターネットに晒さずに繋ぐ非公開トンネル
+- **1Password**：保管庫(英語UIではVault)にAPIキー・botトークン・SSH鍵などの秘密情報を平文に出さず保管
+- **Telegram**：自分のスマホ/パソコンからHermesに話しかけて応答を受ける
+- **Codex**(gpt-5.5)：Hermesが思考を委ねる外部のAIモデル。OAuthで接続
 
-VPSは常時起動が安く済むが非力、自宅機はパワーがあるが24時間つけっぱなしは電気代と発熱がかさむ。役割分担として「常に起きている受付」はVPSに、「重い処理」は自宅機にする構成だ。自宅側はLenovo ThinkStation P2(i7-14700K+RTX 4070、メモリ16GB)を使う。これは現役の高性能機だが、メイン作業はノートPC(Windows)で済ませる前提で、このデスクトップはAI推論専用機としてWindowsを消してLinuxを入れ直してある。
+VPSは常時起動が安く済むが非力、自宅機はパワーがあるが24時間つけっぱなしは電気代と発熱がかさむ。そこで、24時間動かす部分はVPSに、重い処理は自宅機に分ける構成にした。自宅側はLenovo ThinkStation P2(i7-14700K+RTX 4070、メモリ16GB)を使う。これは現役の高性能機だが、メイン作業はノートPC(Windows)で済ませる前提で、このデスクトップはAI推論専用機としてWindowsを消してLinuxを入れ直してある。
 
-なお、この機種でなければ動かないわけではない。自宅で手足として使うマシンは、家に眠っている古いWindowsノートPCや、使わなくなったMac(IntelのMacBookでもMac miniでも)で十分まかなえる。Linuxは軽いので、最新のWindowsには重すぎる世代の機材でも快適に動く。画像生成やローカルでのAI推論まで本格的にやる場合だけRTX 30シリーズ以上のGPUが要るが、「VPSのHermesから呼び出して軽い処理を任せる相手」としてだけなら、CPUしかない古いマシンでも実用になる。そもそも自宅機は第21回で足す任意の拡張なので、第1回から第9回まではVPSだけで完結する。
+なお、この機種でなければ動かないわけではない。自宅で重い処理を任せるマシンは、家に眠っている古いWindowsノートPCや、使わなくなったMac(IntelのMacBookでもMac miniでも)で十分まかなえる。Linuxは軽いので、最新のWindowsには重すぎる世代の機材でも快適に動く。画像生成やローカルでのAI推論まで本格的にやる場合だけRTX 30シリーズ以上のGPUが要るが、「VPSのHermesから呼び出して軽い処理を任せる相手」としてだけなら、CPUしかない古いマシンでも実用になる。そもそも自宅機は第21回で足す任意の拡張なので、第1回から第9回まではVPSだけで完結する。
 
-自宅機の構成判断の詳細は第21回(自宅PCを手足にする回)で扱う。第1回では「自宅機=AI推論専用のLinux機」とだけ覚えておけばよい。
+自宅機の構成判断の詳細は第21回(自宅PCに重い処理を任せる回)で扱う。第1回では「自宅機=AI推論専用のLinux機」とだけ覚えておけばよい。
 
 このシリーズでは、図の中の各要素を回ごとに実装する。第1回はVPSを契約してadminで安全にログインできるところまでを片付ける。
 

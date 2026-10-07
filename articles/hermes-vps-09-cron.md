@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 体を作る**
+**第I部 VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -54,16 +54,16 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
-**第II部 顔と操作席**
+**第II部 デスクトップアプリとブラウザから操作する**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
-**第III部 生活リズム**
+**第III部 定時実行・スキル・Web検索を足す**
 - **第9回**(本記事) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす
 - [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる
 
-**第IV部 記憶を分けて育てる**
+**第IV部 記憶・話し方・スキルを管理する**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている
 - [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む
 - [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く
@@ -81,7 +81,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | 項目 | 第8回完了時 | 第9回完了後 |
 |---|---|---|
 | 常駐 | systemd経由のgateway+dashboardで24時間動く | 変わらず |
-| 管制室 | DashboardでサイドバーやCRONペインを把握済み | CRONペインに自分のジョブ(`morning-news`)が並ぶ |
+| Dashboard | サイドバーやCRONペインを把握済み | CRONペインに自分のジョブ(`morning-news`)が並ぶ |
 | エージェントの仕事 | Telegram/Discord/Dashboardから話しかけたら返事する(受け身) | **決まった時刻に自分から仕事を始める**(能動) |
 | 定型作業 | 毎回自分で「ニュース要約して」と打つ必要 | 毎日7時に、3〜5項目の要約(各2行以内・出典URL付き)がTelegramへ届く |
 | ジョブ管理 | 該当機能なし | DashboardのCRONペインで一覧・編集・停止・再開・削除 |
@@ -399,7 +399,7 @@ hermes cron remove <job_id>       # 削除
 - `[SILENT]`で「変化があった時だけ」に絞る
 - 2つ目のジョブを足して、1日2回エージェントが自分から動く状態に
 
-第8回までの「待つだけ」の管制室から、「自分から動く」エージェントへ一歩進んだ。翌日の7時台に、SSHを開かなくてもTelegramへ要約が届いていれば、24時間運用が回っている証拠だ。
+第8回までは話しかけられるのを待つだけだったHermesが、決めた時刻に自分から動くようになった。翌日の7時台に、SSHを開かなくてもTelegramへ要約が届いていれば、24時間運用が回っている証拠だ。
 
 ![翌朝7時台、morning-newsジョブが自動で実行され、ニュース要約がTelegramに届いた画面。左上の時刻が朝7時を指しているのがスケジュール実行の証拠](/images/hermes-vps/hermes-vps-09-cron-morning.png)
 

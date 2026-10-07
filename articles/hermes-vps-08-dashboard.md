@@ -28,7 +28,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [この回で出てくる用語](#この回で出てくる用語)
 - [第8回終了時点の構成図](#第8回終了時点の構成図)
 - [事前準備](#事前準備)
-- [ブラウザで管制室を開く](#ブラウザで管制室を開く)
+- [ブラウザでDashboardを開く](#ブラウザでdashboardを開く)
 - [同じ情報がCLIとブラウザの両方から見える](#同じ情報がcliとブラウザの両方から見える)
 - [最初に日本語UIに切り替える](#最初に日本語uiに切り替える)
 - [サイドバー全体像と横断UI](#サイドバー全体像と横断ui)
@@ -48,11 +48,11 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ## このシリーズの読み方
 
-このシリーズは、VPS(=自分専用に契約するサーバー)1台にHermes AgentというAIエージェントを常駐させて、自分専用のエージェントとして育てていく連載。第7回までで「黒い画面でHermesと話す」「Telegram/Discordから話す」「自分のパソコン(この連載ではWindows)のDesktopアプリで話す」までを揃えた。第8回からは「ブラウザの管制室から設定を触る」段階に入る。
+このシリーズは、VPS(=自分専用に契約するサーバー)1台にHermes AgentというAIエージェントを常駐させて、自分専用のエージェントとして育てていく連載。第7回までで「黒い画面でHermesと話す」「Telegram/Discordから話す」「自分のパソコン(この連載ではWindows)のDesktopアプリで話す」までを揃えた。第8回からは「ブラウザの管理画面から設定を触る」段階に入る。
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 体を作る**
+**第I部 VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -60,16 +60,16 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第5回](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
-**第II部 顔と操作席**
+**第II部 デスクトップアプリとブラウザから操作する**
 - [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
 - **第8回**(本記事) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
-**第III部 生活リズム**
+**第III部 定時実行・スキル・Web検索を足す**
 - [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす
 - [第10回](https://zenn.dev/sora_biz/articles/hermes-vps-10-skills) 毎回教えるな。Hermes Agentは使えば使うほど自分で賢くなる
 - [第11回](https://zenn.dev/sora_biz/articles/hermes-vps-11-web-search) 気になる情報を自分で探し回るな。Hermes Agentがネットで調べて要点だけまとめてくれる
 
-**第IV部 記憶を分けて育てる**
+**第IV部 記憶・話し方・スキルを管理する**
 - [第12回](https://zenn.dev/sora_biz/articles/hermes-vps-12-memory) 好みを毎回言うな。Hermes AgentはMemoryで覚えている
 - [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む
 - [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く
@@ -120,12 +120,12 @@ v0.16.0(コードネーム"Surface Release")でWeb Dashboardが大きく進化�
 接続先は同じ。第7回でVPSに常駐させた`hermes dashboard`が、Desktopアプリにとっては「Remote Gateway」、ブラウザにとっては「Webサイト」に見えているだけ。実体は1つ。
 
 :::message
-Desktop=顔・Dashboard=管制室。両方とも同じ1体のエージェントを別の窓から操作している。
+Desktopは日常の会話に、Dashboardは設定と管理に使う。両方とも同じ1体のエージェントを別の窓から操作している。
 :::
 
 ## v0.16.0「Surface Release」で何が変わったか
 
-v0.16.0(2026-06-05公開・コードネーム"Surface Release")でDashboardは「セッションを見る画面」から「設定をまるごと管理する管制室」に変わった。
+v0.16.0(2026-06-05公開・コードネーム"Surface Release")でDashboardは「セッションを見る画面」から「設定をまるごと管理する画面」に変わった。
 
 主な追加:
 
@@ -160,7 +160,7 @@ YAMLは慣れないとインデント(字下げ)で詰まりやすい書式。Da
 
 ## 第8回終了時点の構成図
 
-![第8回終了時点の構成図。自分のパソコン(ノートPC)のブラウザとHermes DesktopがTailscaleの暗号化トンネルでVPSに繋がる。VPS側ではhermes dashboard(常駐・port 9119)が管制室を表示、hermes gateway(常駐・RESTART NOWで再読込)が設定を反映、~/.hermes/config.yamlは管制室から書き換わる設定ファイル、~/.hermes/.envはAPIキー類、Telegram/Discord/Webhook等はチャンネルペインで管理される構成図](/images/hermes-vps/hermes-vps-08-dashboard-architecture-diagram.png)
+![第8回終了時点の構成図。自分のパソコン(ノートPC)のブラウザとHermes DesktopがTailscaleの暗号化トンネルでVPSに繋がる。VPS側ではhermes dashboard(常駐・port 9119)が管理画面を表示、hermes gateway(常駐・RESTART NOWで再読込)が設定を反映、~/.hermes/config.yamlは管理画面から書き換わる設定ファイル、~/.hermes/.envはAPIキー類、Telegram/Discord/Webhook等はチャンネルペインで管理される構成図](/images/hermes-vps/hermes-vps-08-dashboard-architecture-diagram.png)
 
 第6回で立ち上げた`hermes gateway`は今までずっと走っていて、Telegram/DiscordからのメッセージにもHermesが応答していた。そこに第7回でDesktopが、この回でDashboardが「同じVPSのHermesへの別の窓」として加わる。
 
@@ -192,7 +192,7 @@ grep BASIC_AUTH_SECRET ~/.hermes/.env
 自分のパソコンとVPSが同じtailnetにいるかは、VPS側で`tailscale status`を打ってパソコンのホスト名行が見えるか、またはパソコン側(Windows)で`tailscale.exe status`を打ってVPSが見えるか、どちらでもOK。
 :::
 
-## ブラウザで管制室を開く
+## ブラウザでDashboardを開く
 
 自分のパソコンのブラウザで、VPSのTailscale IPとポート9119を開く。
 
@@ -220,7 +220,7 @@ http://<tailscale-ip>:9119
 
 サインインしたら、最初にやってほしいことがある。**ターミナルとブラウザを並べて比較する**ことだ。
 
-第8回の主題=「黒い画面から管制室へ」を、まず1枚で証明したいので。
+第8回の主題は、ターミナルでしていた操作をブラウザでもできるようにすることだ。それを最初に1枚で確かめる。
 
 VPSで動いている本体のバージョンをCLIで確認するため、VPSのターミナルで次を打つ。
 
@@ -388,7 +388,7 @@ Update available: 18 commits behind — run 'hermes update'
 
 このペインは少し特殊で、**`config.yaml`の`dashboard.show_token_analytics`をtrueにしたときだけサイドバーに出てくる**。デフォルトはoff。トークン数や費用の数字は解釈に注意が要るので、見たい人だけ見せる、というDashboard側の配慮。
 
-ここで管制室の本領発揮ポイントだ。**この有効化作業もブラウザだけで完結する**。
+Dashboardを使う利点はここにある。**この有効化作業もブラウザだけで完結する**。
 
 サイドバーで「設定」を開き、上部の検索窓に`analytics`と入力。「SHOW TOKEN ANALYTICS」がヒットするので、トグルをONにして右上の「保存」を押すだけ。
 
@@ -414,7 +414,7 @@ v0.16.0以前は`--tui`フラグで制御していたが、Surface Releaseで**�
 
 ## 自動と技能(CRON・スキル・プラグイン)
 
-「CRON」「スキル」「プラグイン」の3ペインは、これから先の回(第9回・第10回)で詳しく作るものを最初に開く場所だ。この回では「管制室にこういう場所がある」を見ておくだけで十分。
+「CRON」「スキル」「プラグイン」の3ペインは、これから先の回(第9回・第10回)で詳しく作るものを最初に開く場所だ。この回では「管理画面にこういう場所がある」を見ておくだけで十分。
 
 ### CRON
 
@@ -764,7 +764,7 @@ Memory/Credential pool/Checkpoints/Nous Portal/Skill curator/Shell hooksの実�
 
 ## 動作確認(ブラウザの変更がCLIに出る)
 
-この回の山場だ。**ブラウザで設定を1つ変えて、VPSの`config.yaml`にも同じ変更が出る**ことを目視で確認する。これで「Dashboardは別物でなく、同じHermesの管制室」だと胸を張れる。
+この回の山場だ。**ブラウザで設定を1つ変えて、VPSの`config.yaml`にも同じ変更が出る**ことを目視で確認する。これで「Dashboardは別物でなく、同じHermesの管理画面」だと胸を張れる。
 
 サイドバーで「設定」を開き、左カラムで「表示」カテゴリを選ぶ。`RESUME EXCHANGES`の値を`10`から`20`に変えて、右上の「保存」ボタンを押す。
 
@@ -780,7 +780,7 @@ grep -A1 resume_exchanges ~/.hermes/config.yaml
 
 ![CLIでgrepするとresume_exchanges: 20が赤色強調で表示+次行にresume_max_user_chars: 300](/images/hermes-vps/hermes-vps-08-dashboard-config-cat-cli.png)
 
-`resume_exchanges: 20`が`config.yaml`に書き込まれている。ブラウザのフォームで触った値が、SSH越しの`grep`でちゃんと見える。これで「同じHermesの管制室を別の窓から触っていた」ことが目に見える形で証明された。
+`resume_exchanges: 20`が`config.yaml`に書き込まれている。ブラウザのフォームで触った値が、SSH越しの`grep`でちゃんと見える。これで「同じHermesの管理画面を別の窓から触っていた」ことが目に見える形で証明された。
 
 :::message
 逆方向(`.env`の値を変えてHermes側で再読み込みする)には、CLIで`/reload`スラッシュコマンドが使える。キーを更新したあとに`/reload`を打つと、gateway再起動なしで`~/.hermes/.env`を読み直してくれる。
@@ -869,11 +869,11 @@ Hermes本体は1つのまま、窓が増えただけだ。設定もキーもジ�
 
 1. Telegram/Discord(第4回・第5回)=スマホからもPCからも
 2. Hermes Desktop(第7回)=自分のパソコンのネイティブアプリで
-3. **Web Dashboard(この回)=ブラウザで管制室を開いて、設定もキーも全部管理する**
+3. **Web Dashboard(この回)=ブラウザで、設定もキーも全部管理する**
 
-第7回・第8回で「窓と顔と管制室」が揃った。ここから先は、Hermesに技能を足していく。
+第7回・第8回で、Hermesを操作する手段が3つそろった。
 
-次回からは生活リズム(Cron)・手順の記憶(スキル)・外の情報を取る目(Web/X検索)へ進む。今日見たCRON画面やスキル画面が、実際に中身で埋まっていく。
+次回からは、定時実行(Cron)・スキル・Web/X検索を順に足していく。今日見たCRON画面やスキル画面が、実際に中身で埋まっていく。
 
 第9回(Cron)では、いま空のように見えていたあのCRONペインに、毎日7時に動くジョブ`morning-news`を登録する。Dashboardから新規ジョブを作って、`Trigger now`で即実行し、Telegramに通知が届くところまでを1本でやる。
 
