@@ -623,7 +623,7 @@ Browser toolsは当面使えない。Hermes Agent本体のテキスト応答は�
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本記事参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16)=v0.14.0(執筆時点。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2で、NoneTypeバグは解消済み。実際に動かして確認したのはv0.15.1) |
+| 本記事参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16)=v0.14.0(執筆時点。この回の画面と手順はv0.14〜0.15時点のもの。最新版(v2026.9.24)との差は[wikiの更新履歴](https://wiki.winsmux.dev/hermes/updates/)で追える。NoneTypeバグは[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2で解消済み。実際に動かして確認したのはv0.15.1) |
 | Pythonバージョン要件 | [pyproject.toml](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/pyproject.toml) `requires-python = ">=3.11"` |
 | CLIコマンド定義 | [hermes_cli/main.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py) |
 | セットアップウィザード構成 | [hermes_cli/setup.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/setup.py) |
@@ -631,6 +631,8 @@ Browser toolsは当面使えない。Hermes Agent本体のテキスト応答は�
 | 既知バグ修正PR | [PR #32963 fix(agent): recover Codex Responses streams with null output](https://github.com/NousResearch/hermes-agent/pull/32963) |
 | 関連Issue(canonical) | [#11179](https://github.com/NousResearch/hermes-agent/issues/11179) |
 | Docker公式インストール手順 | [docs.docker.com/engine/install/ubuntu](https://docs.docker.com/engine/install/ubuntu/) |
+| Dockerの解説(日本語) | 公式ドキュメントの日本語訳: [Docker](https://wiki.winsmux.dev/hermes/entities/docker/) |
+| 更新履歴(日本語) | 公式ドキュメントの日本語訳: [更新履歴](https://wiki.winsmux.dev/hermes/updates/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

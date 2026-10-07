@@ -540,6 +540,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 | 5つの実用パターン | 同上「Five Real-World Patterns」 |
 | self-contained promptの必須性 | 同上「Prompts must be completely self-contained」 |
 | 配信先(ローカル/Telegram/Discord等) | 同上「Delivery Targets」 |
+| cronの解説(日本語) | 公式ドキュメントの日本語訳: [cron](https://wiki.winsmux.dev/hermes/concepts/cron/) |
 | `[SILENT]`による送信抑制 | 同上「When the agent's final response contains [SILENT], delivery is suppressed」 |
 | Cron配信先5択の実装 | [web/src/pages/CronPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/CronPage.tsx) |
 | Dashboard cron Advanced fields追加(2026-06-27) | [PR#53551 feat(dashboard): expose cron job execution fields](https://github.com/NousResearch/hermes-agent/pull/53551)。`provider`/`model`/`base_url`/`script`/`no_agent`/`context_from`/`enabled_toolsets`/`workdir`の8項目を新規作成/編集モーダル両方に追加 |

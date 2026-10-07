@@ -747,6 +747,7 @@ chmod 700 /home/admin/.ssh
 | Hermes Agent公式リポジトリ | [GitHub README](https://github.com/NousResearch/hermes-agent) |
 | 学習ループ設計の解説 | [Turing Post](https://www.turingpost.com/p/hermes) |
 | 内部架構の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§アーキテクチャの概要(0:57〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=57s)(2026-06-16公開・約40分・英語・YouTube設定で日本語自動翻訳字幕も可) |
+| VPSの解説(日本語) | 公式ドキュメントの日本語訳: [VPS](https://wiki.winsmux.dev/hermes/entities/vps/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

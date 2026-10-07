@@ -518,6 +518,7 @@ cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本�
 | llm-wiki-compiler(参考・関連ツール) | [atomicmemory/llm-wiki-compiler(GitHub)](https://github.com/atomicmemory/llm-wiki-compiler)。同じKarpathyパターンの別実装。本連載のagent-in-the-loop curationとは別アプローチ(batch compile) |
 | 複数wiki並列運用の参考事例(本文では触れず参照のみ) | [Tonbi Tutorials「16 wikis」動画](https://www.youtube.com/watch?v=hbKvO5MWq08)。本連載は1 wikiから始める方針を取っている |
 | 自前wikiの参考例として読める既製wiki | [agentwikis.com/wiki/hermes](https://agentwikis.com/wiki/hermes)(Tonbi氏運営) |
+| Memoryの解説(日本語) | 公式ドキュメントの日本語訳: [Memory](https://wiki.winsmux.dev/hermes/concepts/memory/) |
 
 ### コラム:自前wikiの参考例として既製wikiも読める
 
@@ -539,7 +540,7 @@ cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本�
 |---|---|
 | [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ | 第17回 口調をブレさせるな。Hermes Agentの話し方は実は変えられる(近日公開) |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

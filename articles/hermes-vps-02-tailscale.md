@@ -490,6 +490,7 @@ Tailscaleの公式仕様で、マシンキーは登録から180日でデフォ�
 | Tailscale SSH(鍵なしSSH接続) | [Tailscale SSH](https://tailscale.com/kb/1193/tailscale-ssh) |
 | Tailscaleのみ許可するufw設定 | [Secure server with ufw](https://tailscale.com/kb/1077/secure-server-ubuntu) |
 | マシンキーの無期限化(180日失効の予防) | [Key expiry](https://tailscale.com/kb/1028/key-expiry) |
+| Hermes全体の解説(日本語) | 公式ドキュメントの日本語訳: [Hermes全文](https://wiki.winsmux.dev/hermes/guide/all/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

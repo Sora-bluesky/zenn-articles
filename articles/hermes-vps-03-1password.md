@@ -673,6 +673,8 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 :::message
 **2026-07-12追記**:1Passwordから秘密を渡す公式のネイティブ対応が本体に入った([PR#59498](https://github.com/NousResearch/hermes-agent/pull/59498))。`hermes secrets onepassword setup`で設定すると、`op://`参照を起動時にHermes自身が公式op CLI経由で解決して環境変数に注入する(`status`/`sync`等の専用サブコマンドつき)。本記事の「op runでラップする」方式は現行でも動き、秘密が平文で残らない仕組みの理解としても無駄にならない。これから新しく組む人は、ネイティブ対応から始める道もあると頭に置いておけばよい。
+
+2026-10-07追記: Hermes v2026.9.11から、1Password・Bitwarden・ローカルの認証情報ボールトがHermesに組み込まれた([リリースノート](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.9.11))。本連載は`op run`で統一しているので、この回の手順はそのまま動く。
 :::
 
 ## 平文ファイルが消えたか最終確認する
@@ -788,6 +790,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 | opコマンド(1Password CLI)の導入 | [1Password CLI](https://www.1password.dev/cli/get-started/) |
 | op://参照記法 | [Secret references](https://www.1password.dev/cli/secret-references/) |
 | op runで環境変数に秘密を注入 | [Load secrets into env vars](https://www.1password.dev/cli/secrets-environment-variables/) |
+| Hermes全体の解説(日本語) | 公式ドキュメントの日本語訳: [Hermes全文](https://wiki.winsmux.dev/hermes/guide/all/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

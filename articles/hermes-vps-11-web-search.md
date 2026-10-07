@@ -698,6 +698,7 @@ x_searchで NousResearch のXでの反応を投稿URLつきで(数値は不要)
 | 秘密はop://参照で1Passwordに置く(平文をディスクに残さない) | 第3回・第5回(本シリーズ) |
 | X Search全般・数値非対応(answer+引用URLのみ) | [公式x-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/x-search) |
 | `hermes tools enable --platform <name>`が必要(doctorの✓は有効化可能の意味) | 実際に動かしたv0.16.0で確認(2026-06-17) |
+| Hermes全体の解説(日本語) | 公式ドキュメントの日本語訳: [Hermes全文](https://wiki.winsmux.dev/hermes/guide/all/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

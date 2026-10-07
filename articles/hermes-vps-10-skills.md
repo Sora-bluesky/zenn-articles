@@ -524,6 +524,8 @@ botに、順に送ってみる。
 | Trust Level(builtin/official/trusted/community) | 同上「Security Scanning & Trust Levels」 |
 | NEW SKILL+編集鉛筆・CRONのSKILLS添付欄 | Dashboard v0.16.0の実際の画面で確認(2026-06-11)。[@Teknium告知](https://x.com/Teknium/status/2066185784332562605) |
 | 強制ロード方法(`/<skill-name>`+`hermes -s`エイリアス) | [@Tekniumリプライ(2026-06-18)](https://x.com/Teknium/status/2067672465678209501) |
+| スキルの概念(日本語) | 公式ドキュメントの日本語訳: [スキル](https://wiki.winsmux.dev/hermes/concepts/skills/) |
+| スキルの使い方(日本語) | 公式ドキュメントの日本語訳: [スキルガイド](https://wiki.winsmux.dev/hermes/guide/skills/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

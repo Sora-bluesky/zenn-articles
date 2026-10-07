@@ -896,6 +896,7 @@ Hermes本体は1つのまま、窓が増えただけだ。設定もキーもジ�
 | Auxiliary Tasks 11枠の定義 | [web/src/pages/ModelsPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/ModelsPage.tsx) |
 | Cron配信先5択 | [web/src/pages/CronPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/CronPage.tsx) |
 | Hermes Desktop(第7回参照) | [desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop) |
+| Hermes全体の解説(日本語) | 公式ドキュメントの日本語訳: [Hermes全文](https://wiki.winsmux.dev/hermes/guide/all/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

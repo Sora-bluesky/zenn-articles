@@ -610,6 +610,7 @@ hermes desktop                                            # CLIから起動(任�
 | 接続先dashboardのprerequisites・認証env var・fail-closed・Tailscale bind | [web-dashboard](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-dashboard)「Connecting Hermes Desktop to a remote backend」 |
 | Hermes Desktopのインストール(Windows・管理者権限不要) | [installation](https://hermes-agent.nousresearch.com/docs/getting-started/installation) / [windows-native](https://hermes-agent.nousresearch.com/docs/user-guide/windows-native) |
 | 起動直後crashの既知issue(`--no-sandbox`) | [#38216](https://github.com/NousResearch/hermes-agent/issues/38216) |
+| Hermes全体の解説(日本語) | 公式ドキュメントの日本語訳: [Hermes全文](https://wiki.winsmux.dev/hermes/guide/all/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

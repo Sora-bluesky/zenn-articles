@@ -595,6 +595,7 @@ hermes memory off       # built-inに戻す
 | memory toolのbatch operations追加(2026-06-18) | [PR #48507](https://github.com/NousResearch/hermes-agent/pull/48507) |
 | Memoryアーキテクチャの実装者視点(参考) | [Tonbi (@tonbistudio) Hermes Agent Masterclass Module 3: Memory, Plugins, Honcho, Obsidian](https://www.youtube.com/watch?v=ZKZLko9kLm4)(2026-05-18公開・約34分・英語・自動翻訳字幕で日本語可) |
 | 続かない日記をHermesに任せる運用(参考) | [MGT_maccha (@MGT_maccha) X Article『AIに読ませるObsidianノートの作り方』](https://x.com/MGT_maccha/status/2067940523986534409) |
+| Memoryの解説(日本語) | 公式ドキュメントの日本語訳: [Memory](https://wiki.winsmux.dev/hermes/concepts/memory/) |
 
 
 :::message

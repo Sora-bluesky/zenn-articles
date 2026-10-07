@@ -174,7 +174,7 @@ cat ~/.hermes/secrets.env
 hermes auth list
 ```
 
-`hermes auth list`のv0.14.0時点の出力フォーマットは以下の形だ。
+`hermes auth list`の出力フォーマットは以下の形だ。この回の画面と手順はv0.14〜0.15時点のもので、最新版(v2026.9.24)との差は[wikiの更新履歴](https://wiki.winsmux.dev/hermes/updates/)で追える。
 
 ```text
 openai-codex (1 credentials):
@@ -715,7 +715,7 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点でmain運用。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2でNoneType修正済み、新規読者は最新tagで進めてよい) |
+| 本シリーズ参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16) = v0.14.0(執筆時点でmain運用。この回の画面と手順はv0.14〜0.15時点のもの。最新版(v2026.9.24)との差は[wikiの更新履歴](https://wiki.winsmux.dev/hermes/updates/)で追える。NoneTypeは[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2で修正済み) |
 | OAuth実装(Codex/Grok) | [hermes_cli/auth.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/auth.py) |
 | OAuth over SSH公式ガイド | [hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh](https://hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh) |
 | セットアップウィザード構成 | [hermes_cli/setup.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/setup.py) |
@@ -724,6 +724,8 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 | Discord Developer Portal | [discord.com/developers/applications](https://discord.com/developers/applications) |
 | Discord公式Getting Started | [discord.com/developers/docs/quick-start/getting-started](https://discord.com/developers/docs/quick-start/getting-started) |
 | MESSAGE CONTENT INTENT(必須設定) | [Privileged Intents](https://discord.com/developers/docs/topics/gateway#privileged-intents) |
+| Telegramの解説(日本語) | 公式ドキュメントの日本語訳: [Telegram](https://wiki.winsmux.dev/hermes/entities/telegram/) |
+| Gatewayの解説(日本語) | 公式ドキュメントの日本語訳: [Gateway](https://wiki.winsmux.dev/hermes/concepts/gateway/) |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

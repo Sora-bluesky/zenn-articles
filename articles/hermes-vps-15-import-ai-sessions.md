@@ -128,6 +128,10 @@ Hermesは黙る。当然だ。**Claude Codeで打った会話も、Codexで議�
 
 自分では1通も書いた覚えがない。だが自分のパソコンには、本回時点で3,490件(Claude Code 1,272件+Codex 2,218件)積もっていた。「昨日winsmuxでどこに詰まったか」「Codexにどのリファクタを断られたか」が、全部この履歴の中にある。
 
+:::message
+2026-10-07追記: Hermes v2026.8.3で`hermes import-agent`が入った([リリースノート](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.8.3))。これはClaude CodeやCodexの「設定」をHermesに移すコマンドで、この回の「会話の作業履歴」を取り込む手順とは別物だ。この回の手順はそのまま使える。
+:::
+
 ### 作業履歴をVaultに置くと何が起きるか
 
 Vaultに作業履歴を置いておけば、後日Telegramで一言聞くだけでいい。
@@ -1098,6 +1102,8 @@ du -sh ~/hermes-vault/raw/transcripts/
 | 次回(llm-wiki)で使う公式パターン(Karpathy LLM Wikiパターン) | [karpathy/llm-wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)(Hermes純正llm-wiki skillの設計起点) |
 | 第13回で構築したVault git同期(本回§6-5・§6-6の前提) | [第13回](https://zenn.dev/sora_biz/articles/hermes-vps-13-obsidian) メモを自分で探すな。Hermes AgentはObsidianを記憶として読む |
 | 第14回のsession_search(本回と並ぶ、Hermes自身の会話履歴の検索) | [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く |
+| Memoryの解説(日本語) | 公式ドキュメントの日本語訳: [Memory](https://wiki.winsmux.dev/hermes/concepts/memory/) |
+| Claude Codeからの乗り換え(日本語) | 公式ドキュメントの日本語訳: [Claude Codeからの乗り換え](https://wiki.winsmux.dev/hermes/from-claude-code/) |
 | 第9回Hermes Cron(本回の任意自動化=別記事側で再利用) | [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす |
 
 ※連載の回数は変わる可能性がある。次回(llm-wiki)・連載後半のCurator+cronの回番号は、着手時に最新の計画書を確認する。
@@ -1110,7 +1116,7 @@ Claude Code/Codexのjsonl構造(`type`フィールド・1行1JSON形式)は2026-
 |---|---|
 | [第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search) 毎回最初から話すな。Hermes Agentは前回の続きからそのまま動く | [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) 同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る |
 
-📑 [シリーズ全12回のもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

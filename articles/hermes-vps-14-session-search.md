@@ -392,6 +392,8 @@ Hermesは「毎回使う前提(Memory)」「長く残しておきたい情報(Ob
 
 :::message
 **2026-07-03追記(v0.18.0)**:検索用インデックス(FTS5)の自動マージ(1000書き込みごと)+チェックポイント(50書き込みごと)が入り、通常運用で`state.db-wal`が放置されて肥大化することはほぼなくなった([#54752](https://github.com/NousResearch/hermes-agent/pull/54752)/[#54770](https://github.com/NousResearch/hermes-agent/pull/54770))。上記の対処は放置後の緊急復旧用として残しておく。
+
+2026-10-07追記: v0.21.0でstate.dbの処理が書き換わり、環境によっては壊れることがあった(v2026.9.11で修正)。おかしいと思ったら、先に`hermes doctor`を実行する。必要なら`hermes sessions recover --inspect-only`も実行する([リリースノート](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.9.11))。
 :::
 
 ## 操作早見表
@@ -426,6 +428,7 @@ ls -la ~/.hermes/state.db*     # 過去会話のデータベース
 | セッションの区切り(`/new`・idle reset・daily reset) | [messaging](https://hermes-agent.nousresearch.com/docs/user-guide/messaging) |
 | `hermes sessions`コマンド | [configuration / CLI](https://hermes-agent.nousresearch.com/docs/user-guide/configuration) |
 | クロスセッション記憶の実装者視点(参考) | [Tonbi (@tonbistudio) Hermes Agent Masterclass Module 3: Memory, Plugins, Honcho, Obsidian](https://www.youtube.com/watch?v=ZKZLko9kLm4)(英語・自動翻訳字幕で日本語可) |
+| Memoryの解説(日本語) | 公式ドキュメントの日本語訳: [Memory](https://wiki.winsmux.dev/hermes/concepts/memory/) |
 
 
 :::message
