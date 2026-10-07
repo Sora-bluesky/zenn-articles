@@ -23,7 +23,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 ## 目次
 
 - [この回の到達点](#この回の到達点)
-- [Hermes Desktopとの違い──顔と管制室](#hermes-desktopとの違い──顔と管制室)
+- [Hermes Desktopとの違い](#hermes-desktopとの違い)
 - [v0.16.0「Surface Release」で何が変わったか](#v0.16.0「surface-release」で何が変わったか)
 - [この回で出てくる用語](#この回で出てくる用語)
 - [第8回終了時点の構成図](#第8回終了時点の構成図)
@@ -32,13 +32,13 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [同じ情報がCLIとブラウザの両方から見える](#同じ情報がcliとブラウザの両方から見える)
 - [最初に日本語UIに切り替える](#最初に日本語uiに切り替える)
 - [サイドバー全体像と横断UI](#サイドバー全体像と横断ui)
-- [状態と履歴──セッション・ログ・分析・チャット](#状態と履歴──セッション・ログ・分析・チャット)
-- [自動と技能──CRON・スキル・プラグイン](#自動と技能──cron・スキル・プラグイン)
-- [モデルと人格──モデル・プロファイル](#モデルと人格──モデル・プロファイル)
-- [設定とキー──手書きの設定ファイルから卒業する](#設定とキー──手書きの設定ファイルから卒業する)
-- [連携と窓口──MCP・チャンネル・Webhooks・ペアリング](#連携と窓口──mcp・チャンネル・webhooks・ペアリング)
-- [保守──System・ドキュメント・サイドバー下部](#保守──system・ドキュメント・サイドバー下部)
-- [動作確認──ブラウザの変更がCLIに出る](#動作確認──ブラウザの変更がcliに出る)
+- [状態と履歴(セッション・ログ・分析・チャット)](#状態と履歴(セッション・ログ・分析・チャット))
+- [自動と技能(CRON・スキル・プラグイン)](#自動と技能(cron・スキル・プラグイン))
+- [モデルと人格(モデル・プロファイル)](#モデルと人格(モデル・プロファイル))
+- [設定とキー(設定ファイルを手で書かずに済む)](#設定とキー(設定ファイルを手で書かずに済む))
+- [連携(MCP・チャンネル・Webhooks・ペアリング)](#連携(mcp・チャンネル・webhooks・ペアリング))
+- [保守(System・ドキュメント・サイドバー下部)](#保守(system・ドキュメント・サイドバー下部))
+- [動作確認(ブラウザの変更がCLIに出る)](#動作確認(ブラウザの変更がcliに出る))
 - [どこからでも同じ1体のエージェント](#どこからでも同じ1体のエージェント)
 - [最終確認チェックリスト](#最終確認チェックリスト)
 - [よくあるエラーと対処](#よくあるエラーと対処)
@@ -48,7 +48,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ## このシリーズの読み方
 
-このシリーズは、VPS(=自分専用に契約するサーバー)1台にHermes AgentというAIエージェントを常駐させて、自分専用の相棒を育てていく連載。第7回までで「黒い画面でHermesと話す」「Telegram/Discordから話す」「母艦のDesktopアプリで話す」までを揃えた。第8回からは「ブラウザの管制室から設定を触る」段階に入る。
+このシリーズは、VPS(=自分専用に契約するサーバー)1台にHermes AgentというAIエージェントを常駐させて、自分専用のエージェントとして育てていく連載。第7回までで「黒い画面でHermesと話す」「Telegram/Discordから話す」「自分のパソコン(この連載ではWindows)のDesktopアプリで話す」までを揃えた。第8回からは「ブラウザの管制室から設定を触る」段階に入る。
 
 :::details シリーズのもくじ(タップで開く)
 
@@ -78,13 +78,17 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
-所要時間の目安は60〜90分(うち画面を眺めて慣れる時間が大半)。第7回で常駐させた`hermes dashboard`を、今度はブラウザで開いて触っていく。
+この回が終わると、自分のパソコンのブラウザで`http://<tailscale-ip>:9119`を開いてDashboardにサインインし、ブラウザのフォームで保存した設定がVPSの`config.yaml`に書き込まれるところまで確認できる。第7回で常駐させた`hermes dashboard`をそのまま使う。
+
+この回でやらないことは3つ。CronジョブとスキルとMCPの中身を作るのは第9回以降、Webhookで外部サービスから実際に呼ぶ設定は別の回、Hermes本体の更新(`hermes update`)もしない。各ペインを開いて存在を確認するだけの節もある。
+
+所要時間の目安は60〜90分(うち画面を眺めて慣れる時間が大半)。
 
 ## この回の到達点
 
-第7回で母艦に[Hermes Desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop)を入れて、VPSのHermesと繋いだ。同じVPSのHermesにつながる窓がもう1つある。それが**Web Dashboard**=ブラウザで開く管理画面。
+第7回で自分のパソコンに[Hermes Desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop)を入れて、VPSのHermesと繋いだ。同じVPSのHermesにつながる窓がもう1つある。それが**Web Dashboard**=ブラウザで開く管理画面。
 
-第7回までの僕は、設定を変えるたびにSSHでVPSに入って`nano ~/.hermes/config.yaml`を開いていた。ボットの有効化、APIキーの追加、サーバー設定の編集──ぜんぶ黒い画面の中で手で書いていた。
+第7回までは、設定を変えるたびにSSHでVPSに入って`nano ~/.hermes/config.yaml`を開いていた。ボットの有効化、APIキーの追加、サーバー設定の編集。ぜんぶ黒い画面の中で手で書いていた。
 
 v0.16.0(コードネーム"Surface Release")でWeb Dashboardが大きく進化した。**設定もキーもCronもスキルもMCPもチャンネルもWebhookも、ぜんぶブラウザのフォームから触れる**ようになっている。手書きYAMLとはそろそろお別れだ。
 
@@ -100,17 +104,16 @@ v0.16.0(コードネーム"Surface Release")でWeb Dashboardが大きく進化�
 | 公式docを読む | ブラウザの別タブ | Dashboard内のドキュメントペインで |
 | バージョン確認 | SSH+`hermes version` | ログイン直後に常時表示 |
 
-「ターミナルがダメ」「黒い画面が苦手」というだけで、ここまで作ってきた一切をあきらめなくていい──それを実物で示すのがこの回。
+「ターミナルがダメ」「黒い画面が苦手」というだけで、ここまで作ってきた一切をあきらめなくていい。それを実際の画面で示すのがこの回。
 
-## Hermes Desktopとの違い──顔と管制室
+## Hermes Desktopとの違い
 
 第7回のHermes Desktopと、この回のWeb Dashboardは、どちらも同じVPSのHermesにつながる別の窓だ。役割が違うので「両方ある」ことに意味がある。
 
 | 観点 | 第7回 Hermes Desktop | この回 Web Dashboard |
 |---|---|---|
-| 正体 | 母艦で動くネイティブアプリ | ブラウザで開く管理画面 |
+| 正体 | パソコン側で動くネイティブアプリ | ブラウザで開く管理画面 |
 | 主な用途 | 日常の会話・ファイル投下・モデル切替 | 設定・Cron・スキル・記憶・MCP・窓口の管理 |
-| たとえ | 毎日会いに行く相棒の「顔」 | 裏側を整える「管制室」 |
 | 起動 | アプリアイコンをダブルクリック | ブラウザに`http://<tailscale-ip>:9119`を入力 |
 | 接続先 | VPSの`hermes dashboard`(常駐) | VPSの`hermes dashboard`(常駐) |
 
@@ -141,14 +144,14 @@ v0.15以前のDashboardが「ビューア」だったのに対して、v0.16.0�
 
 | 用語 | 意味 |
 |---|---|
-| 母艦 | 普段使いのノートPC(僕の場合はWindows機)。ここのブラウザでDashboardを開く |
+| 自分のパソコン | 普段使いのノートPC(この連載ではWindows機)。ここのブラウザでDashboardを開く |
 | ペイン(pane) | Dashboard内の各管理画面(セッション/CRON/スキル等)。サイドバーで切り替える |
 | TUI | ターミナル上で動くテキスト版のUI(Hermesの`hermes`コマンドで開く対話画面)。Dashboardの「チャット」はこのTUIをブラウザに埋め込んだもの |
 | ブラウザ内チャット | サイドバーの「チャット」ペイン。VPSのTUIをブラウザでそのまま動かす |
 | MCP | 外部の道具(検索エンジン・GitHub等)をHermesにつなぐ仕組み |
 | messenger | Telegram/Discord/Slack/Mastodon等のメッセージングサービスの総称 |
 | チャンネル(Channels) | messengerの窓口を管理するペイン |
-| Webhook | 外部のイベント(GitHubのpushや決済通知等)を受け取ってHermesを起こす入口 |
+| Webhook | 外部のイベント(GitHubのpushや決済通知等)を受け取ってHermesを動かす仕組み |
 | ペアリング(Pairing) | messengerユーザーを承認する仕組み。第5回の`allowFrom`の標準化UI |
 | YAML | コンピューターの設定を「キー: 値」の字下げで書くテキスト書式。Hermesは`~/.hermes/config.yaml`がこれ |
 | HMAC | webhookの送信元(GitHub等)が「自分が送った」と証明するための署名方式。共有のシークレットを使う |
@@ -157,13 +160,13 @@ YAMLは慣れないとインデント(字下げ)で詰まりやすい書式。Da
 
 ## 第8回終了時点の構成図
 
-![第8回終了時点の構成図。母艦(ノートPC)のブラウザとHermes DesktopがTailscaleの暗号化トンネルでVPSに繋がる。VPS側ではhermes dashboard(常駐・port 9119)が管制室を表示、hermes gateway(常駐・RESTART NOWで再読込)が設定を反映、~/.hermes/config.yamlは管制室から書き換わる設定ファイル、~/.hermes/.envはAPIキー類、Telegram/Discord/Webhook等はチャンネルペインで管理される構成図](/images/hermes-vps/hermes-vps-08-dashboard-architecture-diagram.png)
+![第8回終了時点の構成図。自分のパソコン(ノートPC)のブラウザとHermes DesktopがTailscaleの暗号化トンネルでVPSに繋がる。VPS側ではhermes dashboard(常駐・port 9119)が管制室を表示、hermes gateway(常駐・RESTART NOWで再読込)が設定を反映、~/.hermes/config.yamlは管制室から書き換わる設定ファイル、~/.hermes/.envはAPIキー類、Telegram/Discord/Webhook等はチャンネルペインで管理される構成図](/images/hermes-vps/hermes-vps-08-dashboard-architecture-diagram.png)
 
 第6回で立ち上げた`hermes gateway`は今までずっと走っていて、Telegram/DiscordからのメッセージにもHermesが応答していた。そこに第7回でDesktopが、この回でDashboardが「同じVPSのHermesへの別の窓」として加わる。
 
 ## 事前準備
 
-第7回でVPSの`hermes dashboard`は認証つきでsystemd常駐済みのはず。まずそれが生きているか確認する。
+第7回でVPSの`hermes dashboard`は認証つきでsystemd常駐済みのはず。次のコマンドで、常駐が生きているか・認証が有効か・自分のパソコンと同じtailnetにいるか・ログイン用の固定値が入っているかを確認する。
 
 ```bash
 ssh admin@hermes-vps
@@ -178,7 +181,7 @@ grep BASIC_AUTH_SECRET ~/.hermes/.env
 
 - `systemctl status`が`active (running)`(=第7回の常駐が生きている)
 - `/api/status`が`true / ["basic"]`(=認証が有効)
-- `tailscale status`に母艦のホスト名(例:`thinkpad-x13`)+`active; direct`(=同じtailnetにいる)
+- `tailscale status`に自分のパソコンのホスト名(例:`thinkpad-x13`)+`active; direct`(=同じtailnetにいる)
 - `BASIC_AUTH_SECRET`が固定値(=未設定だと再起動の度にログインが切れる)
 
 ![systemctl status hermes-dashboardの出力(active running)](/images/hermes-vps/hermes-vps-08-dashboard-systemctl-active.png)
@@ -186,12 +189,12 @@ grep BASIC_AUTH_SECRET ~/.hermes/.env
 ![curl /api/statusとtailscale statusの結果(同じtailnetにいる証拠)](/images/hermes-vps/hermes-vps-08-dashboard-curl-tailscale.png)
 
 :::message
-母艦とVPSが同じtailnetにいるかは、VPS側で`tailscale status`を打って母艦のホスト名行が見えるか、または母艦のWindowsで`tailscale.exe status`を打ってVPSが見えるか、どちらでもOK。
+自分のパソコンとVPSが同じtailnetにいるかは、VPS側で`tailscale status`を打ってパソコンのホスト名行が見えるか、またはパソコン側(Windows)で`tailscale.exe status`を打ってVPSが見えるか、どちらでもOK。
 :::
 
 ## ブラウザで管制室を開く
 
-母艦のブラウザで、VPSのTailscale IPとポート9119を開く。
+自分のパソコンのブラウザで、VPSのTailscale IPとポート9119を開く。
 
 ```
 http://<tailscale-ip>:9119
@@ -219,7 +222,7 @@ http://<tailscale-ip>:9119
 
 第8回の主題=「黒い画面から管制室へ」を、まず1枚で証明したいので。
 
-VPSのターミナルで:
+VPSで動いている本体のバージョンをCLIで確認するため、VPSのターミナルで次を打つ。
 
 ```bash
 hermes version
@@ -334,7 +337,7 @@ Update available: 18 commits behind — run 'hermes update'
 
 つまり「設定変更を反映したい」と思ったときに、SYSTEMペインまでスクロールしなくても**サイドバー下部の「ゲートウェイを再起動」を押すだけ**で済む。
 
-## 状態と履歴──セッション・ログ・分析・チャット
+## 状態と履歴(セッション・ログ・分析・チャット)
 
 サイドバー上部の4つは、Hermesの「現在」と「過去」を見るためのペイン。
 
@@ -358,7 +361,7 @@ Update available: 18 commits behind — run 'hermes update'
 | ▶でチャットへ引き継ぎ | その会話の続きを「チャット」タブで再開 |
 | Source/Liveバッジ | 緑のパルスがアクティブ中のセッション |
 
-第6回までずっとCLIで`hermes --continue`していた作業が、ここで一気に視覚化された。`cron`から起動された会話、Telegramからの会話、Discordからの会話、CLIから打った会話──すべてが同じセッションリストに混ざって並ぶ。
+第6回までずっとCLIで`hermes --continue`していた作業が、ここで一気に視覚化された。`cron`から起動された会話、Telegramからの会話、Discordからの会話、CLIから打った会話。すべてが同じセッションリストに混ざって並ぶ。
 
 :::message
 **2026-07-30追記**:現行版ではセッション一覧に**Chats/Automation/Allの3タブ**が入り([PR#73865](https://github.com/NousResearch/hermes-agent/pull/73865))、最初に開く**Chatsタブにはcronなど自動実行のセッションが表示されなくなった**(人との会話だけに絞られる)。第9回で作るcronの会話が見当たらなくても、動いていないわけではない。**Automation**タブ(またはAll)に切り替えれば上の記述どおり全部並ぶ。
@@ -397,21 +400,21 @@ Update available: 18 commits behind — run 'hermes update'
 
 期間トグル(7日/30日/90日)・合計トークンや入力出力のサマリーカード・日次のトークン使用量グラフ・日別/モデル別/スキル別の内訳テーブル。ここまで揃って初めて「あ、Hermesってこんなに動いてたんだ」と実感できる。
 
-### チャット──ブラウザの中にターミナル
+### チャット(ブラウザの中のターミナル)
 
 サイドバー最上部の「チャット」をクリックすると、ブラウザの中に**HermesのTUI**(ターミナル上で動くテキスト版のUI)がそのまま埋め込まれて動く。
 
 ![チャットペイン(HERMES-AGENT ASCIIアートロゴ+利用可能なツール一覧+「こんにちは」→「こんにちは!今日は何をお手伝いしましょうか?」+下部にステータスバー)](/images/hermes-vps/hermes-vps-08-dashboard-chat.png)
 
-実体は`xterm.js`+WebSocketで、VPSのPTYに接続している。Windowsネイティブの母艦から開いていても、描画はVPS側で走るので動く。
+実体は`xterm.js`+WebSocketで、VPSのPTYに接続している。Windowsの自分のパソコンから開いていても、描画はVPS側で走るので動く。
 
 v0.16.0以前は`--tui`フラグで制御していたが、Surface Releaseで**常時有効化**された。`config.yaml`に何か書く必要はない。
 
 「セッション」ペインで各行の右端にある **▶ボタン**(Resume in Chat)を押すと、その会話の続きをこのチャットタブで再開できる。チャットタブは他のペインに移動しても停止されない設計(`display:none`で隠すだけ)なので、行ったり来たりしても会話が途切れない。
 
-## 自動と技能──CRON・スキル・プラグイン
+## 自動と技能(CRON・スキル・プラグイン)
 
-「CRON」「スキル」「プラグイン」の3ペインは、これから先の回(第9回・第10回)で詳しく作るものの**入口**だ。この回では「管制室にこういう場所がある」を見ておくだけで十分。
+「CRON」「スキル」「プラグイン」の3ペインは、これから先の回(第9回・第10回)で詳しく作るものを最初に開く場所だ。この回では「管制室にこういう場所がある」を見ておくだけで十分。
 
 ### CRON
 
@@ -426,7 +429,7 @@ v0.16.0以前は`--tui`フラグで制御していたが、Surface Releaseで**�
 配信先は`ローカル`(=Hermes本体に通知)/Telegram/Discord/Slack/Emailの5択。CLIで`hermes cron add`を打つのと、ブラウザでこのモーダルを埋めるのとで、行き着く先は同じ`config.yaml`だ。
 
 :::message
-詳しくは第9回「Hermes Agentが朝から話しかけてくる──Dashboardで毎朝の定型タスクを任せる」で、Dashboardから新規ジョブを作成→`Trigger now`で即実行→Telegram配信までを一気通貫で扱う。この回ではセクションを開いて存在を確認するだけで十分。
+詳しくは第9回で、Dashboardから新規ジョブを作成→`Trigger now`で即実行→Telegram配信までを一気通貫で扱う。この回ではセクションを開いて存在を確認するだけで十分。
 :::
 
 ### スキル(Skills)
@@ -442,7 +445,7 @@ v0.16.0以前は`--tui`フラグで制御していたが、Surface Releaseで**�
 - **BROWSE HUB**:新規skillを探す・ワンクリック導入
 
 :::message
-詳しくは第10回「Hermes Agentが使うほど自分専用に育つ──Skillsに手順を覚えさせる」で扱う。
+詳しくは第10回で扱う。
 :::
 
 ### プラグイン(Plugins)
@@ -455,7 +458,7 @@ v0.16.0以前は`--tui`フラグで制御していたが、Surface Releaseで**�
 
 サイドバー下部の「Plugins」グループに表示されている`カンバン`と`アチーブメント`は、このプラグイン経由でサイドバーに追加されたエントリだ。
 
-## モデルと人格──モデル・プロファイル
+## モデルと人格(モデル・プロファイル)
 
 「モデル」と「プロファイル」の2ペインで、Hermesの**頭の中身**を組み立てる。
 
@@ -511,9 +514,9 @@ v0.16.0以前は`--tui`フラグで制御していたが、Surface Releaseで**�
 
 デフォルトは`default`profileだけだが、「コード仕事用」「日常会話用」「英語学習用」のように、別のSOUL.md・別のskills構成・別のモデルを束ねたprofileを作って切り替えられる。アクティブなprofileに緑のチェックがつく。
 
-## 設定とキー──手書きの設定ファイルから卒業する
+## 設定とキー(設定ファイルを手で書かずに済む)
 
-この回の主役の章だ。これまでSSHでVPSに入って`nano ~/.hermes/config.yaml`していた作業を、ブラウザのフォームでやる。
+この回でいちばん手を動かす章だ。これまでSSHでVPSに入って`nano ~/.hermes/config.yaml`していた作業を、ブラウザのフォームでやる。
 
 ### YAMLって何
 
@@ -592,7 +595,7 @@ Telegram/Discord/Slackのbot tokenはこの「キー」ペインから除外さ�
 
 ![Keys画面下部の「カスタムキー」セクション。上部navが「キー/OAUTH/プロバイダー/ツール/ゲートウェイ/設定/カスタムキー」の7つに拡張され、「カスタムキーを追加」ボタンと説明文(Hermesが認識しない、`.env`に保存された任意の環境変数を skill・MCP server・独自ツール用に注入)が見える画面](/images/hermes-vps/hermes-vps-08-dashboard-keys-custom-section.png)
 
-## 連携と窓口──MCP・チャンネル・Webhooks・ペアリング
+## 連携(MCP・チャンネル・Webhooks・ペアリング)
 
 「MCP」「CHANNELS」「WEBHOOKS」「PAIRING」の4つは、Hermesと外の世界をつなぐ4つの窓だ。
 
@@ -681,7 +684,7 @@ Telegram/Discord/Slackのbot tokenはこの「キー」ペインから除外さ�
 `WEBHOOK_SECRET`はとても大事な値だ。GitHubなどがwebhookペイロードに署名するときに使うシークレットで、漏れると外部から偽イベントを投げられてしまう。生成したら必ず1Password vaultに保管しておく。
 
 :::message
-僕の場合は1Password vault「Hermes-Prod」に第3回でService Accountを作ったので、そこに新しいアイテム`Hermes VPS - Webhook HMAC Secret`を追加して保管している。第3回・第5回からの「Hermes VPS - 用途名」命名規則のまま。
+1Password vault「Hermes-Prod」に第3回でService Accountを作ったので、そこに新しいアイテム`Hermes VPS - Webhook HMAC Secret`を追加して保管している。第3回・第5回からの「Hermes VPS - 用途名」命名規則のまま。
 :::
 
 `SAVE & ENABLE`を押して、チャンネル一覧に戻るとWebhookが緑のEnabledに変わる。
@@ -708,7 +711,7 @@ Telegram/Discord/Slackのbot tokenはこの「キー」ペインから除外さ�
 
 新しいユーザーがmessengerから話しかけてきたら`Pending requests`に並ぶ。承認すれば`Approved users`に移動。`allowFrom`で数値IDを書いていた運用と両方併用できる。
 
-## 保守──System・ドキュメント・サイドバー下部
+## 保守(System・ドキュメント・サイドバー下部)
 
 長く使うための保守機能は、「SYSTEM」「ドキュメント」、そしてサイドバー下部にまとまっている。
 
@@ -759,7 +762,7 @@ Memory/Credential pool/Checkpoints/Nous Portal/Skill curator/Shell hooksの実�
 
 7種のテーマ(Hermes Teal/Midnight/Ember/Mono/Cyberpunk/Rosé/nous-blue)+5種のフォント(System Sans/Sila Italic/With Pro Sans/Albatross Hypertraffic/Old Sans)を1つのスイッチャーで切り替えられる。terminal background色もテーマに連動する。
 
-## 動作確認──ブラウザの変更がCLIに出る
+## 動作確認(ブラウザの変更がCLIに出る)
 
 この回の山場だ。**ブラウザで設定を1つ変えて、VPSの`config.yaml`にも同じ変更が出る**ことを目視で確認する。これで「Dashboardは別物でなく、同じHermesの管制室」だと胸を張れる。
 
@@ -767,7 +770,7 @@ Memory/Credential pool/Checkpoints/Nous Portal/Skill curator/Shell hooksの実�
 
 ![設定ペインでRESUME EXCHANGESを10→20に変更+右上の保存ボタン](/images/hermes-vps/hermes-vps-08-dashboard-config-saved-browser.png)
 
-つぎにVPSのターミナルで確認する。
+ブラウザで保存した値がVPSの`config.yaml`に入ったかを、VPSのターミナルで`grep`して確認する。
 
 ```bash
 grep -A1 resume_exchanges ~/.hermes/config.yaml
@@ -777,7 +780,7 @@ grep -A1 resume_exchanges ~/.hermes/config.yaml
 
 ![CLIでgrepするとresume_exchanges: 20が赤色強調で表示+次行にresume_max_user_chars: 300](/images/hermes-vps/hermes-vps-08-dashboard-config-cat-cli.png)
 
-`resume_exchanges: 20`が`config.yaml`に書き込まれている──ブラウザのフォームで触った値が、SSH越しの`grep`でちゃんと見える。これで「同じHermesの管制室を別の窓から触っていた」ことが目に見える形で証明された。
+`resume_exchanges: 20`が`config.yaml`に書き込まれている。ブラウザのフォームで触った値が、SSH越しの`grep`でちゃんと見える。これで「同じHermesの管制室を別の窓から触っていた」ことが目に見える形で証明された。
 
 :::message
 逆方向(`.env`の値を変えてHermes側で再読み込みする)には、CLIで`/reload`スラッシュコマンドが使える。キーを更新したあとに`/reload`を打つと、gateway再起動なしで`~/.hermes/.env`を読み直してくれる。
@@ -785,7 +788,7 @@ grep -A1 resume_exchanges ~/.hermes/config.yaml
 
 ## どこからでも同じ1体のエージェント
 
-第7回でも触れたとおり、Telegram・Discord・ターミナル(SSH)・Desktop──窓は違っても、中にいるのは同じ1体・同じ記憶のエージェントだ。
+第7回でも触れたとおり、Telegram・Discord・ターミナル(SSH)・Desktop。窓は違っても、中にいるのは同じ1体・同じ記憶のエージェントだ。
 
 第8回でDashboardが加わったあとも、これは変わらない。
 
@@ -795,7 +798,7 @@ grep -A1 resume_exchanges ~/.hermes/config.yaml
 
 「チャット」タブで送ったメッセージは、`hermes --continue`したCLIにも、Hermes Desktopの左サイドバーにも、同じセッションとして表示される。**どの窓から覗いても、奥にいるエージェントは1体**だ。
 
-Hermesは「分散」したのではなく、「窓を増やした」だけ。設定もキーもジョブも、`~/.hermes/`配下の同じファイルから読まれていて、Dashboardでもターミナルでも同じ実体を触っている。
+Hermes本体は1つのまま、窓が増えただけだ。設定もキーもジョブも、`~/.hermes/`配下の同じファイルから読まれていて、Dashboardでもターミナルでも同じ実体を触っている。
 
 ## 最終確認チェックリスト
 
@@ -816,7 +819,7 @@ Hermesは「分散」したのではなく、「窓を増やした」だけ。�
 
 | 症状 | 対処 |
 |---|---|
-| ブラウザで`http://<tailscale-ip>:9119`が開けない | 第7回のdashboardが落ちている可能性。VPSで`systemctl --user status hermes-dashboard`を確認。activeでなければ`systemctl --user restart hermes-dashboard`。母艦とVPSが同じtailnetにいるかも確認 |
+| ブラウザで`http://<tailscale-ip>:9119`が開けない | 第7回のdashboardが落ちている可能性。VPSで`systemctl --user status hermes-dashboard`を確認。activeでなければ`systemctl --user restart hermes-dashboard`。自分のパソコンとVPSが同じtailnetにいるかも確認 |
 | サインインの代わりに「session token」を求められる | username/password認証が有効になっていない。第7回「ログイン情報を先に`.env`へ置く」の手順で`HERMES_DASHBOARD_BASIC_AUTH_USERNAME`と`HERMES_DASHBOARD_BASIC_AUTH_PASSWORD`が`.env`に入っているか確認 |
 | ログインが毎回切れる | `HERMES_DASHBOARD_BASIC_AUTH_SECRET`が未設定。固定値を`.env`に入れる(第7回「ログイン情報を先に`.env`へ置く」)。未設定だと再起動の度に署名鍵が再生成されて全セッションが無効化される |
 | 「分析」がサイドバーに出ない | `dashboard.show_token_analytics: true`にしないと出ない仕様。「設定」→`analytics`検索でトグルON→F5 |
@@ -862,17 +865,17 @@ Hermesは「分散」したのではなく、「窓を増やした」だけ。�
 
 ## まとめと次回予告
 
-第7回でHermes Desktopを母艦に入れて、第8回でWeb Dashboardをブラウザで開けるようになった。これでHermesと話す窓は3つになった。
+自分のパソコンのブラウザでWeb Dashboardにサインインし、ブラウザで保存した設定がVPSの`config.yaml`に出るところまで確認できた。これでHermesと話す窓は、第7回のHermes Desktopと合わせて3つになった。
 
 1. Telegram/Discord(第4回・第5回)=スマホからもPCからも
-2. Hermes Desktop(第7回)=母艦のネイティブアプリで
+2. Hermes Desktop(第7回)=自分のパソコンのネイティブアプリで
 3. **Web Dashboard(この回)=ブラウザで管制室を開いて、設定もキーも全部管理する**
 
-第7回・第8回で「窓と顔と管制室」が揃った。ここから先は、この相棒に技能を足していく。
+第7回・第8回で「窓と顔と管制室」が揃った。ここから先は、Hermesに技能を足していく。
 
 次回からは生活リズム(Cron)・手順の記憶(スキル)・外の情報を取る目(Web/X検索)へ進む。今日見たCRON画面やスキル画面が、実際に中身で埋まっていく。
 
-第9回(Cron)では、いま空のように見えていたあのCRONペインに、毎朝Hermesがニュースを届けてくれるジョブを登録する。Dashboardから新規ジョブを作って、`Trigger now`で即実行、Telegramに通知が届く──までを1本でやる。
+第9回(Cron)では、いま空のように見えていたあのCRONペインに、毎日7時に動くジョブ`morning-news`を登録する。Dashboardから新規ジョブを作って、`Trigger now`で即実行し、Telegramに通知が届くところまでを1本でやる。
 
 ---
 

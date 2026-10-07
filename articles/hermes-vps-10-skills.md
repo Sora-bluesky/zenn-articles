@@ -22,15 +22,15 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ## 目次
 
-- [概念整理──Skillsで何が変わるか](#概念整理──skillsで何が変わるか)
+- [概念整理(Skillsで何が変わるか)](#概念整理(skillsで何が変わるか))
 - [事前準備](#事前準備)
 - [標準スキルを見る・使う](#標準スキルを見る・使う)
 - [Skillとtoolの関係を見る](#skillとtoolの関係を見る)
 - [Skills Hubで外部Skillを探す](#skills-hubで外部skillを探す)
-- [最初の自作Skillを作る──記事や動画の要約](#最初の自作skillを作る──記事や動画の要約)
+- [最初の自作Skillを作る(記事や動画の要約)](#最初の自作skillを作る(記事や動画の要約))
 - [Progressive Disclosure(段階的開示)を理解する](#progressive-disclosure(段階的開示)を理解する)
 - [Telegramから呼ぶ](#telegramから呼ぶ)
-- [CronにSkillを添付する──毎朝Hermesの最新を要約させる](#cronにskillを添付する──毎朝hermesの最新を要約させる)
+- [CronにSkillを添付する(Hermesの最新情報を要約させる)](#cronにskillを添付する(hermesの最新情報を要約させる))
 - [Skillにファイルを添付する(Level 2)](#skillにファイルを添付する(level-2))
 - [最終確認チェックリスト](#最終確認チェックリスト)
 - [まとめと第11回予告](#まとめと第11回予告)
@@ -38,13 +38,15 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [操作早見表](#操作早見表)
 - [引用元と参考](#引用元と参考)
 
-第6回でsystemd常駐が完成し、第7回でHermes Desktop、第8回でWeb Dashboard、第9回でCronが揃った。エージェントはVPSの上で24時間動き、毎朝7時にニュース要約をTelegramへ届けるところまで来た。
+この回が終わると、自作したスキルをTelegramのスラッシュコマンドから呼べるようになり、Cronジョブ`hermes-watch`には`summarize-to-japanese`を添付して、毎朝7時の要約に同じ手順ファイルを使わせられる。この回でやらないのは、スキルへの添付ファイル(Level 2)の実際の追加だ。概念の紹介にとどめる。
+
+第6回でsystemd常駐が完成し、第7回でHermes Desktop、第8回でWeb Dashboard、第9回でCronが揃った。エージェントはVPSの上で24時間動き、朝7時のニュース要約をTelegramへ届けるところまで来た。
 
 ただ、第9回のジョブには長いプロンプトを丸ごと直書きしていた。「何項目で」「出典は付けて」「締めの一文はこう」と全部書き切った依頼文だ。同じ手順を別のジョブでも使いたくなったら、その長文をもう一度コピーして貼り直すことになる。「ここだけ少し直したい」と思っても、毎回プロンプト全体を上から読み返して該当の1行を探す。気付いた注意点を1行ずつ足していくと、プロンプト欄はだんだん手順書のように膨らんでいく。
 
 第10回はここをスキル(Hermesに覚えさせる作業手順書)にする。よく使う手順を1枚のファイルに書いておくと、以後は短い呼び出しひとつで同じ仕事が始まる。スキルはファイルとして残るので、会話履歴を消しても消えない。VPSに置いたエージェントが、使うほど自分専用の手順をためていく回だ。
 
-そして今回は、その作成も管理も**すべてWeb Dashboardの中で完結する**。第9回までは自作スキルやCron添付でSSH(ターミナル)を開いていたが、Hermesの実機v0.16.0(2026年6月のアップデート)で、新規スキルの作成も、Cronへの添付も、ブラウザの管制室に入った。SSHでターミナルを開く必要はない。スマホを使うのは、出先からHermesに頼んでスキルを書かせる場面と、できたスキルを呼ぶ場面だけだ。
+そして今回は、その作成も管理も**すべてWeb Dashboardの中で完結する**。第9回までは自作スキルやCron添付でSSH(ターミナル)を開いていたが、Hermes v0.16.0(2026年6月のアップデート)で、新規スキルの作成も、Cronへの添付も、ブラウザのDashboardから操作できるようになった。SSHでターミナルを開く必要はない。スマホを使うのは、出先からHermesに頼んでスキルを書かせる場面と、できたスキルを呼ぶ場面だけだ。
 
 シリーズの全体像はこちら。
 
@@ -76,7 +78,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
-## 概念整理──Skillsで何が変わるか
+## 概念整理(Skillsで何が変わるか)
 
 最初に、この回で起きることを言葉にしておく。
 
@@ -95,29 +97,27 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | 独自の手順 | Cronに長いプロンプトを直書き | NEW SKILLでスキル化し、Cronに添付・`/summarize_to_japanese`でも呼ぶ |
 | 知能の蓄積 | 会話履歴が消えれば手順も消える | ファイルに残り、消えない。使うほどたまる |
 
-一言でまとめると「よく使う手順をファイルに覚えさせて、Telegramからもニュース配信のCronからも同じ手順を呼べるようにする」回だ。
+この回は、よく使う手順をファイルに覚えさせて、Telegramからもニュース配信のCronからも同じ手順を呼べるようにする回だ。
 
 ### この回で出てくる言葉
 
-レシピカードに見立てて整理しておく。
-
-| 用語 | 意味 | たとえ |
-|---|---|---|
-| スキル(Skill) | 「特定の作業のやり方」を書いた`SKILL.md`ファイル | 料理のレシピカード。一度書けば何度でも使える |
-| SKILL.md | スキルの本体。先頭にメタデータ、その下に手順の本文 | レシピカードの「料理名」と「材料・手順」 |
-| frontmatter | `SKILL.md`冒頭の`---`で囲んだメタデータ部分 | レシピの「料理名・難易度」ラベル |
-| スキルペイン | Dashboardのスキル管理画面。すべて/ツールセット/BROWSE HUBの3ビュー | レシピ帳のインデックス |
-| builtin・local・hub-installed | スキルの出どころ。同梱/自作/Hub導入の別 | 付属レシピ/手書きレシピ/取り込んだレシピ |
-| Skills Hub | 外部のスキルを検索してインストールできる仕組み | レシピサイトからレシピを取り込む感覚 |
-| Trust Level | スキルの信頼度。builtin/official/trusted/communityの4段階 | 「公式レシピ」と「ユーザー投稿レシピ」の区別 |
+| 用語 | 意味 |
+|---|---|
+| スキル(Skill) | 「特定の作業のやり方」を書いた`SKILL.md`ファイル。一度書けば何度でも呼べる。この回で作るのは`summarize-to-japanese`と`plain-japanese` |
+| SKILL.md | スキルの本体。先頭にメタデータ、その下に手順の本文。置き場所は`~/.hermes/skills/<スキル名>/` |
+| frontmatter | `SKILL.md`冒頭の`---`で囲んだメタデータ部分。`name`・`description`・`version`を書く |
+| スキルペイン | Dashboardのスキル管理画面。すべて/ツールセット/BROWSE HUBの3ビュー |
+| builtin・local・hub-installed | スキルの出どころ。同梱/自作/Hub導入の別。この環境の同梱(builtin)は52件 |
+| Skills Hub | 外部のスキルを検索してインストールできる仕組み。この回では`duckduckgo-search`を検索する |
+| Trust Level | スキルの信頼度。builtin/official/trusted/communityの4段階 |
 
 ### 第10回終了時点の構成図
 
-自作スキルは、第6回で常駐させたHermes Agentの中の`~/.hermes/skills/`に置かれる。今回はその作成も添付も、母艦(手元のノートPC)のブラウザからTailscaleの安全な接続でDashboardにつなぎ、画面の中で済ませる。
+自作スキルは、第6回で常駐させたHermes Agentの中の`~/.hermes/skills/`に置かれる。今回はその作成も添付も、自分のパソコン(この連載ではWindows)のブラウザからTailscaleの安全な接続でDashboardにつなぎ、画面の中で済ませる。
 
-![母艦のブラウザからTailscale経由でVPSのhermes-dashboardとhermes-gatewayにつなぐ構成図。Dashboardのスキルペインからは新規スキルの作成(NEW SKILL)と編集鉛筆で~/.hermes/skills/summarize-to-japaneseのSKILL.mdを書き、BROWSE HUBからresearch/duckduckgo-searchを導入し、CRON編集モーダルのSKILLS欄でスキルをCronジョブに添付する。Telegramからは/summarize_to_japaneseでスキルを呼び出す。すべてDashboardで完結しSSH不要であることが伝わる図](/images/hermes-vps/hermes-vps-10-skills-architecture-diagram.png)
+![自分のパソコンのブラウザからTailscale経由でVPSのhermes-dashboardとhermes-gatewayにつなぐ構成図。Dashboardのスキルペインからは新規スキルの作成(NEW SKILL)と編集鉛筆で~/.hermes/skills/summarize-to-japaneseのSKILL.mdを書き、BROWSE HUBからresearch/duckduckgo-searchを導入し、CRON編集モーダルのSKILLS欄でスキルをCronジョブに添付する。Telegramからは/summarize_to_japaneseでスキルを呼び出す。すべてDashboardで完結しSSH不要であることが伝わる図](/images/hermes-vps/hermes-vps-10-skills-architecture-diagram.png)
 
-ポイントは、`SKILL.md`を一度置けば、あとはTelegramからもCronからも同じ手順を呼べること。手順の本体は1箇所にしかないので、直す時もそこだけ直せば全部に反映される。
+`SKILL.md`を一度置けば、あとはTelegramからもCronからも同じ手順を呼べること。手順の本体は1箇所にしかないので、直す時もそこだけ直せば全部に反映される。
 
 ## 事前準備
 
@@ -155,7 +155,7 @@ http://<tailscale-ip>:9119   # 第7-8回で常駐させたdashboardのURL
 ![Dashboardのスキルペイン初期画面。左に「すべて/ツールセット/BROWSE HUB」のビュー切り替えフィルターとカテゴリ一覧、各スキル行に有効/無効トグル、右上に+ NEW SKILLボタンが見える画面](/images/hermes-vps/hermes-vps-10-skills-pane.png)
 
 :::message
-スキルには出どころが3種類ある。本体に同梱されている**builtin**、Hubから足した**hub-installed**、自分で作った**local**だ。実機では同梱(builtin)が52件入っていて、Hub導入や自作を合わせるとこの環境では合計71件すべてが有効になっている。ヘッダーの数字はその環境の合計を指す。本記事では「同梱52件」と「この環境の合計71件」を区別して読んでほしい。
+スキルには出どころが3種類ある。本体に同梱されている**builtin**、Hubから足した**hub-installed**、自分で作った**local**だ。この環境では同梱(builtin)が52件入っていて、Hub導入や自作を合わせるとこの環境では合計71件すべてが有効になっている。ヘッダーの数字はその環境の合計を指す。本記事では「同梱52件」と「この環境の合計71件」を区別して読んでほしい。
 :::
 
 ### 使いたい標準スキルはトグルでON
@@ -185,9 +185,9 @@ http://<tailscale-ip>:9119   # 第7-8回で常駐させたdashboardのURL
 この一覧の中で、今回の話に直結するカードが2つある。
 
 - **Skills**(アクティブ):`skill_manage` / `skill_view` / `skills_list`というツールを持つ。つまり**スキル自体もtoolのひとつ**として管理されている、という証拠
-- **Cron Jobs**(アクティブ):`create / list / update / pause / resume / run` に加えて `with optional attached skills`(任意でスキルを添付できる)とある。第9回のCronに**スキルを添付できる**ことの実機根拠で、8章で使う
+- **Cron Jobs**(アクティブ):`create / list / update / pause / resume / run` に加えて `with optional attached skills`(任意でスキルを添付できる)とある。第9回のCronに**スキルを添付できる**ことを画面で確かめられる箇所で、8章で使う
 
-ついでに **X (Twitter) Search** のカードも見える。こちらは非アクティブで、`requires xAI OAuth or XAI_API_KEY`(xAIのOAuthかAPIキーが要る)と書かれている。8章のニュース監視でX検索を使う伏線になるが、詳しい設定は第11回で扱う。
+ついでに **X (Twitter) Search** のカードも見える。こちらは非アクティブで、`requires xAI OAuth or XAI_API_KEY`(xAIのOAuthかAPIキーが要る)と書かれている。8章の`hermes-watch`がX検索を使うので触れておく。詳しい設定は第11回で扱う。
 
 ## Skills Hubで外部Skillを探す
 
@@ -228,14 +228,14 @@ Hubから入れる時に必ず見るのが`Trust`(信頼レベル)だ。スキ�
 Hubは内部でGitHubを見にいくので、たくさん操作するとレート制限に当たり、`HTTP 403`が返ることがある。その時は`~/.hermes/.env`に`GITHUB_TOKEN=...`を入れておくと上限が上がる。ターミナルから直接やりたい場合は`hermes skills check`(更新確認)・`hermes skills update`(更新取込)・`hermes skills uninstall <名前>`(Hub導入スキルの削除)も使える。
 :::
 
-## 最初の自作Skillを作る──記事や動画の要約
+## 最初の自作Skillを作る(記事や動画の要約)
 
-ここからが「使うほど自分専用に育つ」の核心だ。v0.16.0で`+ NEW SKILL`ボタンと**編集鉛筆**が付き、ブラウザだけで`SKILL.md`を書けるようになった。
+ここでスキルを自作する。v0.16.0で`+ NEW SKILL`ボタンと**編集鉛筆**が付き、ブラウザだけで`SKILL.md`を書けるようになった。
 
-作り方は2通りある。**自分で`SKILL.md`を書く**(Dashboard)と、**Hermesにざっくり頼んで書かせる**(Telegram)だ。同じ「スキルを作る」でも入口が違うのが分かるよう、別々のスキルで体験する。
+作り方は2通りある。**自分で`SKILL.md`を書く**(Dashboard)と、**Hermesにざっくり頼んで書かせる**(Telegram)だ。同じ「スキルを作る」でも作る画面が違うのが分かるよう、別々のスキルで体験する。
 
-- 5-1〜5-2:自分でDashboardから`summarize-to-japanese`を書く。英語の記事やYouTubeのURLを放り込むと、日本語3〜5行で要点が返る。毎朝のニュースチェックや海外記事の下読みに役立つスキルだ
-- 5-3:出先でTelegramからHermesに`plain-japanese`を書かせる。役所の通知や利用規約のような硬い文章を投げると、中学生にもわかる言葉で返る。スマホから頼めるのが要点だ
+- 5-1〜5-2:自分でDashboardから`summarize-to-japanese`を書く。英語の記事やYouTubeのURLを放り込むと、日本語3〜5行で要点が返る。8章で、このスキルを`hermes-watch`のCronジョブに添付する
+- 5-3:出先でTelegramからHermesに`plain-japanese`を書かせる。難しい文章を投げると、中学生にもわかる言葉で返る。スマホから頼める
 
 ### 自分でSKILL.mdを書く(Dashboard)
 
@@ -307,7 +307,7 @@ version: 1.0.0
 
 :::message alert
 **落とし穴1:`platforms: [any]`だとDashboardに出ない**
-作ったはずのスキルが一覧に出ない──ここで戸惑いやすい。Hermesが`skill_manage`で自動生成すると、frontmatterが`platforms: [any]`になることがある。Hermesは仕様上`any`を有効と見なさず「このプラットフォームでは非対応」扱いにするため、**Dashboardの一覧に出ず、スラッシュでも呼べない**。その時は編集鉛筆で`platforms: [linux, macos, windows]`に直し、リロードする(それでもダメならゲートウェイを再起動)。5-1のように自分で書く時は、`platforms`行を入れなければこの問題は起きない。入れるなら3つを明記する。
+作ったはずのスキルが一覧に出ないことがある。Hermesが`skill_manage`で自動生成すると、frontmatterが`platforms: [any]`になることがある。Hermesは仕様上`any`を有効と見なさず「このプラットフォームでは非対応」扱いにするため、**Dashboardの一覧に出ず、スラッシュでも呼べない**。その時は編集鉛筆で`platforms: [linux, macos, windows]`に直し、リロードする(それでもダメならゲートウェイを再起動)。5-1のように自分で書く時は、`platforms`行を入れなければこの問題は起きない。入れるなら3つを明記する。
 :::
 
 :::message alert
@@ -327,7 +327,7 @@ version: 1.0.0
 
 ふだんエージェントが抱えているのはLevel 0の要約だけで、全スキル合わせても軽い。だから多数あっても重くならない。「これが要る」と判断した時にだけLevel 1の本文を開き、さらに細かい資料が要ればLevel 2まで降りる。本のタイトルを眺めて、気になれば目次を見て、必要なら本文を読む、という読み方に近い。
 
-ここから導かれる一番大事な実践が、`description`を丁寧に書くことだ。Level 0で読まれるのは`description`だけなので、ここで「いつ使うスキルか」が伝わらないと、エージェントがそもそも選ばない。**動詞で始めて、具体的なきっかけを書く**のがコツだ。
+ここから導かれる一番大事な実践が、`description`を丁寧に書くことだ。Level 0で読まれるのは`description`だけなので、ここで「いつ使うスキルか」が伝わらないと、エージェントがそもそも選ばない。**動詞で始めて、具体的なきっかけを書く**。
 
 - 悪い例:`description: 要約ツール`(抽象的すぎて選ばれない)
 - 良い例:`description: 記事やYouTubeのURLを渡すと内容を取得して日本語で要約する`
@@ -336,7 +336,7 @@ version: 1.0.0
 
 インストール済みのスキルは、自動でスラッシュコマンドになる(公式:「Every installed skill is automatically available as a slash command」)。ここでは5-3で作った`plain-japanese`をTelegramから呼ぶ(`summarize-to-japanese`は次の8章でCronから使う)。
 
-呼ぶ前に、実機で確認した2つの一手間を押さえておく。
+呼ぶ前に、実際に動かして確認した2つの一手間を押さえておく。
 
 :::message alert
 **落とし穴1:呼び出し名はアンダースコア・`/skill`は無い**
@@ -345,7 +345,7 @@ version: 1.0.0
 
 :::message alert
 **落とし穴2:作成直後はgatewayが認識していない**
-スキルを置いた直後は、常駐中のgatewayが古い一覧を覚えたままだ。Telegramで`/reload_skills`を送って、gatewayに一覧を取り直させる。成功すると`Skills Reloaded`と`Added Skills: <直前に作ったスキル>`のように、**前回のリロード以降に増えた分だけ**表示される(実機では直前に作った`plain-japanese`が出た)。何を直前に作ったかで出る名前は変わるので、決め打ちにしない。Dashboardには即出るが、Telegramのスラッシュ反映にはこの一手間が要る。
+スキルを置いた直後は、常駐中のgatewayが古い一覧を覚えたままだ。Telegramで`/reload_skills`を送って、gatewayに一覧を取り直させる。成功すると`Skills Reloaded`と`Added Skills: <直前に作ったスキル>`のように、**前回のリロード以降に増えた分だけ**表示される(実際の画面では直前に作った`plain-japanese`が出た)。何を直前に作ったかで出る名前は変わるので、決め打ちにしない。Dashboardには即出るが、Telegramのスラッシュ反映にはこの一手間が要る。
 :::
 
 botに、順に送ってみる。
@@ -359,11 +359,11 @@ botに、順に送ってみる。
 
 ![Telegramで/plain_japaneseに難しい文章を渡し、やさしい日本語に言い換えられて返ってきた画面。bot名はHermes VPS](/images/hermes-vps/hermes-vps-10-skills-skill-telegram-call.png)
 
-## CronにSkillを添付する──毎朝Hermesの最新を要約させる
+## CronにSkillを添付する(Hermesの最新情報を要約させる)
 
 ここで第9回とつながる。v0.16.0で、第9回のCRONペインの作成・編集モーダルに**SKILLS**というセクションが付いた。スキルをチェックで選ぶ(複数選べる)と、そのCronジョブにスキルが添付され、ジョブカードに**スキルバッジ**が出る。3章のツールセットで見た`Cron Jobs … with optional attached skills`が、この機能だ。SSHで`hermes cron edit`を打っていたのと同じことが、ブラウザだけでできる。
 
-題材は「**毎朝、Hermes自身の最新情報を要約して届ける**」にする。Hermesの新機能は、開発元の@Tekniumや@NousResearchがまずXで発表する。それを毎朝拾って要約させれば、開発元の動きが日本語で手元に届く。5章で作った`summarize-to-japanese`を、このCronに添付する。
+題材は、Hermes自身の最新情報を要約して届ける`hermes-watch`というジョブだ。Hermesの新機能は、開発元の@Tekniumや@NousResearchがまずXで発表する。それを朝7時に拾って要約させ、開発元の動きを日本語でTelegramに届ける。5章で作った`summarize-to-japanese`を、このCronに添付する。
 
 ### Cronジョブを作る
 
@@ -377,7 +377,7 @@ botに、順に送ってみる。
 | 配信先 | Telegram |
 | SKILLS | `summarize-to-japanese`にチェック |
 
-`summarize-to-japanese`にチェックを入れるのが、今回のポイントだ。
+最後に、SKILLS欄の`summarize-to-japanese`にチェックを入れる。
 
 ![CRON作成/編集モーダルのSKILLS欄で、summarize-to-japaneseのチェックボックスにチェックを入れた状態の画面](/images/hermes-vps/hermes-vps-10-skills-cron-skills-select.png)
 
@@ -395,11 +395,11 @@ botに、順に送ってみる。
 
 ![稲妻(今すぐ実行)を押したあと、Telegramにhermes-watchの結果としてHermesの最新情報の日本語要約が投稿URL付きで届いた画面。bot名はHermes VPS](/images/hermes-vps/hermes-vps-10-skills-cron-result-telegram.png)
 
-これで「毎朝、Hermesの新機能・新リリースが日本語で手元に届く」状態になった。手順を変えたい時は`summarize-to-japanese`の`SKILL.md`を編集鉛筆で直すだけで、Cron側は触らない。同じスキルをTelegramの`/summarize_to_japanese`からも、会話からも呼べる。これが「Cron=いつ動くか」と「Skill=どうやるか」を分ける意味だ。
+これで、`hermes-watch`がHermesの新機能・新リリースを日本語で要約してTelegramへ届ける設定ができた。手順を変えたい時は`summarize-to-japanese`の`SKILL.md`を編集鉛筆で直すだけで、Cron側は触らない。同じスキルをTelegramの`/summarize_to_japanese`からも、会話からも呼べる。これが「Cron=いつ動くか」と「Skill=どうやるか」を分ける意味だ。
 
 ## Skillにファイルを添付する(Level 2)
 
-ここからは**概念の紹介**にとどめる(実機の操作は、必要になった時でいい)。
+ここからは**概念の紹介**にとどめる(実際の操作は、必要になった時でいい)。
 
 `SKILL.md`にいろいろ書き足していくと、本文に全部書くと長くなりすぎる場面が出てくる。「信頼できるニュースソースの一覧」「除外したい話題」「重複を除く補助スクリプト」などだ。こうした細かい資料は、スキルディレクトリの中に別ファイルとして置く。これがProgressive DisclosureのLevel 2だ。
 
@@ -412,7 +412,7 @@ botに、順に送ってみる。
     └── extract.py        # 本文抽出の補助スクリプト
 ```
 
-`SKILL.md`の本文からは「`references/glossary.md`の訳語に従う」のようにファイル名で参照する。本文(Level 1)に長いリストやコードを書き切るとトークン消費が毎回増えるので、必要な時だけ読む添付ファイルに逃がす、というのが使いどころだ。
+`SKILL.md`の本文からは「`references/glossary.md`の訳語に従う」のようにファイル名で参照する。本文(Level 1)に長いリストやコードを書き切るとトークン消費が毎回増えるので、必要な時だけ読む添付ファイルに分ける、というのが使いどころだ。
 
 ただし、添付ファイルの追加はディレクトリの操作になるので、これだけは今回の範囲外だ。必要になったらSSHで足す、と考えておけばいい。まずは1ファイルの`SKILL.md`で十分。添付は、自作スキルに手順を足していく中で「本文が長くなってきた」と感じたら使う応用だ。
 
@@ -442,16 +442,16 @@ botに、順に送ってみる。
 
 ## まとめと第11回予告
 
-第10回でやったこと。
+第10回で、`summarize-to-japanese`を自作して`hermes-watch`のCronジョブに添付し、`plain-japanese`をTelegramの`/plain_japanese`から呼べる状態になった。第9回まで「決まった時刻に長いプロンプトを流す」だったエージェントが、「自分専用の手順を覚え、Telegramからもニュース配信からも同じ手順を呼ぶ」状態に変わった。内訳は次のとおり。
 
 - スキルペインで標準スキルの一覧・トグル・カテゴリ絞り込みを確認(同梱52件・この環境では71件)
-- ツールセットビューで「スキルもtoolのひとつ」「CronにSKILLを添付できる」を実機で確認
+- ツールセットビューで「スキルもtoolのひとつ」「CronにSKILLを添付できる」を実際の画面で確認
 - BROWSE HUBで`duckduckgo`を検索し、official/communityのTrustの違いを確認
 - `+ NEW SKILL`で`summarize-to-japanese`を自分で作成(Dashboard完結)
 - 出先からTelegramでHermesに`plain-japanese`を作らせ、`/plain_japanese`で呼べることを確認
-- CRONのSKILLS欄で`summarize-to-japanese`を添付し、`hermes-watch`で毎朝Hermesの最新を要約させた
+- CRONのSKILLS欄で`summarize-to-japanese`を添付し、`hermes-watch`で朝7時にHermesの最新を要約させた
 
-これで、第9回まで「決まった時刻に長いプロンプトを流す」だったエージェントが、「自分専用の手順を覚え、Telegramからもニュース配信からも同じ手順を呼ぶ」状態になった。手順はファイルとして残り、会話履歴を消しても消えない。使った手順が`~/.hermes/skills/`に積み上がり、エージェントが自分専用になっていく。そして今回はその全工程を、SSHを開かずブラウザの管制室だけで終えられた。
+手順はファイルとして残り、会話履歴を消しても消えない。使った手順が`~/.hermes/skills/`に積み上がり、エージェントが自分専用になっていく。今回はその全工程を、SSHを開かずWeb Dashboardだけで終えられた。
 
 第11回はWeb/X検索の使い分けだ。今回の`hermes-watch`で使ったx_searchを含め、Hermes Agentが使える複数のWeb検索バックエンド(SearXNG・Firecrawl等)とX Searchを整理し、どれを有効にするかを決める。検索の質は、スキルの出力をそのまま左右するからだ。
 
@@ -522,7 +522,7 @@ botに、順に送ってみる。
 | スラッシュコマンドでの自動化 | 同上「Every installed skill is automatically available as a slash command」 |
 | Skills Hub(official/community等のソース) | 同上「Supported Hub Sources」 |
 | Trust Level(builtin/official/trusted/community) | 同上「Security Scanning & Trust Levels」 |
-| NEW SKILL+編集鉛筆・CRONのSKILLS添付欄 | 実機Dashboard v0.16.0で確認(2026-06-11)。[@Teknium告知](https://x.com/Teknium/status/2066185784332562605) |
+| NEW SKILL+編集鉛筆・CRONのSKILLS添付欄 | Dashboard v0.16.0の実際の画面で確認(2026-06-11)。[@Teknium告知](https://x.com/Teknium/status/2066185784332562605) |
 | 強制ロード方法(`/<skill-name>`+`hermes -s`エイリアス) | [@Tekniumリプライ(2026-06-18)](https://x.com/Teknium/status/2067672465678209501) |
 
 :::message

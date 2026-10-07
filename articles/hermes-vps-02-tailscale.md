@@ -20,9 +20,13 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第2回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
 :::
 
-レンタルサーバーを借りて公開SSHを開けた瞬間から、世界中の自動化された攻撃がそのサーバーの玄関を叩き始める。大げさな話ではなく、ログイン記録を開けば見知らぬIPアドレスからの失敗が延々と並ぶ。第1回で借りた1台も、いまはその玄関が世界に向けて開いたままだ。
+第2回が終わると、VPSへのSSHは公開22番ポートを使わず、Tailscale経由の接続だけで入れる状態になる。22番ポートはXServerのパケットフィルターとVPS上のUFWの両方で閉じる。
 
-第2回は、この玄関そのものを世界から見えなくする。鍵を頑丈にするのではなく、扉の存在ごと隠してしまう、という考え方で守る。
+レンタルサーバーを借りて公開SSHを開けた瞬間から、世界中の自動化された攻撃がそのサーバーの22番ポートに接続を試み始める。ログイン記録を開けば見知らぬIPアドレスからの失敗が延々と並ぶ。第1回で借りた1台も、いまは22番ポートが世界に向けて開いたままだ。
+
+鍵を頑丈にするのではなく、22番ポートそのものを外から見えなくして守る。
+
+この回でやらないこと: Hermes本体のインストールと1Passwordの本格運用には進まない。前者は第4回、後者は第3回で扱う。
 
 ## 目次
 
@@ -30,9 +34,9 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [この回の到達点](#この回の到達点)
 - [そもそもTailscaleとは何か](#そもそもtailscaleとは何か)
 - [第2回終了時点の構成図](#第2回終了時点の構成図)
-- [事前準備──命綱の確保と1Passwordアイテム](#事前準備──命綱の確保と1passwordアイテム)
+- [事前準備(復旧用の経路と1Passwordアイテム)](#事前準備(復旧用の経路と1passwordアイテム))
 - [VPSをTailscaleのネットワークに参加させる](#vpsをtailscaleのネットワークに参加させる)
-- [手元PCにもTailscaleを入れる](#手元pcにもtailscaleを入れる)
+- [自分のパソコンにもTailscaleを入れる](#自分のパソコンにもtailscaleを入れる)
 - [鍵なしでログインできることを確認する](#鍵なしでログインできることを確認する)
 - [公開22番を二重に閉じる](#公開22番を二重に閉じる)
 - [最終確認とTailscaleキー無期限化](#最終確認とtailscaleキー無期限化)
@@ -74,8 +78,6 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 第2回ではこの公開22番そのものを閉じる。代わりにTailscaleという**仮想プライベートネットワーク**(VPN)を使い、自分の端末とVPSだけが見える非公開のトンネルを作る。SSHはそのトンネルの中だけで動かす。
 
-実機で打ちながら書いたメモなので、きれいな手順書ではない。詰まった場所も含めて読んでもらいたい。
-
 ## この回の到達点
 
 | 項目 | 第1回完了時(現状) | 第2回完了後(ゴール) |
@@ -83,7 +85,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | VPSの22番ポート | 全世界に開放 | 外部から閉鎖 |
 | SSH接続経路 | グローバルIP→22番→admin | Tailscale IP(`100.x.x.x`)→22番→admin |
 | 攻撃面 | 世界中のIPからの接続試行 | 同じTailnet内の端末のみ |
-| 命綱 | シリアルコンソール | シリアルコンソール(変わらず) |
+| 復旧用の経路 | シリアルコンソール | シリアルコンソール(変わらず) |
 
 ## そもそもTailscaleとは何か
 
@@ -101,7 +103,7 @@ Tailscaleは、WireGuardという技術を使った仮想プライベートネ�
 
 ### Tailscaleはネットワーク変化に強い
 
-Tailscaleを採用する大きな理由のひとつが、**グローバルIPアドレスの変化に強い設計**になっていることだ。会社・自宅・カフェ・モバイル回線・出張先のホテル、物理ネットワークが何度変わっても同じTailnetで通信が継続する。手元PCはTailscaleに一度参加させれば、その後どこから接続してもVPSに入れる。
+Tailscaleを採用する大きな理由のひとつが、**グローバルIPアドレスの変化に強い設計**になっていることだ。会社・自宅・カフェ・モバイル回線・出張先のホテル、物理ネットワークが何度変わっても同じTailnetで通信が継続する。自分のパソコン(この連載ではWindows)はTailscaleに一度参加させれば、その後どこから接続してもVPSに入れる。
 
 | 仕組み | 効果 |
 |---|---|
@@ -119,14 +121,14 @@ Tailscaleを採用する大きな理由のひとつが、**グローバルIPア�
 
 ![Hermes Agent運用の全体像(VPS司令塔+自宅デスクトップ手足の2層分離)](/images/hermes-vps/hermes-architecture.png)
 
-第2回終了時点で、手元PCからVPSへの接続経路は2系統から1系統に絞られる。グローバルIP+22番経由のSSHは閉じ、Tailscale IP(`100.x.x.x`)+22番経由だけが残る。
+第2回終了時点で、自分のパソコンからVPSへの接続経路は2系統から1系統に絞られる。グローバルIP+22番経由のSSHは閉じ、Tailscale IP(`100.x.x.x`)+22番経由だけが残る。
 
 ![第2回終了時点の構成図(Tailscaleの閉じたネットワーク経由でのみ接続)](/images/hermes-vps/hermes-vps-02-architecture.png)
 
-## 事前準備──命綱の確保と1Passwordアイテム
+## 事前準備(復旧用の経路と1Passwordアイテム)
 
 :::message alert
-ここから先がシリーズ最大のロックアウト危険ゾーンだ。**公開22を閉じる前にTailscale経由で入れることを確認**してから初めて閉じる。順番を逆にすると、SSHでもTailscaleでも入れない事故になり得る。シリアルコンソールだけが残された生還経路になる。
+ここから先がシリーズ最大のロックアウト危険ゾーンだ。**公開22を閉じる前にTailscale経由で入れることを確認**してから初めて閉じる。順番を逆にすると、SSHでもTailscaleでも入れない事故になり得る。シリアルコンソールだけが残された復旧経路になる。
 :::
 
 ### Tailscale Authアイテムを1Passwordに作る
@@ -147,15 +149,17 @@ Hermes-Prod保管庫で新規アイテムを作成する。種類は「ログイ
 
 Tailscaleアカウント本体は通常SSO(Google/Microsoft/Apple/GitHubのアカウント)でログインするので、Tailscale自体のパスワードを生成する必要はない。1Passwordに登録するのは「Tailscale関連情報の集約場所」としての意味合いが強い。
 
-### シリアルコンソールタブを開いておく(命綱)
+### シリアルコンソールタブを開いておく(復旧用)
 
-XServerパネル→VPS管理→対象サーバー→「コンソール」→「シリアルコンソール」で開いて、ENTERでログインプロンプトを出した状態で別タブに残しておく。ログインしないでOK。何かあった時の生還経路。
+XServerパネル→VPS管理→対象サーバー→「コンソール」→「シリアルコンソール」で開いて、ENTERでログインプロンプトを出した状態で別タブに残しておく。ログインしないでOK。何かあった時にVPSへ入るための復旧用の経路になる。
 
-![シリアルコンソールでloginプロンプトが出ている状態(命綱として確保)](/images/hermes-vps/hermes-vps-02-serial-console-ready.png)
+![シリアルコンソールでloginプロンプトが出ている状態(復旧用に確保)](/images/hermes-vps/hermes-vps-02-serial-console-ready.png)
 
 ### adminセッションを2タブ用意する
 
-手元PCのPowerShellで2つのタブを用意する。Windows Terminal(Windows標準のターミナルアプリ)なら、上部の`+`ボタンで同じウィンドウ内にタブを増やせる。素のPowerShellを使っている場合はタブ機能がないので、もう1枚PowerShellを起動して別ウィンドウで並べればよい(以降の「タブ」はこの別ウィンドウと読み替える)。
+自分のパソコンのPowerShellで2つのタブを用意する。Windows Terminal(Windows標準のターミナルアプリ)なら、上部の`+`ボタンで同じウィンドウ内にタブを増やせる。素のPowerShellを使っている場合はタブ機能がないので、もう1枚PowerShellを起動して別ウィンドウで並べればよい(以降の「タブ」はこの別ウィンドウと読み替える)。
+
+まず、現在の接続経路であるグローバルIP経由でadminにログインしておく。
 
 **タブA**(グローバルIP経由):
 
@@ -171,7 +175,7 @@ ssh -i ~/.ssh/hermes_vps_ed25519 admin@<グローバルIP>
 
 ### インストールスクリプト実行
 
-タブAのadminセッションで以下を実行する。
+VPSにTailscaleを入れる。タブAのadminセッションで以下を実行する。
 
 ```bash
 curl -fsSL https://tailscale.com/install.sh | sh
@@ -200,6 +204,8 @@ tailscale --version
 
 ### Tailnetに参加(認証)
 
+VPSをTailnetに参加させる。
+
 ```bash
 sudo tailscale up --ssh
 ```
@@ -214,7 +220,7 @@ To authenticate, visit:
 	https://login.tailscale.com/a/xxxxxxxxxxxxxxxx
 ```
 
-このURLを手元PCのブラウザで開き、Tailscaleアカウントでログインする(初回ならGoogle/Microsoft/GitHub/AppleのSSO)。マシン情報の確認画面で「Connect」をクリック。
+このURLを自分のパソコンのブラウザで開き、Tailscaleアカウントでログインする(初回ならGoogle/Microsoft/GitHub/AppleのSSO)。マシン情報の確認画面で「Connect」をクリック。
 
 ### 初回利用時のマーケティングアンケート画面
 
@@ -252,7 +258,7 @@ tailscale ip -4
 
 取得したTailscale IPは1Passwordの`Hermes VPS - Tailscale auth`のメモ欄に記録しておく。
 
-## 手元PCにもTailscaleを入れる
+## 自分のパソコンにもTailscaleを入れる
 
 `https://tailscale.com/download/windows`からインストーラをダウンロードして実行する。インストール後、タスクトレイのTailscaleアイコンをクリック→「Log in」→VPSと同じTailscaleアカウントでログイン。
 
@@ -262,9 +268,9 @@ PowerShellで参加状況を確認する。
 tailscale status
 ```
 
-VPSと手元PCの両方が`100.x.x.x`のIPで表示されればOK。
+VPSと自分のパソコンの両方が`100.x.x.x`のIPで表示されればOK。
 
-![手元PCのtailscale statusでVPSと自分が両方表示される](/images/hermes-vps/hermes-vps-02-tailscale-status-client.png)
+![自分のパソコンのtailscale statusでVPSと自分が両方表示される](/images/hermes-vps/hermes-vps-02-tailscale-status-client.png)
 
 Tailscale admin consoleでも、`2 machines`と表示されてVPS+PCの2台がオンライン表示になる。
 
@@ -272,7 +278,7 @@ Tailscale admin consoleでも、`2 machines`と表示されてVPS+PCの2台が�
 
 ## 鍵なしでログインできることを確認する
 
-ここで入れないうちは絶対に次に進まない。新しいPowerShellタブ(タブB)を開く。
+ここで入れないうちは絶対に次に進まない。Tailscale経由でログインできるかを確かめるため、新しいPowerShellタブ(タブB)を開いて接続する。
 
 ```bash
 ssh -i ~/.ssh/hermes_vps_ed25519 admin@<VPSのTailscale IP>
@@ -288,7 +294,7 @@ ssh -i ~/.ssh/hermes_vps_ed25519 admin@<VPSのTailscale IP>
 echo "via Tailscale ($(echo $SSH_CONNECTION | awk '{print $1}'))"
 ```
 
-これは「今この接続がどのIPから来ているか」を表示するだけのコマンドだ。中身を理解する必要はなく、表示されたIPの先頭が`100.`で始まっていればTailscale経由で入れている=正しいタブ(タブB)に居る、という確認になる。
+このコマンドは、今の接続がどのIPから来ているかを表示するだけだ。中身を理解する必要はなく、表示されたIPの先頭が`100.`で始まっていればTailscale経由で入れている=正しいタブ(タブB)に居る、という確認になる。
 
 `via Tailscale (100.x.x.x)`と表示され、接続元クライアントのTailscale IPが確認できる。
 
@@ -323,10 +329,10 @@ XServerパネル→VPS管理→対象サーバー→左メニュー「パケッ�
 ### 4-2. VPS上のUFWでも閉じる(二重防御)
 
 :::message alert
-**必ずタブBで実行する**(タブBはTailscale経由のセッション)。タブAのグローバルIP経由は4-1で切断済みのはずだが、別端末などから誤ってグローバル経由でUFWを有効化すると、`tailscale0`の許可を入れる前に全入口が閉じてロックアウトする事故が起きうる。「`allow`を先に入れる→`enable`」の順序も厳守。
+**必ずタブBで実行する**(タブBはTailscale経由のセッション)。タブAのグローバルIP経由は4-1で切断済みのはずだが、別端末などから誤ってグローバル経由でUFWを有効化すると、`tailscale0`の許可を入れる前に全ての接続経路が閉じてロックアウトする事故が起きうる。「`allow`を先に入れる→`enable`」の順序も厳守。
 :::
 
-タブB(Tailscale経由)で以下を順に実行する。
+tailscale0からの接続だけを許可してUFWを有効にする。タブB(Tailscale経由)で以下を順に実行する。
 
 ```bash
 sudo ufw allow in on tailscale0
@@ -338,7 +344,7 @@ sudo ufw status verbose
 
 | コマンド | 意味 |
 |---|---|
-| `sudo ufw allow in on tailscale0` | `tailscale0`(Tailscaleが作る仮想ネットワークインターフェース)からの入力を許可。それ以外の入口は遮断される(出典:[Tailscale公式ufwガイド](https://tailscale.com/kb/1077/secure-server-ubuntu)) |
+| `sudo ufw allow in on tailscale0` | `tailscale0`(Tailscaleが作る仮想ネットワークインターフェース)からの入力を許可。それ以外からの接続は遮断される(出典:[Tailscale公式ufwガイド](https://tailscale.com/kb/1077/secure-server-ubuntu)) |
 | `sudo ufw enable` | UFW(ファイアウォール)を有効化。実行した瞬間にデフォルト拒否ポリシーが適用される |
 | `sudo ufw status verbose` | 現在のファイアウォール設定を詳しく表示 |
 
@@ -447,7 +453,7 @@ Tailscaleの公式仕様で、マシンキーは登録から180日でデフォ�
 
 順序を間違えて`sudo ufw enable`を先に実行すると、デフォルト拒否ポリシーが効いてTailscale経路も塞がる。本記事の4-2では先に`sudo ufw allow in on tailscale0`を打つよう書いているが、慌てて順序を逆にすると即ロックアウトする。
 
-復旧はシリアルコンソールから入って`sudo ufw allow in on tailscale0`→`sudo ufw reload`。命綱はやはりコンソール。
+復旧はシリアルコンソールから入って`sudo ufw allow in on tailscale0`→`sudo ufw reload`。復旧の頼りはやはりシリアルコンソール。
 
 ### 5. XServerパケットフィルター削除直後にタブAが切れる(想定通り)
 
@@ -457,10 +463,10 @@ Tailscaleの公式仕様で、マシンキーは登録から180日でデフォ�
 
 ## まとめと第3回予告
 
-第2回でやったこと:
+第2回が終わり、VPSのSSHは公開22番ポートを閉じてTailscale経由の接続だけで入れる状態になった。内訳は次のとおり。
 
 - 1Passwordに`Hermes VPS - Tailscale auth`アイテムを作成(SSO情報の集約)
-- VPSと手元PCの両方にTailscaleをインストールし、同じTailnetに参加
+- VPSと自分のパソコンの両方にTailscaleをインストールし、同じTailnetに参加
 - Tailscale経由でadminログインが成立することを確認
 - XServerパケットフィルターで22番ルールを削除(外部から閉鎖)
 - VPS上のUFWで`tailscale0`からのみALLOW IN(二重防御)

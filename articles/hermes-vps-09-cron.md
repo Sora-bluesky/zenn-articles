@@ -28,7 +28,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [事前準備](#事前準備)
 - [スケジュール書式の基本](#スケジュール書式の基本)
 - [Dashboardから最初のCronジョブを作る](#dashboardから最初のcronジョブを作る)
-- [あとから手を入れる──編集モーダル](#あとから手を入れる──編集モーダル)
+- [あとから手を入れる(編集モーダル)](#あとから手を入れる(編集モーダル))
 - [プロンプトは1通の依頼書として書く](#プロンプトは1通の依頼書として書く)
 - [公式が示す5つの実用パターン](#公式が示す5つの実用パターン)
 - [2つ目以降のジョブの例](#2つ目以降のジョブの例)
@@ -38,9 +38,9 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [操作早見表](#操作早見表)
 - [引用元と参考](#引用元と参考)
 
-第6回でsystemd常駐が完成し、第7回でHermes Desktop、第8回でWeb Dashboardの管制室が揃った。ここまでで、エージェントはVPSの上で24時間動き、ブラウザとデスクトップアプリの両方から触れる状態になっている。ただ、まだ「こちらから話しかけたら返事をする」受け身のままだ。
+第9回が終わると、Dashboardから登録したジョブ`morning-news`が毎日7時にエージェントを起動し、ニュース要約をTelegramへ送る状態になる。第8回までで、エージェントはVPSの上で24時間動き、ブラウザとデスクトップアプリの両方から触れるが、「こちらから話しかけたら返事をする」受け身のままだった。
 
-第9回はここに「自分から動く」を足す。Hermes AgentのCron機能を使って、たとえば毎朝7時に今日のニュースとX上の話題を要約してTelegramへ届ける、といった定型仕事を任せる。設定はすべて第8回で慣れたDashboardの中で完結する。新規モーダルが「毎日」「毎週」のような選択肢を用意してくれているので、まずcron式を手で書く必要はない(編集モーダルで後から細かく直したいときだけ、cron式の読み方が活きる)。
+この回は、Hermes AgentのCron機能で「自分から動く」定型仕事を1つ登録するところまでをやる。手順をSkillにまとめる作業は第10回、X検索を組み込んだプロンプトは第11回に回し、この回ではやらない。設定はすべて第8回で慣れたDashboardの中で完結する。新規モーダルが「毎日」「毎週」のような選択肢を用意してくれているので、まずcron式を手で書く必要はない(編集モーダルで後から細かく直したいときだけ、cron式の読み方が活きる)。
 
 シリーズの全体像はこちら。
 
@@ -81,12 +81,12 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | 項目 | 第8回完了時 | 第9回完了後 |
 |---|---|---|
 | 常駐 | systemd経由のgateway+dashboardで24時間動く | 変わらず |
-| 管制室 | DashboardでサイドバーやCRONペインを把握済み | CRONペインに自分のジョブが並ぶ |
+| 管制室 | DashboardでサイドバーやCRONペインを把握済み | CRONペインに自分のジョブ(`morning-news`)が並ぶ |
 | エージェントの仕事 | Telegram/Discord/Dashboardから話しかけたら返事する(受け身) | **決まった時刻に自分から仕事を始める**(能動) |
-| 定型作業 | 毎回自分で「ニュース要約して」と打つ必要 | 毎朝7時に勝手にTelegramへ届く |
+| 定型作業 | 毎回自分で「ニュース要約して」と打つ必要 | 毎日7時に、3〜5項目の要約(各2行以内・出典URL付き)がTelegramへ届く |
 | ジョブ管理 | 該当機能なし | DashboardのCRONペインで一覧・編集・停止・再開・削除 |
 
-一言でまとめると「Hermesに、毎日の決まった用事を仕込んで、寝ている間に片付けてもらう」回だ。
+この回では、毎日の決まった用事をHermesに仕込み、寝ている間に片付けてもらう。
 
 ## Cronとは何か
 
@@ -95,30 +95,30 @@ HermesのCronは、Linuxに昔からある`crontab`とは別物だ。役割が�
 - systemd(第6回):サービスを生かし続ける係。プロセスが止まっても起こし直す
 - Hermes Cron(第9回):決まった時刻にエージェントを起こして、プロンプトを与え、結果を指定のチャットへ送る係
 
-つまりsystemdが「人を雇い続ける」なら、Cronは「その人に毎朝の業務を割り当てる」イメージだ。
+この回で登録する`morning-news`では、毎日7時0分(cron式`0 7 * * *`)にエージェントが起き、プロンプトを実行して、要約をTelegramへ送る。
 
 この回で出てくる言葉を先に押さえておく。
 
-| 用語 | 意味 | たとえ |
-|---|---|---|
-| Cron(クーロン) | 「決まったタイミングで自動的に何かを実行する仕組み」の通称 | 目覚まし時計の設定一覧 |
-| cron式 | `分 時 日 月 曜日`の5フィールドで時刻を表す書式。`0 9 * * *`=毎日9時0分 | 「毎週月曜の9時」を表す業界共通フォーマット |
-| 配信先 | ジョブの結果をどこへ届けるかの指定。ローカル/Telegram/Discord/Slack/Emailの5択 | 宅配便を自宅に届けるかオフィスに届けるかの選択 |
-| self-contained prompt | 過去の会話を覚えていない前提で、全部書き切った依頼文 | 初対面の人に頼むつもりで全部説明する依頼書 |
-| 今すぐ実行 | ジョブ行の稲妻アイコン。次のtickで実行する=実機では2〜3分後にTelegramへ届く | 目覚ましの「テストならす」ボタン |
-| `[SILENT]` | エージェントの最終応答にこの語が入っていると、その回の送信が止まる | 「変化があった時だけ知らせて」設定 |
+| 用語 | 意味 |
+|---|---|
+| Cron(クーロン) | 決まった時刻や間隔で、登録した作業を自動で実行する仕組みの通称。この回では`morning-news`(毎日7時)がこれにあたる |
+| cron式 | `分 時 日 月 曜日`の5フィールドで時刻を表す書式。`0 9 * * *`=毎日9時0分。この回の`morning-news`は`0 7 * * *`で、編集モーダルで`30 6 * * *`に書き換える |
+| 配信先 | ジョブの結果をどこへ届けるかの指定。ローカル/Telegram/Discord/Slack/Emailの5択。この回ではTelegramを選ぶ |
+| self-contained prompt | 過去の会話を覚えていない前提で、全部書き切った依頼文。Cronの実行はまっさらな会話で始まるため、「いつものニュース要約をして」では何のニュースか伝わらない |
+| 今すぐ実行 | ジョブ行の稲妻アイコン。次のtick(スケジューラがジョブを確認する周期)で実行する予約になり、実際に動かすと2〜3分後にTelegramへ届く |
+| `[SILENT]` | エージェントの最終応答にこの語が入っていると、その回の送信が止まる。変化があったときだけ知らせたいジョブに使う |
 
 ## 第9回終了時点の構成図
 
 Cronジョブは、第6回で常駐させたHermes Agentの中に登録される。VPSのファイルを手で編集するわけではなく、第8回のDashboardの「作成」モーダルで登録する。結果の配信先としてTelegram等を指定する。
 
-![VPSのhermes-gateway.serviceとhermes-dashboard.serviceが常駐し、Dashboardの「作成」モーダルで登録したCronジョブmorning-newsが毎朝7時にエージェントを起動してプロンプトを実行しTelegramへ送信する構成図](/images/hermes-vps/hermes-vps-09-cron-architecture-diagram.png)
+![VPSのhermes-gateway.serviceとhermes-dashboard.serviceが常駐し、Dashboardの「作成」モーダルで登録したCronジョブmorning-newsが毎日7時にエージェントを起動してプロンプトを実行しTelegramへ送信する構成図](/images/hermes-vps/hermes-vps-09-cron-architecture-diagram.png)
 
-ポイントは、登録したあとは何もしなくていいこと。VPSが動いている限り、毎朝勝手に実行されて結果が届く。
+登録したあとは何もしなくていい。VPSが動いている限り、毎日7時に実行されて結果が届く。
 
 ## 事前準備
 
-第8回までが完了していれば、追加で入れるものはない。Dashboardは第7回でsystemd常駐させてあるので、ブラウザでURLを開くだけだ。
+第8回までが完了していれば、追加で入れるものはない。Dashboardは第7回でsystemd常駐させてあるので、ブラウザでURLを開くだけだ。次のURLの形でDashboardを開く。
 
 ```text
 http://<tailscale-ip>:9119   # 第7-8回で設定したdashboardのURL
@@ -133,24 +133,24 @@ Cronジョブの「いつ動かすか」は、公式ガイドが示す4書式か
 
 | 書式 | 例 | 意味 | 向いている用途 |
 |---|---|---|---|
-| cron式 | `0 7 * * *` | 毎日7時0分 | 毎朝・毎週など定期 |
+| cron式 | `0 7 * * *` | 毎日7時0分 | 毎日・毎週など定期 |
 | interval | `every 2h` | 2時間ごと | 定間隔の監視 |
 | relative delay | `30m` | 今から30分後に1回 | テスト・1回限り |
 | ISO timestamp | `2026-06-01T09:00:00+09:00` | 指定日時に1回 | 将来の1回だけ |
 
 :::message alert
-「毎朝7時」「来週の月曜」のような自然言語は使えない。必ず上の4書式のどれかに落とす。
+「毎日7時」「来週の月曜」のような自然言語は使えない。必ず上の4書式のどれかに落とす。
 :::
 
 読み方が活きるのは、後ほど見る編集モーダル(EDIT JOB)でスケジュールを直接書き換えるときだ。新規モーダルでは「毎日」「毎週」のような選択肢から選ぶだけで済むので、ここはまず1枚で全体像を押さえておく。
 
-![cron式の読み方──5つのフィールド「分 時 日 月 曜日」と、よく使うcron式の例(毎日7時/毎週月曜9時/30分ごと/毎月1日0時)と、曜日の値(0:日〜6:土)を1枚にまとめた図](/images/hermes-vps/hermes-vps-09-cron-schedule-syntax.png)
+![cron式の読み方。5つのフィールド「分 時 日 月 曜日」と、よく使うcron式の例(毎日7時/毎週月曜9時/30分ごと/毎月1日0時)と、曜日の値(0:日〜6:土)を1枚にまとめた図](/images/hermes-vps/hermes-vps-09-cron-schedule-syntax.png)
 
 `*`は「すべて」の意味。`0 7 * * *`なら「日・月・曜日は問わず、毎日7時0分」になる。次の章で見るように、Dashboardの新規モーダルではこの式を手で書く必要はない。cron式は「内部での表現」として裏で生成される。
 
 ## Dashboardから最初のCronジョブを作る
 
-例として「毎朝7時に、今日のニュースとX上の話題を要約してTelegramに届ける」ジョブを作る。
+例として「毎日7時に、今日のニュースとX上の話題を要約してTelegramに届ける」ジョブを作る。
 
 ### CRONペインを開いて「作成」を押す
 
@@ -228,9 +228,9 @@ Cronジョブの「いつ動かすか」は、公式ガイドが示す4書式か
 - 各項目に出典URLが付いているか
 - 末尾に「気になるトピックがあれば、深掘りしてください」が入っているか
 
-これで、第6回で常駐させたHermesに、毎朝7時の仕事をひとつ覚えさせたことになる。
+これで、第6回で常駐させたHermesに、毎日7時の仕事をひとつ覚えさせたことになる。
 
-## あとから手を入れる──編集モーダル
+## あとから手を入れる(編集モーダル)
 
 self-containedプロンプトで運用していくと、スケジュールを変えたくなったり、プロンプトに注意点を足したくなったりする場面が必ず出る。そのときの直し方を先に見ておく。Dashboardの**編集モーダル**(EDIT JOB)が、これを安全に直す場所だ。
 
@@ -303,7 +303,7 @@ X上で最近議論になっているAI関連の話題を5件選び、
 最後に「興味があれば返信してください、原文を引用して論点を整理します」と書く。
 ```
 
-何を・いつのデータから・何件・どんなフォーマットで・出典の付け方・締めの一文まで、全部指定してある。これなら毎朝同じ品質で返ってくる。
+何を・いつのデータから・何件・どんなフォーマットで・出典の付け方・締めの一文まで、全部指定してある。これなら毎回同じ品質で返ってくる。
 
 ### 変化があった時だけ知らせる(`[SILENT]`)
 
@@ -324,12 +324,12 @@ X上で最近議論になっているAI関連の話題を5件選び、
 | パターン | 用途 | スケジュール例 | 補足 |
 |---|---|---|---|
 | 1. Website Monitoring | サイトの内容を取り、変化があったら通知 | `every 1h` | プロンプト末尾で`[SILENT]`を併用 |
-| 2. Weekly Reports | 複数ソース(web検索/GitHub等)を集約してレポート | `0 9 * * 1`(月曜9時) | — |
-| 3. Repository Watcher | `gh`コマンドでGitHubのissue/PR/releaseを監視 | `every 4h` | — |
-| 4. Data Collection Pipeline | 定期的にデータ収集・傾向分析・異常検出 | `0 */6 * * *`(6時間ごと) | — |
+| 2. Weekly Reports | 複数ソース(web検索/GitHub等)を集約してレポート | `0 9 * * 1`(月曜9時) | なし |
+| 3. Repository Watcher | `gh`コマンドでGitHubのissue/PR/releaseを監視 | `every 4h` | なし |
+| 4. Data Collection Pipeline | 定期的にデータ収集・傾向分析・異常検出 | `0 */6 * * *`(6時間ごと) | なし |
 | 5. Multi-Skill Workflows | 複数のSkillを連結(論文検索→保存など) | `0 22 * * *`(毎晩22時) | 第10回で扱う |
 
-本記事の「毎朝のニュース要約」は、パターン2(Weekly Reports)を毎日に縮めた簡易版にあたる。パターン5のSkill連携は第10回で扱う。
+本記事の「毎日7時のニュース要約」は、パターン2(Weekly Reports)を毎日に縮めた簡易版にあたる。パターン5のSkill連携は第10回で扱う。
 
 ## 2つ目以降のジョブの例
 
@@ -387,9 +387,9 @@ hermes cron remove <job_id>       # 削除
 
 ## まとめと第10回予告
 
-第9回でやったこと。
+第9回が終わった状態では、`morning-news`が毎日7時にTelegramへ要約を届け、同じ手順で足した2つ目のジョブと合わせて、エージェントが決まった時刻に自分から動く。手順のSkill化は第10回で扱う。内訳は次のとおり。
 
-- CRONペインの「作成」モーダルで、毎朝7時のニュース要約ジョブを登録
+- CRONペインの「作成」モーダルで、毎日7時のニュース要約ジョブを登録
 - 配信先=Telegramで、第4回でつないだbotへ要約を届ける
 - ⚡今すぐ実行(稲妻)でテスト、2〜3分待つとTelegramに着信
 - EDIT JOBモーダルで、スケジュールを`0 7 * * *`から`30 6 * * *`に書き換え
@@ -399,13 +399,13 @@ hermes cron remove <job_id>       # 削除
 - `[SILENT]`で「変化があった時だけ」に絞る
 - 2つ目のジョブを足して、1日2回エージェントが自分から動く状態に
 
-これで、第8回までの「待つだけ」の管制室から、「自分から動く」エージェントへ一歩進んだ。翌朝、SSHを開かずに枕元のスマホへ要約が届いていれば、24時間運用がちゃんと回っている証拠だ。
+第8回までの「待つだけ」の管制室から、「自分から動く」エージェントへ一歩進んだ。翌日の7時台に、SSHを開かなくてもTelegramへ要約が届いていれば、24時間運用が回っている証拠だ。
 
 ![翌朝7時台、morning-newsジョブが自動で実行され、ニュース要約がTelegramに届いた画面。左上の時刻が朝7時を指しているのがスケジュール実行の証拠](/images/hermes-vps/hermes-vps-09-cron-morning.png)
 
 第10回は、第9回でプロンプトに足した「注意点」が、もうひと工夫で**手順そのもの**に変わる回だ。self-containedプロンプトを使い続けると、毎回同じ品質で動かすために手順とverificationを書き切る必要があり、プロンプト欄が手順書のように膨らんでいく。複数のジョブで似た手順を使い回したくなる場面も増える。
 
-そこで登場するのが**Hermes Agent Skills**だ。手順そのものをSkillとして覚えさせると、Cronのプロンプト欄を「`summarize-to-japanese`スキルで要約して」のような短い呼び出しに置き換えられる。第10回では、記事や動画を日本語で要約するSkillを自分で作り、それを新しいCronに添付して『毎朝、Hermes自身の最新情報を要約して届ける』ところまでやる。品質はぶれず、保守も一気に楽になる。
+そこで登場するのが**Hermes Agent Skills**だ。手順そのものをSkillとして覚えさせると、Cronのプロンプト欄を「`summarize-to-japanese`スキルで要約して」のような短い呼び出しに置き換えられる。第10回では、記事や動画を日本語で要約するSkillを自分で作り、それを新しいCronに添付して『毎日、Hermes自身の最新情報を要約して届ける』ところまでやる。品質はぶれず、保守も一気に楽になる。
 
 ---
 
@@ -470,13 +470,13 @@ hermes cron remove <job_id>              # 削除
 
 HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)の最後の章(34:37〜)でCronを扱っている。動画によれば、Hermesのcronはサーバー側のsystem cronとは別系統で、Hermes本体が**毎分tickする独自の関数**でジョブを巡回するという。確かに本回のCRONペインで「今すぐ実行」を押した直後・cron式に従って次の発火を待つ動きは「Hermesが自分で時計を見て話しかけてくる」体感に近い。こちらが話しかける前に届く、という設計だ。
 
-動画ではさらに2点踏み込んでいる。(a)ジョブの実体は`~/.hermes/cron/jobs.json`に保存されている(公式docはSQLite保存と書いている箇所があるが、実機v0.16.0で確認すると確かに`jobs.json`に書かれている)。(b)発火時の配信は`send_message`ツールを呼ぶのではなく、**最初に設定した「home gateway」に自動で届く**設計になっている。本回の手順で「配信先=Telegram」を選んでいれば、Hermesが裏でTelegram bot APIを直接叩いて届けてくれる。読者は意識せずTelegramに届く理由がここにある。
+動画ではさらに2点踏み込んでいる。(a)ジョブの実体は`~/.hermes/cron/jobs.json`に保存されている(公式docはSQLite保存と書いている箇所があるが、v0.16.0を実際に動かして確認すると確かに`jobs.json`に書かれている)。(b)発火時の配信は`send_message`ツールを呼ぶのではなく、**最初に設定した「home gateway」に自動で届く**設計になっている。本回の手順で「配信先=Telegram」を選んでいれば、Hermesが裏でTelegram bot APIを直接叩いて届けてくれる。読者は意識せずTelegramに届く理由がここにある。
 
 動画は英語で約40分・YouTube設定で日本語自動翻訳字幕も出せる。本回の手順だけで運用は完結するので無理に見る必要はないが、「裏で何が起きているか」をもう一段知りたい人向けの良質な補助線として置いておく。
 
 ## 補足:v0.17.0でAutomation Blueprintsが追加された
 
-2026-06-19公開のv0.17.0「The Reach Release」で、Cron構文を一切覚えずに同等の自動化を組める**Automation Blueprints**が追加された。「毎朝8時に最新ニュースを要約」のような依頼を、blueprint定義1つでDashboard form/CLI-TUI-messengerのslash command/agent会話/docs catalogエントリの4経路から横断して呼べる。
+2026-06-19公開のv0.17.0「The Reach Release」で、Cron構文を一切覚えずに同等の自動化を組める**Automation Blueprints**が追加された。「毎日8時に最新ニュースを要約」のような依頼を、blueprint定義1つでDashboard form/CLI-TUI-messengerのslash command/agent会話/docs catalogエントリの4経路から横断して呼べる。
 
 本記事のCron CLI(`hermes cron`)とDashboardのCRONペインは引き続き使える(後方互換)。Blueprintsは追加の選択肢だ。「`0 7 * * *`を覚えるのが面倒」「自然言語で組みたい」読者向けに、第IX部Voice周辺で別途扱う予定。`hermes update`で最新に保てば自動で使えるようになる。
 
@@ -509,7 +509,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 ![新しいCRONジョブモーダル全体。基本4欄(名前/プロンプト/スケジュール/配信先)の下に「Advanced fields」セクションが初期から開いた状態で表示され、Provider/Model/Base URL override/script/no_agent/context_from/enabled_toolsets/workdirの8欄が縦に並ぶ画面](/images/hermes-vps/hermes-vps-08-dashboard-cron-new-job-modal-advanced-fields.png)
 
-第8回(Dashboard)で見たCRON新規作成モーダルのスクショはv0.16.0時点のもの。実機v0.17.0で開くと、同じモーダルの下に同じAdvanced fields欄が並ぶようになっているが、本記事の手順で入力する基本4欄の意味と動きは変わらない。
+第8回(Dashboard)で見たCRON新規作成モーダルのスクショはv0.16.0時点のもの。v0.17.0を実際に動かして開くと、同じモーダルの下に同じAdvanced fields欄が並ぶようになっているが、本記事の手順で入力する基本4欄の意味と動きは変わらない。
 
 :::message
 **2026-07-01追記**:pre-run scriptのdefaultタイムアウトが120秒から1時間(3600秒)へ引き上げられた([PR#55489](https://github.com/NousResearch/hermes-agent/pull/55489))。長時間かかるデータ収集scriptをcronから走らせるユースケースに合わせた変更で、以前のように「120秒で強制中断されて途中で止まる」ハマりが解消された。envや`cron.script_timeout_seconds`での明示上書きは引き続き有効で、そちらが優先される。scriptとエージェントは別の時間制限で動く点は変わらない(エージェント側は`HERMES_CRON_TIMEOUT`のidle基準で、default 600秒・0で無制限)。
@@ -542,10 +542,10 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 | 配信先(ローカル/Telegram/Discord等) | 同上「Delivery Targets」 |
 | `[SILENT]`による送信抑制 | 同上「When the agent's final response contains [SILENT], delivery is suppressed」 |
 | Cron配信先5択の実装 | [web/src/pages/CronPage.tsx](https://github.com/NousResearch/hermes-agent/blob/v2026.6.5/web/src/pages/CronPage.tsx) |
-| Dashboard cron Advanced fields追加(2026-06-27) | [PR#53551 feat(dashboard): expose cron job execution fields](https://github.com/NousResearch/hermes-agent/pull/53551) — `provider`/`model`/`base_url`/`script`/`no_agent`/`context_from`/`enabled_toolsets`/`workdir`の8項目を新規作成/編集モーダル両方に追加 |
+| Dashboard cron Advanced fields追加(2026-06-27) | [PR#53551 feat(dashboard): expose cron job execution fields](https://github.com/NousResearch/hermes-agent/pull/53551)。`provider`/`model`/`base_url`/`script`/`no_agent`/`context_from`/`enabled_toolsets`/`workdir`の8項目を新規作成/編集モーダル両方に追加 |
 | Cron内部実装の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§cronジョブ(34:37〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)(2026-06-16公開・英語・自動翻訳字幕で日本語可) |
-| Telegram Bot API Rich Messages追加(2026-06-13) | [Pavel Durov公式ポスト](https://x.com/durov/status/2065896953519484976) — `We now support rich formatting for all chatbots. Tables, nested lists, inline media, formulas, headers and more`+[Telegram公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options) |
-| Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688) — `Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math 追加」 |
+| Telegram Bot API Rich Messages追加(2026-06-13) | [Pavel Durov公式ポスト](https://x.com/durov/status/2065896953519484976)。`We now support rich formatting for all chatbots. Tables, nested lists, inline media, formulas, headers and more`+[Telegram公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options) |
+| Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688)。`Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math 追加」 |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

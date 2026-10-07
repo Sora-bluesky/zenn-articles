@@ -51,7 +51,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ## 導入:Karpathyが提唱したLLM Wikiパターン
 
-本回のテーマは、Hermes専用の**セカンドブレイン**(第二の脳)だ。Hermes自身が、貯まった作業履歴を読んで索引と相互参照を作り、二度同じことを調べさせない仕組みのことを指す。実はこれ、Hermesが独自に考えた機能ではない。元ネタがある。
+この回が終わると、Hermesが貯まった作業履歴(第15回で取り込んだ`raw/transcripts/`)を読んで索引と相互参照のページを作り、同じ問いに最初から調べ直さず答えられるようになる。これをHermes専用の**セカンドブレイン**(第二の脳)と呼ぶ。この回でやらないのは、自動で取り込み続けるcron化と、wikiを自動で整理するCuratorだ(どちらも第19回で扱う)。実はこの仕組みは、Hermesが独自に考えた機能ではない。元ネタがある。
 
 :::message
 **公式ドキュメント**
@@ -73,9 +73,9 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 
 「Hermes Agentは今、ObsidianのナレッジベースやリサーチVault作成にKarpathyのLLM-Wikiをパッケージとして同梱している。`hermes update`を実行して`/llm-wiki <research x>`と打つだけ」という告知だった。添付画像には、TekniumがHermes Agentで作ったNous Researchテーマの相互参照グラフが写っている。ノードがwikiページ、エッジが`[[wikilinks]]`(ページ同士のリンク)で、密に絡み合ったクラスタが浮かび上がっていた。
 
-つまり読者の手元のHermesには、第6回で`hermes update`を済ませた時点で、**すでにこのパターンの実装が入っている**。本回でやるのは`.env`に2行追記して`/llm-wiki`を呼ぶことだけだ。道具を作るのではなく、使う。
+つまり読者のHermesには、第6回で`hermes update`を済ませた時点で、**すでにこのパターンの実装が入っている**。本回でやるのは`.env`に2行追記して`/llm-wiki`を呼ぶことだけだ。道具を作るのではなく、使う。
 
-もう1つ押さえておきたいことがある。連載でここまで扱ってきたHermesの記憶は、Memory(第12回)・Vault knowledge(第13回)・state.db(第14回)・raw/transcripts(第15回)の4層で、いずれも公式ドキュメントの「Which File Does What」というメモリ地図に載っている構成要素だ。だが本回のllm-wikiが作るentities/concepts/queriesは、この公式の地図には出てこない。**公式の地図の外に、自分で足す第5の層**という位置づけになる。地図にないからといって非公式のハックというわけではなく、Hermes本体にbundled(同梱)されたskillとして正式に提供されている。ただ、標準の記憶階層とは別枠で、自分の判断で足す層だという点は覚えておくといい。
+もう1つ押さえておきたいことがある。連載でここまで扱ってきたHermesの記憶は、Memory(第12回)・Vault knowledge(第13回)・state.db(第14回)・raw/transcripts(第15回)の4層で、いずれも公式ドキュメントの「Which File Does What」というメモリの一覧表に載っている構成要素だ。だが本回のllm-wikiが作るentities/concepts/queriesは、この一覧表には出てこない。**公式の一覧表にない、自分で足す第5の層**という位置づけになる。一覧表にないからといって非公式のハックというわけではなく、Hermes本体にbundled(同梱)されたskillとして正式に提供されている。ただ、標準の記憶階層とは別枠で、自分の判断で足す層だという点は覚えておくといい。
 
 ## この回の到達点
 
@@ -85,9 +85,9 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 
 | 項目 | 第15回完了時点 | 本回(第16回)完了時点 |
 |---|---|---|
-| Hermesがraw/transcripts/を引く方法 | 毎回mdファイルを直接読む(検索と読み込みの繰り返し・数千件相手だと重い) | llm-wikiが整理した`entities/`(人物・ツール)・`concepts/`(概念)・`queries/`(よくある問い)から引く。入口が「索引」になる |
+| Hermesがraw/transcripts/を引く方法 | 毎回mdファイルを直接読む(検索と読み込みの繰り返し・数千件相手だと重い) | llm-wikiが整理した`entities/`(人物・ツール)・`concepts/`(概念)・`queries/`(よくある問い)から引く。引く先が「索引」になる |
 | 「先週のエラー、今後どう対処?」への応答 | 該当sessionのmdから事実だけを引いて答える(過去事実の再生) | 該当事実に加えて、llm-wikiが他のsessionと相互参照して作ったconceptを引いて答える(教訓の一般化) |
-| 追加した道具 | 母艦の変換スクリプト1本(自前) | Hermes純正の`llm-wiki`skill(bundled・research・自前コードはゼロ)と`.env`への2行追記 |
+| 追加した道具 | 自分のパソコン(この連載ではWindows)の変換スクリプト1本(自前) | Hermes純正の`llm-wiki`skill(bundled・research・自前コードはゼロ)と`.env`への2行追記 |
 | 次の回への橋渡し | 第16回でllm-wikiがraw/transcripts/をセカンドブレイン化する前提を作った | 本回で生まれた`entities/concepts/comparisons/queries/`を、第17回以降が「整理されたwiki」前提で扱う |
 
 この回で出てくる用語を先に押さえておく。
@@ -106,39 +106,29 @@ Karpathy氏が説明していたのは、次のような流れだ。Web記事や
 | WIKI_PATH(環境変数) | llm-wikiが読み書きするwiki本体の絶対パス。`.env`で設定する。未設定時の既定は`~/wiki` |
 | OBSIDIAN_VAULT_PATH(環境変数) | 第13回で使ったobsidian skillが読むVaultパス。llm-wikiと併用するときは同じディレクトリに揃えるのが公式推奨だ |
 
-## raw層に手紙を貯めただけでは、読まれない
+## raw層に貯めただけでは、毎回ゼロから探すことになる
 
-本回開始時点で、筆者の環境ではVault配下の`raw/transcripts/`に、claude-code 3,424件・codex 2,963件・grok 266件・antigravity 21件、合計6,674件のmdが並んでいる。手元の件数は第15回でどれだけ取り込んだか次第で決まるので、数十件でも本回の手順はそのまま動く。ここで「先週のエラー、今後同じ問題が出たらどう対処する?」とHermesに聞くとどうなるか。Hermesはそのうち関連しそうなmdを検索し、見つけたmdを1件ずつ読み、答えを組み立てる。**件数が多いほど、毎回ゼロから全件を相手にする**わけで、これがRAGの素朴な姿だ。
+本回開始時点で、筆者の環境ではVault配下の`raw/transcripts/`に、claude-code 3,424件・codex 2,963件・grok 266件・antigravity 21件、合計6,674件のmdが並んでいる。読者の環境の件数は第15回でどれだけ取り込んだか次第で決まるので、数十件でも本回の手順はそのまま動く。ここで「先週のエラー、今後同じ問題が出たらどう対処する?」とHermesに聞くとどうなるか。Hermesはそのうち関連しそうなmdを検索し、見つけたmdを1件ずつ読み、答えを組み立てる。**件数が多いほど、毎回ゼロから全件を相手にする**わけで、これがRAGの素朴な姿だ。
 
 確かに動く。だが2つの限界がある。1つは、同じ問いを2回したら、Hermesは2回ともゼロから探すこと。「以前答えた内容」が蓄積されない。もう1つは、全件を横断して「複数session間の共通教訓」を抽出する作業を毎回やり直すこと。トークンコストと時間が件数に応じて膨らんでいく。件数が数十件でも数千件でも、この2つの限界そのものは変わらない。
 
-家の書庫に本を積み上げただけでは図書館にならない。本を分類し、目録を作り、互いの参照関係を書き出して、ようやく使える知識になる。raw/transcripts/への蓄積は**貯める**側の仕事で、次に必要なのは**整理する**側の仕事だ。
+原本を貯めただけでは、使える知識にならない。分類し、目録(`index.md`)を作り、互いの参照関係(`[[wikilinks]]`)を書き出して、ようやく使える知識になる。raw/transcripts/への蓄積は**貯める**側の仕事で、次に必要なのは**整理する**側の仕事だ。
 
 解は単純だ。raw/に貯まった原本を読んで、entities・concepts・queriesに整理する仕事をHermesにskillとして委ねる。それがllm-wiki(Hermes純正・bundled・research)で、第6回で`hermes update`を済ませた読者の環境には既にインストールされている。本回でやるのは`.env`に環境変数を2行足して、Hermesにwiki初期化を頼むだけだ。
 
-## 司書が、手紙を読んで索引を作る
+## llm-wikiがraw/transcripts/を読んで索引と相互参照を作る
 
-第13回で書庫(Obsidian Vault)を建て、第14回で司書(Session Search)を雇い、第15回で他のAIで書いたノート(Claude Code/Codex作業履歴)を書庫の棚(raw/transcripts/)に並べた。だが司書がノートを「整理する」までは、棚に並んでいるだけだ。
+Vault(第13回)、Session Search(第14回)、他のAIの作業履歴の取り込み([第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions))までは、前の回で作った。この回で足すのは、`raw/transcripts/`に並んだ作業履歴をllm-wikiが読んで、**索引と相互参照のページ**を作る部分だ。
 
-本回はその司書に、**ノートを読んで索引と相互参照を作る仕事**を頼む。entities(登場人物・ツール一覧)・concepts(出てきた概念のページ)・queries(よくある問いの答え集)を別の棚に作り、互いを`[[wikilinks]]`で繋ぐ。一度索引を作れば、次に似た問いが来たとき、司書は数千通の手紙を読み直さず、concepts配下の1枚を開いて答えられる。
-
-| 比喩 | Hermes機能 | 役割 | 本連載の該当回 |
-|---|---|---|---|
-| 📝 付箋 | Memory | 短い前提・毎回使う | 第12回 |
-| 📚 書庫 | Obsidian Vault | 長期保存の知識ベース | 第13回 |
-| 🧑‍🏫 司書 | Session Search | 自分との会話を思い出す | 第14回 |
-| 🗒️ ノート | 他AIの作業履歴 | 書庫の棚に預ける | 第15回 |
-| 🧭 **索引(新)** | llm-wiki | **ノートを読んで索引と相互参照を作る** | **本回(第16回)** |
-
-第13回(書庫を建てる)、第14回(司書を雇う)、第15回(他AIのノートを書庫に並べる)ときて、本回は**司書がノートを読んでセカンドブレイン、つまり索引付きの百科事典を作る**段階になる。比喩の地図はそのままに、書庫が使える図書館へと育つ回だ。
+作るものは3種類のフォルダと3つのファイルだ。entities(人物・ツールのページ)・concepts(出てきた概念のページ)・queries(よくある問いの答え)を作り、互いを`[[wikilinks]]`で繋ぐ。`SCHEMA.md`(規約)・`index.md`(目録)・`log.md`(記録)はVault直下に置かれる。一度作れば、次に似た問いが来たとき、Hermesは数千件の原本を読み直さず、concepts配下の1ページを開いて答えられる。
 
 ## raw層からセカンドブレインが育つ流れを、1枚の図で見る
 
-本回の作業は第15回と違い、VPS側で完結する。母艦の役目はTelegramでのやり取りと、Obsidianでの目視確認だけだ。raw/transcripts/(第15回の出力)を入力に、llm-wikiがentities/concepts/queries/(本回の出力)を生み出す。
+本回の作業は第15回と違い、VPS側で完結する。自分のパソコンの役目はTelegramでのやり取りと、Obsidianでの目視確認だけだ。raw/transcripts/(第15回の出力)を入力に、llm-wikiがentities/concepts/queries/(本回の出力)を生み出す。
 
-![第16回の構成図「Hermes Agent × Obsidian:知識が育つ仕組み」。VPSに常駐するHermesの.envにWIKI_PATHとOBSIDIAN_VAULT_PATHの2行を追記し、①貯める=Vault配下のLayer 1(raw/)に原本を不変のまま保存、②整理する=llm-wiki skillがVault直下にLayer 2のwiki本体(SCHEMA.md・index.md・log.md・entities/・concepts/・comparisons/・queries/)を新設、③引き出す=Telegramで質問するとHermesが過去の事実と一般化された教訓で答える、④俯瞰する=母艦のObsidianが同じVaultを読んでGraph Viewで相互参照を眺める、の4ステップを示す](/images/hermes-vps/hermes-vps-16-architecture.png)
+![第16回の構成図「Hermes Agent × Obsidian:知識が育つ仕組み」。VPSに常駐するHermesの.envにWIKI_PATHとOBSIDIAN_VAULT_PATHの2行を追記し、①貯める=Vault配下のLayer 1(raw/)に原本を不変のまま保存、②整理する=llm-wiki skillがVault直下にLayer 2のwiki本体(SCHEMA.md・index.md・log.md・entities/・concepts/・comparisons/・queries/)を新設、③引き出す=Telegramで質問するとHermesが過去の事実と一般化された教訓で答える、④俯瞰する=自分のパソコンのObsidianが同じVaultを読んでGraph Viewで相互参照を眺める、の4ステップを示す](/images/hermes-vps/hermes-vps-16-architecture.png)
 
-図の流れは4つだ。①raw/に原本のまま貯める(第15回の成果物)、②llm-wikiがVault直下にwiki本体を作って構造化する(本回)、③Telegramで質問すると教訓つきの答えが返る、④母艦のObsidianのGraph Viewで相互参照を俯瞰する。母艦のObsidianは同じVaultを別経路で読むので、Hermesが書いたwikiページはそのまま母艦のGraph Viewに表示される。分業の構図が1枚で見える。
+図の流れは4つだ。①raw/に原本のまま貯める(第15回の成果物)、②llm-wikiがVault直下にwiki本体を作って構造化する(本回)、③Telegramで質問すると教訓つきの答えが返る、④自分のパソコンのObsidianのGraph Viewで相互参照を俯瞰する。自分のパソコンのObsidianは同じVaultを別経路で読むので、Hermesが書いたwikiページはそのままGraph Viewに表示される。分業の構図が1枚で見える。
 
 ## 事前準備:WIKI_PATHの設定とllm-wiki skillの確認
 
@@ -186,7 +176,7 @@ grep -E "^(WIKI_PATH|OBSIDIAN_VAULT_PATH)=" ~/.hermes/.env
 
 ![VPS sshで.envに追記した2行を行頭固定grepで確認した画面。WIKI_PATH=/home/admin/hermes-vaultとOBSIDIAN_VAULT_PATH=/home/admin/hermes-vaultの2行ちょうどが表示され、venv activate済みのプロンプトになっている](/images/hermes-vps/hermes-vps-16-env-wiki-path.jpg)
 
-2行ずつ出たら追記が二重に入っている。nanoで下の余分な2行を消してから確認し直す。`grep`を緩い書き方にすると第13回で設定した別の環境変数の行も一緒に引っかかるので、上の行頭固定形で書くのがコツだ。
+2行ずつ出たら追記が二重に入っている。nanoで下の余分な2行を消してから確認し直す。`grep`を緩い書き方にすると第13回で設定した別の環境変数の行も一緒に引っかかるので、上の行頭固定形で書く。
 
 ここで1つ、先に押さえておきたいことがある。同じVaultでも、立場によって見えるパスが違う。
 
@@ -194,7 +184,7 @@ grep -E "^(WIKI_PATH|OBSIDIAN_VAULT_PATH)=" ~/.hermes/.env
 |---|---|
 | `.env`に書くパス(VPSホスト側) | `/home/admin/hermes-vault` |
 | Hermesの端末ツールが動くDockerコンテナの中 | `/root/hermes-vault` |
-| 母艦のObsidianで開く場所 | 第13回で作った同期先(例:`Documents\Hermes-Vault`) |
+| パソコン側のObsidianで開く場所 | 第13回で作った同期先(例:`Documents\Hermes-Vault`) |
 
 `.env`に書いたからといって、コンテナの中も同じパスになるわけではない(この落とし穴は後半の「着手前の事前確認」で実際に踏む)。TelegramでHermesにファイル操作を頼むときは、**コンテナから見える絶対パスで書く**のが必須だ。迷ったらHermes本人に「Vaultはどこに見えている?」と聞くのが確実で、返ってきたパスを依頼文に使う。
 
@@ -230,7 +220,7 @@ hermes skills list | grep llm-wiki   # 再確認。llm-wiki | research | builtin
 
 ### 取り込む素材が「最新か」を確認する
 
-llm-wikiが取り込むraw層が空だと初回ingestが空振りになる。だが空でなくても「古い」ことがある。第15回の手順は母艦で変換スクリプトを走らせて初めてファイルが増える作りなので、しばらく走らせていないと、件数はあるのに中身が数週間前で止まっていることがある。**件数と一緒に、必ず最終日を見る**。
+llm-wikiが取り込むraw層が空だと初回ingestが空振りになる。だが空でなくても「古い」ことがある。第15回の手順は自分のパソコンで変換スクリプトを走らせて初めてファイルが増える作りなので、しばらく走らせていないと、件数はあるのに中身が数週間前で止まっていることがある。**件数と一緒に、必ず最終日を見る**。
 
 ```bash
 # 全ソースの件数+合計+最終日を1画面で
@@ -241,10 +231,10 @@ echo "最新: $(ls ~/hermes-vault/raw/transcripts/claude-code/ | sort | tail -1)
 
 ![VPS sshでraw/transcripts/の件数と最新ファイルを確認した画面。antigravity 21・claude-code 3424・codex 2963・grok 266・合計6674・最新2026-08-11の6行が並ぶ](/images/hermes-vps/hermes-vps-16-raw-transcripts-count.jpg)
 
-「最新」の行に出るファイル名の先頭が今日から数日前の日付なら素材は最新だ。1週間以上前で止まっていたら、母艦で変換スクリプトを実行し、母艦で`git add -A`・`commit`・`push`したあと、VPSで`git pull`する。
+「最新」の行に出るファイル名の先頭が今日から数日前の日付なら素材は最新だ。1週間以上前で止まっていたら、自分のパソコンで変換スクリプトを実行し、同じく自分のパソコンで`git add -A`・`commit`・`push`したあと、VPSで`git pull`する。
 
 :::message alert
-筆者の環境で確認したら7/19で止まっていた。母艦の変換が23日間動いていなかったためだ。母艦で変換スクリプトを実行したところ2,211件が一気に増え、最終日が当日まで進んだ。この確認を飛ばすと、数週間前までの知識しか持たないwikiが出来上がってしまう。なお変換時、APIキーやBearerトークンなどの秘密情報は自動で伏せ字に置き換わる(筆者の実測で288件)。止まっていた日数や増えた件数は環境ごとに違うが、「件数だけでなく最終日を見る」という確認の手順そのものは、どの環境でも変わらない。
+筆者の環境で確認したら7/19で止まっていた。自分のパソコンの変換が23日間動いていなかったためだ。変換スクリプトを実行したところ2,211件が一気に増え、最終日が当日まで進んだ。この確認を飛ばすと、数週間前までの知識しか持たないwikiが出来上がってしまう。なお変換時、APIキーやBearerトークンなどの秘密情報は自動で伏せ字に置き換わる(筆者の実測で288件)。止まっていた日数や増えた件数は環境ごとに違うが、「件数だけでなく最終日を見る」という確認の手順そのものは、どの環境でも変わらない。
 :::
 
 :::message
@@ -253,7 +243,7 @@ echo "最新: $(ls ~/hermes-vault/raw/transcripts/claude-code/ | sort | tail -1)
 
 ## Hermesにwikiを初期化させて、作業履歴を取り込ませる
 
-本回の作業は3つのstepだけだ。step1でTelegramから「wikiを初期化して」と頼み、SCHEMA.md/index.md/log.mdを生成させる。step2で「raw/transcripts/の直近2週間をingestして」と頼み、entities/concepts/queries/を生み出させる。step3で母艦のObsidianで生成されたwikiページを目視確認する。コードを書く作業はゼロで、全部Telegramでの自然言語のやり取りで進む。
+本回の作業は3つのstepだけだ(定期取り込みの自動化はやらない)。step1でTelegramから「wikiを初期化して」と頼み、SCHEMA.md/index.md/log.mdを生成させる。step2で「raw/transcripts/の直近2週間をingestして」と頼み、entities/concepts/queries/を生み出させる。step3で自分のパソコンのObsidianで生成されたwikiページを目視確認する。コードを書く作業はゼロで、全部Telegramでの自然言語のやり取りで進む。
 
 ### 着手前の事前確認
 
@@ -292,9 +282,9 @@ Hermesはllm-wiki skillの初期化手順に従い、Vault直下に`SCHEMA.md`(d
 
 ![Telegramでwiki初期化を依頼し、Hermesが既存の状態を確認してからSCHEMA.md/index.md/log.mdを書き込み、完了を報告するまでの一連が1画面に収まっている。何を維持し、何をしていないかまで報告されている](/images/hermes-vps/hermes-vps-16-telegram-init-request.jpg)
 
-### Hermesが作ったものを母艦のObsidianへ運ぶ
+### Hermesが作ったものを自分のパソコンのObsidianへ運ぶ
 
-ここまでの作業は、すべてVPSの中で起きている。母艦のObsidianが開いているのは母艦側のフォルダなので、このままアプリを開いても`SCHEMA.md`は現れない。第13回で用意したgitの往復で運ぶ。VPS側で送って、母艦側で受け取る、この2手だけだ。
+ここまでの作業は、すべてVPSの中で起きている。自分のパソコンのObsidianが開いているのはパソコン側のフォルダなので、このままアプリを開いても`SCHEMA.md`は現れない。第13回で用意したgitの往復で運ぶ。次のコマンドは、VPS側で送ってパソコン側で受け取る2手だ。
 
 ```bash
 # --- VPSで(送る) ---
@@ -305,16 +295,16 @@ git push origin main
 ```
 
 ```powershell
-# --- 母艦のPowerShellで(受け取る) ---
+# --- 自分のパソコンのPowerShellで(受け取る) ---
 cd ~\Documents\Hermes-Vault
 git pull origin main
 ```
 
 :::message alert
-**フォルダが4つ足りなく見えるのは正常**:`entities/`・`concepts/`・`comparisons/`・`queries/`は初期化直後まだ空で、gitは空のフォルダを運ばない仕様がある。この4つは次のingestで中身ができた瞬間に母艦へ現れる。いま母艦で見えるのは`SCHEMA.md`・`index.md`・`log.md`の3つで正しい。
+**フォルダが4つ足りなく見えるのは正常**:`entities/`・`concepts/`・`comparisons/`・`queries/`は初期化直後まだ空で、gitは空のフォルダを運ばない仕様がある。この4つは次のingestで中身ができた瞬間に自分のパソコンへ現れる。いまパソコン側で見えるのは`SCHEMA.md`・`index.md`・`log.md`の3つで正しい。
 :::
 
-![母艦のObsidianでVault直下にSCHEMA.md・index.md・log.mdが並び、右ペインにSCHEMA.mdの中身が見える画面。対象外(ページ化しない)節に一時的な雑談や機密情報が除外対象として書かれている](/images/hermes-vps/hermes-vps-16-vault-schema-files.jpg)
+![自分のパソコンのObsidianでVault直下にSCHEMA.md・index.md・log.mdが並び、右ペインにSCHEMA.mdの中身が見える画面。対象外(ページ化しない)節に一時的な雑談や機密情報が除外対象として書かれている](/images/hermes-vps/hermes-vps-16-vault-schema-files.jpg)
 
 ![Obsidianでindex.mdを開いた画面。Total pages: 0でEntities/Concepts/Comparisons/Queriesの各セクションが空欄になっている。Legacy節に既存ノートがnot yet migratedとして分類されている](/images/hermes-vps/hermes-vps-16-index-empty.jpg)
 
@@ -344,13 +334,13 @@ Hermesはllm-wiki skillの手順に従い、各mdを読んで既存のentities/c
 
 ![Obsidianでlog.mdを開いた画面。createエントリとingestエントリが時系列で並び、左サイドバーにentities・conceptsフォルダが出現している](/images/hermes-vps/hermes-vps-16-log-timeline.jpg)
 
-生成されたページは、母艦のObsidianで実体を確認する。左サイドバーをリフレッシュすると`entities/`・`concepts/`・`comparisons/`・`queries/`(初回ingestではcomparisonsやqueriesは空のこともある)が見え、各フォルダ配下にmdが並んでいる。代表1ページを開いて、ちゃんと「読める形」になっているか確かめる。
+生成されたページは、自分のパソコンのObsidianで実体を確認する。左サイドバーをリフレッシュすると`entities/`・`concepts/`・`comparisons/`・`queries/`(初回ingestではcomparisonsやqueriesは空のこともある)が見え、各フォルダ配下にmdが並んでいる。代表1ページを開いて、ちゃんと「読める形」になっているか確かめる。
 
 ![Obsidianでconceptページを開いた画面。title/created/updated/type/tags/sources/confidenceのプロパティ、関連リンク、原本へのsourcesリンク、試して駄目だった方式とその理由を書いた表が見える](/images/hermes-vps/hermes-vps-16-concept-page-content.jpg)
 
 sourcesには原本パスへのリンクが入っている。どの会話から導いた記述かを辿れるということだ。「失敗した方式とその理由」まで残っているページもあり、原本を読み返すだけでは得られない形で情報が整理されているのがわかる。
 
-最後にGraph Viewで、ページ同士のつながりを俯瞰する。その前に1つだけ。VPSで書けた=母艦のObsidianで見えている、ではない。gitのpushとpull(前節の運び方)を済ませてから開く。運んでいない状態のGraph Viewは、古い景色を映しているだけだ。
+最後にGraph Viewで、ページ同士のつながりを俯瞰する。その前に1つだけ。VPSで書けた=パソコン側のObsidianで見えている、ではない。gitのpushとpull(前節の運び方)を済ませてから開く。運んでいない状態のGraph Viewは、古い景色を映しているだけだ。
 
 ![ObsidianのGraph View。設定でraw層を除外しconcepts/entitiesだけを表示するフィルタをかけた状態で、本回生成したノードが名前付きで表示され、wikilinkのエッジで繋がっている](/images/hermes-vps/hermes-vps-16-obsidian-graph-view.jpg)
 
@@ -393,7 +383,7 @@ llm-wikiで整理した内容で。
 
 前回の根本原因は「打ち忘れ」ではなく、「打たないと壊れる橋が構造にあること」だったという一文もあった。Hermesが自分の言葉で、今日の教訓に到達している。
 
-第15回で同じ題材を「思い出して」と聞いたときは、Hermesはraw原本を引いて事実だけを答えた。過去事実の再生だ。本回はconceptページを引いて答える。同じ事実が一段抽象化された教訓に変換されている。両者の応答を読み比べると、llm-wikiが何をやったのかが腑に落ちる。
+第15回で同じ題材を「思い出して」と聞いたときは、Hermesはraw原本を引いて事実だけを答えた。過去事実の再生だ。本回はconceptページを引いて答える。同じ事実が一段抽象化された教訓に変換されている。両者の応答を読み比べると、llm-wikiが何をやったのかが分かる。
 
 | 状態 | 「先週のエラー、今後どう対処?」への反応 |
 |---|---|
@@ -425,7 +415,7 @@ Telegramの報告は流れて消えるが、log.mdに残った記録はVaultに�
 
 | 項目 | 本回のlint | 第19回 Curator |
 |---|---|---|
-| 主役 | 人がlintレポートを読んで判断する | Hermesがバックグラウンドで自動実行する |
+| 実行する側 | 人がlintレポートを読んで判断する | Hermesがバックグラウンドで自動実行する |
 | 対象 | llm-wikiが書いたwikiページ(entities/concepts/queries) | Skills(使われなくなったskill自体) |
 | 頻度 | 気が向いた時に手動 | 一定サイクルで自動 |
 | 削除・統合 | レポートを出すだけ。実際の削除は人が判断する | 一定期間で自動的にstale扱い・archive扱いにする |
@@ -448,17 +438,17 @@ wikiを作っただけでなく、**その作り方を次回の自分のため�
 
 ![VPS sshでhermes skills list | grep hermes-vault-wikiを実行した画面。hermes-vault-wiki・research・Source列がlocalの行が見える。bundledではなくこの環境で作られたことを示している](/images/hermes-vps/hermes-vps-16-skills-list-self-created.jpg)
 
-Source列が`local`になっているのがポイントだ。最初から同梱されているbundledではなく、この環境の作業の中で生まれたスキルだということがわかる。
+Source列が`local`になっている。最初から同梱されているbundledではなく、この環境の作業の中で生まれたスキルだということがわかる。
 
-中身で本文に引用する価値があるのは、パスの正本を宣言している箇所だ。「必ずコンテナから見える`/root/hermes-vault`を正として読む・書く。ホスト側のパスはdocker端末から見えない」という一文が書かれている。これは、今日の作業で自分が事前確認まで踏んで突き止めたことを、Hermesが同じ結論として自分の言葉で残していたことになる。
+中身で本文に引用する価値があるのは、パスの正本を宣言している箇所だ。「必ずコンテナから見える`/root/hermes-vault`を正として読む・書く。ホスト側のパスはdocker端末から見えない」という一文が書かれている。今日の作業で事前確認まで踏んで突き止めた内容と同じ結論が、Hermes自身の記述として残っていた。
 
-これは頼んでいないのに起きたことなので、必ず読者の環境で同じことが起きるとは限らない。今回の環境ではこうなった、という実例として捉えてほしい。「自分で技を作る」という発想は、第10回のSkillsや、この先のSkills育て直し・Curatorの回に繋がっていく。書庫が整い、司書が索引を作り、その司書自身が次の自分への手順書まで残す。ここまで来ると、Hermesは単なる記憶装置ではなく、育っていく相棒に近づいている。
+これは頼んでいないのに起きたことなので、必ず読者の環境で同じことが起きるとは限らない。今回の環境ではこうなった、という実例として捉えてほしい。「自分で技を作る」という発想は、第10回のSkillsや、この先のSkills育て直し・Curatorの回に繋がっていく。Vaultが整い、llm-wikiが索引を作り、Hermes自身が次回の自分への手順書まで残した。記憶を保管するだけでなく、作業の経験から手順を足していく動きになっている。
 
 ## コラム:第16回のあとに起きていること(公開後追記)
 
 本回の物語は「他AIの作業履歴(raw/transcripts/)→wiki」だった。その後の運用では、もう1本の合流が始まっている。X上のGrok Botとのやり取りの成果も、同じwikiへ入れる流れだ。
 
-経路は「Grok Botの成果→母艦の受け取り箱→Hermesが取り込み→wiki」で、人間がチャット画面から全文をコピペして運ぶ工程は挟まない。成果の正本をチャットに置かない・人間を配達係にしない、という方針は、本回の「二度同じことを調べさせない」と同じ型である。詳しい手順は、材料が溜まったら別の回で扱う。
+経路は「Grok Botの成果→自分のパソコンの受け取り箱→Hermesが取り込み→wiki」で、人間がチャット画面から全文をコピペして運ぶ工程は挟まない。成果の正本をチャットに置かない・人間を配達係にしない、という方針は、本回の「二度同じことを調べさせない」と同じ型である。詳しい手順は、材料が溜まったら別の回で扱う。
 
 ## 早見表+引用元+第17回予告
 
@@ -512,7 +502,7 @@ du -sh ~/hermes-vault/{entities,concepts,queries,raw}/
 ```
 
 :::message
-cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本回のスコープ外だ。第9回のCronで組んだ「Hermesに毎朝決まったタスクを依頼する」仕組みと同じ要領で組めるが、初回ingestの検索がコンテキストを食うことや、確認なしに大量ページを作らせないためのプロンプト設計が必要になるので、第19回のCuratorと合わせて扱う。本回は手動ingestで体感し、自動化は後の回で習う、という分業にした。
+cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本回のスコープ外だ。第9回のCronで組んだ「Hermesに決まった時刻にタスクを依頼する」仕組みと同じ要領で組めるが、初回ingestの検索がコンテキストを食うことや、確認なしに大量ページを作らせないためのプロンプト設計が必要になるので、第19回のCuratorと合わせて扱う。本回は手動ingestで体感し、自動化は後の回で習う、という分業にした。
 :::
 
 ### 引用元と参考
@@ -541,7 +531,7 @@ cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本�
 
 第16回完了で、Hermesは「貯まった作業履歴」を「整理されたセカンドブレイン」に変える仕組みを手に入れた。raw/transcripts/に置かれたmdが、llm-wikiによってentities/concepts/queriesの相互参照ページに昇華される。同じ問いに二度と最初から答えなくて済む状態だ。Memory(私のこと)・Vault knowledge(世界のこと)・state.db(自分の会話)・raw/transcripts(他AIの履歴)に、本回でentities/concepts/queries(整理済み教訓)が加わり、5層が役割分担で揃った。
 
-次の第17回(予定)は、ここで整理した知識を**どんな声・口調で読者に返すか**、Hermesの「文体(SOUL)」を扱う。同じ事実を返すにしても、固い参考書のように返すか、親しい先輩のように返すかで体験は別物になる。書庫が整い、司書が索引を作った今、次は司書の話し方を仕立てる段だ。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認してほしい。
+次の第17回(予定)は、ここで整理した知識を**どんな声・口調で読者に返すか**、Hermesの「文体(SOUL)」を扱う。同じ事実を返すにしても、固い参考書のように返すか、親しい先輩のように返すかで体験は別物になる。wikiが整った今、次は返答の口調を仕立てる段だ。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認してほしい。
 
 ---
 

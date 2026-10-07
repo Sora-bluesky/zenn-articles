@@ -17,12 +17,14 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 :::
 
 :::message
-この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第3回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
+第3回が終わると、Hermesに渡す秘密がVPS上の平文ファイルから消え、1Passwordから起動時だけ受け渡される状態になる。この連載は月1,800円ほどのVPSで、自分専用のAIエージェント(Hermes Agent)を24時間動かす実録だ。これはその第3回。全体の流れは[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。
 :::
 
-APIキーやトークンを設定ファイルに直接書いて、なんとなく不安なまま動かしている——個人開発ではよくある状態だ。うっかり公開リポジトリに上げてキーを失効させた、という話も珍しくない。第2回までで通信の安全は固めたが、肝心の秘密情報は、まだ平文のテキストとしてサーバーに残っている。
+APIキーやトークンを設定ファイルに直接書いて動かすのは、個人開発ではよくある状態だ。うっかり公開リポジトリに上げてキーを失効させた、という話も珍しくない。第2回までで通信の安全は固めたが、秘密情報は、まだ平文のテキストとしてサーバーに残っている。
 
 第3回は、その平文を1台から消す。鍵をファイルに置かず、起動するときだけ受け渡す仕組みに切り替える。
+
+この回でやらないことは2つある。Hermes本体のインストールとsystemdユニットの作成は第4回、Discord botトークンの実値を入れるのは第5回だ。この回では、秘密の受け渡し経路だけを組む。
 
 ## 目次
 
@@ -78,8 +80,6 @@ APIキーやトークンを設定ファイルに直接書いて、なんとな�
 第3回では、その先のレイヤー=**Hermes Agentが動くときに必要なbotトークン等の秘密情報をどこに置くか**を決める。やり方を間違えると、せっかく外からの侵入を絞ったのに、内側で平文ファイルから秘密が漏れる。
 
 この回のゴールは「Hermesに秘密を渡す唯一の経路をop CLI(1Passwordのコマンドラインツール)に絞る」こと。
-
-実機で打ちながら書いたメモなので、きれいな手順書ではない。詰まった場所も含めて読んでもらいたい。
 
 ## 第2回までの到達点と第3回の差分
 
@@ -161,7 +161,7 @@ Telegramは第3回で実際にbotを発行して値を入れる。Discordは第5
 └──────────────────────────────────────────────────────────────┘
 ```
 
-ポイントは、VPS側の`secrets.env`には実値が1つも書かれないこと。中身は`TELEGRAM_BOT_TOKEN=op://Hermes-Prod/...`のような**1Passwordへの参照URL**だけ。`op run`がコマンド実行の瞬間にこの参照を解決し、子プロセスに環境変数として注入する。ディスクには平文が出ない。
+VPS側の`secrets.env`には、実値が1つも書かれない。中身は`TELEGRAM_BOT_TOKEN=op://Hermes-Prod/...`のような**1Passwordへの参照URL**だけ。`op run`がコマンド実行の瞬間にこの参照を解決し、子プロセスに環境変数として注入する。ディスクには平文が出ない。
 
 ## あえてMCPを使わず参照だけ渡す理由
 
@@ -177,17 +177,17 @@ Hermesは24時間動く常駐エージェントで、起動の度にコンテキ
 
 ### 1Passwordの契約と`Hermes-Prod`保管庫を用意する
 
-このシリーズで秘密情報を入れる箱が`Hermes-Prod`保管庫だ。第1回・第2回でadminパスワードやTailscaleの認証情報を入れる先として登場したが、まだ作っていない人向けに作成手順を書いておく。
+このシリーズで秘密情報を入れる保管庫が`Hermes-Prod`だ。第1回・第2回でadminパスワードやTailscaleの認証情報を入れる先として登場したが、まだ作っていない人向けに作成手順を書いておく。
 
 1. [1password.com](https://1password.com)で個人またはファミリープランを契約する(無料プランには保管庫の追加機能がない)
 2. 同じページから1Passwordデスクトップアプリ(Windows/Mac)をダウンロードして、契約したアカウントでサインインする
 3. アプリ左下の保管庫一覧の横にある「**+**」(新しい保管庫を作成)をクリックし、名前に`Hermes-Prod`と入れて作成する
 
-保管庫(英語UIではVault)は「アイテムをまとめて入れる引き出し」のこと。Hermes関連の秘密はすべてこの`Hermes-Prod`に集める。
+保管庫(英語UIではVault)は、アイテムをまとめて入れる単位のこと。Hermes関連の秘密はすべてこの`Hermes-Prod`に集める。
 
-### 手元PCに1Password CLI(op)をインストールする
+### 自分のパソコンに1Password CLI(op)をインストールする
 
-WindowsならPowerShellで:
+自分のパソコン(この連載ではWindows)にop(1Passwordのコマンドラインツール)を入れる。PowerShellで:
 
 ```powershell
 winget install AgileBits.1Password.CLI
@@ -277,7 +277,7 @@ API認証情報テンプレートのフィールド構成は「ユーザ名・�
 
 ## 1Passwordサービスアカウントを発行する
 
-ここからが第3回の中心だ。VPSが1Passwordに接続するときの「ロボットアカウント」を作る。スコープを`Hermes-Prod`保管庫のread-onlyだけに絞ることで、VPSがハックされてもサービスアカウントトークンが盗まれても、被害が`Hermes-Prod`の読み取りだけに限定される。
+ここからが第3回の中心だ。VPSが1Passwordに接続するときの専用アカウント(サービスアカウント)を作る。スコープを`Hermes-Prod`保管庫のread-onlyだけに絞ることで、VPSがハックされてもサービスアカウントトークンが盗まれても、被害が`Hermes-Prod`の読み取りだけに限定される。
 
 ブラウザで以下のURLを開く(1Passwordへのログインが必要)。
 
@@ -334,9 +334,9 @@ Environmentsの詳細は本記事末尾の番外編で扱う。
 
 保存できたら、4画面目のブラウザタブを閉じてOK。トークンはこれで1Password側にだけ存在する。
 
-### 手元PCで動作確認(VPS転送前)
+### 自分のパソコンで動作確認(VPS転送前)
 
-VPSに転送する前に、発行したトークンが正しく動くかを手元PCで確認する。
+VPSに転送する前に、発行したトークンが正しく動くかを自分のパソコンで確認する。
 
 ```powershell
 $env:OP_SERVICE_ACCOUNT_TOKEN = "ops_eyJ..."
@@ -347,7 +347,7 @@ Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN
 
 `op vault list`が`Hermes-Prod`のみを返すことを確認する(他の保管庫が見えたらスコープ設定が間違っている)。
 
-![手元PCでop vault listがHermes-Prodだけを返す](/images/hermes-vps/hermes-vps-03-local-op-test.png)
+![自分のパソコンでop vault listがHermes-Prodだけを返す](/images/hermes-vps/hermes-vps-03-local-op-test.png)
 
 確認できたら`Remove-Item`で環境変数を消す。PowerShellを閉じるだけでも消える(`$env:VAR`はそのPowerShellプロセス内だけ有効)。
 
@@ -355,13 +355,13 @@ Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN
 
 ### Tailscale経由でVPSにadminログイン
 
-第2回で確立した経路を使う。手元PCのターミナル(WindowsならPowerShell、Macならターミナル)で:
+第2回で確立した経路を使う。自分のパソコンのターミナル(WindowsならPowerShell、Macならターミナル)で:
 
 ```
 ssh admin@hermes-vps
 ```
 
-第1回で使っていた鍵の指定が消えて、ずいぶん短くなった。第2回で`--ssh`付きでTailscaleを有効化してあるので、Tailnet内からの接続は**Tailscale SSHが本人確認を代行してくれる**——`-i`で鍵を指定する必要はもうない(付けても動くが、実際に使われるのはTailscale側の認証)。第1回で作った鍵は、万一Tailscaleが使えなくなったときにグローバルIPで直結するための非常用として手元に残しておく。
+第1回で使っていた鍵の指定が消えて、ずいぶん短くなった。第2回で`--ssh`付きでTailscaleを有効化してあるので、Tailnet内からの接続は**Tailscale SSHが本人確認を代行してくれる**ので、`-i`で鍵を指定する必要はもうない(付けても動くが、実際に使われるのはTailscale側の認証)。第1回で作った鍵は、万一Tailscaleが使えなくなったときにグローバルIPで直結するための非常用として、捨てずに保管しておく。
 
 TailscaleのMagicDNS(デフォルト有効)により`hermes-vps`というマシン名が`100.x.x.x`形式のTailscale IPに自動解決される。マシン名で繋がらない場合は[login.tailscale.com/admin/machines](https://login.tailscale.com/admin/machines)で`hermes-vps`の`100.x.x.x`形式のIPを確認して直接指定する(`admin@<Tailscale IP>`)。第4回以降も本記事と同じ`admin@hermes-vps`形で統一する。
 
@@ -468,14 +468,14 @@ ls -la ~/ | grep .hermes
 
 ### opの動作確認(VPS上)
 
-サービスアカウントトークンを使って、VPSからop CLIが動くかを確認する。ここで注意したいのが、環境変数(コマンドに値を渡すための入れ物)を一時的にセットする書き方が、手元PC(Windows)とVPS(Linux)で違うことだ。
+サービスアカウントトークンを使って、VPSからop CLIが動くかを確認する。ここで注意したいのが、環境変数(コマンドに値を渡すための入れ物)を一時的にセットする書き方が、パソコン側(Windows)とVPS側(Linux)で違うことだ。
 
 | どこで打つか | 一時セットの書き方 | 削除の書き方 |
 |---|---|---|
-| 手元PC(Windows/PowerShell) | `$env:OP_SERVICE_ACCOUNT_TOKEN = "..."` | `Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN` |
-| VPS内(Linux/bash) | `set -a` → `source ...` → `set +a` | `unset OP_SERVICE_ACCOUNT_TOKEN` |
+| パソコン側(Windows/PowerShell) | `$env:OP_SERVICE_ACCOUNT_TOKEN = "..."` | `Remove-Item env:OP_SERVICE_ACCOUNT_TOKEN` |
+| VPS側(Linux/bash) | `set -a` → `source ...` → `set +a` | `unset OP_SERVICE_ACCOUNT_TOKEN` |
 
-この先のコードブロックには【手元PC】【VPS内】のラベルを付けてある。打ち込む場所を間違えると構文エラーになるので、ラベルとプロンプト(行頭の`$`がWindows、`admin@hermes-vps:~$`等がVPS)を見て確認する。
+打ち込む場所を間違えると構文エラーになるので、プロンプト(行頭の`$`がWindows、`admin@hermes-vps:~$`等がVPS)を見て確認する。
 
 ```bash
 set -a
@@ -537,13 +537,13 @@ op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway run
 | 3.実行 | `--`の後ろのコマンド(`hermes gateway run`)を起動し、解決済みの環境変数を子プロセスにだけ渡す |
 | 4.終了後 | 子プロセスが終わったら、実値はメモリから消える。ディスクには何も書き出されない |
 
-ポイントは「実値が**メモリ上の子プロセスにだけ存在する**」こと。`secrets.env`(参照だけ)はディスクに残るが、平文値はディスクに書かれない。シェル履歴にも残らない(コマンドラインに値が並ばないので)。
+実値は**メモリ上の子プロセスにだけ存在する**。`secrets.env`(参照だけ)はディスクに残るが、平文値はディスクに書かれない。シェル履歴にも残らない(コマンドラインに値が並ばないので)。
 
 これがHermesに秘密を渡す経路として`op run`を採用する技術的な根拠だ。
 
 ### secrets.envの設計
 
-ここが`op run`の中核だ。**実値ではなく`op://`参照だけ**を書く。opがコマンド実行時に参照を解決して環境変数として子プロセスに注入する。
+`secrets.env`には**実値ではなく`op://`参照だけ**を書く。opがコマンド実行時に参照を解決して環境変数として子プロセスに注入する。
 
 ```bash
 nano ~/.hermes/secrets.env
@@ -625,7 +625,7 @@ DISCORD=(empty)
 
 ### `~`と`$HOME`の違い
 
-ひとつ罠を踏んだので書いておく。`op run --env-file=~/.hermes/secrets.env`のように`~`を使うと、
+つまずいた点を書いておく。`op run --env-file=~/.hermes/secrets.env`のように`~`を使うと、
 
 ```
 [ERROR] open ~/.hermes/secrets.env: no such file or directory
@@ -692,7 +692,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 ## よくあるエラーと対処
 
-実機で踏んだ落とし穴を残しておく。
+実際に動かしてつまずいた点を残しておく。
 
 ### 1. API認証情報テンプレートは新規アイテム画面の最初には出ない
 
@@ -716,7 +716,10 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 ## まとめと第4回予告
 
-第3回で達成したのは、Hermesに秘密を渡す経路を**op CLI一択**に固定したこと。VPSのディスクには`op://`参照だけが書かれ、実値は1Password側に存在する。サービスアカウントのスコープは`Hermes-Prod` read-onlyだけで、最小権限の原則を守る。
+第3回が終わり、VPSのディスクには`op://`参照だけが残り、実値は1Password側にだけある状態になった。その内訳は次のとおり。
+
+- Hermesに秘密を渡す経路を**op CLI一択**に固定した
+- サービスアカウントのスコープは`Hermes-Prod` read-onlyだけで、最小権限の原則を守る
 
 第4回でHermes本体をインストールしたら、systemdユニットの`ExecStart`を`op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway run`にすることで、起動時に自動で`op://`参照が解決され、Hermesプロセスに環境変数として注入される。MCPを使わないので、AIのコンテキスト・ログ・キャッシュに秘密が載る経路はない。
 
@@ -755,7 +758,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 ### 有効化手順
 
-興味がある人向けに、betaの参加手順を概略で記載する(2026年5月時点)。具体的な画面・コマンドは1Passwordの公式betaドキュメントが正で、本記事は実機検証していない。
+興味がある人向けに、betaの参加手順を概略で記載する(2026年5月時点)。具体的な画面・コマンドは1Passwordの公式betaドキュメントが正で、本記事では実際に動かして確かめていない。
 
 1. 1Password.com→Developer Tools→Environments(beta)ページを開く
 2. beta参加に同意

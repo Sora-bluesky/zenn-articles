@@ -39,9 +39,11 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [まとめと第7回予告](#まとめと第7回予告)
 - [引用元と参考](#引用元と参考)
 
-第5回で「Codex+Grok(頭脳2系統)+Telegram+Discord(出入口2系統)」までは揃った。ただこの時点ではSSHでログインして`op run -- hermes gateway`を手で叩いている状態で、SSHを切ると会話相手はいなくなる。
+第6回が終わると、SSHを切っても、VPSを再起動しても、プロセスが異常終了しても、Hermes Agentが自動で動き続ける状態になる。Linuxの標準機構であるsystemdに登録するだけで、起動・再起動・ログ収集をすべて任せられる。
 
-第6回はその手起動をやめて、VPSが起動した瞬間にHermes Agentが勝手に立ち上がる常駐運用に切り替える。Linuxの標準機構であるsystemdに登録するだけで、SSH切断・VPS再起動・プロセスの異常終了のすべてを自動で面倒見てくれる状態になる。
+第5回では「Codex+Grokの2系統のprovider」と「Telegram+Discordの2系統のmessenger」までは揃った。ただこの時点ではSSHでログインして`op run -- hermes gateway`を手で叩いている状態で、SSHを切ると会話相手はいなくなる。第6回はその手起動をやめて、VPSが起動した瞬間にHermes Agentが勝手に立ち上がる常駐運用に切り替える。
+
+この回でやらないのは、unitファイルの手書きと、デスクトップアプリからの操作(第7回)だ。
 
 シリーズの全体像はこちら。
 
@@ -87,15 +89,15 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | 異常終了時 | 気づかない/手動再起動 | **systemdが自動再起動+ログ収集** |
 | ログの場所 | ターミナル画面(SSH切ると消える) | **`journalctl --user`で永続的に追える** |
 | Telegram/Discord疎通 | 第4回でTelegramだけ確認 | **両方で挨拶+具体的な指示の往復が成立** |
-| 安全境界 | 設定だけ確認(`approvals.mode=manual`) | **コマンドはコンテナ内で隔離実行**(ホスト無傷) |
+| コマンドの実行場所 | 設定だけ確認(`approvals.mode=manual`) | **コマンドはコンテナ内で隔離実行**(ホスト無傷) |
 
-第6回でやることを一言でまとめると「Hermes Agentの起動・監視・ログ収集をsystemdに任せて、人間はTelegram/Discordから話しかけるだけにする」。
+第6回では、Hermes Agentの起動・監視・ログ収集をsystemdに任せて、人間はTelegram/Discordから話しかけるだけにする。
 
 ## systemdとは何か
 
 ### 一言で言うと
 
-systemdはLinuxの「裏方の管理係」。パソコンを起動したときに、利用者が見えないところで勝手に立ち上がるサービス(常駐プロセス)をまとめて世話する仕組み。
+systemdはLinuxで、パソコンを起動したときに利用者が見えないところで勝手に立ち上がるサービス(常駐プロセス)の起動・停止・再起動をまとめて管理する仕組み。
 
 Windowsで例えると、PCを起動した瞬間にバックグラウンドで動き始める「サービス」や、決まった時間に自動実行される「タスクスケジューラ」と役割が近い。
 
@@ -137,7 +139,7 @@ systemd・hermes gateway・messengerの3層に焦点を絞った構成。
 
 ![第6回終了時点の構成図(systemdが常駐管理人、ユーザーはTelegram/Discordから話しかけるだけ)](/images/hermes-vps/hermes-vps-06-architecture.png)
 
-ポイントは、ユーザーが触るのはTelegram/Discordの画面だけになる点。SSHを開かない・VPSを意識しない・hermesの起動を意識しない、という運用に切り替わる。
+ユーザーが触るのはTelegram/Discordの画面だけになる。SSHを開かない・VPSを意識しない・hermesの起動を意識しない、という運用に切り替わる。
 
 ## 事前準備
 
@@ -152,6 +154,8 @@ ssh admin@hermes-vps
 第2回でTailscaleを入れた読者は、`hermes-vps`がTailnetのMagicDNS名で解決される。第1回までで止まっている読者はTailscale経由ではなくグローバルIP+22番(または変更後ポート)でアクセスする必要がある。
 
 ### 4-2. 作業ディレクトリへ移動してvenv有効化
+
+Hermes Agent本体のディレクトリに入り、Pythonの仮想環境(venv)を有効にする。
 
 ```bash
 cd ~/hermes-agent
@@ -175,7 +179,7 @@ source venv/bin/activate
 
 ## ユーザーunitを生成する
 
-第4回の`hermes setup gateway`で「Install gateway as systemd?」に**N**で答えたが、ここで改めて`hermes gateway install`を実行する。**フラグは付けない**——フラグなしで実行すると、adminのユーザーunitとして生成される(`--user`というオプションは存在しない)。一方`sudo hermes gateway install --system`を付けると、ログイン状態に依存しないboot-time system serviceになる(rootではなく、あなたのユーザーとして走る。linger不要なのでVPS・ヘッドレス向き)。本シリーズはユーザーunit+lingerで進めるが、VPSなら`--system`も選べる。出典:[Messaging Gateway(systemd)](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/)。
+第4回の`hermes setup gateway`で「Install gateway as systemd?」に**N**で答えたが、ここで改めて`hermes gateway install`を実行する。**フラグは付けない**。フラグなしで実行すると、adminのユーザーunitとして生成される(`--user`というオプションは存在しない)。一方`sudo hermes gateway install --system`を付けると、ログイン状態に依存しないboot-time system serviceになる(rootではなく、あなたのユーザーとして走る。linger不要なのでVPS・ヘッドレス向き)。本シリーズはユーザーunit+lingerで進めるが、VPSなら`--system`も選べる。出典:[Messaging Gateway(systemd)](https://hermes-agent.nousresearch.com/docs/user-guide/messaging/)。
 
 ```bash
 cd ~/hermes-agent
@@ -193,7 +197,7 @@ Start the gateway automatically on login/boot with systemd? [Y/n]: Y
 | 質問 | 意味 | 本記事の回答 |
 |---|---|---|
 | Start the gateway now …? | install直後に今すぐ起動するか | Y(すぐ起動して確認したいため) |
-| Start … automatically on login/boot …? | ログイン/起動時に自動起動するか | Y(常駐の核心。再起動後も自動復帰) |
+| Start … automatically on login/boot …? | ログイン/起動時に自動起動するか | Y(常駐に必要。再起動後も自動復帰) |
 
 両方に**Y**で答えると、次のような出力でユーザーunitの生成・linger有効化・起動までが一気に終わる。
 
@@ -265,7 +269,7 @@ WantedBy=default.target
 **ここが最大の注意点**:`ExecStart=`が`op run`を経由していない。venvのpythonを直接起動するだけだ。つまりこのまま起動すると、第3回で組んだ1Password(`op run`が`op://`参照を実トークンに展開する仕組み)が働かず、TelegramもDiscordもトークンを受け取れない。プロセス自体は起動するが「No messaging platforms enabled(messengerが1つも有効になっていない)」状態になる。
 :::
 
-`hermes gateway install`は「venvのpythonを常駐させる」ところまでは面倒を見るが、「秘密情報をどう注入するか」は環境ごとに違うので踏み込まない。本シリーズは1Password+`op run`方式なので、生成されたunitに`op run`の衣を着せてやる必要がある。
+`hermes gateway install`は「venvのpythonを常駐させる」ところまでは面倒を見るが、「秘密情報をどう注入するか」は環境ごとに違うので踏み込まない。本シリーズは1Password+`op run`方式なので、生成されたunitに`op run`でくるみ直す必要がある。
 
 ## op runで秘密を渡すdrop-inを足す
 
@@ -330,7 +334,7 @@ NRestarts=0
 ![systemctl --user showでis-active=active・NRestarts=0(フラップしていない証拠)](/images/hermes-vps/hermes-vps-06-active-nrestarts.png)
 
 :::message
-lingerはadminユーザーの「居残り権限」(SSHログアウト後もユーザーサービスを動かし続ける設定)で、これが無いとログアウト時にsystemdユーザーマネージャーごと止まってhermesも止まる。本シリーズでは`hermes gateway install`が自動で有効化済みなので、手動操作は不要。`loginctl show-user "$USER" | grep -i Linger`で`Linger=yes`を確認できる。
+lingerはSSHログアウト後もadminユーザーのサービスを動かし続ける設定で、これが無いとログアウト時にsystemdユーザーマネージャーごと止まってhermesも止まる。本シリーズでは`hermes gateway install`が自動で有効化済みなので、手動操作は不要。`loginctl show-user "$USER" | grep -i Linger`で`Linger=yes`を確認できる。
 :::
 
 ## ログを永続的に追えるようにする
@@ -407,12 +411,12 @@ Max output: 30,000 tokens
 
 第5回で`approvals.mode=manual`(危険なコマンドの前に人間へ確認を求める安全弁)を設定した。ただし**本シリーズの構成では、この承認プロンプトは原則出ない**。理由を理解しておくと混乱しない。
 
-第4回でコマンドの実行場所(backend)を`docker`にした。これはエージェントのコマンドを**隔離されたDockerコンテナの中で実行する**設定だ。ここでの「ホスト」とは、第1回で契約したVPS本体——あなたのSSHログイン鍵、1Passwordのトークン、sshdやsystemdの設定が載っている土台——を指す。コンテナはそのホストから壁で仕切られているので、エージェントがコンテナの中で何をしようと、ホスト側のファイルやプロセスには手が届かない。もし実行場所を`local`にしてホスト上で直接動かしていたら、`rm`の打ち間違い一発でSSHログイン鍵やトークンごと消え、VPSに二度と入れなくなる事故もあり得た。第4回でDockerを選んだのは、それを先回りで防ぐためだ。
+第4回でコマンドの実行場所(backend)を`docker`にした。これはエージェントのコマンドを**隔離されたDockerコンテナの中で実行する**設定だ。ここでの「ホスト」とは、第1回で契約したVPS本体(あなたのSSHログイン鍵、1Passwordのトークン、sshdやsystemdの設定が載っている土台)を指す。コンテナはそのホストから壁で仕切られているので、エージェントがコンテナの中で何をしようと、ホスト側のファイルやプロセスには手が届かない。もし実行場所を`local`にしてホスト上で直接動かしていたら、`rm`の打ち間違い一発でSSHログイン鍵やトークンごと消え、VPSに二度と入れなくなる事故もあり得た。第4回でDockerを選んだのは、それを先回りで防ぐためだ。
 
 公式ドキュメントはこう明記している。
 
 > When running in a container backend (Docker...), dangerous command checks are skipped because the container is the security boundary.
-> (コンテナの中で動かす場合、コンテナ自体が安全境界なので、危険コマンドのチェックはスキップされる)
+> (コンテナの中で動かす場合、コンテナ自体が安全を守る仕切りなので、危険コマンドのチェックはスキップされる)
 > 出典:[Hermes Agent公式tipsガイド](https://hermes-agent.nousresearch.com/docs/guides/tips)
 
 つまり、**安全を担保しているのは「1回ずつの承認」ではなく「コンテナによる隔離」だ**。試しにTelegramで「カレントディレクトリのファイル一覧を見せて」と送ると、承認を挟まず即実行されて結果が返る。コンテナの外(ホスト)に害が及ばないので、いちいち止めない、という設計だ。
@@ -485,7 +489,7 @@ Linger=yes
 
 ## まとめと第7回予告
 
-第6回でやったこと:
+第6回が終わった状態は、SSHを切ってもVPSを再起動しても、Hermes Agentが自動で動き続け、スマホのTelegram/Discordだけで会話できる、というものだ。その内訳は次のとおり。
 
 - `hermes gateway install`でsystemdユーザーunitが自動生成済み
 - `hermes gateway install`がlingerを自動有効化→ログアウト後も常駐する状態
@@ -496,9 +500,9 @@ Linger=yes
 - Dockerコンテナでエージェントのコマンドが隔離実行され、ホストに触れないことを確認済み(`approvals.mode=manual`はローカル実行時の保険)
 - VPS再起動後の自動復帰を確認済み
 
-第6回完了時点で、ユーザーがVPSに触らずにスマホだけでHermes Agentと会話できる状態になった。次は、この同じHermesを「黒い画面(SSH)」以外からも触れるようにしていく。
+次は、この同じHermesを黒い画面(SSH)以外からも触れるようにしていく。
 
-第7回では、母艦(普段使いのPC)に公式デスクトップアプリ「Hermes Desktop」を入れ、Tailscale越しにVPSのHermesをマウス操作で動かす。コマンドを打たなくても、普通のアプリの窓から同じエージェントを使えるようにする回だ。
+第7回では、自分のパソコン(この連載ではWindows)に公式デスクトップアプリ「Hermes Desktop」を入れ、Tailscale越しにVPSのHermesをマウス操作で動かす。コマンドを打たなくても、普通のアプリの窓から同じエージェントを使えるようにする回だ。
 
 ---
 

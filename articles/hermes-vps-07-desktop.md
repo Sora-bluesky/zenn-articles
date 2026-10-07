@@ -27,23 +27,25 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第7回終了時点の構成図](#第7回終了時点の構成図)
 - [事前準備](#事前準備)
 - [VPS側で接続先のdashboardを常駐させる](#vps側で接続先のdashboardを常駐させる)
-- [母艦にHermes Desktopを入れる](#母艦にhermes-desktopを入れる)
+- [自分のパソコンにHermes Desktopを入れる](#自分のパソコンにhermes-desktopを入れる)
 - [アプリが起動しないときの直し方](#アプリが起動しないときの直し方)
 - [VPSのHermesにリモート接続する](#vpsのhermesにリモート接続する)
 - [Hermes Desktopの基本操作](#hermes-desktopの基本操作)
-- [どの入口でも同じ1体のエージェント](#どの入口でも同じ1体のエージェント)
+- [どこから話しかけても同じ1体のエージェント](#どこから話しかけても同じ1体のエージェント)
 - [最終確認チェックリスト](#最終確認チェックリスト)
 - [よくあるエラーと対処](#よくあるエラーと対処)
 - [コマンド早見表](#コマンド早見表)
 - [引用元と参考](#引用元と参考)
 
+この回が終わると、VPSのHermesを、黒い画面ではなくマウス操作のデスクトップアプリ「Hermes Desktop」からも使える。自分のパソコン(この連載ではWindows)にアプリを入れ、Tailscale越しにVPSのHermesへ繋ぐ。ブラウザでの管理画面の詳しい使い方は第8回で扱うので、この回では接続先として動かすところまでにとどめる。
+
 第6回で、Hermes Agentは24時間VPSに常駐するようになった。SSHを切ってもVPSを再起動しても、Telegram/Discordに話しかければ返事が返る。
 
-ただ、ここまでHermesに触れる窓口はずっとSSHのターミナル——黒い画面のままだった。コマンドを打ち、コマンドを覚え、打ち間違えればやり直す。慣れればなんてことはないが、「黒い画面が苦手」という理由だけでAIエージェントから足が遠のく人は多い。
+ただ、ここまでHermesに触れる窓口はずっとSSHのターミナル(黒い画面)のままだった。コマンドを打ち、コマンドを覚え、打ち間違えればやり直す。慣れればなんてことはないが、「黒い画面が苦手」という理由だけでAIエージェントから足が遠のく人は多い。
 
-第7回は、その同じHermesをマウス操作でも動かせるようにする。母艦(普段使いのWindowsノートPC)に公式デスクトップアプリ「Hermes Desktop」を入れ、Tailscale越しにVPSのHermesへ繋ぐ。2026-06-05のv0.16.0で正式リリースされた、机の上に出てきたばかりのアプリだ。
+使うのは、普段使いのWindowsノートPCに入れる公式デスクトップアプリ「Hermes Desktop」。2026-06-05のv0.16.0で正式リリースされたばかりのアプリだ。
 
-大事なのは、別のAIを入れるわけではないこと。CLI・Hermes Desktop・Web Dashboardは、同じ1体のエージェントの別の入口にすぎない。片方で設定したことは、もう片方にもそのまま出る。
+大事なのは、別のAIを入れるわけではないこと。CLI・Hermes Desktop・Web Dashboardは、同じ1体のエージェントに繋ぐ別々の手段にすぎない。片方で設定したことは、もう片方にもそのまま出る。
 
 シリーズの全体像はこちら。
 
@@ -75,7 +77,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 全体像は[Hermes Agent完全構築ガイド](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にある。
 :::
 
-所要時間の目安は60〜90分(うち初回のweb UIビルド待ちが数分)。VPS側でひと手間、母艦側でアプリを入れて繋ぐ、という二段構えになる。
+所要時間の目安は60〜90分(うち初回のweb UIビルド待ちが数分)。VPS側でひと手間、自分のパソコン側でアプリを入れて繋ぐ、という二段構えになる。
 
 ## この回の到達点
 
@@ -83,32 +85,32 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 | 項目 | 第6回完了時 | 第7回完了後 |
 |---|---|---|
-| 操作手段 | SSHのターミナル(CLI)だけ | **母艦のHermes Desktop**(GUIアプリ)が加わる |
+| 操作手段 | SSHのターミナル(CLI)だけ | **パソコン側のHermes Desktop**(GUIアプリ)が加わる |
 | ファイルを渡す | パスを指定 | **チャットにドラッグ&ドロップ**・画像はコピペ |
 | 操作を探す | コマンドを覚える | **Ctrl+K**(MacではCmd+K)で検索 |
 | モデル切替 | `hermes model` | **status barのモデルピッカー**(数文字で検索) |
-| 接続経路 | — | Hermes Desktop → Tailscale → VPSの`hermes dashboard` |
+| 接続経路 | なし | Hermes Desktop → Tailscale → VPSの`hermes dashboard` |
 | 同じ1体の実証 | (意識しない) | **Telegram/Discordの会話がDesktopにも並ぶ** |
 
-第7回でやることを一言でまとめると「VPSに住む同じHermesを、黒い画面だけでなく普通のアプリの窓からも触れるようにする」。
+第7回でやるのは、VPSで動く同じHermesを、黒い画面だけでなく普通のアプリの窓からも触れるようにすることだ。
 
 ## ターミナルとHermes Desktopの関係
 
-ここまでHermesはターミナル(黒い画面)でしか操作できなかった。この回でやるのは、その同じHermesをマウス操作でも動かせるようにすること。繰り返すが、別のAIを入れるのではない。同じ1体に、電話(CLI)と対面(GUI)の両方で話せるようになる、というイメージが近い。
+ここまでHermesはターミナル(黒い画面)でしか操作できなかった。この回でやるのは、その同じHermesをマウス操作でも動かせるようにすること。繰り返すが、別のAIを入れるのではない。同じ1体に、ターミナル(CLI)とアプリ(GUI)の両方から話せるようになる。
 
 ### v0.16.0「The Surface Release」で何が変わったか
 
-Hermes Desktopは2026-06-05のv0.16.0で正式リリースされた、macOS/Windows/Linux対応のネイティブアプリだ。「Surface(表に出る)」の名のとおり、これまでターミナルの中にいたHermesが、普通のアプリとして机の上に出てきた回といえる。アプリ内での自己更新・ファイルのドラッグ&ドロップ・Ctrl+Kコマンドパレット・status barでのモデル切替などが入った。
+Hermes Desktopは2026-06-05のv0.16.0で正式リリースされた、macOS/Windows/Linux対応のネイティブアプリだ。「Surface」の名のとおり、これまでターミナルの中で動いていたHermesが、普通のアプリとして使えるようになった回といえる。アプリ内での自己更新・ファイルのドラッグ&ドロップ・Ctrl+Kコマンドパレット・status barでのモデル切替などが入った。
 
 ### この回で出てくる用語
 
-| 用語 | 意味 | たとえ |
-|---|---|---|
-| 母艦 | 普段使いのWindowsノートPC。Hermes Desktopを動かし、VPSへ繋ぐ側。VPS・自宅GPU機とは別のマシン | 艦隊の母港。ここから各艦に指示を出す |
-| Hermes Desktop | 母艦で動く公式デスクトップアプリ。CLIと同じエージェント核を使う(同じ設定・セッション・スキル・記憶) | いつもの相棒に、アプリの窓からも話しかけられる |
-| Web Dashboard | `hermes dashboard`で立ち上がるブラウザ用の管理画面。この回ではDesktopの接続先として使い、管理機能の詳細は第8回で扱う | サーバーの管制室。今回は通り道、次回じっくり |
-| リモートバックエンド | Hermes Desktopが繋ぐ接続先。実体はVPS上で動く`hermes dashboard`プロセスそのもの | 手元のアプリが、遠くのサーバーに繋ぐ |
-| 認証ゲート | dashboardを外向きアドレスに開くと自動でかかるログイン要求。ユーザー名/パスワードで通す | 建物の入口の鍵 |
+| 用語 | 意味 |
+|---|---|
+| 自分のパソコン | 普段使いのWindowsノートPC。Hermes Desktopを動かし、VPSへ繋ぐ側。VPS・自宅GPU機とは別のマシン |
+| Hermes Desktop | 自分のパソコンで動く公式デスクトップアプリ。CLIと同じエージェント核を使う(同じ設定・セッション・スキル・記憶) |
+| Web Dashboard | `hermes dashboard`で立ち上がるブラウザ用の管理画面。この回ではDesktopの接続先として使い、管理機能の詳細は第8回で扱う |
+| リモートバックエンド | Hermes Desktopが繋ぐ接続先。実体はVPS上で動く`hermes dashboard`プロセスそのもの |
+| 認証ゲート | dashboardを外向きアドレスに開くと自動でかかるログイン要求。ユーザー名/パスワードで通す |
 
 ### 頭に入れる2つの「別物」
 
@@ -116,15 +118,15 @@ Hermes Desktopは2026-06-05のv0.16.0で正式リリースされた、macOS/Wind
 
 **1つ目、dashboard ≠ gateway**。Desktopが繋ぐのは`hermes dashboard`であって、第6回で常駐させたgateway(Telegram係)ではない。両者は別プロセスとして同時に動く。
 
-**2つ目、Desktopは接続先を起動してくれない**。VPS側の`hermes dashboard`は自分でsystemdで常駐させる(この回の前半)。母艦のHermes Desktopは、そこに「繋ぎに行く」だけだ。
+**2つ目、Desktopは接続先を起動してくれない**。VPS側の`hermes dashboard`は自分でsystemdで常駐させる(この回の前半)。自分のパソコンのHermes Desktopは、そこに「繋ぎに行く」だけだ。
 
 ## 第7回終了時点の構成図
 
-母艦・Tailscale・VPSの3つに焦点を絞った構成。
+自分のパソコン・Tailscale・VPSの3つに焦点を絞った構成。
 
-![第7回の構成図。母艦のHermes DesktopがTailscale(暗号化された専用通路)経由でVPSのhermes dashboardに接続・認証し、同じエージェントの状態を共有する。VPSにはhermes-gatewayも別プロセスで常駐し、Telegram/Discordを捌いている](/images/hermes-vps/hermes-vps-07-desktop-diagram.png)
+![第7回の構成図。自分のパソコンのHermes DesktopがTailscale(暗号化された専用通路)経由でVPSのhermes dashboardに接続・認証し、同じエージェントの状態を共有する。VPSにはhermes-gatewayも別プロセスで常駐し、Telegram/Discordを捌いている](/images/hermes-vps/hermes-vps-07-desktop-diagram.png)
 
-ポイントは、AI本体はVPSに住み続け、母艦には「見るための窓」を置くだけという構図。母艦は窓であって頭脳ではない。だから母艦の電源を切っても、VPS上のHermesはTelegram/Discordで動き続ける。
+Hermes本体はVPSで動き続け、自分のパソコンには操作用のアプリを置くだけの構成になる。だから自分のパソコンの電源を切っても、VPS上のHermesはTelegram/Discordで動き続ける。
 
 ## 事前準備
 
@@ -140,7 +142,7 @@ ssh admin@hermes-vps
 hermes version; echo; systemctl --user status hermes-gateway --no-pager | head -8
 # → v0.16系 + Active: active (running) が出ればOK
 
-tailscale ip -4   # VPS上で実行。出たTailscale IP(100.x.x.x)を控える(あとで母艦のDesktopの接続先になる)
+tailscale ip -4   # VPS上で実行。出たTailscale IP(100.x.x.x)を控える(あとで自分のパソコンのDesktopの接続先になる)
 ```
 
 :::message
@@ -149,7 +151,7 @@ tailscale ip -4   # VPS上で実行。出たTailscale IP(100.x.x.x)を控える(
 
 ![VPSでhermes versionがv0.16系、hermes-gatewayがactive (running)を示す画面](/images/hermes-vps/hermes-vps-07-desktop-01-version-gateway.png)
 
-第7回の手順は、ここまでで第6回までを完了している(VPSにHermesが常駐し、Telegram/Discordが繋がっている)ことを前提にする。母艦とVPSが同じtailnetにいることも確認しておく(母艦側で`tailscale status`にVPSが出る)。
+第7回の手順は、ここまでで第6回までを完了している(VPSにHermesが常駐し、Telegram/Discordが繋がっている)ことを前提にする。自分のパソコンとVPSが同じtailnetにいることも確認しておく(パソコン側で`tailscale status`にVPSが出る)。
 
 ## VPS側で接続先のdashboardを常駐させる
 
@@ -203,7 +205,7 @@ HERMES_DASHBOARD_BASIC_AUTH_SECRET=<openssl rand -base64 32 の出力を貼る>
 ```
 
 :::message
-クォート付きheredoc(`<<'EOF'`)で流し込むと`$(...)`がそのまま文字列として入ってしまう(実機で確認済み)ので、ここはnanoで手書きするのが確実。書いたら`Ctrl+O`→`Enter`で保存し、`Ctrl+X`で閉じる。
+クォート付きheredoc(`<<'EOF'`)で流し込むと`$(...)`がそのまま文字列として入ってしまう(実際に動かして確認済み)ので、ここはnanoで手書きするのが確実。書いたら`Ctrl+O`→`Enter`で保存し、`Ctrl+X`で閉じる。
 :::
 
 最後に、本人だけが読める権限にしておく。
@@ -218,7 +220,7 @@ chmod 600 ~/.hermes/.env
 
 ### 生成したパスワードを1Passwordにも保存する
 
-dashboardのログインパスワードは長いランダム文字列で、母艦のDesktopからサインインするたびに必要になる。手打ちは現実的でないので、生成したいま、1Passwordなどのパスワードマネージャに保存しておく。後のサインインで呼び出すだけで済む。
+dashboardのログインパスワードは長いランダム文字列で、自分のパソコンのDesktopからサインインするたびに必要になる。手打ちは現実的でないので、生成したいま、1Passwordなどのパスワードマネージャに保存しておく。後のサインインで呼び出すだけで済む。
 
 :::message alert
 VPSのOSユーザー用に`Hermes VPS - admin`や`Hermes VPS - root`を既に作っている場合、**同じadminでもこれとは別物**(こちらはdashboardのWebログイン用)。名前が被ると必ず混同するので、dashboard用は別名にする。
@@ -311,18 +313,18 @@ systemctl --user daemon-reload
 systemctl --user enable --now hermes-dashboard
 systemctl --user status hermes-dashboard --no-pager | head -8   # active (running)
 curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_providers'
-# true / ["basic"] が出れば、母艦のDesktopのログインが通る状態
+# true / ["basic"] が出れば、自分のパソコンのDesktopのログインが通る状態
 ```
 
 `active (running)`になり、`/api/status`が`true`/`["basic"]`を返せば、VPS側の準備は完了。もし起動に失敗するなら、`.env`に認証情報が入っているか(2つ前の手順)、venvパスが合っているか(`ls ~/hermes-agent/venv/bin/python`)を確かめる。
 
 ![systemctl --user statusでhermes-dashboardがactive (running)、別のcurlで/api/statusがtrue/["basic"]を返している画面](/images/hermes-vps/hermes-vps-07-desktop-09-systemd-active.png)
 
-## 母艦にHermes Desktopを入れる
+## 自分のパソコンにHermes Desktopを入れる
 
 出典:[公式desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop) / [installation](https://hermes-agent.nousresearch.com/docs/getting-started/installation)
 
-ここからは母艦(普段使いのWindowsノートPC)での作業。公式サイトからインストーラを落として実行する。**管理者権限は不要**だ。
+ここからは自分のパソコン(普段使いのWindowsノートPC)での作業。公式サイトからインストーラを落として実行する。**管理者権限は不要**だ。
 
 ```text
 ダウンロード: https://hermes-agent.nousresearch.com/desktop
@@ -360,7 +362,7 @@ CLIだけ先に入れている場合は、ターミナルで`hermes desktop`で�
 ここは起動でつまずいた人向けの章。問題なく起動できた人は、読み飛ばして次へ進んでよい。
 :::
 
-インストールは完了したのに、アプリが起動しない——私もこれに当たった。ダブルクリックしてもウィンドウが出てこない。ChromeやEdgeは普通に開くのに、Hermes Desktopだけが反応しない。
+インストールは完了したのに、アプリが起動しない。私もこれに当たった。ダブルクリックしてもウィンドウが出てこない。ChromeやEdgeは普通に開くのに、Hermes Desktopだけが反応しない。
 
 自分では何が悪いのか見当もつかなかったので、Claude Codeに「Hermes Desktopのインストールは完了したが起動しない。原因を調査して」と投げた。
 
@@ -395,16 +397,16 @@ issue #38216の報告者が試した結果はこうだ。
 エクスプローラのアドレスバーに`%APPDATA%\Hermes`と打てばフォルダが開く。`GPUCache`と`Code Cache`を削除してからショートカットで起動すると、キャッシュが初期化された状態で立ち上がる。
 
 :::message
-`--no-sandbox`が切るのは、あくまでHermes Desktopの画面描画プロセスのサンドボックス機能だけ。第4回で設定したエージェントのコマンド実行(Dockerコンテナ隔離)とは別の話で、エージェント側の安全境界は何も変わらない。とはいえブラウザ由来の保護を1枚はがすのは事実なので、最終的にはGPUドライバを最新に更新して、`--no-sandbox`なしで起動できる状態を目指すのがよい。
+`--no-sandbox`が切るのは、あくまでHermes Desktopの画面描画プロセスのサンドボックス機能だけ。第4回で設定したエージェントのコマンド実行(Dockerコンテナ隔離)とは別の話で、エージェント側の安全対策は何も変わらない。とはいえブラウザ由来の保護を1つ外すのは事実なので、最終的にはGPUドライバを最新に更新して、`--no-sandbox`なしで起動できる状態を目指すのがよい。
 :::
 
 ## VPSのHermesにリモート接続する
 
 出典:[公式desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop)「In the app」
 
-インストールしたHermes Desktopを起動すると、最初は母艦のローカルバックエンドで立ち上がる。ただし母艦には**モデルの鍵(頭脳)がない**ので、このままチャットしてもモデル認証エラーになる。
+インストールしたHermes Desktopを起動すると、最初は自分のパソコン上のローカルバックエンドで立ち上がる。ただし自分のパソコンには**モデルの鍵がない**ので、このままチャットしてもモデル認証エラーになる。
 
-だから最初にやるのは、VPSに常駐させた`hermes dashboard`に繋ぎ替えること。「AI本体はVPSに住み、母艦には見るための窓を置く」構成にする。繋ぎ替えれば、モデルの鍵もVPS側のものが使われ、チャットが通るようになる。
+だから最初にやるのは、VPSに常駐させた`hermes dashboard`に繋ぎ替えること。Hermes本体はVPSで動かし、自分のパソコンには操作用のアプリを置く構成にする。繋ぎ替えれば、モデルの鍵もVPS側のものが使われ、チャットが通るようになる。
 
 :::message
 2026-07末の更新で、初回起動時に「ローカルにインストールするか、既存のHermesに接続するか」を選ぶ画面が先に出るようになった。「Connect to existing Hermes」を選べば、この節の繋ぎ替えを初回画面から直接始められる。入れる内容は下と同じで、Remote URLとログイン情報だ。あわせてサインインの方式も変わり、アプリ内の画面ではなく普段使いのブラウザが開いて、そこでログインしてアプリに戻る流れになった。画面の見た目が本文のスクショと違っても、入力する値は同じだ。
@@ -434,7 +436,7 @@ issue #38216の報告者が試した結果はこうだ。
 ![サインインのフォーム。admin欄が見え、パスワードは伏字](/images/hermes-vps/hermes-vps-07-desktop-17-signin.png)
 
 :::message alert
-**ここが今回いちばんハマるポイント**。Signed inのあと、必ず「**Save and reconnect**」を押す。これを押さないとDesktopは母艦ローカルのままでVPSに切り替わらず、チャットがモデル認証エラー(ローカル側のモデルを見にいって失敗)になる。切り替わると画面下のモデル表示がVPS側のモデルに変わるので、それが成功の目印だ。
+**ここが今回いちばんハマるポイント**。Signed inのあと、必ず「**Save and reconnect**」を押す。これを押さないとDesktopは自分のパソコン上のローカルのままでVPSに切り替わらず、チャットがモデル認証エラー(ローカル側のモデルを見にいって失敗)になる。切り替わると画面下のモデル表示がVPS側のモデルに変わるので、それが成功の目印だ。
 :::
 
 #### OAuthとユーザー名/パスワードの違い
@@ -453,12 +455,12 @@ Hermes Desktopは2つの認証方式に対応する。
 ![リモート接続が成功し、GatewayのAuthenticationがSigned inになった画面。VPSのHermesに繋がった証拠](/images/hermes-vps/hermes-vps-07-desktop-18-signed-in.png)
 
 :::message
-**将来への伏線**:v0.16.0のHermes Desktopは、複数のprofile(担当)を1つのウィンドウで同時に動かせる。例えば「普段の相棒」「Zenn原稿の編集者」「VPS運用担当」のように分ける。今回は「将来こう分けられる」という入口を見ておくだけで十分。本格的な役割分担は後の回で扱う。
+**この先の使い方**:v0.16.0のHermes Desktopは、複数のprofile(担当)を1つのウィンドウで同時に動かせる。例えば「普段使い用」「Zenn原稿の編集者」「VPS運用担当」のように分ける。今回は「将来こう分けられる」という入口を見ておくだけで十分。本格的な役割分担は後の回で扱う。
 :::
 
 ## Hermes Desktopの基本操作
 
-VPSに繋がって頭脳が動くようになった。設定画面を閉じてメイン画面に戻ると、左サイドバーにVPS側のチャット履歴やCronジョブが並んでいるのが見える。母艦単独の時は空だったサイドバーにデータが入っていれば、VPSのHermesに繋がった証拠だ。第4〜6回でTelegramやDiscordから送った会話、第9回で設定するCronの定期タスクなど、VPSのHermesが持っているデータがそのまま見える。
+VPSに繋がり、チャットが通るようになった。設定画面を閉じてメイン画面に戻ると、左サイドバーにVPS側のチャット履歴やCronジョブが並んでいるのが見える。自分のパソコン単独の時は空だったサイドバーにデータが入っていれば、VPSのHermesに繋がった証拠だ。第4〜6回でTelegramやDiscordから送った会話、第9回で設定するCronの定期タスクなど、VPSのHermesが持っているデータがそのまま見える。
 
 ここからはDesktopアプリそのものの触り方を押さえる。ここがv0.16.0で一番厚くなった部分で、「ターミナルのコマンドを覚える」から「アプリを普通に使う」へ変わる。
 
@@ -492,11 +494,11 @@ v0.16.0では画面下のstatus barにモデルピッカーがある。しかも
 **覚えておくと安心、`/undo`**:変な方向に頼んでしまったら`/undo`で直前のN回の会話を巻き戻せる(v0.16.0)。ただし会話を戻すだけで、すでに送信したメール・削除したファイル・外部サービスで実行された操作まで取り消すわけではない。会話のやり直しと、外部操作の取り消しは別物だと覚えておく。
 :::
 
-## どの入口でも同じ1体のエージェント
+## どこから話しかけても同じ1体のエージェント
 
 この回の山場。Hermes Desktopの左サイドバーには、Desktopで送った会話だけでなく、**前の回で連携したTelegramやDiscordで送った会話も、同じ一覧に並ぶ**。
 
-Telegram・Discord・ターミナル(SSH)・Desktop——窓は違っても、中にいるのは同じ1体・同じ記憶。これがHermesの本質で、「似たアプリを4つ別々に使う」のとは決定的に違う。
+Telegram・Discord・ターミナル(SSH)・Desktopのどの窓から話しても、中にいるのは同じ1体・同じ記憶だ。これがHermesの仕組みで、「似たアプリを4つ別々に使う」のとは違う。
 
 確かめ方は簡単。普段使っているTelegram(またはDiscord)で、Hermesに一言送ってみる。
 
@@ -506,12 +508,12 @@ Telegram・Discord・ターミナル(SSH)・Desktop——窓は違っても、�
 
 ![Telegramでhermesに「接続テスト。いま何時か教えて」と送り、返事が返ってきた画面](/images/hermes-vps/hermes-vps-07-desktop-23-telegram-reply.png)
 
-母艦のHermes Desktopに戻り、左サイドバーを更新する(下の囲み参照)と、いま送ったTelegramの会話が一覧に現れる。逆にDesktopで新しい会話を始めれば、それも一覧に加わる。どこから話しかけても、受け取っているのは同じ1体だ。
+自分のパソコンのHermes Desktopに戻り、左サイドバーを更新する(下の囲み参照)と、いま送ったTelegramの会話が一覧に現れる。逆にDesktopで新しい会話を始めれば、それも一覧に加わる。どこから話しかけても、受け取っているのは同じ1体だ。
 
-![母艦のHermes Desktopの左サイドバーに、いま送ったTelegram/Discordの会話が並んでいる画面。同じエージェントである実証。対象の会話以外のセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-24-sidebar-sync.png)
+![自分のパソコンのHermes Desktopの左サイドバーに、いま送ったTelegram/Discordの会話が並んでいる画面。同じエージェントである実証。対象の会話以外のセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-24-sidebar-sync.png)
 
 :::message alert
-**左サイドバーにすぐ出ないとき**(更新の一手間・v0.16.0時点):本記事の撮影時点(v0.16.0)では、Telegram/Discordで作った会話はDesktopの左サイドバーにリアルタイムでは出なかった(Hermes Desktopが通常の会話一覧を定期取得していなかったため。自動更新されるのはCronなど一部だけだった)。**この一手間はv0.18.1で不要になった**(次の段落を参照)。v0.18.0以前で出ないときは、Gateway設定で「Save and reconnect」を押すと再接続がかかり一覧が更新される(Windowsで実機確認済み)。それでも出なければアプリを再起動する。`Ctrl+R`(ウィンドウ再読み込み)はWindowsでは効かなかった。
+**左サイドバーにすぐ出ないとき**(更新の一手間・v0.16.0時点):本記事の撮影時点(v0.16.0)では、Telegram/Discordで作った会話はDesktopの左サイドバーにリアルタイムでは出なかった(Hermes Desktopが通常の会話一覧を定期取得していなかったため。自動更新されるのはCronなど一部だけだった)。**この一手間はv0.18.1で不要になった**(次の段落を参照)。v0.18.0以前で出ないときは、Gateway設定で「Save and reconnect」を押すと再接続がかかり一覧が更新される(Windowsで実際に確認済み)。それでも出なければアプリを再起動する。`Ctrl+R`(ウィンドウ再読み込み)はWindowsでは効かなかった。
 :::
 
 この挙動は公式issue [#41827](https://github.com/NousResearch/hermes-agent/issues/41827)で報告され、その後v0.18.1(2026-07-08公開)で解消された。外部(Telegram・Discord・WeChat)で作られた会話が、profileの切り替えや再起動なしでサイドバーに反映されるようになり、Teknium本人がissueをクローズしている(実装はcommit `52d0d671e`)。本体をv0.18.1以降に上げていれば、上の「更新の一手間」はもう要らない。
@@ -519,7 +521,7 @@ Telegram・Discord・ターミナル(SSH)・Desktop——窓は違っても、�
 ![GitHub issue #41827。左サイドバーの自動更新が効かない報告と、修正PRのリンクが見える](/images/hermes-vps/hermes-vps-07-desktop-25-issue-41827.png)
 
 :::message
-ターミナル(SSHで操作してきた黒い画面)も同じ仲間。第1〜6回で動かしてきたVPS上のHermesと、Telegram・Discord・Desktopは、全部同じ1体の別の入口にすぎない。「黒い画面を卒業」ではなく「黒い画面だけに閉じ込めない」——用途に応じて入口を選べるのが強みだ。
+ターミナル(SSHで操作してきた黒い画面)もその1つだ。第1〜6回で動かしてきたVPS上のHermesと、Telegram・Discord・Desktopは、全部同じ1体の別の入口にすぎない。黒い画面だけに閉じ込められず、用途に応じて入口を選べるのが強みだ。
 :::
 
 ## 補足:v0.17.0でDesktopはさらに強化された
@@ -548,16 +550,14 @@ Telegram・Discord・ターミナル(SSH)・Desktop——窓は違っても、�
 
 ## 最終確認チェックリスト
 
-第7回完了の目安を一覧にする。
+VPSのHermesを、黒い画面・スマホ(Telegram/Discord)・自分のパソコンのアプリの3つの窓から、用途に応じて使い分けられる状態になった。その内訳が次の一覧だ。
 
 - [ ] VPSで`hermes dashboard`が認証つき・Tailscale IP bindでsystemd常駐している
 - [ ] `/api/status`が`auth_required: true`と`["basic"]`を返す
-- [ ] 母艦のHermes Desktop(v0.16.0)が入り、起動する
+- [ ] 自分のパソコンのHermes Desktop(v0.16.0)が入り、起動する
 - [ ] チャット・ドラッグ&ドロップ・Ctrl+K・モデル切替を一通り触った
 - [ ] DesktopからRemote URL+サインインでVPSに繋がる(ユーザー名/パスワード)
 - [ ] Telegram/Discordで送った会話が、Desktopの左サイドバーにも出る(同じエージェントの実証)
-
-ここまで揃えば、VPSに住むHermesを、黒い画面・スマホ(Telegram/Discord)・母艦のアプリの3つの窓から、用途に応じて使い分けられる状態になった。
 
 ---
 
@@ -572,11 +572,11 @@ Telegram・Discord・ターミナル(SSH)・Desktop——窓は違っても、�
 | 症状 | 対処 |
 |---|---|
 | `hermes dashboard --host <tailscale-ip>`が起動せず終了する | 認証未設定で外向きbindを拒否している(fail-closed)。認証情報を`.env`に入れてから再起動。systemd経由なら`EnvironmentFile=%h/.hermes/.env`が付いているか確認 |
-| Desktopが「backendはready」と言うのにチャットが繋がらない | `Save and reconnect`を押していない可能性が高い。押したうえで、VPS側はTailscale IPにbindし、Remote URLも同じIPにする。`127.0.0.1`にbindすると母艦からは届かない |
+| Desktopが「backendはready」と言うのにチャットが繋がらない | `Save and reconnect`を押していない可能性が高い。押したうえで、VPS側はTailscale IPにbindし、Remote URLも同じIPにする。`127.0.0.1`にbindすると自分のパソコンからは届かない |
 | アプリを再起動するたびにログインが切れる | `HERMES_DASHBOARD_BASIC_AUTH_SECRET`が未設定。`openssl rand -base64 32`で固定値を`.env`に入れる |
 | サインインで「Invalid credentials / 401」 | ユーザー名かパスワードが`.env`と不一致。`curl -s http://<host>:9119/api/status \| jq '.auth_providers'`に`"basic"`が出るか確認 |
 | `hermes dashboard`が「何かを入れろ」と出て起動しない | Web部品が未導入。`cd ~/hermes-agent && pip install -e '.[web]'` |
-| 母艦の`hermes desktop`が初回なかなか立ち上がらない | 初回はElectronビルドが走るため。エラーでなければ待つ。インストーラで入れた場合はビルド済み |
+| 自分のパソコンの`hermes desktop`が初回なかなか立ち上がらない | 初回はElectronビルドが走るため。エラーでなければ待つ。インストーラで入れた場合はビルド済み |
 | Hermes Desktopが起動直後に落ちる・真っ白のまま固まる | GPUとChromiumサンドボックスの相性問題(終了コード`0x80000003`、[#38216](https://github.com/NousResearch/hermes-agent/issues/38216))。本文「アプリが起動しないときの直し方」を参照 |
 | Ctrl+Kが効かない | Macでは`Cmd+K`。それでも開かなければアプリのキーボードショートカット設定を確認 |
 | Telegram/Discordの会話が左サイドバーに出ない | v0.18.1(2026-07-08)以降は自動で反映される。v0.18.0以前は`Save and reconnect`またはアプリ再起動で更新する(本回「どの入口でも同じ1体のエージェント」参照) |
@@ -590,7 +590,7 @@ hermes dashboard --help                                   # Web部品が入っ�
 systemctl --user enable --now hermes-dashboard            # systemd常駐
 curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_providers'  # 認証確認
 
-# 母艦側(Windows)
+# 自分のパソコン側(Windows)
 # インストーラ: https://hermes-agent.nousresearch.com/desktop
 hermes desktop                                            # CLIから起動(任意)
 

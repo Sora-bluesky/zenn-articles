@@ -66,9 +66,11 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ## この回の到達点
 
+この回が終わると、VPSの上でHermes Agentが動き、Telegramでbotに「hello」と話しかけると挨拶が返ってくる。コマンドの実行はDockerのコンテナの中に閉じ込められている。
+
 第3回までで、1Password Service AccountとVPSの`op` CLIで秘密情報を扱える状態にした。ただし**Hermes Agent本体はまだVPSに存在しない**。第4回はその本体を入れる回だ。
 
-第4回のゴールは、VPSの中に:
+この回でやること:
 
 - Hermes Agent v0.14.0をクローン+インストール
 - Docker engineを入れて、Hermes Agentのコマンド実行が**コンテナの中で隔離**される構成にする
@@ -76,9 +78,10 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - 既知バグ(後述)を回避するため、`main`ブランチで運用に切り替える
 - `op run -- hermes gateway`で起動 → Telegramでbotに話しかけてHermes Agentから返信が来るところまで
 
-を作ること。OAuth(Codex/Grok)の詳細設定や承認モード固定は第5回でまとめる。
+この回でやらないこと:
 
-実機で打ちながら書いたメモなので、きれいな手順書ではない。詰まった場所も含めて読んでもらいたい。
+- OAuth(Codex/Grok)の詳細設定と承認モード固定(第5回)
+- 常駐起動(第6回でsystemd化する。この回はSSHを抜けると止まる手動起動まで)
 
 ## 第3回までの到達点と第4回の差分
 
@@ -88,7 +91,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | `~/.hermes/secrets.env` | `op://`参照のみ | 変わらず(op run経由で読まれる) |
 | **Hermes Agent本体** | 未インストール | **mainブランチでインストール完了+手動起動できる** |
 | Docker engine | 未インストール | adminユーザーで`docker`コマンド実行可能 |
-| Codex OAuth | 未登録 | `hermes setup`実行中に併走で登録される(実機検証) |
+| Codex OAuth | 未登録 | `hermes setup`実行中に併走で登録される(実際に動かして確認) |
 | Telegram bot疎通 | tokenの参照経路だけ | 「hello」と話しかけたら「Hello! How can I help?」相当の挨拶が返る |
 | 常駐起動 | なし | なし(第6回でsystemd化) |
 
@@ -96,17 +99,17 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 非エンジニアでも追えるよう、ここで先に用語を揃えておく。
 
-| 用語 | 意味 | たとえ |
-|---|---|---|
-| リポジトリ | プログラムのソースコード一式を管理する場所 | 本のフォルダ |
-| クローン | GitHubから自分のVPSにコピーしてくる操作 | 図書館から本を借りて手元にコピーする |
-| tag | プログラムの「特定バージョン」につけた目印 | 本の第5刷、第6刷 |
-| チェックアウト | その目印のバージョンに切り替えること | 第5刷の本だけ手元に置く |
-| Python仮想環境(venv) | プロジェクト専用のPython実行環境 | 仕事用と趣味用でPCを使い分ける感じ |
-| Docker | ソフトを軽量な箱(コンテナ)で隔離して動かす技術 | 洗える台所マット。汚れても台所本体は無事 |
-| サンドボックス | 外と切り離された安全な実行空間 | 子供が安全に遊べる砂場 |
-| Docker backendのサンドボックス | Hermes Agentの実行用に専用のDockerコンテナを置く構成。コマンドはコンテナ内で完結し、ホスト側に影響しない | 台所本体の中に独立したミニキッチン(=コンテナ)を置いて、料理(=コマンド実行)はそこだけでやる |
-| backend | Hermes Agentが実際にコマンドを走らせる場所の選択肢 | 自宅で料理する/出前を頼む/外食する、みたいな実行先の指定 |
+| 用語 | 意味 |
+|---|---|
+| リポジトリ | プログラムのソースコード一式と変更履歴をまとめて管理する場所。この回では、GitHub上の`NousResearch/hermes-agent`がこれにあたる |
+| クローン | GitHub上のリポジトリを、自分のVPSへ丸ごとコピーする操作。この回では`git clone`で`~/hermes-agent/`に置く |
+| tag | 特定のバージョンにつけた名前。この回では`v2026.5.16`(=`v0.14.0`、2026年5月16日リリース)が最新だった |
+| チェックアウト | 指定したtagやブランチの内容に、VPS上のフォルダを切り替える操作。この回ではtagでなく`main`ブランチに切り替えて運用する |
+| Python仮想環境(venv) | プロジェクト専用のPython実行環境。ほかのプロジェクトのパッケージとバージョンが衝突しない |
+| Docker | ソフトを「コンテナ」という隔離された環境で動かす技術。この回ではHermes Agentのコマンド実行をコンテナ内に閉じ込める。壊れても`docker rm`で復旧できる |
+| サンドボックス | 外と切り離された安全な実行空間。中で何が起きても、外側のVPS本体には影響しない |
+| Docker backendのサンドボックス | Hermes Agentの実行用に専用のDockerコンテナを置く構成。コマンドはコンテナ内で完結し、ホスト側に影響しない |
+| backend | Hermes Agentが実際にコマンドを走らせる場所の選択肢。local(VPS上で直接)・Docker(コンテナ内)・SSHなど外部マシンへの委譲といった、実行先の指定 |
 
 ## なぜコマンドをDockerで隔離するのか
 
@@ -172,7 +175,7 @@ Hermes Agentは**Python 3.11以上**を要求する(出典:[pyproject.toml@v2026
 python3 --version
 ```
 
-Ubuntu 26.04のデフォルトPythonは3.14系のはず(私の実機は3.14.4だった)。3.11未満なら以下:
+Ubuntu 26.04のデフォルトPythonは3.14系のはず(この連載の検証環境では3.14.4だった)。3.11未満なら、次のコマンドで新しいPythonを入れる:
 
 ```bash
 sudo apt update && sudo apt install -y python3.12 python3.12-venv python3-pip
@@ -188,7 +191,7 @@ source ~/.bashrc
 uv --version
 ```
 
-`uv --version`で`uv 0.11.x`のような表示が出ればOK(私の実機は`uv 0.11.16`)。
+`uv --version`で`uv 0.11.x`のような表示が出ればOK(この連載の検証環境では`uv 0.11.16`だった)。
 
 ### Docker engineのインストール
 
@@ -238,6 +241,8 @@ docker run hello-world
 
 ### リポジトリをクローン+tag確認
 
+Hermes Agentのソースコードを自分のVPSへコピーし、最新のtagを確認する。
+
 ```bash
 cd ~
 git clone https://github.com/NousResearch/hermes-agent.git
@@ -259,7 +264,7 @@ git tag --sort=-creatordate | head -5
 
 これは2026-05-26頃からChatGPT Codex backendが`response.output=null`を返す挙動に変わったのに、v0.14.0のparseロジックが追従していないためだ。修正は[PR #32963](https://github.com/NousResearch/hermes-agent/pull/32963)で**2026-05-27 02:37 UTC**にmainへマージされた(関連Issueは[#11179 canonical](https://github.com/NousResearch/hermes-agent/issues/11179)、[#33041](https://github.com/NousResearch/hermes-agent/issues/33041)等)。
 
-つまり**v0.14.0 tagチェックアウトでは修正が入っていない**ので、mainブランチで運用する必要がある。
+つまり**v0.14.0 tagチェックアウトでは修正が入っていない**ので、mainブランチで運用する必要がある。次のコマンドでmainに切り替え、最新の修正を取り込む。
 
 ```bash
 git checkout main
@@ -273,16 +278,16 @@ git pull
 :::message
 **バグ回避のためのmain運用が、本記事の最大の判断**:Hermes Agentは活発に開発されており、リリースtagには上記のような未解決バグが残ることがある。「最新tagをチェックアウトすれば安全」とは限らない。**該当のIssue/PRを確認→修正がmainにあればmain運用に切り替える**、を毎回考える必要がある。
 
-本の刷り直しにたとえると、tagは製本済みの第5刷、mainは日々修正が入る最新の原稿だ。今回は第5刷に印刷ミスがあり、その直しは原稿側にしか入っていなかった、という状況にあたる。
+tagはリリース時点で内容を固定した版、mainは日々修正が入る最新の版だ。今回はtagにバグがあり、その修正はmainにしか入っていなかった。
 :::
 
 :::message
-**【2026-05-29追記】このバグは最新リリースで解消済み**。NoneType修正(PR #32963)は、その後の正式リリースv0.15.0(tag v2026.5.28)以降に取り込まれた。最新リリース(v0.15.2 / tag v2026.5.29.2)でも修正済みなので、いま新しく始める読者は`git fetch --tags && git checkout v2026.5.29.2`で最新リリースtagを使えば、本節のmainブランチ運用をしなくてもこのバグを踏まない(本シリーズの実機検証はv0.15.1)。以下のmain運用手順は、執筆時点(v0.14.0)の記録として残している。
+**【2026-05-29追記】このバグは最新リリースで解消済み**。NoneType修正(PR #32963)は、その後の正式リリースv0.15.0(tag v2026.5.28)以降に取り込まれた。最新リリース(v0.15.2 / tag v2026.5.29.2)でも修正済みなので、いま新しく始める読者は`git fetch --tags && git checkout v2026.5.29.2`で最新リリースtagを使えば、本節のmainブランチ運用をしなくてもこのバグを踏まない(本シリーズで実際に動かして確認したのはv0.15.1)。以下のmain運用手順は、執筆時点(v0.14.0)の記録として残している。
 :::
 
 ### インストール
 
-**本シリーズは`./setup-hermes.sh`一発**でインストールする。
+Hermes Agent本体とその依存パッケージを入れる。**本シリーズは`./setup-hermes.sh`一発**でインストールする。
 
 ```bash
 ./setup-hermes.sh
@@ -307,6 +312,8 @@ git pull
 
 ### hermesコマンドの存在確認
 
+インストールできたかを、コマンドの場所とバージョンで確かめる。
+
 ```bash
 which hermes
 hermes version
@@ -320,7 +327,7 @@ Hermes Agentは`hermes version`(サブコマンド形式)でも`hermes --version
 
 ## 対話ウィザードで初期設定する
 
-`hermes setup`は対話形式のウィザード。実機では最初に「Quick setup / Full setup」を聞かれる。本シリーズは**Full setup**を選ぶ(Quickだとbackend設定が漏れる)。
+`hermes setup`は対話形式のウィザード。実際の画面では最初に「Quick setup / Full setup」を聞かれる。本シリーズは**Full setup**を選ぶ(Quickだとbackend設定が漏れる)。
 
 その後、以下の5パートに分かれた質問が来る(出典:[hermes_cli/setup.py@v2026.5.16](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/setup.py)のdocstring)。
 
@@ -334,7 +341,7 @@ Hermes Agentは`hermes version`(サブコマンド形式)でも`hermes --version
 
 ### 本シリーズで取った回答一覧
 
-私が実機で入力した値を表で残しておく。Hermes Agentの対話は項目数が多く、一つずつ判断するのは負担が大きいので、ここでまとめて参照できるようにする。
+実際に入力した値を表で残しておく。Hermes Agentの対話は項目数が多く、一つずつ判断するのは負担が大きいので、ここでまとめて参照できるようにする。
 
 なお表中の★印は、このあとの「つまずきポイント」で詳しく説明する項目を指す。
 
@@ -362,11 +369,11 @@ Hermes Agentは`hermes version`(サブコマンド形式)でも`hermes --version
 | Install gateway as systemd? | **N** | 第6回でカスタムunitを作る |
 | Tools for CLI / Telegram | デフォルト(主要ツールON) | Xサーチは第5回、Discordも第5回 |
 | Browser Provider | Local Browser(★recommended・free) | VPS内Chromium、APIキー不要 |
-| Image Generation Provider | **OpenAI (Codex auth) [free]** | ★罠あり、下矢印を**2回**押す(後述) |
+| Image Generation Provider | **OpenAI (Codex auth) [free]** | ★選び間違えやすい。下矢印を**2回**押す(後述) |
 | Image Generation Model | デフォルト(gpt-image-2-medium) | 画像生成に使うモデル名。Codex OAuth枠で追加料金なしで使える |
 | Search Provider | DuckDuckGo (ddgs) | APIキー不要 |
 
-### つまずきポイント1:Image Generation Providerの「下矢印1回罠」
+### つまずきポイント1:Image Generation Providerは下矢印1回で選び間違える
 
 Image Generation Provider選択で、選択肢の並びは以下のようになっている。
 
@@ -423,7 +430,7 @@ openai-codex (1 credentials):
 
 のように既に登録済みになっている。`~/.hermes/auth.json`も作成されている。
 
-そのため、本シリーズの第5回で「Codex OAuth登録」を別途やる必要はない。token期限切れ等で再認証が必要になった場合は`hermes auth add openai-codex`を再実行すれば良い、と[公式CLI(hermes_cli/auth.py)](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/auth.py)の仕様に書かれている(実機での再認証は本シリーズではまだ試していない)。第5回でやるのはGrok OAuth(SSHトンネリングが必要)と承認モード固定。
+そのため、本シリーズの第5回で「Codex OAuth登録」を別途やる必要はない。token期限切れ等で再認証が必要になった場合は`hermes auth add openai-codex`を再実行すれば良い、と[公式CLI(hermes_cli/auth.py)](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/auth.py)の仕様に書かれている(実際の再認証は本シリーズではまだ試していない)。第5回でやるのはGrok OAuth(SSHトンネリングが必要)と承認モード固定。
 
 ### セットアップ完了
 
@@ -448,6 +455,8 @@ openai-codex (1 credentials):
 ここまでで「Hermes Agent本体+Docker環境+設定ファイル一式+Codex OAuth」が揃った。最後に、第3回で作った`op run`パターンで起動して、Telegramからの返信が来るかを確認する。
 
 ### 起動コマンド
+
+Hermes Agentのメッセージ受付(gateway)を、秘密情報を渡した状態で前面起動する。
 
 ```bash
 cd ~/hermes-agent
@@ -500,7 +509,7 @@ telegram.error.BadRequest: Chat not found
 
 ### つまずきポイント6:`'NoneType' object is not iterable`が出る場合
 
-本記事冒頭の「既知バグ回避のためmainブランチで運用する」(`git checkout main && git pull`)を実施した読者は**踏まない**罠。もしリリースtag(`v2026.5.16`)のままで運用していると、`op run -- hermes gateway`起動後、Telegramでメッセージを送ると以下のエラーで異常終了する:
+本記事冒頭の「既知バグ回避のためmainブランチで運用する」(`git checkout main && git pull`)を実施した読者は**踏まない**エラー。もしリリースtag(`v2026.5.16`)のままで運用していると、`op run -- hermes gateway`起動後、Telegramでメッセージを送ると以下のエラーで異常終了する:
 
 ```
 WARNING run_agent: API call failed (attempt 1/3) error_type=TypeError
@@ -557,7 +566,7 @@ uv pip install -e ".[all]"
 
 Quickだとbackend設定が漏れる。**Fullを選ぶ**のが本シリーズの方針に合う。
 
-### 3. Image Generation Providerの下矢印1回罠
+### 3. Image Generation Providerは下矢印1回で選び間違える
 
 `OpenAI [paid]`(API key必須)を間違えて選ばないよう、**下矢印2回**で`OpenAI (Codex auth) [free]`に合わせる。
 
@@ -591,7 +600,11 @@ Browser toolsは当面使えない。Hermes Agent本体のテキスト応答は�
 
 ## まとめと第5回予告
 
-第4回で「Hermes Agent本体がVPSで動く」状態を作った。第3回までで作った1Password運用の上にHermes Agentを乗せて、Telegramから話しかけたら返事が来る。
+第4回が終わった時点で、Hermes Agent本体がVPSで動き、Telegramで自分のbotに「hello」と話しかけると挨拶が返ってくる。第3回までで作った1Password運用の上にHermes Agentを乗せた形だ。その根拠は次の3点になる。
+
+- `docker run hello-world`が成功し、コマンド実行をコンテナに閉じ込める土台ができた
+- `hermes setup`を5パートとも回答し、`openai-codex`の認証も登録された
+- `op run --env-file=$HOME/.hermes/secrets.env -- hermes gateway`で起動し、Telegramから返信が来た
 
 最大の判断は「リリースtagではなくmainブランチで運用する」こと。Hermes Agentは開発が活発で、tagリリースに未解決バグが残る場面がある。**Issueを追って、必要ならmain運用に切り替える**判断を都度する必要がある。
 
@@ -610,7 +623,7 @@ Browser toolsは当面使えない。Hermes Agent本体のテキスト応答は�
 | 項目 | 引用元 |
 |---|---|
 | Hermes Agentリポジトリ | [github.com/NousResearch/hermes-agent](https://github.com/NousResearch/hermes-agent) |
-| 本記事参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16)=v0.14.0(執筆時点。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2で、NoneTypeバグは解消済み。実機検証はv0.15.1) |
+| 本記事参照tag | [release v2026.5.16](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.16)=v0.14.0(執筆時点。最新は[v2026.5.29.2](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.5.29.2)=v0.15.2で、NoneTypeバグは解消済み。実際に動かして確認したのはv0.15.1) |
 | Pythonバージョン要件 | [pyproject.toml](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/pyproject.toml) `requires-python = ">=3.11"` |
 | CLIコマンド定義 | [hermes_cli/main.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/main.py) |
 | セットアップウィザード構成 | [hermes_cli/setup.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/setup.py) |

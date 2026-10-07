@@ -23,21 +23,21 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 ## 目次
 
 - [この回の到達点](#この回の到達点)
-- [なぜ頭脳も出入口も2系統持つのか](#なぜ頭脳も出入口も2系統持つのか)
+- [なぜproviderもmessengerも2系統持つのか](#なぜproviderもmessengerも2系統持つのか)
 - [用語の最低限の理解](#用語の最低限の理解)
 - [第5回終了時点の構成図](#第5回終了時点の構成図)
 - [事前準備](#事前準備)
 - [Grokを2つ目のAIとして登録する](#grokを2つ目のaiとして登録する)
-- [Discordを2つ目の窓口として追加する](#discordを2つ目の窓口として追加する)
+- [Discordを2つ目のmessengerとして追加する](#discordを2つ目のmessengerとして追加する)
 - [providerとmessengerの選び方](#providerとmessengerの選び方)
 - [実行前に承認を挟む設定を確認する](#実行前に承認を挟む設定を確認する)
 - [よくあるエラーと対処](#よくあるエラーと対処)
 - [まとめと第6回予告](#まとめと第6回予告)
 - [引用元と参考](#引用元と参考)
 
-第4回で「Codex(頭脳1系統)+Telegram(出入口1系統)」の最小構成が動いた。第5回はその構成を広げる回。
+この回が終わると、HermesはCodexとGrokの2系統のAI(provider)で動き、TelegramとDiscordの2系統のメッセージ送受信先(messenger)が設定された状態になる。Discordのbotが実際に応答するのは、gatewayを常駐させる第6回からだ。第4回で動いていたのは、Codex単独とTelegram単独の最小構成だった。
 
-頭脳(provider)をCodex単独からCodex+Grokの2系統に、出入口(messenger)をTelegram単独からTelegram+Discordの2系統に広げる。最後に安全モデルを確認する——コマンドは第4回のDockerコンテナの中で隔離実行され、その外側に承認モード(`approvals.mode=manual`)をlocal時の保険として置く。
+この回でやらないことは、常駐化とGrok・Discordの疎通確認(どちらも第6回)と、Hermes Agent本体の更新だ。最後に安全モデルを確認する。コマンドは第4回のDockerコンテナの中で隔離実行され、その外側に承認モード(`approvals.mode=manual`)をlocal時の保険として置く。
 
 シリーズの全体像はこちら。
 
@@ -77,28 +77,23 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 |------|------------|------------|
 | Hermes Agent本体 | インストール+`hermes setup`完了+main運用 | 変わらず |
 | backend | docker | 変わらず |
-| provider(頭脳) | Codex(`openai-codex`)1系統 | **Codex+Grok(`xai-oauth`)2系統** |
-| messenger(出入口) | Telegram 1系統 | **Telegram+Discord 2系統** |
+| provider(AIの接続先) | Codex(`openai-codex`)1系統 | **Codex+Grok(`xai-oauth`)2系統** |
+| messenger(メッセージ送受信先) | Telegram 1系統 | **Telegram+Discord 2系統** |
 | Discord botトークン | `secrets.env`に参照だけ書いた状態 | **Developer Portal発行→1Password格納→hermes config登録** |
 | 承認モード | セットアップウィザードで決めた | **`approvals.mode=manual`を明示確認+周辺設定を理解** |
 | 常駐起動 | なし | なし(第6回でsystemd化) |
 
 第4回末尾で `hermes setup` のProvider選択(OpenAI Codex)時に**デバイスコードフローでOAuth登録も同時に走る**ので、`hermes auth list`を打つと既に `openai-codex (1 credentials): #1 device_code oauth` のように出ているはずだ。第5回で再登録する必要はない。
 
-## なぜ頭脳も出入口も2系統持つのか
+## なぜproviderもmessengerも2系統持つのか
 
 「Codexが動いてTelegramで会話できてるんだから、十分じゃないか」と思うかもしれない。実際、第4回時点でHermes Agentとしては動く。
 
-ただ、現場で運用していると以下のような声を見かける。
+ただ、1系統だけで運用すると困る場面がある。
 
-> Codex CLI、たまにstreamingで止まる。30秒待っても応答こない時がある。
-> ([GitHub Issue](https://github.com/NousResearch/hermes-agent/issues/33102) 等で類似報告)
-
-> Telegram BotAPIが落ちると会話できない。Discord Bridgeでフォールバックしたい。
-> (Hermes Agent Discord公式チャンネル2026-05投稿)
-
-> SuperGrok契約でGrokが使えるようになった。エージェント側からネイティブで呼べるなら試したい。
-> ([x.ai/news/grok-hermes](https://x.ai/news/grok-hermes) 2026-05-15)
+- providerが応答しない。2026年5月には、openai-codex(gpt-5.5)の応答が90秒でタイムアウトし、再試行しても同じように止まるという報告が出ている([Issue #32370](https://github.com/NousResearch/hermes-agent/issues/32370))
+- messengerが止まる。Telegramの1系統だけだと、Telegram側が止まっている間は話しかける手段がなくなる
+- 使えるモデルが増える。xAIは2026-05-15に、SuperGrokの契約でHermes AgentからGrokを使う方法を公開した([x.ai](https://x.ai/news/grok-hermes))
 
 つまり、片方が落ちても会話を続けられる冗長構成と、用途で使い分けられる選択肢が要る。Hermes Agent本体は元から複数provider・複数messengerを同時に持てる設計なので、第5回でその設計を実際に使う形に組む。
 
@@ -108,10 +103,10 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 | 用語 | 意味 |
 |------|------|
-| OAuth | 「自分のアカウントへのアクセス権を、安全に他のアプリに渡す」標準の仕組み。マスターキーは渡さず、特定の機能だけ開けられるカードキーを渡す感覚 |
-| デバイスコードフロー | 端末側にコードが表示されて、それを別端末のブラウザで承認するOAuth方式。テレビにコードが出てスマホで承認するNetflixログインに近い |
+| OAuth | 自分のアカウントのパスワードを渡さずに、特定の機能の利用許可だけを他のアプリに与える標準の仕組み |
+| デバイスコードフロー | 端末側にコードが表示され、それを別端末のブラウザで入力して承認するOAuth方式 |
 | loopback OAuth | 端末内の特定のポート(56121等)にブラウザがリダイレクトして承認するOAuth方式。Grokがこの方式を使う |
-| SSHトンネリング | 手元PC↔VPSの間に「特定のポート番号だけを通す仮想トンネル」を作る。VPSにブラウザが無いので、loopback OAuthを成立させるために必要 |
+| SSHトンネリング | 自分のパソコン(この連載ではWindows)↔VPSの間に「特定のポート番号だけを通す仮想トンネル」を作る。VPSにブラウザが無いので、loopback OAuthを成立させるために必要 |
 | 承認モード(`approvals.mode`) | エージェントがコマンドを実行する前に「これ実行していい?」と人間に確認する設定。`manual`(=旧名ask)で固定する設定。ただしDocker backend(本シリーズ既定)では承認は原則出ず、これはlocal backendに戻したときの保険(第6回参照) |
 
 ## 第5回終了時点の構成図
@@ -186,7 +181,7 @@ openai-codex (1 credentials):
   #1  device_code          oauth   device_code ←
 ```
 
-「authenticated」という単語ではなく、プロバイダ名+credential数+認証方式+矢印(`←`)で「ログイン済み」を示す。矢印は「現在アクティブなcredential」のマーカーだ。
+出力に「authenticated」という単語は出ない。プロバイダ名+credential数+認証方式+矢印(`←`)が「ログイン済み」を示す。矢印は「現在アクティブなcredential」のマーカーだ。
 
 ![cat secrets.envの出力+hermes auth listでopenai-codexにdevice_code ←が付いている](/images/hermes-vps/hermes-vps-05-secrets-env-auth-list.png)
 
@@ -200,16 +195,16 @@ openai-codex (1 credentials):
 
 Grokの認証は**loopback OAuth**(OAuth 2.0 PKCE)。xAI側でログインしたあと、ブラウザが `http://127.0.0.1:56121/callback?code=...&state=...` に**端末自身の56121ポート**へリダイレクトして承認完了する仕組みだ。
 
-本来は端末のブラウザで完結する設計だが、VPSにはブラウザがない。だから**SSHトンネリングで56121ポートを手元PCに引き出す**必要がある。これはHermes Agent側のバグではなく、xAI OAuthが厳格な`redirect_uri`検証(ループバック固定)をしているための仕様だ。
+本来は端末のブラウザで完結する設計だが、VPSにはブラウザがない。だから**SSHトンネリングで56121ポートを自分のパソコンに引き出す**必要がある。これはHermes Agent側のバグではなく、xAI OAuthが厳格な`redirect_uri`検証(ループバック固定)をしているための仕様だ。
 
 [2026年5月15日のxAI公式連携](https://x.ai/news/grok-hermes)で、SuperGrokまたはX Premium+契約者はOAuth経由でAPIキー不要でGrok 4.3 / Grok TTS / Grok Imagine / Xリアルタイム検索が使えるようになった。本シリーズはSuperGrok前提で進める。
 
 ### SSHトンネリング用の新規ターミナルを開く
 
-「VPSの`localhost:56121`を手元PCの`localhost:56121`に転送する」だけのSSH接続を、別タブで張っておく。コマンド入力には使わない。
+この節でやるのは、Grokのログイン(OAuth)に必要な56121ポートの転送だけだ。「VPSの`localhost:56121`を自分のパソコンの`localhost:56121`に転送する」だけのSSH接続を、別タブで張っておく。コマンド入力には使わない。
 
 ```bash
-# 手元PCで新しいPowerShell/ターミナルタブを開いて
+# 自分のパソコンで新しいPowerShell/ターミナルタブを開いて
 ssh -N -L 56121:127.0.0.1:56121 -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
 ```
 
@@ -218,13 +213,13 @@ ssh -N -L 56121:127.0.0.1:56121 -i ~/.ssh/hermes_vps_ed25519 admin@hermes-vps
 | オプション | 意味 |
 |---|---|
 | `-N` | SSH接続にシェルを要求しない(転送だけ動かす)。公式ガイド推奨 |
-| `-L 56121:127.0.0.1:56121` | 「手元PCのポート56121に来た通信を、VPSの`localhost:56121`に転送する」 |
+| `-L 56121:127.0.0.1:56121` | 「自分のパソコンのポート56121に来た通信を、VPSの`localhost:56121`に転送する」 |
 
 :::message
-**ここがつまずきやすい**:Enterを押してもカーソルが戻らず、固まったように見えるのが成功のサインだ(`-N`はシェルを開かない指定なので、何も表示されないのが正常)。ここでウィンドウを閉じてはいけない。ブラウザでの認証が終わるまでこのタブはそのまま放置する。なお56121番は、Grokの認証が内部で使う固定の窓口番号(ポート)で、xAI側がこの番号以外を受け付けないため番号を変えられない。
+**ここがつまずきやすい**:Enterを押してもカーソルが戻らず、固まったように見えるのが成功のサインだ(`-N`はシェルを開かない指定なので、何も表示されないのが正常)。ここでウィンドウを閉じてはいけない。ブラウザでの認証が終わるまでこのタブはそのまま放置する。なお56121番は、Grokの認証が内部で使う固定のポート番号で、xAI側がこの番号以外を受け付けないため番号を変えられない。
 :::
 
-![手元PCの新規タブでssh -N -L ...を打った直後、エラーなくカーソルが返らない状態](/images/hermes-vps/hermes-vps-05-ssh-tunnel.png)
+![自分のパソコンの新規タブでssh -N -L ...を打った直後、エラーなくカーソルが返らない状態](/images/hermes-vps/hermes-vps-05-ssh-tunnel.png)
 
 踏み台(bastion/jump host)経由の場合は`-J`でジャンプホストを挟む。
 
@@ -242,11 +237,11 @@ hermes auth add xai-oauth --no-browser
 
 VPSにはブラウザがないので`--no-browser`でブラウザ自動起動を抑止する(公式ガイド記載)。
 
-表示される認証URL(`http://127.0.0.1:56121/...`形式)を手元PCのブラウザにコピペで開く。SSHトンネリングのおかげで`127.0.0.1:56121`はVPS側に転送されてつながる。
+表示される認証URL(`http://127.0.0.1:56121/...`形式)を自分のパソコンのブラウザにコピペで開く。SSHトンネリングのおかげで`127.0.0.1:56121`はVPS側に転送されてつながる。
 
 ![hermes auth add xai-oauth --no-browser実行直後、認証URLが表示された画面](/images/hermes-vps/hermes-vps-05-xai-oauth-auth-url.png)
 
-手元PCのブラウザでxAIアカウント(SuperGrokまたはX Premium+)にログインすると、「Grok Buildを承認」画面が出る。Verify your identity / Read your profile / Read your email address / Maintain access when you're not present / Make authenticated requests from Grok Build / Use the xAI APIの6つの権限が列挙されるので、「**許可**」を押す。
+自分のパソコンのブラウザでxAIアカウント(SuperGrokまたはX Premium+)にログインすると、「Grok Buildを承認」画面が出る。Verify your identity / Read your profile / Read your email address / Maintain access when you're not present / Make authenticated requests from Grok Build / Use the xAI APIの6つの権限が列挙されるので、「**許可**」を押す。
 
 ![xAI認証画面「Grok Buildを承認」のスコープ一覧+「許可」ボタン](/images/hermes-vps/hermes-vps-05-xai-authorize.png)
 
@@ -266,7 +261,7 @@ Added xai-oauth OAuth credential #1: "xai-oauth-oauth-1"
 
 ![hermes auth listで両方のproviderにcredentialが付いている画面](/images/hermes-vps/hermes-vps-05-credential-added-auth-list.png)
 
-OAuth登録が完了したらSSHトンネリングは不要だ。手元PC側のトンネル用タブで`Ctrl+C`か`exit`で閉じる。
+OAuth登録が完了したらSSHトンネリングは不要だ。パソコン側のトンネル用タブで`Ctrl+C`か`exit`で閉じる。
 
 :::message
 OAuthのアクセストークン・リフレッシュトークンは`~/.hermes/auth.json`でHermes Agent本体が排他管理する。1Password管理対象には入れない。Hermes Agentが自動で`token refresh`する機構を尊重するためだ(第3回の方針継続)。
@@ -280,11 +275,11 @@ Cloud Shell / GitHub Codespaces / EC2 Instance Connectなど、SSHトンネリ�
 hermes auth add xai-oauth --manual-paste
 ```
 
-表示されたURLを手元PCのブラウザで開き、ログイン後にブラウザのアドレスバーに表示される`http://127.0.0.1:56121/...`のフルURLをコピーしてVPS側のターミナルに貼り付ける。
+表示されたURLを自分のパソコンのブラウザで開き、ログイン後にブラウザのアドレスバーに表示される`http://127.0.0.1:56121/...`のフルURLをコピーしてVPS側のターミナルに貼り付ける。
 
-本シリーズはSSHトンネリングを採用するので`--manual-paste`は使わない。環境の制約で`-L`転送が取れない場合の逃げ道として把握しておくとよい(出典:[同公式ガイド](https://hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh))。
+本シリーズはSSHトンネリングを採用するので`--manual-paste`は使わない。環境の制約で`-L`転送が取れない場合の代替手段として把握しておくとよい(出典:[同公式ガイド](https://hermes-agent.nousresearch.com/docs/guides/oauth-over-ssh))。
 
-## Discordを2つ目の窓口として追加する
+## Discordを2つ目のmessengerとして追加する
 
 Telegram単独で運用するなら、この章はまるごと飛ばして次章の「[providerとmessengerの選び方](#providerとmessengerの選び方)」に進んでよい。後でDiscordを足したくなったらここに戻ればいい。
 
@@ -301,7 +296,7 @@ Telegram単独で運用するなら、この章はまるごと飛ばして次章
 
 - ソロ運用+モバイル主体 → Telegramで必要十分
 - 閉域網/プロキシ環境 → Discordは標準でプロキシ非対応、Telegramは`proxy_url`+`fallback_ips`対応
-- 「とりあえず動かす」段階 → DiscordはMESSAGE CONTENT INTENTの罠で初期セットアップでつまずきやすく、学習コストがTelegramより高い
+- 「とりあえず動かす」段階 → DiscordはMESSAGE CONTENT INTENTの設定漏れで初期セットアップでつまずきやすく、学習コストがTelegramより高い
 
 「自分の用途だとTelegramだけで足りそう」と判断したら、この章は読み飛ばして「[providerとmessengerの選び方](#providerとmessengerの選び方)」へ進んでいい。あとでDiscordを足したくなった時にここに戻ってくれば、同じ手順で追加できる。
 
@@ -487,7 +482,7 @@ Developer Portalに戻り、左サイドバー「**OAuth2**」を開く。「**O
 ![招待画面4段目:「成功!Hermes VPSがHermes VPS Serverに追加されました。」](/images/hermes-vps/hermes-vps-05-discord-invite-success.png)
 
 :::message
-上の招待画面(サーバー選択・権限同意・成功)は、サーバーのリネーム前に撮影したため旧名「Hermes Test」のまま表示されています。後で「Hermes VPS Server」へ名前を変えただけで、同じサーバーです。
+上の招待画面(サーバー選択・権限同意・成功)は、サーバーのリネーム前に撮影したため旧名「Hermes Test」のまま表示される。後で「Hermes VPS Server」へ名前を変えただけで、同じサーバーだ。
 :::
 
 ![Discord本体「Hermes VPS Server」でメンバー一覧にHermes VPSアプリが表示](/images/hermes-vps/hermes-vps-05-discord-bot-in-server.png)
@@ -515,10 +510,10 @@ Discord本体で`Hermes VPS Server`を開き、右上のメンバーアイコン
 ## providerとmessengerの選び方
 
 :::message
-**迷ったら、頭脳はCodex・出入口はTelegram**でいい。Codexはコードと日本語が安定し、Telegramは設定が手軽で1メッセージの文字数上限も大きい(4096)。下の比較表は「なぜそれが最初の無難な選択か」「どんなときに足すか」を理解するためのものだ。完璧に選ぼうとせず、まず動かしてから足せばいい。
+**迷ったら、providerはCodex・messengerはTelegram**でいい。Codexはコードと日本語が安定し、Telegramは設定が手軽で1メッセージの文字数上限も大きい(4096)。下の比較表は「なぜそれが最初の無難な選択か」「どんなときに足すか」を理解するためのものだ。完璧に選ぼうとせず、まず動かしてから足せばいい。
 :::
 
-### provider(頭脳)2系統のメリット
+### provider2系統のメリット
 
 | メリット | 具体例 |
 |---|---|
@@ -538,10 +533,10 @@ hermes config set model.provider xai-oauth
 出典:[hermes_cli/config.py](https://github.com/NousResearch/hermes-agent/blob/v2026.5.16/hermes_cli/config.py)の`cmd_config_set`。
 
 :::message
-2系統にすると切り替えたくなるが、**常用するproviderは1本に決めて使い続ける**のが結局おトクだ。乗り換えるたびにAPI互換・認証・タイムアウトの調整で時間がかかるし、直接契約だと割引や接続性で得をしやすい。とはいえ上の2系統は無駄ではない——片方が落ちたときの保険として**予備の1本は残しておく**。「常用は1本、予備に1本」が落としどころだ。
+2系統にすると切り替えたくなるが、**常用するproviderは1本に決めて使い続ける**のが結局おトクだ。乗り換えるたびにAPI互換・認証・タイムアウトの調整で時間がかかるし、直接契約だと割引や接続性で得をしやすい。とはいえ上の2系統は無駄ではない。片方が落ちたときの保険として**予備の1本は残しておく**。「常用は1本、予備に1本」が落としどころだ。
 :::
 
-### messenger(出入口)の選び方
+### messengerの選び方
 
 TelegramとDiscordの違いをHermes Agent観点で整理する。両者の機能はかなり重なるが、実装の出自が違う(出典:[gateway/platforms/](https://github.com/NousResearch/hermes-agent/tree/main/gateway/platforms)と[plugins/platforms/discord/](https://github.com/NousResearch/hermes-agent/tree/main/plugins/platforms/discord))。
 
@@ -556,7 +551,7 @@ TelegramとDiscordの違いをHermes Agent観点で整理する。両者の機�
 | ボイスチャンネル入室 | ✗ (音声ファイル送信→STT/TTS、非同期) | ✅ bot入室で同期会話 |
 | role/channel単位の権限 | ✗ (user_id+group chat_id止まり) | ✅ role単位allowlist、channel単位prompt、user単位session分離 |
 | プロキシ対応 | ✅ (`proxy_url`+`fallback_ips`) | ✗ 標準サポートなし |
-| Privacy mode | bot privacy mode(group入退室で再認識必要) | MESSAGE CONTENT INTENT(OFFだとメッセージ本文が空で配信される罠) |
+| Privacy mode | bot privacy mode(group入退室で再認識必要) | MESSAGE CONTENT INTENT(OFFだとメッセージ本文が空で配信される) |
 
 出典:[Hermes Agent公式messaging docs](https://hermes-agent.nousresearch.com/docs/user-guide/messaging) のcapability表。
 
@@ -578,7 +573,7 @@ TelegramとDiscordの違いをHermes Agent観点で整理する。両者の機�
 | PC主環境で長時間運用 | **Discord** | PC clientのチャンネル切替・history scroll・reactionが快適 |
 | 閉域網/プロキシ経由で動かす | **Telegram** | Discordはプロキシ標準非対応 |
 | 大容量ファイル(50MB超)を頻繁に投げる | **Telegram local mode** | local mode構築で2GBまで対応 |
-| 「とりあえず動かす」初期段階 | **Telegram** | DiscordはMESSAGE CONTENT INTENTの罠で初期つまずきが多い |
+| 「とりあえず動かす」初期段階 | **Telegram** | DiscordはMESSAGE CONTENT INTENTの設定漏れで初期つまずきが多い |
 
 ### 「Telegramだけで運用する」場合の許容範囲
 
@@ -608,15 +603,15 @@ Telegramの会話とDiscordの会話は別チャンネル扱いで履歴は混�
 
 ## 実行前に承認を挟む設定を確認する
 
-第4回でコマンドの実行場所(backend)を`docker`にした。エージェントのコマンドは隔離されたDockerコンテナの中で実行される。**このコンテナ自体が安全境界**なので、コンテナ内では危険コマンドのチェックはスキップされる——つまり本シリーズの構成では、承認プロンプトは原則出ない。
+第4回でコマンドの実行場所(backend)を`docker`にした。エージェントのコマンドは隔離されたDockerコンテナの中で実行される。**コンテナの中に閉じ込めること自体が安全策**なので、コンテナ内では危険コマンドのチェックはスキップされる。つまり本シリーズの構成では、承認プロンプトは原則出ない。この節で確認するのは`approvals.mode`の値だけで、承認プロンプトの動作確認は第6回に回す。
 
 公式ドキュメントはこう明記している。
 
 > When running in a container backend (Docker...), dangerous command checks are skipped because the container is the security boundary.
-> (コンテナの中で動かす場合、コンテナ自体が安全境界なので、危険コマンドのチェックはスキップされる)
+> (コンテナの中で動かす場合、コンテナに閉じ込めること自体が安全策なので、危険コマンドのチェックはスキップされる)
 > 出典:[Hermes Agent公式tipsガイド](https://hermes-agent.nousresearch.com/docs/guides/tips)
 
-では`approvals.mode`は何のために設定するのか。**backendを`local`(ホスト上で直接実行)に戻したときの保険**だ。providerもmessengerも2系統に増え、Telegram・Discord・Codex・Grokとコマンドの流入経路が広がった以上、将来localに切り替える場面に備えて承認モードを`manual`で固定しておく。第4回のセットアップウィザードで選んだ値を明示確認する。
+では`approvals.mode`は何のために設定するのか。**backendを`local`(ホスト上で直接実行)に戻したときの保険**だ。providerもmessengerも2系統に増え、Telegram・Discord・Codex・Grokとコマンドの流入経路が広がった以上、将来localに切り替える場面に備えて承認モードを`manual`で固定しておく。第4回のセットアップウィザードで選んだ値を明示確認する。次のコマンドで現在の承認モードを表示する。
 
 ```bash
 grep -A 5 -i approval ~/.hermes/config.yaml
@@ -684,7 +679,7 @@ sed -i 's/^  mode: .*/  mode: manual/' ~/.hermes/config.yaml
 
 ## まとめと第6回予告
 
-第5回完了時点で以下が揃った。
+第5回が終わり、HermesはCodexとGrokの2系統のAI、TelegramとDiscordの2系統のmessengerを持つ状態になった。内訳は次のとおり。
 
 - `hermes auth list`で`openai-codex`と`xai-oauth`の両方にcredentialが付いている
 - `~/.hermes/config.yaml`の`approvals.mode`が`manual`
