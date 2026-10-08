@@ -104,7 +104,8 @@ HermesのCronは、Linuxに昔からある`crontab`とは別物だ。役割が�
 | Cron(クーロン) | 決まった時刻や間隔で、登録した作業を自動で実行する仕組みの通称。この回では`morning-news`(毎日7時)がこれにあたる |
 | cron式 | `分 時 日 月 曜日`の5フィールドで時刻を表す書式。`0 9 * * *`=毎日9時0分。この回の`morning-news`は`0 7 * * *`で、編集モーダルで`30 6 * * *`に書き換える |
 | 配信先 | ジョブの結果をどこへ届けるかの指定。ローカル/Telegram/Discord/Slack/Emailの5択。この回ではTelegramを選ぶ |
-| self-contained prompt | 過去の会話を覚えていない前提で、全部書き切った依頼文。Cronの実行はまっさらな会話で始まるため、「いつものニュース要約をして」では何のニュースか伝わらない |
+| self-contained prompt | 過去の会話を覚えていない前提で、全部書き切った依頼文。Cronの実行は毎回新しい会話で始まるため、「いつものニュース要約をして」では何のニュースか伝わらない |
+| `--continuity` | ジョブに付けると、実行のたびに前回の出力を見られるようになる設定。`hermes cron edit <ID> --continuity`で付ける([2026年10月の再確認](#プロンプトは1通の依頼書として書く)) |
 | 今すぐ実行 | ジョブ行の稲妻アイコン。次のtick(スケジューラがジョブを確認する周期)で実行する予約になり、実際に動かすと2〜3分後にTelegramへ届く |
 | `[SILENT]` | エージェントの最終応答にこの語が入っていると、その回の送信が止まる。変化があったときだけ知らせたいジョブに使う |
 
@@ -281,11 +282,41 @@ EDIT JOBの隣には、もう3つのアイコンがある。
 
 ![CRONペインで morning-news が scheduled に復帰し、バッジとアイコンが赤枠で強調され、右上に「再開: "MORNING-NEWS"」のトースト通知が表示されている画面](/images/hermes-vps/hermes-vps-09-cron-resumed.png)
 
+:::message
+**2026年10月の再確認(Hermes v0.21.5+8509)**
+止めていたジョブを再開すると、止めている間に取りこぼした回の分を1回だけすぐ実行する。実際に、2026年8月24日から止めていた`morning-news`を10月7日14:35に再開したところ、`hermes cron list`に「catch-up after missed fire」と出て、予定8月25日7:00の回が「43d 7h late」(43日7時間遅れ)で実行された。結果は14:39にTelegramへ届いた。43日分の回がまとめて届くことはなく、届いたのはこの1回だけだった。
+
+![hermes cron listの出力。morning-newsが[active]で、Next runは2026-10-08T07:00、Dispatchの行にcatch-up after missed fire: scheduled 2026-08-25T07:00:00+09:00, ran 2026-10-07T14:35:56 (43d 7h late)と表示されている](/images/hermes-vps/hermes-vps-09-recheck-cron-list.png)
+:::
+
 削除アイコン(🗑)も同じ場所にある。誤って消すとジョブそのものが消えるので、後で復元できる「一時停止」と使い分ける。
 
 ## プロンプトは1通の依頼書として書く
 
-Cronジョブはここが一番のコツだ。Cronで実行されるとき、エージェントは**まっさらな会話**で動く。前日のやり取りも、いつもの口調も、過去の補正も、何ひとつ引き継がない。だからプロンプトの中で全部を言い切る必要がある。これをself-contained(自己完結)なプロンプトと呼ぶ。
+Cronジョブはここが一番のコツだ。Cronで実行されるとき、エージェントは**毎回新しい会話**で動く。前日のやり取りも、いつもの口調も、過去の補正も、会話としては引き継がない。だからプロンプトの中で全部を言い切る必要がある。これをself-contained(自己完結)なプロンプトと呼ぶ。
+
+:::message
+**2026年10月の再確認(Hermes v0.21.5+8509)**
+初版では「Cronは前回のことを何も覚えていない」前提で書いた。v2026.8.31のリリースノートによると、cronは永続メモリを読み書きするようになり、`continuity`を付けたジョブは前回の出力を引き継ぐ。プロンプトを書き切る作法は変わらない。そのうえで、前回と同じ話題を避けたいジョブには`--continuity`を足せる。
+
+`--continuity`が使えることは、`hermes cron edit --help`で確かめた。
+
+![hermes cron edit --helpの出力のうち、--continuityの行。実行ごとにジョブが前回の出力を見る(重複を除き、続きから進める)と書かれ、その下に解除用の--no-continuityがある](/images/hermes-vps/hermes-vps-09-recheck-cron-help.png)
+
+`morning-news`のIDを指定して付けた。`Continuity: on`と出れば設定できている。
+
+```bash
+hermes cron edit 18dd6b7a1580 --continuity
+```
+
+![hermes cron edit 18dd6b7a1580 --continuityの実行結果。Updated job: 18dd6b7a1580のあと、Name: morning-news、Schedule: 0 7 * * *、Continuity: on (each run sees the previous run's output)と表示されている](/images/hermes-vps/hermes-vps-09-recheck-continuity-set.png)
+
+設定した翌日、10月8日の朝7時の配信は、前日(10月7日)の配信と話題が重ならなかった。10月7日は「Mistral Large 4の公開プレビュー」「韓国の国産フロンティアモデルへの投資」など、10月8日は「Liquid AIの軽量な判断モデル」「OpenAIのAIが生んだ数学の成果」などだった。1回ぶんの比較なので、毎回必ず重ならないと保証するものではない。
+
+| 2026-10-07の朝ニュース(再開後に届いた分) | 2026-10-08の朝ニュース(continuityあり) |
+|---|---|
+| ![2026-10-07の朝ニュースがTelegramに届いた画面。Mistral Large 4の公開プレビュー、OpenAIの業務ソフト操作検証、韓国の国産フロンティアモデル投資、AtlassianとOpenAIの提携、X上の発表集中日の話題の5項目](/images/hermes-vps/hermes-vps-09-recheck-catchup-delivery.png) | ![2026-10-08の朝ニュースがTelegramに届いた画面。Liquid AIの軽量な判断モデル、AIが生んだ数学の成果、ChatGPTの図表機能、10代のChatGPT利用状況、10代向け安全機能への懸念の5項目](/images/hermes-vps/hermes-vps-09-recheck-next-morning.png) |
+:::
 
 ### ダメな例
 
@@ -424,6 +455,8 @@ hermes cron remove <job_id>       # 削除
 | Cronが指定時刻に動かない | (1)サイドバー下部「ゲートウェイ状態:実行中」を確認、(2)CRONペインで該当ジョブが`paused`になっていないか、(3)スケジュール欄のcron式が5フィールドになっているか、(4)ブラウザがcacheで古い表示の場合はリロード |
 | 結果が届かない | (1)プロンプトに「変化がなければ`[SILENT]`」と書いていてエージェントが`[SILENT]`を返した、(2)配信先のドロップダウンがローカルのままになっている。EDIT JOBモーダルで配信先をTelegramに直して再実行 |
 | 「過去の話の続き」を求める返事が来る | self-contained promptになっていない。EDIT JOBモーダルでプロンプトを書き直す(依頼書として全部書き切る) |
+| 毎回似た話題が届く | `--continuity`を付けると、前回の出力をジョブに見せたうえで「すでに伝えたことは繰り返さない」と指示するようになる。`hermes cron edit <ID> --continuity`で付ける。重複を機械的に取り除く仕組みではないので、似た話題が残ることはある |
+| 再開した直後に、古い日付の配信が1回届いた | 止めている間に取りこぼした回の分を、再開時に1回だけ実行する挙動。故障ではない |
 | Telegramに二重で届く | 同じジョブが重複登録されている可能性。CRONペインで確認し🗑削除アイコンで片方を削除 |
 | 返事が長すぎてTelegramで切れる | プロンプトに「全体で2000字以内」「項目は最大5件」など上限を明記する |
 | 「作成」(または「SAVE CHANGES」)ボタンが押せない | 必須欄(プロンプト・スケジュール)に空欄が残っている可能性(名前は任意)。モーダル上部の警告メッセージを確認 |
