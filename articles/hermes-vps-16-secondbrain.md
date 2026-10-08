@@ -532,13 +532,13 @@ cron化(raw/transcripts/が増えるたびに自動ingestする仕組み)は本�
 
 第16回完了で、Hermesは「貯まった作業履歴」を「整理されたセカンドブレイン」に変える仕組みを手に入れた。raw/transcripts/に置かれたmdが、llm-wikiによってentities/concepts/queriesの相互参照ページに昇華される。同じ問いに二度と最初から答えなくて済む状態だ。Memory(私のこと)・Vault knowledge(世界のこと)・state.db(自分の会話)・raw/transcripts(他AIの履歴)に、本回でentities/concepts/queries(整理済み教訓)が加わり、5層が役割分担で揃った。
 
-次の第17回(予定)は、ここで整理した知識を**どんな声・口調で読者に返すか**、Hermesの「文体(SOUL)」を扱う。同じ事実を返すにしても、固い参考書のように返すか、親しい先輩のように返すかで体験は別物になる。wikiが整った今、次は返答の口調を仕立てる段だ。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認してほしい。
+次の[第17回](https://zenn.dev/sora_biz/articles/hermes-vps-17-soul)は、Hermesが**どんな口調で答えるか**を決めるファイル(SOUL.md)を扱う。同じ質問でもTelegramとCLIで答え方がずれる状態から、どこから使っても共通の話し方の指示が入る状態にする。
 
 ---
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ | 第17回 口調をブレさせるな。Hermes Agentの話し方は実は変えられる(近日公開) |
+| [第15回](https://zenn.dev/sora_biz/articles/hermes-vps-15-import-ai-sessions) 記憶を捨てるな。Hermes AgentはClaude Codeの続きを引き継ぐ | [第17回](https://zenn.dev/sora_biz/articles/hermes-vps-17-soul) 口調をブレさせるな。Hermes Agentの話し方は実は変えられる |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

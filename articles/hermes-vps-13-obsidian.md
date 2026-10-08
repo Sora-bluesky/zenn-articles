@@ -134,7 +134,7 @@ Memoryは毎セッション開始時にfrozen snapshotで自動注入される�
 | Skills | 手順の定義。この回で使う`obsidian` skillは`~/.hermes/skills/note-taking/obsidian/SKILL.md`にあり、`search_files`/`read_file`/`write_file`/`patch`の4つのツールを使うと宣言している | 依頼の内容に合う手順が必要になったとき。この回では、Telegramで「Vaultに保存して」と頼むとHermesが`skill_view obsidian`を実行した | 第10回・第18回予定 |
 | Cron | 実行時刻・プロンプト・配信先のセット。第9回で作った`morning-news`は毎日7時0分、配信先はTelegram | 指定した時刻になったとき。依頼する人がいなくても動く | 第9回・第19回予定(Curator) |
 
-第12回(Memory)→第13回(Vault)→第14回予定(過去会話の検索)→第17回予定(人格)と並ぶ。本回は、第12回のMemoryとVaultで、入れるものを分ける話だ。
+第12回(Memory)→第13回(Vault)→[第14回](https://zenn.dev/sora_biz/articles/hermes-vps-14-session-search)(過去会話の検索)→[第17回](https://zenn.dev/sora_biz/articles/hermes-vps-17-soul)(話し方を決めるSOUL.md)と並ぶ。本回は、第12回のMemoryとVaultで、入れるものを分ける話だ。
 
 :::message
 「Memoryにすべて詰め込まなくていい」。私のこと(毎回使う前提)はMemoryに残し、長く残しておきたい情報はVaultに移す。この2つを分けると、毎回同じ説明をする回数が大きく減る。

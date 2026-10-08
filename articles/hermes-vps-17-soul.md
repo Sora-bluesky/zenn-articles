@@ -3,7 +3,7 @@ title: "【第17回】口調をブレさせるな。Hermes Agentの話し方は�
 emoji: "🗣️"
 type: "tech"
 topics: ["hermes", "ai", "llm", "claudecode", "個人開発"]
-published: false
+published: true
 ---
 
 :::message
@@ -312,7 +312,7 @@ systemctl --user restart hermes-gateway
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第16回 作業履歴からセカンドブレインを作る](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) | 第18回 使ったスキルを自分で書き直させる(近日公開) |
+| [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) 同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る | 第18回 使ったスキルを古いままにするな。Hermes Agentは自分でSKILL.mdを書き直す。(近日公開) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
