@@ -306,13 +306,13 @@ systemctl --user restart hermes-gateway
 - 同じ質問への答えは、書き換え前は敬語で、TelegramとCLIで挙げる理由が違った。書き換え後は常体になり、どちらも同じ結論になった
 - 定時配信でもSOUL.mdは実行のたびに読まれる。定時配信の口調はスキルの書式にも左右されるので、SOUL.mdだけで決まるとは言えない
 
-次の第18回は、話し方が決まったHermesに、使ったスキルを自分で書き直させる。スキルは第10回で扱った。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認してほしい。
+次の[第18回](https://zenn.dev/sora_biz/articles/hermes-vps-18-skill-rewrite)は、話し方が決まったHermesに、使ったスキルを自分で書き直させる。スキルは第10回で扱った。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認してほしい。
 
 ---
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) 同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る | 第18回 使ったスキルを古いままにするな。Hermes Agentは自分でSKILL.mdを書き直す。(近日公開) |
+| [第16回](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) 同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る | [第18回](https://zenn.dev/sora_biz/articles/hermes-vps-18-skill-rewrite) 使ったスキルを古いままにするな。Hermes Agentは自分でSKILL.mdを書き直す。 |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

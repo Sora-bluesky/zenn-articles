@@ -3,7 +3,7 @@ title: "【第18回】使ったスキルを古いままにするな。Hermes Age
 emoji: "🛠️"
 type: "tech"
 topics: ["hermes", "ai", "llm", "claudecode", "個人開発"]
-published: false
+published: true
 ---
 
 :::message
