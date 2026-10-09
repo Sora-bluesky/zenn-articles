@@ -33,7 +33,7 @@ ChatGPTもClaude CodeもCodexも、こちらが手順を教えれば賢く動く
 
 | 回 | 見出し |
 |----|--------|
-| 7 | [SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
+| 7 | [Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
 | 8 | [手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
 
 ### 第III部　定時実行・スキル・Web検索を足す

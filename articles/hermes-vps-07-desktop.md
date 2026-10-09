@@ -1,5 +1,5 @@
 ---
-title: "【第7回】SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる"
+title: "【第7回】Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）"
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "hermes", "desktop", "tailscale", "vps"]
@@ -28,11 +28,14 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [事前準備](#事前準備)
 - [VPS側で接続先のdashboardを常駐させる](#vps側で接続先のdashboardを常駐させる)
 - [自分のパソコンにHermes Desktopを入れる](#自分のパソコンにhermes-desktopを入れる)
-- [アプリが起動しないときの直し方](#アプリが起動しないときの直し方)
+  - [Microsoft Storeから入れる](#microsoft-storeから入れる)
+  - [すでにダウンロード版を入れている人へ](#すでにダウンロード版を入れている人へ)
 - [VPSのHermesにリモート接続する](#vpsのhermesにリモート接続する)
 - [Hermes Desktopの基本操作](#hermes-desktopの基本操作)
 - [どこから話しかけても同じ1体のエージェント](#どこから話しかけても同じ1体のエージェント)
 - [最終確認チェックリスト](#最終確認チェックリスト)
+- [Hermes Desktopをアンインストールするとき](#hermes-desktopをアンインストールするとき)
+- [アプリが起動しないときの直し方](#アプリが起動しないときの直し方)
 - [よくあるエラーと対処](#よくあるエラーと対処)
 - [コマンド早見表](#コマンド早見表)
 - [引用元と参考](#引用元と参考)
@@ -43,7 +46,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ただ、ここまでHermesに触れる窓口はずっとSSHのターミナル(黒い画面)のままだった。コマンドを打ち、コマンドを覚え、打ち間違えればやり直す。慣れればなんてことはないが、「黒い画面が苦手」という理由だけでAIエージェントから足が遠のく人は多い。
 
-使うのは、普段使いのWindowsノートPCに入れる公式デスクトップアプリ「Hermes Desktop」。2026-06-05のv0.16.0で正式リリースされたばかりのアプリだ。
+使うのは、普段使いのWindowsノートPCに入れる公式デスクトップアプリ「Hermes Desktop」。2026-06-05のv0.16.0で正式リリースされたアプリで、2026-10-08(米国時間)にMicrosoft Storeでの配信開始が告知された。この回ではStore版を入れる。
 
 大事なのは、別のAIを入れるわけではないこと。CLI・Hermes Desktop・Web Dashboardは、同じ1体のエージェントに繋ぐ別々の手段にすぎない。片方で設定したことは、もう片方にもそのまま出る。
 
@@ -60,7 +63,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - [第6回](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
 **第II部 デスクトップアプリとブラウザから操作する**
-- **第7回**(本記事) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
+- **第7回**(本記事) Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
 **第III部 定時実行・スキル・Web検索を足す**
@@ -88,7 +91,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | 操作手段 | SSHのターミナル(CLI)だけ | **パソコン側のHermes Desktop**(GUIアプリ)が加わる |
 | ファイルを渡す | パスを指定 | **チャットにドラッグ&ドロップ**・画像はコピペ |
 | 操作を探す | コマンドを覚える | **Ctrl+K**(MacではCmd+K)で検索 |
-| モデル切替 | `hermes model` | **status barのモデルピッカー**(数文字で検索) |
+| モデル切替 | `hermes model` | **入力欄の中のモデルピッカー**(マイクの左) |
 | 接続経路 | なし | Hermes Desktop → Tailscale → VPSの`hermes dashboard` |
 | 同じ1体の実証 | (意識しない) | **Telegram/Discordの会話がDesktopにも並ぶ** |
 
@@ -100,14 +103,14 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ### v0.16.0「The Surface Release」で何が変わったか
 
-Hermes Desktopは2026-06-05のv0.16.0で正式リリースされた、macOS/Windows/Linux対応のネイティブアプリだ。「Surface」の名のとおり、これまでターミナルの中で動いていたHermesが、普通のアプリとして使えるようになった回といえる。アプリ内での自己更新・ファイルのドラッグ&ドロップ・Ctrl+Kコマンドパレット・status barでのモデル切替などが入った。
+Hermes Desktopは2026-06-05のv0.16.0で正式リリースされた、macOS/Windows/Linux対応のネイティブアプリだ。「Surface」の名のとおり、これまでターミナルの中で動いていたHermesが、普通のアプリとして使えるようになった回といえる。アプリ内での自己更新(ダウンロード版)・ファイルのドラッグ&ドロップ・Ctrl+Kコマンドパレット・モデル切替などが入った。
 
 ### この回で出てくる用語
 
 | 用語 | 意味 |
 |---|---|
 | 自分のパソコン | 普段使いのWindowsノートPC。Hermes Desktopを動かし、VPSへ繋ぐ側。VPS・自宅GPU機とは別のマシン |
-| Hermes Desktop | 自分のパソコンで動く公式デスクトップアプリ。CLIと同じエージェント核を使う(同じ設定・セッション・スキル・記憶) |
+| Hermes Desktop | 自分のパソコンで動く公式デスクトップアプリ。Microsoft Storeでは「Hermes Agent」の名前で配布されている。CLIと同じエージェント核を使う(同じ設定・セッション・スキル・記憶) |
 | Web Dashboard | `hermes dashboard`で立ち上がるブラウザ用の管理画面。この回ではDesktopの接続先として使い、管理機能の詳細は第8回で扱う |
 | リモートバックエンド | Hermes Desktopが繋ぐ接続先。実体はVPS上で動く`hermes dashboard`プロセスそのもの |
 | 認証ゲート | dashboardを外向きアドレスに開くと自動でかかるログイン要求。ユーザー名/パスワードで通す |
@@ -140,7 +143,7 @@ ssh admin@hermes-vps
 
 ```bash
 hermes --version; echo; systemctl --user status hermes-gateway --no-pager | head -8
-# → v0.16系 + Active: active (running) が出ればOK
+# → バージョン番号と Active: active (running) が出ればOK
 
 tailscale ip -4   # VPS上で実行。出たTailscale IP(100.x.x.x)を控える(あとで自分のパソコンのDesktopの接続先になる)
 ```
@@ -149,7 +152,9 @@ tailscale ip -4   # VPS上で実行。出たTailscale IP(100.x.x.x)を控える(
 `--no-pager`と`head -8`を付けているのは、素の`systemctl status`がログ末尾までスクロール表示し、そこにホスト名(グローバルIP)が出てしまうため。Active行までに絞って、画面に余計な情報を出さない。
 :::
 
-![VPSでhermes versionがv0.16系、hermes-gatewayがactive (running)を示す画面](/images/hermes-vps/hermes-vps-07-desktop-01-version-gateway.png)
+![VPSでhermesのバージョン番号が出て、hermes-gatewayがactive (running)を示す画面](/images/hermes-vps/hermes-vps-07-desktop-01-version-gateway.png)
+
+自分のパソコンに入れるStore版のHermes Agentには、Windows 11 22H2以降が必要だ(出典:[公式windows-native](https://hermes-agent.nousresearch.com/docs/user-guide/windows-native))。この回の画面は、撮った時期が2つに分かれる。Store版の入れ方・初回設定・接続・アンインストールの画面は、Windows 11の1台で2026-10-09に実際に動かして撮った。VPS側の準備(desktop-01〜09)と、基本操作・Telegramの画面(desktop-19〜24)は、v0.16.0のころ(2026-06)の画面だ。
 
 第7回の手順は、ここまでで第6回までを完了している(VPSにHermesが常駐し、Telegram/Discordが繋がっている)ことを前提にする。自分のパソコンとVPSが同じtailnetにいることも確認しておく(パソコン側で`tailscale status`にVPSが出る)。
 
@@ -161,7 +166,7 @@ Hermes DesktopがVPSに繋ぐには、VPS側で`hermes dashboard`が動いてい
 
 ### 管理画面の部品が入っているか確認する
 
-v0.16.0のHermesは、dashboardに必要な部品(FastAPI/Uvicorn等)を標準で同梱している。まず入っているかを確認する。
+いまのHermesは、dashboardに必要な部品(FastAPI/Uvicorn等)を標準で同梱している。まず入っているかを確認する。
 
 ```bash
 hermes dashboard --help   # usage(使い方)が表示されれば、部品は入っている
@@ -322,44 +327,337 @@ curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_provid
 
 ## 自分のパソコンにHermes Desktopを入れる
 
-出典:[公式desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop) / [installation](https://hermes-agent.nousresearch.com/docs/getting-started/installation)
+出典:[Nous Researchの告知](https://x.com/NousResearch/status/2108231536772596193) / [公式windows-native](https://hermes-agent.nousresearch.com/docs/user-guide/windows-native) / [公式updating](https://hermes-agent.nousresearch.com/docs/getting-started/updating)
 
-ここからは自分のパソコン(普段使いのWindowsノートPC)での作業。公式サイトからインストーラを落として実行する。**管理者権限は不要**だ。
+ここからは自分のパソコン(普段使いのWindowsノートPC)での作業。この節が終わると、Hermes Desktopが入り、最初の設定の会話まで済んだ状態になる。VPSへの接続は次の「VPSのHermesにリモート接続する」で行うので、この節ではまだ繋がない。
 
-```text
-ダウンロード: https://hermes-agent.nousresearch.com/desktop
-→ インストーラを実行(管理者権限の確認は出ない)
-→ インストール先は %LOCALAPPDATA%\hermes\、hermesがPATHに追加される
-```
+### Microsoft Storeから入れる
 
-ダウンロードページで、自分のOS(Windows)向けのボタンを押す。
+下のStoreのページを開くか、Microsoft Storeアプリの検索欄に「Hermes Agent」と入れる。提供元が「Nous Research Inc.」のページを開いて「入手」を押す。
 
-![Hermes Desktopのダウンロードページ。どのボタンを押すか分かる画面](/images/hermes-vps/hermes-vps-07-desktop-10-download.png)
+https://apps.microsoft.com/detail/9pmxk8czc7kr
 
-インストーラを起動する。管理者権限の確認(UAC)は出ない。
+![Microsoft StoreのHermes Agentのページ。提供元がNous Research Inc.で、青い「入手」ボタンが見える](/images/hermes-vps/hermes-vps-07-store-page.png)
 
-![インストーラの開始画面。Install Hermesのボタンとインストール先が見える](/images/hermes-vps/hermes-vps-07-desktop-11-install-start.png)
+約2.41GBのダウンロードが始まる(画面の表示のまま)。この回の環境で1回だけ測った値では、完了まで約10分だった。進捗が動いていれば待つ。
 
-ファイルの展開が進む。
+![インストール中のHermes Agentのページ。進捗が5%で、28.06 MB / 2.41 GBと表示されている](/images/hermes-vps/hermes-vps-07-store-installing.png)
 
-![インストール進捗の画面。進捗バーが動いている](/images/hermes-vps/hermes-vps-07-desktop-12-install-progress.png)
+終わると、「入手」だったボタンが「開く」に変わる。
 
-完了すると、アプリを起動できる状態になる。
+![インストールが終わり、ボタンが「開く」に変わったHermes Agentのページ](/images/hermes-vps/hermes-vps-07-store-installed.png)
 
-![インストール完了の画面。Hermes is Ready / Launch Hermesが表示されている](/images/hermes-vps/hermes-vps-07-desktop-13-install-done.png)
+「開く」を押すか、スタートメニューの「Hermes Agent」から起動する。
 
-起動すると、最初の画面(オンボーディングまたはチャット)が出る。
+はじめて開くと、英語で「Hi, I'm Hermes.」と話しかけてくる最初の設定のチャットが出る。ここからは、画面の質問に1問ずつ答える。この回の環境では、モデルのプロバイダやAPIキーは聞かれなかった。聞かれたら「あとで選ぶ」(Choose provider later)でよい。この回で自分のパソコンにキーを置く必要はない。
 
-![Hermes Desktopの初回起動画面。アプリのトップと左サイドバー](/images/hermes-vps/hermes-vps-07-desktop-14-first-launch.png)
+画面が英語のため、この回の画像には黄色のラベルで日本語の意味を足してある。聞かれた順番は次のとおりだ。
+
+| 順番 | 画面の質問 | 意味 | この回の答え |
+|---|---|---|---|
+| 1 | What should I call you? | 何と呼べばいいか | 好きな名前を入れて「確定して続行」 |
+| 2 | Which colour? | アクセントカラー(アプリの差し色)をどれにするか | 好きな色を選んで「確定して続行」(色を足す「+」もある) |
+| 3 | Which of these do you use? | 連携するアプリはどれを使っているか | 飛ばす |
+| 4 | Want any of these? | 入れたいプラグインはあるか | 飛ばす |
+| 5 | Which layout? | どの画面構成にするか(Basicは「Hermesと話す用」、Eliteは「開発者向け」) | Basic |
+| 6 | Want a look around first? | 先に一通り見て回るか(tourの画面には「その他(回答を入力)」もある) | Skip, let's build something |
+| 7 | Know what you'd like it to make? | 作りたいものは決まっているか | 飛ばす |
+| 8 | 最初に何を作りましょうか? | 7問目を飛ばしたあと、スキップ済みの表示で出る | そのまま |
+| 9 | 最初にPCの健康診断を… | PCの健康診断の提案 | 飛ばす |
+
+はじめに、最初の画面。1問目で名前を聞かれる。「スキップ」を押すと質問を飛ばせ、右下の「Skip setup」を押すと最初の設定そのものを飛ばせる。
+
+![Store版をはじめて開いた画面。「Hi, I'm Hermes.」のあと、1問目「What should I call you?」で名前を聞かれている](/images/hermes-vps/hermes-vps-07-store-fresh-first-launch.png)
+
+名前を入れて「確定して続行」を押す。
+
+![名前の入力欄にそらと入れ、「確定して続行」を押そうとしている画面。赤枠で入力欄とボタンを示している](/images/hermes-vps/hermes-vps-07-store-fresh-setup-name.png)
+
+2問目はアクセントカラー。8色の丸から1つ選ぶ。
+
+![「Which colour?」でアクセントカラーを選ぶ画面。8色の丸のうちシアンが赤枠で選ばれている](/images/hermes-vps/hermes-vps-07-store-fresh-setup-colour.png)
+
+3問目は連携するアプリ。Slack・Notion・Linearなどが並ぶ。後でいつでもできるので、ここでは飛ばす。
+
+![「Which of these do you use?」で連携するアプリを選ぶ画面。Slack・Notion・Linear・Jiraなどが並んでいる](/images/hermes-vps/hermes-vps-07-store-fresh-setup-apps.png)
+
+4問目はプラグイン。3問目をスキップしたあとのこの画面に、「アプリの接続には無料のNousアカウントが必要で、後でいつでもできる」という表示が出る。アカウントが要るのは3問目のアプリの接続で、プラグインではない。画面には「選んでも記録するだけ」とも出る。ここも飛ばす。
+
+![「Want any of these?」でプラグインを選ぶ画面。Blender・NVIDIA App・NVIDIA Broadcastが並び、3問目をスキップした旨の案内も見える](/images/hermes-vps/hermes-vps-07-store-fresh-setup-plugins.png)
+
+5問目は画面構成。「Basic」(Hermesと話す用)と「Elite」(開発者向け。ターミナル・ファイル・差分を並べる)から選ぶ。この回はBasicにした。
+
+![「Which layout?」で画面構成を選ぶ画面。左のBasicが選ばれ、右にEliteが並んでいる](/images/hermes-vps/hermes-vps-07-store-fresh-setup-layout.png)
+
+6問目は、先に一通り見て回るか。左から「Quick tour」「Show me everything」「Skip, let's build something」の3択で、この回は右端の「Skip, let's build something」を選んだ。
+
+![「Want a look around first?」の画面。Quick tour・Show me everything・Skip, let's build somethingの3択があり、右端が選ばれている](/images/hermes-vps/hermes-vps-07-store-fresh-setup-tour.png)
+
+7問目は、作りたいものが決まっているか。そのあとに「最初に何を作りましょうか?」(スキップ済みで表示)が出て、続けて「最初にPCの健康診断を…」という提案が出る。この回は飛ばした。
+
+![「Know what you'd like it to make?」に続いて、PCの健康診断を提案される画面](/images/hermes-vps/hermes-vps-07-store-fresh-setup-make.png)
+
+最後に「It's all yours, and this chat stays here if you want a hand.」と出て、最初の設定は終わる。手を借りたいときは、このチャットがそのまま残る。
+
+![最初の設定の最後の画面。スキップした質問が並び、末尾に「It's all yours, and this chat stays here if you want a hand.」と出ている](/images/hermes-vps/hermes-vps-07-store-fresh-setup-done.png)
+
+Store版の更新は、Microsoft Storeから届く。なお`hermes update`は、第4回で入れたVPS側の本体を更新するコマンドで、VPSで実行する。自分のパソコンで打っても、Store版は更新されない(公式windows-nativeによると、同梱版の`hermes update`はパッケージに対してgitを走らせない)。Store版は、Microsoft Storeの更新で別に最新にする。
+
+### すでにダウンロード版を入れている人へ
 
 :::message
-CLIだけ先に入れている場合は、ターミナルで`hermes desktop`でも起動できる(初回はElectronアプリのビルドが走るので時間がかかる)。v0.16.0からはアプリ内で自己更新できるので、一度入れれば更新はアプリ任せにできる。
+この囲みは、第7回の旧手順(公式サイトのインストーラ)で入れた人向けだ。はじめて入れる人は読み飛ばしてよい。
+
+古い版を先に消してはいけない。Store版が設定を引き継がなかったとき、戻せなくなる。順番は、戻らないデータをバックアップする、古い版を残したままStore版を入れる、引き継ぎと接続を画面で確かめる、問題がなければ最後に古い版を外す、の順だ。
+
+バックアップは、再ダウンロードで戻らないものだけ取る。`%LOCALAPPDATA%\hermes`の大半はモデル・プログラム本体・キャッシュで、入れ直せば戻る。戻らない設定・会話・スキルなどだけを写す。Hermes Desktopを閉じてから、PowerShellで次を実行する。
+
+```powershell
+robocopy "$env:LOCALAPPDATA\hermes" "$env:USERPROFILE\hermes-backup" /E /XD models hermes-agent installs tools cache runtimes bin bootstrap-cache logs /R:1 /W:1
+```
+
+古い版を残したままStore版を入れて確かめると、次のことが分かった。
+
+- Store版は`%LOCALAPPDATA%\hermes`をそのまま読み書きする。ダウンロード版のボット・会話・設定が、Store版の最初の画面から見えた。最初の設定の会話は出なかった。
+- ダウンロード版で登録したVPSの接続先は、Store版の「保存済みの接続」に残っていた。
+- 接続先と、ローカルかリモートかの選択は、データのフォルダではなくHermes Desktopのアプリ自身が覚えている。データの置き場所を空のフォルダに切り替えても、接続先とサインインの状態は残った。
+- そのため、データのフォルダのバックアップには、接続先の設定は入っていない。
+- Store版を入れると、ターミナルで`hermes`と打ったときにStore版の入口(`Microsoft\WindowsApps\hermes.exe`)が先に呼ばれるようになった。確かめるには`Get-Command hermes -All`を使う。
+- ダウンロード版の`hermes uninstall`は、「Uninstall Complete!」と出ても「Could not fully remove」の警告が出ていれば、プログラム本体のフォルダが残る。この場合は手動でアンインストールが必要だ。古いデスクトップのショートカット「Hermes」も残る。手順は[Hermes Desktopをアンインストールするとき](#hermes-desktopをアンインストールするとき)にまとめた。
+
+![ダウンロード版が入っている自分のパソコンでStore版を開いた画面。ボット一覧に既存のボットが見える](/images/hermes-vps/hermes-vps-07-store-first-launch.png)
+
+![Get-Command hermes -Allの出力。1行目がStore版の入口で、2行目と3行目がダウンロード版の入口](/images/hermes-vps/hermes-vps-07-store-coexist.png)
 :::
+
+## VPSのHermesにリモート接続する
+
+出典:[公式desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop)「In the app」
+
+インストールしたHermes Desktopを起動すると、最初は自分のパソコン上のローカルバックエンドで立ち上がる。ただし自分のパソコンには**モデルの鍵がない**ので、プロバイダを設定していなければ、このままではモデルを使えない(ダウンロード版では、この状態でチャットするとモデル認証エラーになった)。
+
+だから最初にやるのは、VPSに常駐させた`hermes dashboard`に繋ぎ替えること。Hermes本体はVPSで動かし、自分のパソコンには操作用のアプリを置く構成にする。繋ぎ替えれば、モデルの鍵もVPS側のものが使われる。
+
+設定画面は、右上の歯車アイコンから開く。
+
+### リモートURLを入れてサインインする
+
+| 順番 | 操作 | 入力 |
+|---|---|---|
+| 1 | 設定を開く | 設定 → ゲートウェイ → このウィンドウ |
+| 2 | 接続方式を選ぶ | 「リモートゲートウェイ」 |
+| 3 | リモートURL | `http://<tailscale-ip>:9119`(VPSのTailscale IP) |
+| 4 | サインイン | 認証の「サインイン」ボタン → 別ウィンドウで`admin`とパスワードを入力 |
+| 5 | 確定 | 「保存して再接続」 |
+
+接続方式は4つある。「ローカルゲートウェイ」(自分のパソコンの中で動かす。既定)、「Hermes Cloud」、「リモートゲートウェイ」、「SSH で接続」だ。VPSには「リモートゲートウェイ」を選ぶ。
+
+![設定のゲートウェイ配下の「このウィンドウ」で、接続方式の4つが並んでいる画面。ローカルゲートウェイが選ばれている](/images/hermes-vps/hermes-vps-07-store-connection-mode.png)
+
+:::message alert
+`<tailscale-ip>`はそのまま打たない。山かっこごと、VPSの実際のTailscale IP(`100.x.x.x`の形)に置き換える。例えばTailscale IPが`100.101.102.103`なら、`http://100.101.102.103:9119`と入れる。
+:::
+
+パスワードは、先ほど1Passwordに保存したdashboardのパスワードをここで呼び出して貼り付ける。長いランダム文字列なので手打ちしない。
+
+「リモートゲートウェイ」を選ぶと、「リモートURL」の欄が出る。VPSのURLを入れる。下の画像は、サインインを済ませたあとで撮っているため、認証が「サインイン済み」になっている。はじめて繋ぐ人は、ここが「サインイン」ボタンになっている。
+
+![「リモートゲートウェイ」を選び、リモートURLを入れた画面。赤枠で、左のゲートウェイ → このウィンドウ、リモートゲートウェイ、リモートURL、「保存して再接続」ボタンを示している](/images/hermes-vps/hermes-vps-07-store-fresh-remote-url.png)
+
+認証の「サインイン」を押すと、別ウィンドウ「Sign in — Hermes Agent」が開く。USERNAMEに`admin`、PASSWORDに1Passwordのパスワードを入れて「SIGN IN」を押す。パスワードは、この回の[生成したパスワードを1Passwordにも保存する](#生成したパスワードを1passwordにも保存する)で保存した「Hermes VPS - dashboard (Desktop/Web)」のものだ。1Passwordの使い方は[第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password)で説明している。下部の「PUBLIC BIND · AUTH REQUIRED」は、外から届く設定なのでサインインが必要だという表示だ。
+
+![別ウィンドウ「Sign in — Hermes Agent」。USERNAMEとPASSWORDの入力欄と「SIGN IN」ボタンが見え、各欄に日本語のラベルが添えてある](/images/hermes-vps/hermes-vps-07-store-fresh-signin.png)
+
+:::message alert
+サインインしたら、最後に必ず「保存して再接続」を押す。これを押さないとDesktopは自分のパソコン上のローカルのままでVPSに切り替わらない。切り替わったかどうかは、次の「接続できたことを確認する」の2つの目印で確かめる。
+:::
+
+#### OAuthとユーザー名/パスワードの違い
+
+Hermes Desktopは2つの認証方式に対応する。
+
+- **ユーザー名/パスワード**:TailscaleやLANなど信頼できるネットワーク内向け。本シリーズはこれ(Tailscale前提)。インターネットにそのまま晒す用途では使わない。
+- **OAuth**(Nous Portal等):VPSを公開ホストとして晒す場合向け。
+
+どちらも`--insecure`(認証なし)とは違う。本シリーズはTailscale+ユーザー名/パスワードで閉じる。
+
+### 接続できたことを確認する
+
+接続が成功すると、Desktopの中身がVPSのHermesに切り替わる。成功の目印は、設定画面を閉じてメイン画面に戻ったとき、左サイドバーにVPSの会話が並ぶことだ。VPSに届いているかだけを確かめたいときは、次の節の「Test」を使う。
+
+VPSにつなぐと、表示が英語に変わった。
+
+![VPSに繋がったあとのメイン画面。左サイドバーにVPS側の会話が並び、表示が英語になっている](/images/hermes-vps/hermes-vps-07-store-fresh-connected.png)
+
+### 保存済みの接続とTest
+
+一度繋いだVPSは、設定 → ゲートウェイ → 「保存済みの接続」に残る。ここには、自分のパソコン自身(This device。Current・Primaryの印が付く)と、保存したリモートゲートウェイが並ぶ。各行の「Test」を押すと、その接続先に届くかを確かめられる。
+
+![設定の「保存済みの接続」。This deviceとリモートゲートウェイが並び、各行にTestボタンがある。「Make primary」「Add connection」「Update all instances」のボタンも見える](/images/hermes-vps/hermes-vps-07-store-saved-connections.png)
+
+VPSの行の「Test」を押すと、右下に「Reachable」の通知が出て、しばらくすると消える。届いているという意味だ。
+
+![VPSの行の「Test」を押した直後の画面。右下に「Reachable」の通知が出ている。赤枠でゲートウェイ → 保存済みの接続、Testボタン、通知を示している](/images/hermes-vps/hermes-vps-07-store-test-reachable.png)
+
+「Make primary」は、保存済みの接続の行にあるボタンで、その接続をPrimaryにする。この回では押さない。
+
+起動時にどのゲートウェイで開くかは、別のトグル「At startup, return to Sessions on the last-used gateway」(起動時に、最後に使ったゲートウェイのSessionsへ戻る)で決まる。画面の説明は「When off, Sessions opens on the Primary gateway.」(オフのときは、Primaryのゲートウェイで開く)だ。
+
+:::message
+**この先の使い方**:Hermes Desktopは、複数のprofile(担当)を1つのウィンドウで同時に動かせる。例えば「普段使い用」「Zenn原稿の編集者」「VPS運用担当」のように分ける。今回は「将来こう分けられる」という入口を見ておくだけで十分。本格的な役割分担は後の回で扱う。
+:::
+
+## Hermes Desktopの基本操作
+
+VPSに繋がり、チャットが通るようになった。設定画面を閉じてメイン画面に戻ると、左サイドバーにVPS側の会話が並んでいるのが見える。第4〜6回でTelegramやDiscordから送った会話など、VPSのHermesが持っているデータがそのまま見える。
+
+ここからはDesktopアプリそのものの触り方を押さえる。ここがDesktopで一番厚い部分で、「ターミナルのコマンドを覚える」から「アプリを普通に使う」へ変わる。
+
+### チャットする
+
+中央のチャット欄に書いて送るだけ。応答はリアルタイムに流れ(streaming)、左サイドバーに会話(session)が一覧で残る。過去の会話は検索・再開できる。
+
+![チャットで送信すると応答がstreamingで返り、左サイドバーに会話一覧が見える画面。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-19-chat.png)
+
+### ファイルを渡す(ドラッグ&ドロップ・画像コピペ)
+
+チャット欄にファイルを**ドラッグ&ドロップ**するだけで添付できる。スクリーンショットは**クリップボードから直接貼り付け**(Ctrl+V)できる。「ファイルパスを指定する」必要がなくなった。
+
+![PDFやテキストをチャット欄にドラッグ&ドロップして添付しているところ。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-20a-drag-drop.png)
+
+![スクリーンショットをコピーしてCtrl+Vでチャット欄に貼り付けたところ。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-20b-paste-image.png)
+
+### 迷ったらCtrl+K(コマンドパレット)
+
+どこを押せばいいか分からなくなったら**Ctrl+K**(Macでは`Cmd+K`)。検索窓に「model」「skill」「new chat」のように打つと操作が見つかる。ターミナルのコマンドを覚えなくてよい道案内だ。
+
+![Ctrl+Kで開いたコマンドパレット。検索窓とGO TO/コマンド一覧が見える状態。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-21-command-palette.png)
+
+### モデルを切り替える
+
+今の版では、モデルピッカーは入力欄の中、マイクのすぐ左にある(公式desktopの説明)。下の画像はv0.16.0のころの画面で、当時は画面下のstatus barにあり、**あいまい検索**(fuzzy search)で数文字打てば候補が出た。モデル名を全部覚えなくてよい。いつも最強モデルにせず、相談・文章・調査で場面ごとに切り替えるのがコツ。
+
+![v0.16.0のころの画面。status barのモデルピッカー。あいまい検索で数文字打って候補が出ている。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-22-model-picker.png)
+
+:::message
+**覚えておくと安心、`/undo`**:変な方向に頼んでしまったら`/undo`で直前のN回の会話を巻き戻せる。ただし会話を戻すだけで、すでに送信したメール・削除したファイル・外部サービスで実行された操作まで取り消すわけではない。会話のやり直しと、外部操作の取り消しは別物だと覚えておく。
+:::
+
+## どこから話しかけても同じ1体のエージェント
+
+この回の山場。Hermes Desktopの左サイドバーには、Desktopで送った会話だけでなく、**前の回で連携したTelegramやDiscordで送った会話も、同じ一覧に並ぶ**。
+
+Telegram・Discord・ターミナル(SSH)・Desktopのどの窓から話しても、中にいるのは同じ1体・同じ記憶だ。これがHermesの仕組みで、「似たアプリを4つ別々に使う」のとは違う。
+
+確かめ方は簡単。普段使っているTelegram(またはDiscord)で、Hermesに一言送ってみる。
+
+```text
+(Telegramで) 接続テスト。いま何時か教えて。
+```
+
+![Telegramでhermesに「接続テスト。いま何時か教えて」と送り、返事が返ってきた画面](/images/hermes-vps/hermes-vps-07-desktop-23-telegram-reply.png)
+
+自分のパソコンのHermes Desktopに戻ると、いま送ったTelegramの会話が左サイドバーの一覧に現れる。逆にDesktopで新しい会話を始めれば、それも一覧に加わる。どこから話しかけても、受け取っているのは同じ1体だ。
+
+![自分のパソコンのHermes Desktopの左サイドバーに、いま送ったTelegram/Discordの会話が並んでいる画面。同じエージェントである実証。対象の会話以外のセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-24-sidebar-sync.png)
+
+:::message
+ターミナル(SSHで操作してきた黒い画面)もその1つだ。第1〜6回で動かしてきたVPS上のHermesと、Telegram・Discord・Desktopは、全部同じ1体の別の入口にすぎない。黒い画面だけに閉じ込められず、用途に応じて入口を選べるのが強みだ。
+:::
+
+## 最終確認チェックリスト
+
+VPSのHermesを、黒い画面・スマホ(Telegram/Discord)・自分のパソコンのアプリの3つの窓から、用途に応じて使い分けられる状態になった。その内訳が次の一覧だ。
+
+- [ ] VPSで`hermes dashboard`が認証つき・Tailscale IP bindでsystemd常駐している
+- [ ] `/api/status`が`auth_required: true`と`["basic"]`を返す
+- [ ] Microsoft Storeから「Hermes Agent」が入り、最初の設定の会話を終えて起動する
+- [ ] チャット・ドラッグ&ドロップ・Ctrl+K・モデル切替を一通り触った
+- [ ] 「リモートゲートウェイ」にVPSのURLを入れ、ユーザー名/パスワードでサインインして「保存して再接続」するとVPSに繋がる
+- [ ] 「保存済みの接続」でVPSの行の「Test」を押すと「Reachable」と出る
+- [ ] Telegram/Discordで送った会話が、Desktopの左サイドバーにも出る(同じエージェントの実証)
+
+---
+
+| ← 前の回 | 次の回 → |
+|---|---|
+| [第6回 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) | [第8回 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
+
+📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
+
+## Hermes Desktopをアンインストールするとき
+
+自分のパソコンからHermes Desktopを外す方法を、Store版とダウンロード版に分けて書く。この節が終わると、不要になった版が消え、残したい版だけが動いている状態になる。
+
+### Store版
+
+スタートメニューのアプリ一覧で「Hermes Agent」を右クリックし、「アンインストール」を選ぶ。Windowsの設定 → アプリ → インストール済みアプリからでも消せる。Store版を消したあとに、`%LOCALAPPDATA%\hermes`の中のデータが残るかどうかは、この回では確かめていない。
+
+![スタートメニューのアプリ一覧で「Hermes Agent」を右クリックし、「アンインストール」が赤枠で示されている画面](/images/hermes-vps/hermes-vps-07-store-uninstall-store-app.png)
+
+### ダウンロード版
+
+ダウンロード版は、次のコマンドで外す。設定と会話のデータは残す形で外す。先にStore版のウィンドウを閉じておく。
+
+はじめに、消えるものと残るものを`--dry-run`で見る。何も変更しない。
+
+```powershell
+& "$env:LOCALAPPDATA\hermes\hermes-agent\venv\Scripts\hermes.exe" uninstall --dry-run
+```
+
+![uninstall --dry-runの出力。「Dry run: no files, services, or environment entries will be changed.」のあと、消すものと残すものが並んでいる](/images/hermes-vps/hermes-vps-07-store-uninstall-dry-run.png)
+
+出力の行は、次の意味だ。
+
+| 画面の行 | 意味 |
+|---|---|
+| Dry run: no files, services, or environment entries will be changed. | 予行なので、ファイル・サービス・環境変数は何も変えない |
+| Gateway services and standalone gateway processes | ゲートウェイのサービスと、単独で動いているゲートウェイのプロセス(消す) |
+| Hermes PATH entries from shell configs / Windows User PATH | シェルの設定とWindowsのユーザーPATHにあるHermesの行(消す) |
+| Hermes wrapper scripts and Hermes-managed node/npm/npx symlinks | 入口のスクリプトと、Hermesが置いたnode・npm・npxへのリンク(消す) |
+| Desktop Chat GUI artifacts | 古いデスクトップアプリの部品(消す) |
+| Code checkout: ...\hermes\hermes-agent | プログラム本体のフォルダ(消す) |
+| Keep Hermes config/data: ...\hermes | 設定とデータ(残す) |
+| Keep desktop app data: ...\Roaming\Hermes | デスクトップアプリのデータ(残す) |
+
+確認できたら、実際に外す。
+
+```powershell
+& "$env:LOCALAPPDATA\hermes\hermes-agent\venv\Scripts\hermes.exe" uninstall
+```
+
+選択肢が3つ出る。「1) Keep data」(プログラムだけ消し、設定・会話・ログは残す)、「2) Full uninstall」(データも全部消す)、「3) Cancel」(やめる)だ。1を選び、確認の`yes`を打つ。2は選ばない。
+
+![uninstallの選択画面。1を選び、確認で「yes」と打ったところ。赤枠で「1) Keep data」、入力した1、yesを示している](/images/hermes-vps/hermes-vps-07-store-uninstall-confirm.png)
+
+実行すると、削除の経過が流れる。実際に動かした環境では、途中で「Could not fully remove」の警告が出た。末尾には「Uninstall Complete!」と、設定とデータを残した旨が出ている。警告が出ているときは、プログラム本体のフォルダが残っており、手動でアンインストールが必要だ。
+
+![uninstallの実行結果。「Could not fully remove」の警告と「You may need to manually remove it」が出たあと、「Uninstall Complete!」と、設定とデータを保持した旨が表示されている](/images/hermes-vps/hermes-vps-07-store-uninstall-result.png)
+
+手動で消すには、次のコマンドでプログラム本体のフォルダを削除する。
+
+```powershell
+Remove-Item -LiteralPath "$env:LOCALAPPDATA\hermes\hermes-agent" -Recurse -Force
+```
+
+古いデスクトップのショートカット「Hermes」も残る。スタートメニュー(`%APPDATA%\Microsoft\Windows\Start Menu\Programs\Hermes.lnk`)とデスクトップに残り、Store版の「Hermes Agent」と2つ並んで見える。リンク先の`Hermes.exe`はもう無いので、どちらも右クリックして削除する。`uninstall`の出力は「No packaged desktop app found in standard locations」で、ショートカットは対象外だった。
+
+最後に、結果を確かめる。
+
+```powershell
+Get-Command hermes -All | Format-Table CommandType, Source
+Test-Path "$env:LOCALAPPDATA\hermes\hermes-agent"
+Test-Path "$env:LOCALAPPDATA\hermes\config.yaml"
+```
+
+1行目でStore版(`Microsoft\WindowsApps\hermes.exe`)だけが出て、2行目が`False`(プログラム本体は消えた)、3行目が`True`(設定は残った)なら成功だ。
+
+![確認コマンドの出力。hermesはMicrosoft\WindowsAppsのStore版だけが出て、hermes-agentフォルダはFalse、config.yamlはTrueになっている](/images/hermes-vps/hermes-vps-07-store-uninstall-check.png)
 
 ## アプリが起動しないときの直し方
 
 :::message
-ここは起動でつまずいた人向けの章。問題なく起動できた人は、読み飛ばして次へ進んでよい。
+この節は、公式サイトのインストーラで入れたダウンロード版で起きた話だ。Store版で同じ症状が出るかは確かめていない。問題なく起動できた人は、読み飛ばして次へ進んでよい。
 :::
 
 インストールは完了したのに、アプリが起動しない。私もこれに当たった。ダブルクリックしてもウィンドウが出てこない。ChromeやEdgeは普通に開くのに、Hermes Desktopだけが反応しない。
@@ -400,186 +698,18 @@ issue #38216の報告者が試した結果はこうだ。
 `--no-sandbox`が切るのは、あくまでHermes Desktopの画面描画プロセスのサンドボックス機能だけ。第4回で設定したエージェントのコマンド実行(Dockerコンテナ隔離)とは別の話で、エージェント側の安全対策は何も変わらない。とはいえブラウザ由来の保護を1つ外すのは事実なので、最終的にはGPUドライバを最新に更新して、`--no-sandbox`なしで起動できる状態を目指すのがよい。
 :::
 
-## VPSのHermesにリモート接続する
-
-出典:[公式desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop)「In the app」
-
-インストールしたHermes Desktopを起動すると、最初は自分のパソコン上のローカルバックエンドで立ち上がる。ただし自分のパソコンには**モデルの鍵がない**ので、このままチャットしてもモデル認証エラーになる。
-
-だから最初にやるのは、VPSに常駐させた`hermes dashboard`に繋ぎ替えること。Hermes本体はVPSで動かし、自分のパソコンには操作用のアプリを置く構成にする。繋ぎ替えれば、モデルの鍵もVPS側のものが使われ、チャットが通るようになる。
-
-:::message
-2026-07末の更新で、初回起動時に「ローカルにインストールするか、既存のHermesに接続するか」を選ぶ画面が先に出るようになった。「Connect to existing Hermes」を選べば、この節の繋ぎ替えを初回画面から直接始められる。入れる内容は下と同じで、Remote URLとログイン情報だ。あわせてサインインの方式も変わり、アプリ内の画面ではなく普段使いのブラウザが開いて、そこでログインしてアプリに戻る流れになった。画面の見た目が本文のスクショと違っても、入力する値は同じだ。
-:::
-
-設定画面は、右上の歯車アイコン(⚙)から開く。
-
-![Hermes Desktopの初回起動画面。右上の歯車アイコン(⚙)を赤枠と矢印で示している](/images/hermes-vps/hermes-vps-07-desktop-14b-settings-icon.png)
-
-### Remote URLを入れてサインインする
-
-| 操作 | 入力 |
-|---|---|
-| 設定を開く | **Settings → Gateway → Remote gateway** |
-| Remote URL | `http://<tailscale-ip>:9119`(VPSのTailscale IP) |
-| サインイン | **Sign in**ボタン → `admin`とパスワードを入力 |
-| 確定 | **Save and reconnect** |
-
-:::message alert
-`<tailscale-ip>`はそのまま打たない。山かっこごと、VPSの実際のTailscale IP(`100.x.x.x`の形)に置き換える。例えばTailscale IPが`100.101.102.103`なら、`http://100.101.102.103:9119`と入れる。
-:::
-
-パスワードは、先ほど1Passwordに保存したdashboardのパスワードをここで呼び出して貼り付ける。長いランダム文字列なので手打ちしない。
-
-![Settings → Gateway → Remote gatewayを選び、Remote URLを入力したところ。左の設定メニュー、Remote URL欄、Sign inボタンが1画面に見える](/images/hermes-vps/hermes-vps-07-desktop-15-settings-gateway.png)
-
-![サインインのフォーム。admin欄が見え、パスワードは伏字](/images/hermes-vps/hermes-vps-07-desktop-17-signin.png)
-
-:::message alert
-**ここが今回いちばんハマるポイント**。Signed inのあと、必ず「**Save and reconnect**」を押す。これを押さないとDesktopは自分のパソコン上のローカルのままでVPSに切り替わらず、チャットがモデル認証エラー(ローカル側のモデルを見にいって失敗)になる。切り替わると画面下のモデル表示がVPS側のモデルに変わるので、それが成功の目印だ。
-:::
-
-#### OAuthとユーザー名/パスワードの違い
-
-Hermes Desktopは2つの認証方式に対応する。
-
-- **ユーザー名/パスワード**:TailscaleやLANなど信頼できるネットワーク内向け。本シリーズはこれ(Tailscale前提)。インターネットにそのまま晒す用途では使わない。
-- **OAuth**(Nous Portal等):VPSを公開ホストとして晒す場合向け。
-
-どちらも`--insecure`(認証なし)とは違う。本シリーズはTailscale+ユーザー名/パスワードで閉じる。
-
-### 接続できたことを確認する
-
-接続が成功すると、Desktopの中身がVPSのHermesに切り替わる。画面下のモデル表示がVPS側のモデルに変わっていれば成功だ。設定画面を閉じてメイン画面に戻ると、左サイドバーにもVPS側のデータが見えるようになる。
-
-![リモート接続が成功し、GatewayのAuthenticationがSigned inになった画面。VPSのHermesに繋がった証拠](/images/hermes-vps/hermes-vps-07-desktop-18-signed-in.png)
-
-:::message
-**この先の使い方**:v0.16.0のHermes Desktopは、複数のprofile(担当)を1つのウィンドウで同時に動かせる。例えば「普段使い用」「Zenn原稿の編集者」「VPS運用担当」のように分ける。今回は「将来こう分けられる」という入口を見ておくだけで十分。本格的な役割分担は後の回で扱う。
-:::
-
-## Hermes Desktopの基本操作
-
-VPSに繋がり、チャットが通るようになった。設定画面を閉じてメイン画面に戻ると、左サイドバーにVPS側のチャット履歴やCronジョブが並んでいるのが見える。自分のパソコン単独の時は空だったサイドバーにデータが入っていれば、VPSのHermesに繋がった証拠だ。第4〜6回でTelegramやDiscordから送った会話、第9回で設定するCronの定期タスクなど、VPSのHermesが持っているデータがそのまま見える。
-
-ここからはDesktopアプリそのものの触り方を押さえる。ここがv0.16.0で一番厚くなった部分で、「ターミナルのコマンドを覚える」から「アプリを普通に使う」へ変わる。
-
-### チャットする
-
-中央のチャット欄に書いて送るだけ。応答はリアルタイムに流れ(streaming)、左サイドバーに会話(session)が一覧で残る。過去の会話は検索・再開できる。
-
-![チャットで送信すると応答がstreamingで返り、左サイドバーに会話一覧が見える画面。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-19-chat.png)
-
-### ファイルを渡す(ドラッグ&ドロップ・画像コピペ)
-
-v0.16.0では、チャット欄にファイルを**ドラッグ&ドロップ**するだけで添付できる。スクリーンショットは**クリップボードから直接貼り付け**(Ctrl+V)できる。「ファイルパスを指定する」必要がなくなった。
-
-![PDFやテキストをチャット欄にドラッグ&ドロップして添付しているところ。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-20a-drag-drop.png)
-
-![スクリーンショットをコピーしてCtrl+Vでチャット欄に貼り付けたところ。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-20b-paste-image.png)
-
-### 迷ったらCtrl+K(コマンドパレット)
-
-どこを押せばいいか分からなくなったら**Ctrl+K**(Macでは`Cmd+K`)。検索窓に「model」「skill」「new chat」のように打つと操作が見つかる。ターミナルのコマンドを覚えなくてよい道案内だ。
-
-![Ctrl+Kで開いたコマンドパレット。検索窓とGO TO/コマンド一覧が見える状態。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-21-command-palette.png)
-
-### モデルを切り替える
-
-v0.16.0では画面下のstatus barにモデルピッカーがある。しかも**あいまい検索**(fuzzy search)対応で、数文字打てば候補が出る。モデル名を全部覚えなくてよい。いつも最強モデルにせず、相談・文章・調査で場面ごとに切り替えるのがコツ。
-
-![status barのモデルピッカー。あいまい検索で数文字打って候補が出ている。左サイドバーのセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-22-model-picker.png)
-
-:::message
-**覚えておくと安心、`/undo`**:変な方向に頼んでしまったら`/undo`で直前のN回の会話を巻き戻せる(v0.16.0)。ただし会話を戻すだけで、すでに送信したメール・削除したファイル・外部サービスで実行された操作まで取り消すわけではない。会話のやり直しと、外部操作の取り消しは別物だと覚えておく。
-:::
-
-## どこから話しかけても同じ1体のエージェント
-
-この回の山場。Hermes Desktopの左サイドバーには、Desktopで送った会話だけでなく、**前の回で連携したTelegramやDiscordで送った会話も、同じ一覧に並ぶ**。
-
-Telegram・Discord・ターミナル(SSH)・Desktopのどの窓から話しても、中にいるのは同じ1体・同じ記憶だ。これがHermesの仕組みで、「似たアプリを4つ別々に使う」のとは違う。
-
-確かめ方は簡単。普段使っているTelegram(またはDiscord)で、Hermesに一言送ってみる。
-
-```text
-(Telegramで) 接続テスト。いま何時か教えて。
-```
-
-![Telegramでhermesに「接続テスト。いま何時か教えて」と送り、返事が返ってきた画面](/images/hermes-vps/hermes-vps-07-desktop-23-telegram-reply.png)
-
-自分のパソコンのHermes Desktopに戻り、左サイドバーを更新する(下の囲み参照)と、いま送ったTelegramの会話が一覧に現れる。逆にDesktopで新しい会話を始めれば、それも一覧に加わる。どこから話しかけても、受け取っているのは同じ1体だ。
-
-![自分のパソコンのHermes Desktopの左サイドバーに、いま送ったTelegram/Discordの会話が並んでいる画面。同じエージェントである実証。対象の会話以外のセッション名はモザイク](/images/hermes-vps/hermes-vps-07-desktop-24-sidebar-sync.png)
-
-:::message alert
-**左サイドバーにすぐ出ないとき**(更新の一手間・v0.16.0時点):本記事の撮影時点(v0.16.0)では、Telegram/Discordで作った会話はDesktopの左サイドバーにリアルタイムでは出なかった(Hermes Desktopが通常の会話一覧を定期取得していなかったため。自動更新されるのはCronなど一部だけだった)。**この一手間はv0.18.1で不要になった**(次の段落を参照)。v0.18.0以前で出ないときは、Gateway設定で「Save and reconnect」を押すと再接続がかかり一覧が更新される(Windowsで実際に確認済み)。それでも出なければアプリを再起動する。`Ctrl+R`(ウィンドウ再読み込み)はWindowsでは効かなかった。
-:::
-
-この挙動は公式issue [#41827](https://github.com/NousResearch/hermes-agent/issues/41827)で報告され、その後v0.18.1(2026-07-08公開)で解消された。外部(Telegram・Discord・WeChat)で作られた会話が、profileの切り替えや再起動なしでサイドバーに反映されるようになり、Teknium本人がissueをクローズしている(実装はcommit `52d0d671e`)。本体をv0.18.1以降に上げていれば、上の「更新の一手間」はもう要らない。
-
-![GitHub issue #41827。左サイドバーの自動更新が効かない報告と、修正PRのリンクが見える](/images/hermes-vps/hermes-vps-07-desktop-25-issue-41827.png)
-
-:::message
-ターミナル(SSHで操作してきた黒い画面)もその1つだ。第1〜6回で動かしてきたVPS上のHermesと、Telegram・Discord・Desktopは、全部同じ1体の別の入口にすぎない。黒い画面だけに閉じ込められず、用途に応じて入口を選べるのが強みだ。
-:::
-
-## 補足:v0.17.0でDesktopはさらに強化された
-
-本記事はv0.16.0「Surface Release」での執筆だが、2026-06-19公開の**v0.17.0**「The Reach Release」でHermes Desktopにいくつかの便利な機能が入った。
-
-- **日本語+繁体字中国語の言語切替**=設定からアプリ全体のUIを切り替えられる。本記事は英語UIで撮影しているが、v0.17.0なら日本語UIで操作可
-- **Rebindableキーボードショートカット**=キーバインドを自由に変更できるパネル追加
-- **VS Code Marketplace Theme**=任意のVS Codeテーマをそのままインストール可能
-- **OS Native通知**=タイプ別にON/OFF切替できる通知
-- **Subagent Watch-Windows**=委譲したサブエージェントの活動を専用ペインで並列表示(第21回で扱う予定)
-- **Resizable Terminal Pane**=VS Codeテーマ準拠の可変ターミナル
-- **マルチターミナルパネル**(2026-06-28追加・[PR#54517](https://github.com/NousResearch/hermes-agent/pull/54517))=右レールがVS Code風のサイドアイコンレールに刷新され、複数ターミナルタブを開けるようになった(`Ctrl+Shift+`` で新規・`Ctrl+Shift+Up/Down` で切替・`Ctrl+Shift+W` でクローズ)。タブとscrollbackはアプリ再起動を生き残る。エージェントが背景で動かしているプロセスはread-onlyの`agent`タブとして同じレールにライブ表示される
-- **`hermes serve`新CLI**(2026-06-28追加・[PR#54568](https://github.com/NousResearch/hermes-agent/pull/54568))=Hermes Desktopが内部で起動するbackendサーバーが`hermes dashboard`から`hermes serve`に分離された(同じ`start_server`を共有する別名subcommand)。本記事の常駐手順(`hermes-dashboard.service`+`hermes dashboard --no-open`)は後方互換shimで引き続き動く=既存読者は何もしなくてよい
-- **Windows起動安定化**(2026-06-28追加)=`config.yaml`の`desktop.electron_flags`/`desktop.disable_gpu`で起動フラグを恒久指定できるようになった(ショートカットに`--no-sandbox`を付ける本記事の手順も引き続き有効)。packaged版の起動時クラッシュ・`hermes.exe`が`PATH`から消える現象の自己修復・コンソールウィンドウのチラつき抑制も同時に入った
-- **status barのcontext usage内訳popover**(2026-06-29追加・[PR#54907](https://github.com/NousResearch/hermes-agent/pull/54907))=画面下status barのcontext usage表示がクリック可能になり、システムプロンプト/ツール定義/ルール/スキル/MCP/サブエージェント定義/メモリ/会話の8カテゴリ別token内訳がpopoverで見えるようになった(token数は`char/4`の概算)。コンテキストの何が大きいかを目で把握できる
-- **Subagent Watch-Windowsがspectator専用化**(2026-06-29追加・[PR#55033](https://github.com/NousResearch/hermes-agent/pull/55033))=同僚エージェントの活動を覗くwatchウィンドウから、入力欄/停止ボタン/再実行ボタン/checkpoint切替が全部消えた。眺める専用の読み取りウィンドウになった(同僚を止めたければ元のウィンドウに戻る)
-- **ペットの散歩(Roam)opt-in追加**(2026-06-29追加・[PR#55114](https://github.com/NousResearch/hermes-agent/pull/55114))=設定→ペットの「散歩」をONにすると、アイドル中にペット(マスコット)がウィンドウ内を歩き回る。デフォルトはOFFなので、ONにしない限り従来の浮遊だけ(2026-07-01追記:その後の調整でRoamの頻度は控えめになり、多くの時間は休憩・時々短く歩く程度になった。2026-07-03追記:v0.18.0でさらに自然な散歩挙動+`Alt`+マウスホイールでの拡縮+ポップアウト表示に成熟した)
-- **返信を読み上げるcomposerトグル**(2026-06-29追加・[PR#55154](https://github.com/NousResearch/hermes-agent/pull/55154))=composerにスピーカーアイコンのトグルが追加され、ONにすると以後のエージェント返信を音声で読み上げる(`voice.auto_tts`に永続化)。ディクテーション(声で入力)やfull voice conversationを使わず「タイプして打って、返事だけ音声で聞く」運用ができる
-- **Memory Graph(記憶グラフ)**(2026-07-01追加・[PR#55226](https://github.com/NousResearch/hermes-agent/pull/55226))=status barやコマンドパレットから開ける放射状タイムラインの新パネル。中心が最も古い記憶で、外側の輪ほど新しい。memoriesとskillsを時系列で可視化でき、再生・スクラブ操作で「エージェントの記憶が積み上がっていく過程」を辿れる。Desktopでは`/journey`を叩いても同じMemory Graph overlayが開く(v0.18.0以降・以前はテキスト出力だった)。第12回のMemoryと合わせて、記憶がどう成長したかを目で見られる仕組み
-- **Skills/Tools/MCPが「Capabilities」ページに統合**(2026-07-05追加・[PR#57590](https://github.com/NousResearch/hermes-agent/pull/57590))=別々のタブだったSkillsとToolsets、設定の中にあったMCPが、1つのCapabilitiesハブ(Skills/Tools/MCP/Browse Hub)にまとまった。スキルは実際の使用頻度順に並び、learned/built-in/hubの出所バッジが付き、学習済みスキルはこの画面から編集・アーカイブできる。「エージェントに何ができるか」を1か所で見渡せる置き場になった
-- **接続モードに「Hermes Cloud」追加**(2026-07-12追加・[PR#61912](https://github.com/NousResearch/hermes-agent/pull/61912))=local/remote(本記事のVPS接続)に続く第3のモード。公式ホスティング「Hermes Agent Cloud」(2026-07-08公開)上のエージェントへ、ポータルに1回サインインするだけで自動発見・接続できる。本記事のVPSへのリモート接続手順はそのまま変わらない
-- **status barに承認モードの三択メニュー追加**(2026-07-14追加・[PR#63520](https://github.com/NousResearch/hermes-agent/pull/63520))=それまでの「承認をバイパスするか否か」の二択トグルが、画面下部のstatus barから開ける`Smart`/`Manual`/`Off`の三択メニューに置き換わった。日本語UIにも対応済み。第5回で`manual`固定を説明しているが、DesktopからならこのメニューでもGatewayの承認モードを直接切り替えられる
-
-本記事の手順や画面はv0.16.0時点だが、`hermes update`で本体を最新に保ち続ければ自動で反映される。日本語UI切替は設定画面から1クリックなので、v0.17.0に上げた人は試してみるとよい。
-
-## 最終確認チェックリスト
-
-VPSのHermesを、黒い画面・スマホ(Telegram/Discord)・自分のパソコンのアプリの3つの窓から、用途に応じて使い分けられる状態になった。その内訳が次の一覧だ。
-
-- [ ] VPSで`hermes dashboard`が認証つき・Tailscale IP bindでsystemd常駐している
-- [ ] `/api/status`が`auth_required: true`と`["basic"]`を返す
-- [ ] 自分のパソコンのHermes Desktop(v0.16.0)が入り、起動する
-- [ ] チャット・ドラッグ&ドロップ・Ctrl+K・モデル切替を一通り触った
-- [ ] DesktopからRemote URL+サインインでVPSに繋がる(ユーザー名/パスワード)
-- [ ] Telegram/Discordで送った会話が、Desktopの左サイドバーにも出る(同じエージェントの実証)
-
----
-
-| ← 前の回 | 次の回 → |
-|---|---|
-| [第6回 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る](https://zenn.dev/sora_biz/articles/hermes-vps-06-systemd) | [第8回 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) |
-
-📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
-
 ## よくあるエラーと対処
 
 | 症状 | 対処 |
 |---|---|
 | `hermes dashboard --host <tailscale-ip>`が起動せず終了する | 認証未設定で外向きbindを拒否している(fail-closed)。認証情報を`.env`に入れてから再起動。systemd経由なら`EnvironmentFile=%h/.hermes/.env`が付いているか確認 |
-| Desktopが「backendはready」と言うのにチャットが繋がらない | `Save and reconnect`を押していない可能性が高い。押したうえで、VPS側はTailscale IPにbindし、Remote URLも同じIPにする。`127.0.0.1`にbindすると自分のパソコンからは届かない |
+| Desktopが「backendはready」と言うのにチャットが繋がらない | 「保存して再接続」を押していない可能性が高い。押したうえで、VPS側はTailscale IPにbindし、リモートURLも同じIPにする。`127.0.0.1`にbindすると自分のパソコンからは届かない |
 | アプリを再起動するたびにログインが切れる | `HERMES_DASHBOARD_BASIC_AUTH_SECRET`が未設定。`openssl rand -base64 32`で固定値を`.env`に入れる |
 | サインインで「Invalid credentials / 401」 | ユーザー名かパスワードが`.env`と不一致。`curl -s http://<host>:9119/api/status \| jq '.auth_providers'`に`"basic"`が出るか確認 |
 | `hermes dashboard`が「何かを入れろ」と出て起動しない | Web部品が未導入。`cd ~/hermes-agent && pip install -e '.[web]'` |
-| 自分のパソコンの`hermes desktop`が初回なかなか立ち上がらない | 初回はElectronビルドが走るため。エラーでなければ待つ。インストーラで入れた場合はビルド済み |
-| Hermes Desktopが起動直後に落ちる・真っ白のまま固まる | GPUとChromiumサンドボックスの相性問題(終了コード`0x80000003`、[#38216](https://github.com/NousResearch/hermes-agent/issues/38216))。本文「アプリが起動しないときの直し方」を参照 |
+| Storeで「入手」を押してもなかなか終わらない | 約2.41GBのダウンロードで、この回の環境で1回だけ測った値では約10分だった。進捗が動いていれば待つ |
+| Hermes Desktopが起動直後に落ちる・真っ白のまま固まる(ダウンロード版) | GPUとChromiumサンドボックスの相性問題(終了コード`0x80000003`、[#38216](https://github.com/NousResearch/hermes-agent/issues/38216))。[アプリが起動しないときの直し方](#アプリが起動しないときの直し方)を参照 |
 | Ctrl+Kが効かない | Macでは`Cmd+K`。それでも開かなければアプリのキーボードショートカット設定を確認 |
-| Telegram/Discordの会話が左サイドバーに出ない | v0.18.1(2026-07-08)以降は自動で反映される。v0.18.0以前は`Save and reconnect`またはアプリ再起動で更新する(本回「どの入口でも同じ1体のエージェント」参照) |
 | gatewayを止めたらdashboardも止まると思った | 両者は別プロセス。dashboardはdashboardで常駐させる。逆にdashboardを動かしてもTelegram等は常駐済みgatewayが別途必要 |
 
 ## コマンド早見表
@@ -591,14 +721,17 @@ systemctl --user enable --now hermes-dashboard            # systemd常駐
 curl -s http://<tailscale-ip>:9119/api/status | jq '.auth_required, .auth_providers'  # 認証確認
 
 # 自分のパソコン側(Windows)
-# インストーラ: https://hermes-agent.nousresearch.com/desktop
-hermes desktop                                            # CLIから起動(任意)
+# Microsoft Storeで「Hermes Agent」を検索 → 入手 → 開く
+# 更新: Microsoft Storeから届く
 
 # Hermes Desktopアプリ内
-# Settings → Gateway → Remote gateway
-#   Remote URL: http://<tailscale-ip>:9119
-#   Sign in: admin + password → Save and reconnect
-# Ctrl+K(MacではCmd+K): コマンドパレット / status bar: モデル切替 / /undo: 会話の巻き戻し
+# 設定 → ゲートウェイ → このウィンドウ → 「リモートゲートウェイ」
+#   リモートURL: http://<tailscale-ip>:9119
+#   サインイン: admin + password(別ウィンドウ) → 「保存して再接続」
+# Ctrl+K(MacではCmd+K): コマンドパレット / 入力欄のモデルピッカー: モデル切替 / /undo: 会話の巻き戻し
+
+# ダウンロード版を外すとき(PowerShell)
+& "$env:LOCALAPPDATA\hermes\hermes-agent\venv\Scripts\hermes.exe" uninstall --dry-run   # 予行(何も変えない)
 ```
 
 ## 引用元と参考
@@ -606,10 +739,15 @@ hermes desktop                                            # CLIから起動(任�
 | 項目 | 引用元 |
 |---|---|
 | Hermes Desktop全般・CLIと同じエージェント核・リモート接続UI | [docs/user-guide/desktop](https://hermes-agent.nousresearch.com/docs/user-guide/desktop) |
-| v0.16.0「Surface Release」の新機能(Desktop正式化・Ctrl+K・drag&drop・status barモデル・self-update・/undo) | [release v2026.6.5](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.6.5) = v0.16.0 |
+| v0.16.0「Surface Release」の新機能(Desktop正式化・Ctrl+K・drag&drop・モデル切替・self-update(ダウンロード版)・/undo) | [release v2026.6.5](https://github.com/NousResearch/hermes-agent/releases/tag/v2026.6.5) = v0.16.0 |
 | 接続先dashboardのprerequisites・認証env var・fail-closed・Tailscale bind | [web-dashboard](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-dashboard)「Connecting Hermes Desktop to a remote backend」 |
-| Hermes Desktopのインストール(Windows・管理者権限不要) | [installation](https://hermes-agent.nousresearch.com/docs/getting-started/installation) / [windows-native](https://hermes-agent.nousresearch.com/docs/user-guide/windows-native) |
+| Microsoft Store版の配信開始の告知(2026-10-08) | [Nous Researchの告知](https://x.com/NousResearch/status/2108231536772596193) |
+| Microsoft StoreのHermes Agentのページ | [Microsoft Store](https://apps.microsoft.com/detail/9pmxk8czc7kr) |
+| Store版の要件(Windows 11 22H2以降)・ダウンロード版との違い | [windows-native](https://hermes-agent.nousresearch.com/docs/user-guide/windows-native) |
+| Store版の更新(Microsoft Storeから届く) | [updating](https://hermes-agent.nousresearch.com/docs/getting-started/updating) |
+| ダウンロード版のインストール(旧手順) | [installation](https://hermes-agent.nousresearch.com/docs/getting-started/installation) |
 | 起動直後crashの既知issue(`--no-sandbox`) | [#38216](https://github.com/NousResearch/hermes-agent/issues/38216) |
+| Hermes Desktopの解説(日本語) | 公式ドキュメントの日本語訳: [Desktop](https://wiki.winsmux.dev/hermes/docs/user-guide/desktop/) / [Windowsで動かす(Store版の要件)](https://wiki.winsmux.dev/hermes/docs/user-guide/windows-native/) / [複数の接続先を使い分ける](https://wiki.winsmux.dev/hermes/docs/user-guide/multi-connection-desktop/) |
 | Hermes全体の解説(日本語) | 公式ドキュメントの日本語訳: [Hermes全文](https://wiki.winsmux.dev/hermes/guide/all/) |
 
 :::message

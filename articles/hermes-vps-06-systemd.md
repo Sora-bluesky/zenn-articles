@@ -58,7 +58,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 - **第6回**(本記事) 気づいたら止まっている、をなくせ。Hermes Agentはsystemdでいつも動き続け、落ちてもすぐ戻る
 
 **第II部 デスクトップアプリとブラウザから操作する**
-- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる
+- [第7回](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）
 - [第8回](https://zenn.dev/sora_biz/articles/hermes-vps-08-dashboard) 手探りで動かすな。Hermes Agentはブラウザ1枚で中身が見える
 
 **第III部 定時実行・スキル・Web検索を足す**
@@ -508,7 +508,7 @@ Linger=yes
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第5回 コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) | [第7回 SSHはもう開くな。Hermes Agentはデスクトップアプリから直接話せる](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
+| [第5回 コマンドを覚えるな。Hermes AgentはDiscordで話しかけるだけで動く](https://zenn.dev/sora_biz/articles/hermes-vps-05-oauth-discord) | [第7回 Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
