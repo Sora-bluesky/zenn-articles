@@ -316,6 +316,39 @@ OpenAI の Codex Security を使う検査は、明示して受諾したときだ
 
 https://github.com/Sora-bluesky/scanmux
 
+## 論理の欠陥は Cloudflare のスキルを手動で実行する
+
+scan.py と ScanMux が探すのは、既知の脆弱性がある依存。
+
+自分で書いたコードの論理の欠陥は、どちらも探さない。
+
+この種類の欠陥には、Cloudflare が公開してる security-audit-skill を使う。
+
+Claude Code のスキルで、コードを読んで欠陥の候補を挙げ、候補ごとに検証する。
+
+入れるときは `npx skills add` を使わなかった。
+
+全ファイルを読んでから、commit c1c8a8c に固定してコピーした。`~/.claude/skills` には入れてない。
+
+検証で対象のコードを動かすのは、通信なし・読み取り専用の Docker コンテナの中だけ。
+
+公開リポの patchwait で試すと、深刻度の低い欠陥が2件確定した。
+
+- `roots.py:481`：PEM の読み取りが `BEGIN CERTIFICATE` だけを探してて、同じファイルにある `TRUSTED CERTIFICATE` 形式の証明書を読まない
+- `roots.py:230`：`--distrust-pem` のファイルが 1 MiB を超えると、超えた部分の証明書を検索しないまま終わる
+
+どちらも、悪意のある第三者に使われる経路はない。
+
+困るのは、調べ残したまま終了コード 0 の `not_found` を返すこと。
+
+2件とも patchwait の v0.2.1 で直した。
+
+定期の点検には入れず、リリースや大きな変更の前に手動で実行する。
+
+最初に profile を `quick` にして実行したときは、検証の上限回数を使い切って、未検証の候補が残った。
+
+https://github.com/cloudflare/security-audit-skill
+
 ## この仕組みでできないこと
 
 2つのツールを足しても、監視できるのは、公開された脆弱性と自分の環境の版を比べられる範囲と、指定した証明書が残ってないかまでだ。
