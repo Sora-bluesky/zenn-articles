@@ -84,7 +84,7 @@ Claude Codeのセッション中に入力する：
 
 ### 過去の使用状況を確認する
 
-Anthropic Console（https://console.anthropic.com）にログインすると、過去の使用状況を確認できる。ワークスペースの支出制限も設定可能。
+[Anthropic Console](https://console.anthropic.com)にログインすると、過去の使用状況を確認できる。ワークスペースの支出制限も設定可能。
 
 ---
 
