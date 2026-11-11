@@ -133,18 +133,18 @@ Telegramは第3回で実際にbotを発行して値を入れる。Discordは第5
 <div class="d">
   <div class="step">
     <p class="head"><span class="n">1</span>1Password：実際の値はここにだけある</p>
-    <p>保管庫 Hermes-Prod に、Telegram の bot token などを入れておく。</p>
+    <p>保管庫Hermes-Prodに、Telegramのbotトークンなどを入れておく。</p>
   </div>
-  <div class="arrow">↓ サービスアカウントの鍵で、読み取り専用につなぐ</div>
+  <div class="arrow">↓ サービスアカウントトークンで、読み取り専用につなぐ</div>
   <div class="step">
-    <p class="head"><span class="n">2</span>VPS：置くのは鍵と参照だけ</p>
+    <p class="head"><span class="n">2</span>VPS：置くのはトークンと参照だけ</p>
     <ul>
-      <li class="new">★ <code>op</code>：1Password のコマンド</li>
-      <li class="new">★ <code>service-account.env</code>：つなぐ鍵</li>
-      <li class="new">★ <code>secrets.env</code>：値ではなく <code>op://</code> の参照</li>
+      <li class="new">★ <code>op</code>：1Passwordのコマンド</li>
+      <li class="new">★ <code>service-account.env</code>：サービスアカウントトークン</li>
+      <li class="new">★ <code>secrets.env</code>：値ではなく<code>op://</code>の参照</li>
     </ul>
   </div>
-  <div class="arrow">↓ <code>op run</code> がコマンドを実行する瞬間に、参照を値へ置き換える</div>
+  <div class="arrow">↓ <code>op run</code>がコマンドを実行する瞬間に、参照を値へ置き換える</div>
   <div class="step">
     <p class="head"><span class="n">3</span>Hermes：値は環境変数として渡るだけ</p>
     <p>ディスクには平文が残らない。</p>
@@ -168,7 +168,7 @@ Telegramは第3回で実際にbotを発行して値を入れる。Discordは第5
 </style>
 ```
 
-Telegram bot tokenのアイテムは認証情報フィールドに入れ、Discord bot tokenは第5回で入れるので今は空にしてある。サービスアカウントのscopeはHermes-Prodで読み取り専用、`service-account.env`はchmod 600にする。VPSには`auth.json`(Codex/Grok OAuth。Hermesが自動管理する)もある。`hermes-gateway.service`は`~/.config/systemd/user/`に置いて第4回で作り、ExecStartは`op run --env-file=... -- hermes gateway run`になる。
+Telegramのbotトークンのアイテムは認証情報フィールドに入れ、Discordのbotトークンは第5回で入れるので今は空にしてある。サービスアカウントのscopeはHermes-Prodで読み取り専用、`service-account.env`はchmod 600にする。VPSには`auth.json`(Codex/Grok OAuth。Hermesが自動管理する)もある。`hermes-gateway.service`は`~/.config/systemd/user/`に置いて第4回で作り、ExecStartは`op run --env-file=... -- hermes gateway run`になる。
 
 VPS側の`secrets.env`には、実値が1つも書かれない。中身は`TELEGRAM_BOT_TOKEN=op://Hermes-Prod/...`のような**1Passwordへの参照URL**だけ。`op run`がコマンド実行の瞬間にこの参照を解決し、子プロセスに環境変数として注入する。ディスクには平文が出ない。
 
