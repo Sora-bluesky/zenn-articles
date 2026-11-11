@@ -3,7 +3,7 @@ title: "Claude Codeの請求額を見て青ざめた人へ贈るコスト管理�
 emoji: "💸"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
-published: true
+published: false
 ---
 
 ## はじめに

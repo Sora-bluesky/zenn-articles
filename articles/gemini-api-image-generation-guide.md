@@ -3,7 +3,7 @@ title: "その Gemini 画像、透かし入ってるよ？API画像生成の著�
 emoji: "🎨"
 type: "tech"
 topics: ["ai", "生成ai", "画像生成", "googlecloud", "GeminiAPI"]
-published: true
+published: false
 ---
 
 :::message

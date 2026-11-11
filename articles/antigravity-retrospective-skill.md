@@ -3,7 +3,7 @@ title: "Google Antigravity 振り返りスキル：同じ失敗を繰り返さ�
 emoji: "🔄"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
-published: true
+published: false
 ---
 
 ## はじめに

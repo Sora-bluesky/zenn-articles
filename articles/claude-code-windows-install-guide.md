@@ -3,7 +3,7 @@ title: "Claude Code インストールガイド（Windows）"
 emoji: "🚀"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "生成ai", "初心者"]
-published: true
+published: false
 ---
 
 ## 経緯

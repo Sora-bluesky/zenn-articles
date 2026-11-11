@@ -3,7 +3,7 @@ title: "CLAUDE.mdを書いたら、Claude Codeが別人になった"
 emoji: "📝"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "個人開発"]
-published: true
+published: false
 ---
 
 ## はじめに

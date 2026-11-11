@@ -3,7 +3,7 @@ title: "Claude Codeの画面録画、パスが丸見えだったので自動マ�
 emoji: "🎬"
 type: "tech"
 topics: ["claudecode", "python", "opencv", "security", "個人開発"]
-published: true
+published: false
 ---
 
 ## ターミナル録画、共有する前に見直してる？

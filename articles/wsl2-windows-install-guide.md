@@ -3,7 +3,7 @@ title: "Linux（Ubuntu）インストールガイド（Windows）"
 emoji: "🐧"
 type: "tech"
 topics: ["wsl2", "windows", "claudecode", "linux", "初心者"]
-published: true
+published: false
 ---
 
 ## はじめに

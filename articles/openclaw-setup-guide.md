@@ -3,7 +3,7 @@ title: "OpenClaw × XServer VPS：月990円でAIが24時間働く環境を作っ
 emoji: "🦞"
 type: "tech"
 topics: ["openclaw", "ai", "vps", "生成ai", "個人開発"]
-published: true
+published: false
 ---
 
 この記事の手順を終えると、XServer VPSでOpenClawが動き、DiscordのBotから返信が来る状態になる。Discord/LINEの詳細設定とWSL2での構築は別記事で扱い、この記事では触れない。

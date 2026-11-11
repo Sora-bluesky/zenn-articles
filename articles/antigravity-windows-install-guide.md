@@ -3,7 +3,7 @@ title: "Google Antigravity インストールガイド（Windows）"
 emoji: "🚀"
 type: "tech"
 topics: ["ai", "windows", "生成ai", "個人開発", "llm"]
-published: true
+published: false
 ---
 
 ## はじめに

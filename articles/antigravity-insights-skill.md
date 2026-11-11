@@ -3,7 +3,7 @@ title: "Google Antigravity インサイトスキル：過去の学びを自動�
 emoji: "📊"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
-published: true
+published: false
 ---
 
 ## Before：基本編だけだと「やりっぱなし」

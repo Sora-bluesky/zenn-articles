@@ -3,7 +3,7 @@ title: "Google Cloud の「無料」は3種類ある：無料トライアル・�
 emoji: "☁️"
 type: "tech"
 topics: ["googlecloud", "ai", "生成ai", "GeminiAPI", "初心者"]
-published: true
+published: false
 ---
 
 :::message

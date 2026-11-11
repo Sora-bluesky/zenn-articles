@@ -3,7 +3,7 @@ title: "Google Cloud、課金してるアカウントどれだっけ？確認→
 emoji: "💸"
 type: "tech"
 topics: ["googlecloud", "ai", "生成ai", "GeminiAPI", "初心者"]
-published: true
+published: false
 ---
 
 この記事の手順を終えると、どの Google アカウントが Google Cloud に課金しているかを確認し、不要な課金を止められる。Google Cloud 全般の無料枠の仕組みや、Gemini API を使うコードの書き方は扱わない。

@@ -3,7 +3,7 @@ title: "Claude Code が動かない時に見るページ（Windows）"
 emoji: "🔧"
 type: "tech"
 topics: ["claudecode", "windows", "ai", "初心者", "トラブルシューティング"]
-published: true
+published: false
 ---
 
 ## 経緯

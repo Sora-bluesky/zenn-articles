@@ -3,7 +3,7 @@ title: "OpenClawでDiscord/LINEを個人AIアシスタント化する"
 emoji: "🦞"
 type: "tech"
 topics: ["openclaw", "discord", "line", "ai", "個人開発"]
-published: true
+published: false
 ---
 
 この記事の手順を終えると、DiscordまたはLINEからOpenClawに話しかけて返信をもらえる状態になる。OpenClaw本体のインストールとVPSの契約はこの記事では扱わない。

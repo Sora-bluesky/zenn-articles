@@ -3,7 +3,7 @@ title: "Google Antigravity 要件定義スキル：何を伝えればいいか�
 emoji: "🤖"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
-published: true
+published: false
 ---
 
 ## はじめに

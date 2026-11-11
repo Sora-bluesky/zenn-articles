@@ -3,7 +3,7 @@ title: "Claude Code Channels：スマホからDiscord / Telegram経由で遠隔�
 emoji: "📱"
 type: "tech"
 topics: ["claudecode", "windows", "discord", "生成ai", "ai"]
-published: true
+published: false
 ---
 
 ## はじめに

@@ -3,7 +3,7 @@ title: "Claude Codeのllms.txtを使って公式ドキュメント検索UIを作
 emoji: "🔍"
 type: "tech"
 topics: ["claudecode", "ai", "個人開発", "claude", "llm"]
-published: true
+published: false
 ---
 
 この記事を読むと、`llms.txt` を使ってClaude Codeの公式ドキュメントを日本語で検索するUIを、HTMLファイル1つで動かす方法とそこまでの経緯が分かる。**どのページに何が書いてあるか分からない問題**を解決するために作った。Claudeに「こう直して」と伝えるだけで、コードは全部Claudeが書いている。

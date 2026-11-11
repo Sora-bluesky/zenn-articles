@@ -3,7 +3,7 @@ title: "Google Antigravity ドキュメントスキル：READMEも報告書も�
 emoji: "📝"
 type: "tech"
 topics: ["ai", "生成ai", "個人開発", "googleantigravity", "llm"]
-published: true
+published: false
 ---
 
 ## はじめに

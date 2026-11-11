@@ -3,7 +3,7 @@ title: "Zennの既存記事をGitHub連携で管理しようとしてハマっ�
 emoji: "🔧"
 type: "tech"
 topics: ["zenn", "github", "claudecode", "備忘録"]
-published: true
+published: false
 ---
 
 ## 結論

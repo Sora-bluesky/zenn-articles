@@ -3,7 +3,7 @@ title: "OpenClawをWSL2で無料で試してみた"
 emoji: "🦞"
 type: "tech"
 topics: ["openclaw", "ai", "wsl2", "docker", "windows"]
-published: true
+published: false
 ---
 
 この記事の手順を終えると、Windows側のWSL2（Ubuntu）でOpenClawが動き、`openclaw status --all`と`openclaw doctor`でDiscordとの接続を確認できる状態になる。24時間の常時稼働（VPS）とDiscord/LINEの詳細設定は、それぞれ別記事で扱い、この記事では触れない。
