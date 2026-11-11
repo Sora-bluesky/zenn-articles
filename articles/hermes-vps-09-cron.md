@@ -46,7 +46,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -163,7 +163,7 @@ Cronジョブの「いつ動かすか」は、公式ガイドが示す4書式か
 
 ### モーダルの各欄を埋める
 
-モーダルのタイトルは「新しい CRON ジョブ」。欄は上から順に並ぶ。
+モーダルのタイトルは「新しいCRONジョブ」。欄は上から順に並ぶ。
 
 ![新しい CRON ジョブモーダルの空欄状態。上からPROFILE(default)/名前(任意)/プロンプト/スケジュール(繰り返し間隔)/実行間隔30+単位分/送信形式 every 30m/配信先(ローカル)/作成ボタンが並ぶ画面](/images/hermes-vps/hermes-vps-09-cron-new-job-modal-empty.png)
 
@@ -208,7 +208,7 @@ Cronジョブの「いつ動かすか」は、公式ガイドが示す4書式か
 
 - 上段:名前(`morning-news`)とバッジ3つ(`scheduled` / `default` / `telegram`)
 - 中段:プロンプトの要約
-- 下段:スケジュールの日本語表示「毎日 07:00」と「前回 …」「次回 …」のタイムスタンプ
+- 下段:スケジュールの日本語表示「毎日07:00」と「前回 …」「次回 …」のタイムスタンプ
 - 右端:アクションアイコン4個(左から ⏸一時停止 / ⚡今すぐ実行 / ✏編集 / 🗑削除)
 
 ### 稲妻アイコンで即時テストする
@@ -247,7 +247,7 @@ v0.17.0以降のDashboardでは、基本4欄の下に「Advanced fields」とい
 
 ![EDIT JOBモーダル。名前 morning-news、プロンプトはself-containedの長文、スケジュール (CRON 式)に 30 6 * * * が入っている(赤枠強調)、配信先は Telegram、右下に SAVE CHANGES ボタンが並ぶ画面](/images/hermes-vps/hermes-vps-09-cron-edit-modal-schedule.png)
 
-スケジュール欄を`0 7 * * *`から`30 6 * * *`に書き換えて、「SAVE CHANGES」を押す。CRONペインの一覧に戻ると、`morning-news`のスケジュール表示が「毎日 07:00」から「毎日 06:30」に変わっている。
+スケジュール欄を`0 7 * * *`から`30 6 * * *`に書き換えて、「SAVE CHANGES」を押す。CRONペインの一覧に戻ると、`morning-news`のスケジュール表示が「毎日07:00」から「毎日06:30」に変わっている。
 
 ![CRONペインの一覧で、morning-news のスケジュール表示が「毎日 06:30」に変わっている画面。該当行が赤枠と矢印で強調されている](/images/hermes-vps/hermes-vps-09-cron-pane-after-edit-schedule.png)
 
@@ -517,7 +517,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 
 2026年6月13日、Telegram創業者の[Pavel Durovが正式に告知](https://x.com/durov/status/2065896953519484976)したとおり、Telegram Bot APIに**Rich Messages**が入った。表(tables)・入れ子の箇条書き(nested lists)・本文中に埋め込む画像や動画(inline media)・数式(formulas)・見出し(headers)などを、Telegramのチャット欄に直接表示できる新APIだ。仕様は[公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options)にまとまっている。
 
-同日、Hermesの[Tekniumも追従を予告](https://x.com/Teknium/status/2065777563356774688)し、画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math を追加」の方針を示している。
+同日、Hermesの[Tekniumも追従を予告](https://x.com/Teknium/status/2065777563356774688)し、画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintにtables・task lists・mathを追加」の方針を示している。
 
 **2026-06-19公開のHermes v0.17.0「The Reach Release」で追従**された。ただし予告と違い、出荷時の挙動は**default OFF**(opt-in)だ。リッチ表示を使うには`config.yaml`で`telegram.extra.rich_messages: true`を明示的に設定する必要がある。さらに日本語を含むテキストは、表示崩れを避けるため従来表示(MarkdownV2)のまま送られる仕様になっている。
 
@@ -579,7 +579,7 @@ HuggingFace公式が[Hermes Agentのアーキテクチャを解説した動画](
 | Dashboard cron Advanced fields追加(2026-06-27) | [PR#53551 feat(dashboard): expose cron job execution fields](https://github.com/NousResearch/hermes-agent/pull/53551)。`provider`/`model`/`base_url`/`script`/`no_agent`/`context_from`/`enabled_toolsets`/`workdir`の8項目を新規作成/編集モーダル両方に追加 |
 | Cron内部実装の俯瞰(動画) | [HuggingFace公式「Hermes Architecture EXPLAINED: Memory, Context & Gateways」§cronジョブ(34:37〜)](https://www.youtube.com/watch?v=n32qq7Kwzh0&t=2077s)(2026-06-16公開・英語・自動翻訳字幕で日本語可) |
 | Telegram Bot API Rich Messages追加(2026-06-13) | [Pavel Durov公式ポスト](https://x.com/durov/status/2065896953519484976)。`We now support rich formatting for all chatbots. Tables, nested lists, inline media, formulas, headers and more`+[Telegram公式doc](https://core.telegram.org/bots/api#rich-message-formatting-options) |
-| Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688)。`Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintに tables・task lists・math 追加」 |
+| Hermes側のRich Messages追従予告(2026-06-13) | [Teknium公式ポスト](https://x.com/Teknium/status/2065777563356774688)。`Telegram has Rich Messages support now! Enjoy`+画像で「DEFAULT ON / No toggle / sendRichMessage API採用 / Agent system prompt hintにtables・task lists・math追加」 |
 
 :::message
 この連載はSubstack「そらのAIエージェント通信」で先行公開している。無料[登録](https://sorabiz.substack.com/subscribe)すると最新回がメールに届く。[Zennでフォロー](https://zenn.dev/sora_biz)すると新着通知が届き、全体像は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)にまとめてある。

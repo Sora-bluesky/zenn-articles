@@ -55,7 +55,7 @@ SearXNGを自己ホストして完全無料の検索を作る検証も行い、�
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -94,7 +94,7 @@ Web検索は「過去のページから情報を拾う」もの。X Searchは「
 | 項目 | 第10回完了時 | 第11回完了後 |
 |---|---|---|
 | Web検索 | 第4回setupでデフォルト(DDGS等)のまま | Firecrawl(default・検索と本文抽出の両対応・500クレジット/月)が本線 |
-| Web抽出 | 未設定 or デフォルト | 同じくFirecrawl。1つのbackendで検索も本文抽出も済む |
+| Web抽出 | 未設定orデフォルト | 同じくFirecrawl。1つのbackendで検索も本文抽出も済む |
 | 枠切れ対策 | なし | Tavily(1,200クレジット/月)に1行で切り替える手順を用意。web-failover skillで自動化 |
 | X Search | 第5回でGrok OAuth(xai-oauth)は追加済み | platformごとに有効化し、Xの議論を拾えるようにする。数値は出させない |
 | 設定の置き場所 | バラバラ | 秘密キーは1Password(op://参照)、backendはconfig.yamlの1行 |
@@ -653,7 +653,7 @@ SearXNGは「複数の検索engineをまとめて叩くメタ検索エンジン�
 |---|---|
 | Firecrawlで「Insufficient credits」「402 Payment Required」 | 無料500クレジット/月を使い切った。Tavilyに切替(web-failover skillが自動でランブックを提示する)。月初にリセットされたら戻してもよい |
 | Firecrawlキーが認識されない | 1) `secrets.env`の`op://`パス間違い(保管庫名/アイテム名/credential)、2) 1Password側のアイテム名と一致確認、3) `op run --env-file=~/.hermes/secrets.env -- bash -c 'echo ${FIRECRAWL_API_KEY:0:6}'`で実値が展開されるか確認 |
-| 抽出が空 or 期待と違う | v0.17.0 rolling以降は大きいページは先頭+末尾だけが返り、中略部分は`cache/web`配下にフルテキストが保存される([PR#54843](https://github.com/NousResearch/hermes-agent/pull/54843)で2026-06-29にLLM要約→truncate+store方式へ変更・char budget初期15000は`config.yaml`の`web.extract_char_limit`で調整可)。SKILL.mdで「特定セクションだけ抜き出す」と明示するか、応答末尾の`read_file`案内に従って`cache/web`内のフルテキストを深掘りする。FirecrawlはJS描画や複雑なページで役立つ(素のHTMLはcurlで足りる) |
+| 抽出が空or期待と違う | v0.17.0 rolling以降は大きいページは先頭+末尾だけが返り、中略部分は`cache/web`配下にフルテキストが保存される([PR#54843](https://github.com/NousResearch/hermes-agent/pull/54843)で2026-06-29にLLM要約→truncate+store方式へ変更・char budget初期15000は`config.yaml`の`web.extract_char_limit`で調整可)。SKILL.mdで「特定セクションだけ抜き出す」と明示するか、応答末尾の`read_file`案内に従って`cache/web`内のフルテキストを深掘りする。FirecrawlはJS描画や複雑なページで役立つ(素のHTMLはcurlで足りる) |
 | X Searchで`degraded: true` | xAI側のレート制限。少し時間を置く+クエリを単純化 |
 | 再起動で`status=1/FAILURE`表示 | 旧プロセスがSIGKILLされた表示で再起動では正常。`is-active`が`active`を返せば成功 |
 | SearXNGに切り替えたら検索結果が薄い/エラー | 主要engineがbot対策で停止している可能性が高い(コラム参照)。Brave Search APIキー追加、または本線のFirecrawlに戻す |
@@ -690,7 +690,7 @@ x_searchで NousResearch のXでの反応を投稿URLつきで(数値は不要)
 | 項目 | 引用元 |
 |---|---|
 | Web検索全般・バックエンド比較・Firecrawlがdefaultで推奨 | [hermes-agent.nousresearch.com/docs/user-guide/features/web-search](https://hermes-agent.nousresearch.com/docs/user-guide/features/web-search)(「Firecrawl (default), Recommended for most users.」) |
-| 機能別バックエンドはsearch/extractのみ(crawl_backendは存在しない) | 同上 per-capability backends |
+| 機能別バックエンドはsearch/extractのみ(crawl_backendは存在しない) | 同上per-capability backends |
 | 自動fallback `search_fallback_backends` / `extract_fallback_backends`(執筆時点open) | NousResearch/hermes-agent PR [#23315](https://github.com/NousResearch/hermes-agent/pull/23315) / PR [#23366](https://github.com/NousResearch/hermes-agent/pull/23366) |
 | SearXNG自己ホスト(Docker)+JSON format必須 | [Hermes同梱skill searxng-search](https://github.com/NousResearch/hermes-agent/blob/main/optional-skills/research/searxng-search/SKILL.md) |
 | SearXNGはsearch専用(extract不可) | [NousResearch/hermes-agent#32698](https://github.com/NousResearch/hermes-agent/issues/32698) |

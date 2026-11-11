@@ -131,7 +131,7 @@ HuggingFace公式チャンネル提供の解説動画。約40分・英語(YouTub
 :::
 
 :::message
-2026-06-21にNousResearch公式の Docker イメージ `nousresearch/hermes-agent` も公開された。第4回は第三者製の `nikolaik/python-nodejs:python3.11-nodejs20` で書いているが、新規読者は公式イメージから始めても同じ手順で動く。既存読者は乗り換え不要(両方使える)。第4回末尾コラムに詳細を補足してある。
+2026-06-21にNousResearch公式のDockerイメージ `nousresearch/hermes-agent` も公開された。第4回は第三者製の `nikolaik/python-nodejs:python3.11-nodejs20` で書いているが、新規読者は公式イメージから始めても同じ手順で動く。既存読者は乗り換え不要(両方使える)。第4回末尾コラムに詳細を補足してある。
 :::
 
 ## はじめる前に必要なもの
@@ -148,7 +148,7 @@ HuggingFace公式チャンネル提供の解説動画。約40分・英語(YouTub
 
 順番に積み上げていく構成なので、第1回から読むのがいちばん迷わない。すでにVPSを持っている人や、特定の話題(常駐・検索など)だけ知りたい人は、上のもくじで気になる回を探して読んでもいい。各回の冒頭に「その回の到達点」を置いているので、自分に必要かどうかはそこで判断できる。
 
-このシリーズは、VPSで実際に動かした手順と画面の記録だ。公式ドキュメントの日本語訳と逆引きは wiki.winsmux.dev にある。初めての人は[初めての方へ](https://wiki.winsmux.dev/hermes/first/)、やりたいことから探すなら[逆引き](https://wiki.winsmux.dev/hermes/howto/)。本連載の画面は、各回を撮影した時点の版(v0.14〜0.20)のもので、最新版(v2026.9.24)との差は[更新履歴](https://wiki.winsmux.dev/hermes/updates/)で追える。
+このシリーズは、VPSで実際に動かした手順と画面の記録だ。公式ドキュメントの日本語訳と逆引きはwiki.winsmux.devにある。初めての人は[初めての方へ](https://wiki.winsmux.dev/hermes/first/)、やりたいことから探すなら[逆引き](https://wiki.winsmux.dev/hermes/howto/)。本連載の画面は、各回を撮影した時点の版(v0.14〜0.20)のもので、最新版(v2026.9.24)との差は[更新履歴](https://wiki.winsmux.dev/hermes/updates/)で追える。
 
 それでは、第1回でサーバーを1台借りるところから始めよう。
 

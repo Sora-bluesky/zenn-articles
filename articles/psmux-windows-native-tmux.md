@@ -6,64 +6,64 @@ topics: ["claudecode", "ai", "windows", "powershell", "ターミナル"]
 published: true
 ---
 
-## Windows 開発者の「tmux 使いたい問題」
+## Windows開発者の「tmux使いたい問題」
 
-この記事の手順を終えると、WSL なしの Windows で、ペイン分割・セッション永続化・AI エージェントの並列実行ができるようになる。macOS / Linux 本家の tmux の使い方や、psmux 内部の実装には踏み込まない。
+この記事の手順を終えると、WSLなしのWindowsで、ペイン分割・セッション永続化・AIエージェントの並列実行ができるようになる。macOS / Linux本家のtmuxの使い方や、psmux内部の実装には踏み込まない。
 
-tmux はターミナルの画面分割とセッション管理を行うツールで、macOS / Linux 開発者の間では定番の存在だ。
+tmuxはターミナルの画面分割とセッション管理を行うツールで、macOS / Linux開発者の間では定番の存在だ。
 
-macOS や Linux のチームメイトが tmux でペインを分割し、サーバーにセッションを残して（デタッチ）、翌日つなぎ直して（アタッチ）続きから作業している。その横で僕は Windows Terminal のタブを 8 枚開き、どのタブで何を動かしていたか見失い、リモートデスクトップが切れるたびにセッションを作り直していた。
+macOSやLinuxのチームメイトがtmuxでペインを分割し、サーバーにセッションを残して（デタッチ）、翌日つなぎ直して（アタッチ）続きから作業している。その横で僕はWindows Terminalのタブを8枚開き、どのタブで何を動かしていたか見失い、リモートデスクトップが切れるたびにセッションを作り直していた。
 
-「WSL2 入れれば？」と何度も言われた。だが PowerShell と cmd.exe でビルドパイプラインを回している環境に、わざわざ Linux レイヤーを噛ませたくない。そもそも WSL2 を入れられない社内 PC もある。
+「WSL2入れれば？」と何度も言われた。だがPowerShellとcmd.exeでビルドパイプラインを回している環境に、わざわざLinuxレイヤーを噛ませたくない。そもそもWSL2を入れられない社内PCもある。
 
 痛みを整理するとこうなる。
 
-- **SSH セッションが切れると作業が飛ぶ** -- リモートデスクトップが落ちたら最初からやり直し
+- **SSHセッションが切れると作業が飛ぶ** -- リモートデスクトップが落ちたら最初からやり直し
 - **タブ地獄** -- エディタ、ビルド、テスト、Git、ログ監視。タブが増え続けて収拾がつかない
-- **AI エージェントを複数走らせたいが画面が足りない** -- Claude Code と Codex CLI を並べたい
-- **WSL2 は入れたくない（or 入れられない）** -- ネイティブ Windows で完結させたい
+- **AIエージェントを複数走らせたいが画面が足りない** -- Claude CodeとCodex CLIを並べたい
+- **WSL2は入れたくない（or入れられない）** -- ネイティブWindowsで完結させたい
 
-2025 年末、Rust 製の Windows ネイティブターミナルマルチプレクサ **psmux** を見つけた。これが全部解決してしまった。
+2025年末、Rust製のWindowsネイティブターミナルマルチプレクサ **psmux** を見つけた。これが全部解決してしまった。
 
-## psmux とは
+## psmuxとは
 
 | 項目 | 内容 |
 |------|------|
 | リポジトリ | [github.com/marlocarlo/psmux](https://github.com/marlocarlo/psmux) |
 | 言語 | Rust |
 | ライセンス | MIT |
-| スター数 | 792（2026 年 3 月時点） |
+| スター数 | 792（2026年3月時点） |
 | 最新バージョン | v3.3.1（2026-03-26） |
 
-psmux は **Windows ネイティブの tmux**。Windows の ConPTY API を直接使い、WSL・Cygwin・MSYS2 は一切不要。76 個の tmux コマンドを実装し、`.tmux.conf` をそのまま読み込む。`psmux`・`pmux`・`tmux` の 3 つのコマンド名で起動できるので、tmux ユーザーは手癖を変えずに移行できる。
+psmuxは **Windowsネイティブのtmux**。WindowsのConPTY APIを直接使い、WSL・Cygwin・MSYS2は一切不要。76個のtmuxコマンドを実装し、`.tmux.conf` をそのまま読み込む。`psmux`・`pmux`・`tmux` の3つのコマンド名で起動できるので、tmuxユーザーは手癖を変えずに移行できる。
 
 :::message
-**ConPTY とは？**
-ConPTY（Console Pseudo Terminal）は、Windows 10 以降に搭載された擬似端末 API。Unix の PTY に相当する仕組みで、これにより Windows でもターミナルマルチプレクサが実現可能になった。psmux はこの API を Rust から直接呼び出している。
+**ConPTYとは？**
+ConPTY（Console Pseudo Terminal）は、Windows 10以降に搭載された擬似端末API。UnixのPTYに相当する仕組みで、これによりWindowsでもターミナルマルチプレクサが実現可能になった。psmuxはこのAPIをRustから直接呼び出している。
 :::
 
-### tmux との比較
+### tmuxとの比較
 
-tmux を知っている人向けに、違いを先に整理しておく。
+tmuxを知っている人向けに、違いを先に整理しておく。
 
 | 観点 | tmux | psmux |
 |------|------|-------|
-| 対象 OS | macOS / Linux | **Windows 10 / 11** |
+| 対象OS | macOS / Linux | **Windows 10 / 11** |
 | 実装言語 | C | Rust |
 | 依存関係 | libevent, ncurses | なし（シングルバイナリ） |
-| WSL 必要 | -- | **不要** |
-| コマンド互換 | -- | 76 コマンド対応 |
+| WSL必要 | -- | **不要** |
+| コマンド互換 | -- | 76コマンド対応 |
 | `.tmux.conf` 互換 | -- | そのまま読み込み可 |
-| マウスサポート | 部分的 | フル（3 層マウスインジェクション） |
-| AI エージェント統合 | smux / tmux-bridge | **Agent Teams 組み込み** |
+| マウスサポート | 部分的 | フル（3層マウスインジェクション） |
+| AIエージェント統合 | smux / tmux-bridge | **Agent Teams組み込み** |
 
-tmux を知らない人は、この表は読み飛ばして OK。次の Level 1 から始めれば大丈夫。
+tmuxを知らない人は、この表は読み飛ばしてOK。次のLevel 1から始めれば大丈夫。
 
 ---
 
-## Level 1: 5 分でスタート
+## Level 1: 5分でスタート
 
-今日覚えるのは 4 つだけ。「インストール」「セッション作成」「ペイン分割」「デタッチ/アタッチ」。
+今日覚えるのは4つだけ。「インストール」「セッション作成」「ペイン分割」「デタッチ/アタッチ」。
 
 ### インストール
 
@@ -72,10 +72,10 @@ winget install psmux
 ```
 
 :::message
-**winget** は Windows 10/11 に標準搭載されているパッケージマネージャ。PowerShell やコマンドプロンプトで `winget` と打てば使える。もし見つからない場合は Microsoft Store で「アプリ インストーラー」を更新する。
+**winget** はWindows 10/11に標準搭載されているパッケージマネージャ。PowerShellやコマンドプロンプトで `winget` と打てば使える。もし見つからない場合はMicrosoft Storeで「アプリ インストーラー」を更新する。
 :::
 
-scoop、choco、cargo でもインストールできるが、選択肢は 1 つに絞るなら winget が一番手軽。
+scoop、choco、cargoでもインストールできるが、選択肢は1つに絞るならwingetが一番手軽。
 
 PowerShell 7（pwsh）も入れておくと快適になる。
 
@@ -84,8 +84,8 @@ winget install --id Microsoft.PowerShell
 ```
 
 :::message
-**PowerShell 5.1 と 7 の違い**
-Windows に最初から入っている PowerShell（青い画面）はバージョン 5.1。PowerShell 7 は黒い画面で、クロスプラットフォーム対応の新しい世代。psmux は 5.1 でも動くが、一部の動作が異なる場合があるため 7 を推奨。
+**PowerShell 5.1と7の違い**
+Windowsに最初から入っているPowerShell（青い画面）はバージョン5.1。PowerShell 7は黒い画面で、クロスプラットフォーム対応の新しい世代。psmuxは5.1でも動くが、一部の動作が異なる場合があるため7を推奨。
 :::
 
 ### 最初のセッション
@@ -94,11 +94,11 @@ Windows に最初から入っている PowerShell（青い画面）はバージ�
 psmux new-session -s work
 ```
 
-`-s work` は「work という名前のセッションを作る」という意味。名前は何でもいい。画面下部にステータスバーが出ていれば成功。
+`-s work` は「workという名前のセッションを作る」という意味。名前は何でもいい。画面下部にステータスバーが出ていれば成功。
 
 ### ペイン分割
 
-psmux の画面構造は 3 層になっている。**セッション**（作業の大枠）の中に**ウィンドウ**（仮想画面）があり、ウィンドウを**ペイン**（区画）に分割する。まずはペインだけ覚えれば十分。1 画面に複数のターミナルを並べられる。
+psmuxの画面構造は3層になっている。**セッション**（作業の大枠）の中に**ウィンドウ**（仮想画面）があり、ウィンドウを**ペイン**（区画）に分割する。まずはペインだけ覚えれば十分。1画面に複数のターミナルを並べられる。
 
 ```powershell
 psmux split-window -h         # 画面を左右に分割（-h = horizontal）
@@ -107,11 +107,11 @@ psmux select-pane -t 0        # 最初のペインに戻る（-t = target）
 ```
 
 :::message
-**-h と -v が直感と逆に感じる場合**
-`-h` は「水平方向にペインを並べる」つまり左右分割。`-v` は「垂直方向にペインを並べる」つまり上下分割。tmux と同じ仕様で、最初は混乱するが慣れる。
+**-hと -vが直感と逆に感じる場合**
+`-h` は「水平方向にペインを並べる」つまり左右分割。`-v` は「垂直方向にペインを並べる」つまり上下分割。tmuxと同じ仕様で、最初は混乱するが慣れる。
 :::
 
-Prefix キー（デフォルトは `Ctrl+b`）を使ったキーバインドでも操作できる。`Ctrl+b` を押してから次のキーを押す、という 2 ステップ操作になる。
+Prefixキー（デフォルトは `Ctrl+b`）を使ったキーバインドでも操作できる。`Ctrl+b` を押してから次のキーを押す、という2ステップ操作になる。
 
 | やりたいこと | コマンド | キーバインド |
 |-------------|---------|-------------|
@@ -121,11 +121,11 @@ Prefix キー（デフォルトは `Ctrl+b`）を使ったキーバインドで�
 | ペイン移動 | `psmux select-pane -U/-D/-L/-R` | `Ctrl+b` → 矢印キー |
 | セッション一覧 | `psmux ls` | -- |
 
-### デタッチ & 再アタッチ -- tmux の真骨頂
+### デタッチ & 再アタッチ -- tmuxの真骨頂
 
-tmux 系ツールを使う最大の理由がこれ。**ターミナルを閉じてもセッションが生き残る**。
+tmux系ツールを使う最大の理由がこれ。**ターミナルを閉じてもセッションが生き残る**。
 
-何が嬉しいか。ビルドを走らせている最中にうっかりターミナルを閉じてしまっても、SSH が切断されても、セッションは裏で動き続けている。戻りたくなったらアタッチするだけ。
+何が嬉しいか。ビルドを走らせている最中にうっかりターミナルを閉じてしまっても、SSHが切断されても、セッションは裏で動き続けている。戻りたくなったらアタッチするだけ。
 
 ```powershell
 # デタッチ（セッションから離れる。Ctrl+b → d でも可）
@@ -135,23 +135,23 @@ psmux detach-client
 psmux attach -t work
 ```
 
-SSH 切断、ターミナルクラッシュ、うっかりウィンドウを閉じた -- 全部これでリカバリできる。
+SSH切断、ターミナルクラッシュ、うっかりウィンドウを閉じた -- 全部これでリカバリできる。
 
 :::message alert
-**PC の再起動・シャットダウンだけは例外。** OS が終了するとプロセスが消えるため、セッションも失われる。これは tmux も同じ制約。
+**PCの再起動・シャットダウンだけは例外。** OSが終了するとプロセスが消えるため、セッションも失われる。これはtmuxも同じ制約。
 :::
 
-Level 1 はここまで。この 4 つだけで日常の作業効率は確実に上がる。
+Level 1はここまで。この4つだけで日常の作業効率は確実に上がる。
 
 ---
 
 ## Level 2: 設定をカスタマイズする
 
-psmux のデフォルト設定でも十分使えるが、カスタマイズすると格段に快適になる。
+psmuxのデフォルト設定でも十分使えるが、カスタマイズすると格段に快適になる。
 
 ### 設定ファイルの場所
 
-psmux は以下の順序で設定ファイルを探す。
+psmuxは以下の順序で設定ファイルを探す。
 
 1. `~/.psmux.conf`
 2. `~/.psmuxrc`
@@ -160,14 +160,14 @@ psmux は以下の順序で設定ファイルを探す。
 
 :::message
 **`~` は何？**
-`~`（チルダ）はホームディレクトリを指す記号。Windows の PowerShell 7 では `C:\Users\[あなたのユーザー名]` に展開される。つまり `~/.psmux.conf` は `C:\Users\[あなたのユーザー名]\.psmux.conf` と同じ場所。
+`~`（チルダ）はホームディレクトリを指す記号。WindowsのPowerShell 7では `C:\Users\[あなたのユーザー名]` に展開される。つまり `~/.psmux.conf` は `C:\Users\[あなたのユーザー名]\.psmux.conf` と同じ場所。
 :::
 
-既存の `.tmux.conf` があればそのまま読み込まれる。psmux 固有の設定を追加したい場合は `~/.psmux.conf` を作成する。
+既存の `.tmux.conf` があればそのまま読み込まれる。psmux固有の設定を追加したい場合は `~/.psmux.conf` を作成する。
 
 ### コピペで使える .psmux.conf
 
-以下をそのまま `~/.psmux.conf` に保存すれば、すぐに快適な環境になる。PowerShell で以下を実行すると、ファイルが作成される。
+以下をそのまま `~/.psmux.conf` に保存すれば、すぐに快適な環境になる。PowerShellで以下を実行すると、ファイルが作成される。
 
 ```powershell
 # メモ帳で設定ファイルを開く（なければ新規作成）
@@ -212,7 +212,7 @@ bind-key -n M-u next-window       # Alt+u: 次のウィンドウ
 bind-key -n M-h previous-window   # Alt+h: 前のウィンドウ
 ```
 
-注目するのは `bind-key -n M-*` の行。`-n` を付けると Prefix キー（`Ctrl+b`）なしで直接操作できる。`Alt+j/l` で左右移動、`Alt+n` で新しいペインを追加 -- Prefix を経由しないぶん操作が圧倒的に速い。この Alt キーバインドに変えた瞬間、Ctrl+b を毎回押していたのがバカバカしくなった。
+注目するのは `bind-key -n M-*` の行。`-n` を付けるとPrefixキー（`Ctrl+b`）なしで直接操作できる。`Alt+j/l` で左右移動、`Alt+n` で新しいペインを追加 -- Prefixを経由しないぶん操作が圧倒的に速い。このAltキーバインドに変えた瞬間、Ctrl+bを毎回押していたのがバカバカしくなった。
 
 ### チートシート
 
@@ -257,19 +257,19 @@ bind-key -n M-h previous-window   # Alt+h: 前のウィンドウ
 
 ---
 
-## Level 3: AI エージェントを並列実行する
+## Level 3: AIエージェントを並列実行する
 
-ここでは、AI エージェント CLI を複数同時に走らせる。psmux なら Windows ネイティブでできる。
+ここでは、AIエージェントCLIを複数同時に走らせる。psmuxならWindowsネイティブでできる。
 
-### なぜ psmux で AI エージェントなのか
+### なぜpsmuxでAIエージェントなのか
 
-- Claude Code、Codex CLI、Gemini CLI を **1 画面に並べて同時に走らせたい**
+- Claude Code、Codex CLI、Gemini CLIを **1画面に並べて同時に走らせたい**
 - タスクを分担させて並列で進めたい
 - エージェントの出力をリアルタイムで見比べたい
 
-Windows Terminal のタブ切り替えでは、各エージェントの進捗を同時に視認できない。psmux のペイン分割なら全部見える。
+Windows Terminalのタブ切り替えでは、各エージェントの進捗を同時に視認できない。psmuxのペイン分割なら全部見える。
 
-### セットアップ例: Claude Code + Codex を並べる
+### セットアップ例: Claude Code + Codexを並べる
 
 ```powershell
 psmux new-session -s ai-work
@@ -280,11 +280,11 @@ claude
 codex
 ```
 
-たったこれだけで 2 つの AI エージェントが並走する環境ができる。左のペインで Claude Code にリファクタリングを任せつつ、右のペインで Codex にテストを書かせる、といった分業が可能になる。
+たったこれだけで2つのAIエージェントが並走する環境ができる。左のペインでClaude Codeにリファクタリングを任せつつ、右のペインでCodexにテストを書かせる、といった分業が可能になる。
 
-### Agent Teams ネイティブサポート
+### Agent Teamsネイティブサポート
 
-psmux v3.3.1 には Claude Code の **Agent Teams** がネイティブ統合されている。psmux セッション内で Claude Code を起動すると、チームメイトエージェントが自動的に別ペインにスポーンする。
+psmux v3.3.1にはClaude Codeの **Agent Teams** がネイティブ統合されている。psmuxセッション内でClaude Codeを起動すると、チームメイトエージェントが自動的に別ペインにスポーンする。
 
 ```powershell
 # psmux セッション内で Claude Code を起動するだけ
@@ -292,11 +292,11 @@ psmux new-session -s work
 claude  # エージェントチームが自動的にペイン分割される
 ```
 
-psmux が以下の環境変数を自動設定するため、手動の設定は不要。
+psmuxが以下の環境変数を自動設定するため、手動の設定は不要。
 
 | 環境変数 | 値 | 役割 |
 |---------|-----|------|
-| `TMUX` | `/tmp/psmux-{pid}/...` | Claude Code に tmux 環境であることを通知 |
+| `TMUX` | `/tmp/psmux-{pid}/...` | Claude Codeにtmux環境であることを通知 |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | `1` | エージェントチーム機能を有効化 |
 | `PSMUX_CLAUDE_TEAMMATE_MODE` | `tmux` | `--teammate-mode tmux` を自動注入 |
 
@@ -307,8 +307,8 @@ set -g claude-code-fix-tty off
 ```
 
 :::message
-**Opus モデルの補足**
-Opus は worktree isolation（インプロセス・不可視）を選ぶ傾向がある。ペインで見える teammate 方式を強制したい場合は、プロジェクトの `CLAUDE.md` に以下を記述する。
+**Opusモデルの補足**
+Opusはworktree isolation（インプロセス・不可視）を選ぶ傾向がある。ペインで見えるteammate方式を強制したい場合は、プロジェクトの `CLAUDE.md` に以下を記述する。
 
 ```markdown
 When spawning subagents, always use the teammate system (team_name + name parameters)
@@ -326,7 +326,7 @@ irm https://raw.githubusercontent.com/sora-biz/winsmux/main/install.ps1 | iex
 ```
 
 :::message
-**irm と iex とは？**
+**irmとiexとは？**
 `irm` は `Invoke-RestMethod` の省略形で、URLからデータを取得するコマンド。`iex` は `Invoke-Expression` の省略形で、取得したスクリプトを実行する。つまり「ネットからスクリプトをダウンロードして、そのまま実行する」という意味。実行前にURLが公式リポジトリのものか確認すること。
 :::
 
@@ -337,45 +337,45 @@ psmux-bridge message codex "src/auth.ts をレビューしてください"
 psmux-bridge keys codex Enter
 ```
 
-winsmux の詳細は以下の記事で解説している。
+winsmuxの詳細は以下の記事で解説している。
 
 https://zenn.dev/sora_biz/articles/winsmux-ai-agent-cross-pane-communication
 
 ---
 
-## Windows Terminal との使い分け
+## Windows Terminalとの使い分け
 
-psmux を入れたら Windows Terminal が要らなくなるわけではない。両方を組み合わせるのがベスト。
+psmuxを入れたらWindows Terminalが要らなくなるわけではない。両方を組み合わせるのがベスト。
 
 | 場面 | Windows Terminal | psmux |
 |------|-----------------|-------|
 | ちょっとした作業 | **タブで十分** | やりすぎ |
 | 長時間の開発 | タブだと窮屈 | **ペイン分割が活きる** |
-| SSH 先での作業 | 切断で消える | **セッション永続** |
-| AI エージェント並列 | 手動切り替え | **同時に視認できる** |
-| 操作の自動化 | 非対応 | **76 コマンドでスクリプト化** |
+| SSH先での作業 | 切断で消える | **セッション永続** |
+| AIエージェント並列 | 手動切り替え | **同時に視認できる** |
+| 操作の自動化 | 非対応 | **76コマンドでスクリプト化** |
 
-結論: **Windows Terminal の中で psmux を起動する**のが最強の構成。Windows Terminal はフォント・配色・透過度など見た目のカスタマイズが得意で、psmux はセッション管理とペイン分割が得意。役割が違う。
+結論: **Windows Terminalの中でpsmuxを起動する**のが最強の構成。Windows Terminalはフォント・配色・透過度など見た目のカスタマイズが得意で、psmuxはセッション管理とペイン分割が得意。役割が違う。
 
 ---
 
 ## 注意点とよくあるトラブル
 
-### PowerShell 7 を使う
+### PowerShell 7を使う
 
-Windows 付属の PowerShell 5.1 では PSReadLine の予測表示やキーバインドの挙動が異なることがある。問題が起きたらまず `pwsh` で試す。インストールは `winget install --id Microsoft.PowerShell`。
+Windows付属のPowerShell 5.1ではPSReadLineの予測表示やキーバインドの挙動が異なることがある。問題が起きたらまず `pwsh` で試す。インストールは `winget install --id Microsoft.PowerShell`。
 
 ### 初回起動が遅い場合
 
-ウイルス対策ソフトが新しい実行ファイルをスキャンしていることが多い。2 回目以降は速くなる。改善しない場合は、psmux のインストールフォルダをウイルス対策の除外に追加する。
+ウイルス対策ソフトが新しい実行ファイルをスキャンしていることが多い。2回目以降は速くなる。改善しない場合は、psmuxのインストールフォルダをウイルス対策の除外に追加する。
 
-### psmux の中から psmux を起動しない
+### psmuxの中からpsmuxを起動しない
 
-ネスト（入れ子）は非推奨。tmux も同じ制約がある。既に psmux セッションの中にいるかどうかは、ステータスバーの有無で判断できる。
+ネスト（入れ子）は非推奨。tmuxも同じ制約がある。既にpsmuxセッションの中にいるかどうかは、ステータスバーの有無で判断できる。
 
-### PSReadLine の予測表示
+### PSReadLineの予測表示
 
-PowerShell 7 のコマンド予測機能（InlineView）がデフォルトで無効化される。予測表示を使いたい場合は、`.psmux.conf` に以下を追加する。
+PowerShell 7のコマンド予測機能（InlineView）がデフォルトで無効化される。予測表示を使いたい場合は、`.psmux.conf` に以下を追加する。
 
 ```conf
 set -g allow-predictions on
@@ -385,26 +385,26 @@ set -g allow-predictions on
 
 ## まとめ
 
-この記事の手順を終えた状態では、WSL なしの Windows で tmux ワークフローが動いている。必要なのは次の 2 行だ。
+この記事の手順を終えた状態では、WSLなしのWindowsでtmuxワークフローが動いている。必要なのは次の2行だ。
 
 ```powershell
 winget install psmux
 psmux new-session -s work
 ```
 
-ペイン分割、セッション永続化、AI エージェント並列実行 -- 全部 PowerShell ネイティブで動く。
+ペイン分割、セッション永続化、AIエージェント並列実行 -- 全部PowerShellネイティブで動く。
 
-僕自身、psmux に切り替えてからタブ地獄とは無縁になった。Claude Code と Codex CLI を並べて走らせる作業環境は、一度体験すると戻れない。
+僕自身、psmuxに切り替えてからタブ地獄とは無縁になった。Claude CodeとCodex CLIを並べて走らせる作業環境は、一度体験すると戻れない。
 
 ---
 
 :::message
 **公式ドキュメント**
-- [psmux 公式リポジトリ](https://github.com/marlocarlo/psmux) -- インストール方法、設定リファレンス、全コマンド一覧
-- [Claude Code Agent Teams](https://code.claude.com/docs/en/agent-teams) -- Agent Teams の仕組みと設定
-- [Claude Code 日本語ドキュメント](https://code.claude.com/docs/ja) -- Claude Code 全般
+- [psmux公式リポジトリ](https://github.com/marlocarlo/psmux) -- インストール方法、設定リファレンス、全コマンド一覧
+- [Claude Code Agent Teams](https://code.claude.com/docs/en/agent-teams) -- Agent Teamsの仕組みと設定
+- [Claude Code日本語ドキュメント](https://code.claude.com/docs/ja) -- Claude Code全般
 :::
 
-*本記事は 2026 年 3 月 29 日時点の情報に基づく。最新情報は [psmux 公式リポジトリ](https://github.com/marlocarlo/psmux) を参照してほしい。*
+*本記事は2026年3月29日時点の情報に基づく。最新情報は [psmux公式リポジトリ](https://github.com/marlocarlo/psmux) を参照してほしい。*
 
 *著者: sora（[@sora_biz](https://x.com/sora_biz)）*

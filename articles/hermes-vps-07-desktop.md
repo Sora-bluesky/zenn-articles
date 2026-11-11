@@ -54,7 +54,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -450,7 +450,7 @@ robocopy "$env:LOCALAPPDATA\hermes" "$env:USERPROFILE\hermes-backup" /E /XD mode
 | 4 | サインイン | 認証の「サインイン」ボタン → 別ウィンドウで`admin`とパスワードを入力 |
 | 5 | 確定 | 「保存して再接続」 |
 
-接続方式は4つある。「ローカルゲートウェイ」(自分のパソコンの中で動かす。既定)、「Hermes Cloud」、「リモートゲートウェイ」、「SSH で接続」だ。VPSには「リモートゲートウェイ」を選ぶ。
+接続方式は4つある。「ローカルゲートウェイ」(自分のパソコンの中で動かす。既定)、「Hermes Cloud」、「リモートゲートウェイ」、「SSHで接続」だ。VPSには「リモートゲートウェイ」を選ぶ。
 
 ![設定のゲートウェイ配下の「このウィンドウ」で、接続方式の4つが並んでいる画面。ローカルゲートウェイが選ばれている](/images/hermes-vps/hermes-vps-07-store-connection-mode.png)
 

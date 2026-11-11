@@ -17,10 +17,10 @@ published: true
 :::message
 **シリーズ構成**
 - [前編：ObsidianをAIの「司令塔」にする](obsidian-mcp-integration)：MCP接続の手順と自動ニュース収集の実例
-- **Obsidian CLI セットアップ完全ガイド**（この記事）
+- **Obsidian CLIセットアップ完全ガイド**（この記事）
 
 **関連記事**
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
+- [Claude Code × Obsidian連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
 :::
 
 :::message alert
@@ -99,7 +99,7 @@ Obsidian CLIは100以上のコマンドを提供する。主要なカテゴリ�
 Catalyst Licenseは**Obsidian開発チームへの支援**の意味合いが強い。Early Accessの機能は将来的に全ユーザーに無料開放される予定である。
 :::
 
-### Step 2: Insider Builds の有効化
+### Step 2: Insider Buildsの有効化
 
 1. Obsidianアプリを起動
 2. 設定 → 一般 → アカウントでログイン
@@ -129,7 +129,7 @@ Catalyst Licenseは**Obsidian開発チームへの支援**の意味合いが強�
 
 ![CLI登録ダイアログ](/images/obsidian-cli-setup/08-cli-registration-dialog.png)
 
-3. CLI をオンにする
+3. CLIをオンにする
 
 ![CLI有効化](/images/obsidian-cli-setup/09-cli-toggle-on.png)
 
@@ -137,7 +137,7 @@ Catalyst Licenseは**Obsidian開発チームへの支援**の意味合いが強�
 
 ここからがWindows環境特有のトラブルゾーンである。macOS/Linuxユーザーは読み飛ばして問題ない。
 
-#### 4a. Obsidian.com ファイルの取得
+#### 4a. Obsidian.comファイルの取得
 
 Windows環境では、CLIの実行に `Obsidian.com` というターミナルリダイレクタファイルが必要だ。これは**Obsidian公式Discordサーバー**のInsider専用チャンネルで配布されている。
 
@@ -189,7 +189,7 @@ Win + R → 「powershell」と入力 → Enter
 これで通常ユーザー権限のPowerShellが起動する。
 
 :::message
-**恒久対策**: Windows Terminal をデフォルトで管理者権限にしている場合は、設定 → プロファイル → 「このプロファイルを管理者として実行する」→ **オフ** にする。
+**恒久対策**: Windows Terminalをデフォルトで管理者権限にしている場合は、設定 → プロファイル → 「このプロファイルを管理者として実行する」→ **オフ** にする。
 
 あるいは、Obsidian CLI用に通常権限のプロファイルを別途作成する方法もある。
 :::
@@ -256,7 +256,7 @@ obsidian-local-rest-api    3.4.2
 
 ## TUIモード
 
-CLI にはTUI（Terminal User Interface。ターミナル上で動くGUI風の操作画面）モードも搭載されている。引数なしで実行すると起動する：
+CLIにはTUI（Terminal User Interface。ターミナル上で動くGUI風の操作画面）モードも搭載されている。引数なしで実行すると起動する：
 
 ```powershell
 PS> obsidian
@@ -274,7 +274,7 @@ PS> obsidian
 
 GUIを使わずにターミナルだけでVaultを操作できる。SSH接続先でObsidianを操作したい場合にも有用だ。
 
-## Windows トラブルシューティング一覧
+## Windowsトラブルシューティング一覧
 
 今回のセットアップで実際に遭遇した問題と解決策をまとめる。
 
@@ -283,8 +283,8 @@ GUIを使わずにターミナルだけでVaultを操作できる。SSH接続先
 | 1 | CLIコマンドが何も返さない | ターミナルが管理者権限 | `Win+R → powershell` で通常権限起動 |
 | 2 | `#insider-desktop-release` が見えない | Discord badgeが未取得 | Account → Catalyst → Get Discord badge |
 | 3 | アカウントタブが表示されない | アプリ再起動が必要 | Obsidianを完全終了 → 再起動 |
-| 4 | `Obsidian.com` が見つからない | Discord insider チャンネル未参加 | 上記Discord badge手順を実行 |
-| 5 | Insider builds トグルが見えない | バージョンが古い/未ログイン | ログイン → 設定確認 |
+| 4 | `Obsidian.com` が見つからない | Discord insiderチャンネル未参加 | 上記Discord badge手順を実行 |
+| 5 | Insider buildsトグルが見えない | バージョンが古い/未ログイン | ログイン → 設定確認 |
 
 :::message
 **最もつまずいたのは管理者権限**（#1）だ。エラーメッセージが一切出ず、ただ「何も表示されない」だけなので、原因の特定に時間がかかる。Discord上でも同じ問題を報告しているユーザーが複数いた。
@@ -307,9 +307,9 @@ Windows 11でObsidian CLI（v1.12.0 Early Access）が動き、`obsidian help` �
 
 ## 参考
 
-- [Obsidian 公式サイト](https://obsidian.md/)
-- [Obsidian 公式Discord](https://discord.gg/obsidianmd)
-- [Obsidian Catalyst ページ](https://obsidian.md/pricing)
+- [Obsidian公式サイト](https://obsidian.md/)
+- [Obsidian公式Discord](https://discord.gg/obsidianmd)
+- [Obsidian Catalystページ](https://obsidian.md/pricing)
 - [前編：ObsidianをAIの「司令塔」にする](obsidian-mcp-integration)
 
 ※公式ドキュメントは英語。ブラウザの翻訳機能で日本語に変換して読める。
@@ -319,4 +319,4 @@ Windows 11でObsidian CLI（v1.12.0 Early Access）が動き、`obsidian help` �
 ## 関連記事
 
 - [ObsidianをAIの「司令塔」にする](obsidian-mcp-integration)：MCP接続の手順と自動ニュース収集の実例
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
+- [Claude Code × Obsidian連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順

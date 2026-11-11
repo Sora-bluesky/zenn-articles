@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -130,7 +130,7 @@ hermes curator ledger --skill morning-news
 | 方法 | 動き |
 |---|---|
 | patch(一部だけ置き換える) | 置き換える前の文と後の文を渡す |
-| patch に全文を渡す(丸ごと置き換える。editは旧名) | SKILL.mdの全文を渡す |
+| patchに全文を渡す(丸ごと置き換える。editは旧名) | SKILL.mdの全文を渡す |
 
 どちらで書くかは、Hermesが選ぶ。台帳には、丸ごとでも一部でもpatchと記録される。変更前後は、ハッシュ値(内容から計算した短い識別値)しか残らない。この回では、1回の依頼の中で、台帳にpatchが4件残った(4件とも20:08:29の同じ秒)。
 
@@ -214,7 +214,7 @@ hermes cron run 18dd6b7a1580
 
 項目は3件で、取得状況は「X検索 呼び出し済み・投稿は未採用」「取得件数: 3」だった。新しい手順に書いた、5件に満たない日は確認できた件数だけ載せること、呼んだが投稿を採用しなかった場合の書き方と、同じ出方をしている。
 
-見出しの日付は「2026-10-09 の朝ニュース」と出たが、実際は10月8日の夜に手動で動かした回だ。
+見出しの日付は「2026-10-09の朝ニュース」と出たが、実際は10月8日の夜に手動で動かした回だ。
 
 1回の配信なので、「よくなった」とは言えない。確かめられたのは、書き直したスキルで配信が動いたことと、取得状況の書き方が新しい手順どおりに出たことまでだ。
 

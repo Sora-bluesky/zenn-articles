@@ -8,18 +8,18 @@ published: true
 
 ## はじめに
 
-この記事の手順を終えると、Claude Code に `/review` と入力するだけで、読み取り専用のレビュー担当（サブエージェント）が直近の変更をチェックしてくれる。
+この記事の手順を終えると、Claude Codeに `/review` と入力するだけで、読み取り専用のレビュー担当（サブエージェント）が直近の変更をチェックしてくれる。
 
 普通は1つのエージェントに全部任せる。ただ、それだと **自分が作ったものには甘くなりがち** で、問題を見逃すことがある。
 人間の開発チームが「作る人」と「チェックする人」を分けるのと同じで、 **役割を分けると品質が上がる**。
 
-最初は Claude Code と OpenAI の Codex CLI を組み合わせる方法を試していた。
-その後、 **Claude Code だけで同じ役割分担ができる** とわかったので、この記事ではそちらを中心に説明する。
+最初はClaude CodeとOpenAIのCodex CLIを組み合わせる方法を試していた。
+その後、 **Claude Codeだけで同じ役割分担ができる** とわかったので、この記事ではそちらを中心に説明する。
 
-この記事で扱わないこと：Codex CLI 方式のくわしい使い方は折りたたみの参考にとどめる。GitHub Actions 連携も発展編で概要だけ触れる。
+この記事で扱わないこと：Codex CLI方式のくわしい使い方は折りたたみの参考にとどめる。GitHub Actions連携も発展編で概要だけ触れる。
 
 :::message
-Codex CLI との組み合わせ方法は「[参考 Codex CLI方式](#参考-codex-cli方式)」を参照。
+Codex CLIとの組み合わせ方法は「[参考Codex CLI方式](#参考-codex-cli方式)」を参照。
 :::
 
 :::message
@@ -34,10 +34,10 @@ Codex CLI との組み合わせ方法は「[参考 Codex CLI方式](#参考-code
 
 | 用語 | 意味 |
 |------|------|
-| サブエージェント | Claude Code の中で動く「別のAI担当者」のこと。メインのAIが別のAIに仕事を頼める機能 |
-| Builder（ビルダー） | コードを書く担当。この記事では Claude Code のメインAI |
+| サブエージェント | Claude Codeの中で動く「別のAI担当者」のこと。メインのAIが別のAIに仕事を頼める機能 |
+| Builder（ビルダー） | コードを書く担当。この記事ではClaude CodeのメインAI |
 | Auditor（オーディター） | コードをチェックする担当。この記事ではサブエージェント |
-| スキル | Claude Code に登録できる「よく使うコマンド」のこと。`/review` のように呼び出せる |
+| スキル | Claude Codeに登録できる「よく使うコマンド」のこと。`/review` のように呼び出せる |
 
 ---
 
@@ -47,7 +47,7 @@ Codex CLI との組み合わせ方法は「[参考 Codex CLI方式](#参考-code
 
 | 項目 | サブエージェント方式 | Codex CLI方式 |
 |------|----------------------|---------------|
-| 追加契約 | **不要**（Claude Pro/Maxのみ） | ChatGPT Plus（$20/月）または Pro（$200/月）が必要 |
+| 追加契約 | **不要**（Claude Pro/Maxのみ） | ChatGPT Plus（$20/月）またはPro（$200/月）が必要 |
 | セットアップ | ファイルを作るだけ | WSL + Node.js + 認証が必要 |
 | 操作 | 同じ画面で完結 | 2つのターミナルを行き来 |
 | 再利用 | 一度作れば全プロジェクトで使える | プロジェクトごとに設定が必要 |
@@ -59,7 +59,7 @@ Codex CLI との組み合わせ方法は「[参考 Codex CLI方式](#参考-code
 
 ### しくみ
 
-Claude Code には「サブエージェント」という機能がある。
+Claude Codeには「サブエージェント」という機能がある。
 メインのAI（Builder）が、別のAI担当者（Auditor）に仕事を頼めるしくみ。
 
 チェック担当には「読み取り専用」の制限をかける。
@@ -91,7 +91,7 @@ Claude Code には「サブエージェント」という機能がある。
 | 項目 | 要件 |
 |------|------|
 | Claude Code | インストール済み |
-| 契約 | Claude Pro または Max |
+| 契約 | Claude ProまたはMax |
 
 #### Step 1: フォルダを作成
 
@@ -164,7 +164,7 @@ disallowedTools: Write, Edit, NotebookEdit
 ```
 
 :::message
-**disallowedTools の意味**
+**disallowedToolsの意味**
 `disallowedTools: Write, Edit` と書くことで、このサブエージェントはファイルの書き込み・編集ができなくなる。読み取り専用になる。
 :::
 
@@ -244,9 +244,9 @@ cp .claude/skills/review/SKILL.md ~/.claude/skills/review/
                                     ↑______________|
 ```
 
-#### Step 1: Claude Code で実装
+#### Step 1: Claude Codeで実装
 
-普通に Claude Code へ指示する。
+普通にClaude Codeへ指示する。
 
 ```
 シンプルなToDoリストを作って。タスクの追加・完了・削除ができるようにして。
@@ -290,7 +290,7 @@ code-auditorのレビュー結果に基づいて、問題を修正して
 
 :::message
 **指示のしかた**
-「どう直すか」は指示しなくて大丈夫。Claude Code が自分で考えて修正してくれる。
+「どう直すか」は指示しなくて大丈夫。Claude Codeが自分で考えて修正してくれる。
 :::
 
 #### Step 5: 再レビュー → 完了
@@ -310,13 +310,13 @@ code-auditorのレビュー結果に基づいて、問題を修正して
 | コマンド | 用途 |
 |----------|------|
 | `/review` | 直近の変更をレビュー |
-| `/review 123` | PR #123 をレビュー（カスタムコマンド設定時） |
+| `/review 123` | PR #123をレビュー（カスタムコマンド設定時） |
 | `〇〇ファイルをレビューして` | 特定ファイルをレビュー |
 | `プロジェクト全体をレビューして` | 全体をチェック |
 
 :::message
 **PR（Pull Request）とは**
-GitHub でコードの変更を提案・レビューする仕組み。チーム開発でよく使われる。
+GitHubでコードの変更を提案・レビューする仕組み。チーム開発でよく使われる。
 個人開発では使わないこともあるので、知らなくても問題なし。
 :::
 
@@ -330,7 +330,7 @@ GitHub でコードの変更を提案・レビューする仕組み。チーム�
 
 ### うまく使うコツ
 
-#### 1. Claude Code には「何をしたいか」だけ伝える
+#### 1. Claude Codeには「何をしたいか」だけ伝える
 
 | 良い例 | 悪い例 |
 |--------|--------|
@@ -343,7 +343,7 @@ GitHub でコードの変更を提案・レビューする仕組み。チーム�
 
 #### 3. こまめにコミットする
 
-AIが変な変更をした時に戻れるよう、CLAUDE.md に以下を追記しておくと便利：
+AIが変な変更をした時に戻れるよう、CLAUDE.mdに以下を追記しておくと便利：
 
 ```markdown
 ## Git運用規約
@@ -374,7 +374,7 @@ AIが変な変更をした時に戻れるよう、CLAUDE.md に以下を追記�
 
 #### descriptionが曖昧
 
-SKILL.md の description が曖昧だと、Claude がスキルを呼び出さないことがある。
+SKILL.mdのdescriptionが曖昧だと、Claudeがスキルを呼び出さないことがある。
 
 | 問題のある書き方 | 改善例 |
 |-----------------|--------|
@@ -384,11 +384,11 @@ SKILL.md の description が曖昧だと、Claude がスキルを呼び出さな
 
 #### SKILL.mdが長すぎる
 
-SKILL.md が長すぎると、Claude のコンテキスト（記憶領域）を圧迫してパフォーマンスが低下する。
+SKILL.mdが長すぎると、Claudeのコンテキスト（記憶領域）を圧迫してパフォーマンスが低下する。
 
 **目安**: 500行以下に収める
 
-長くなる場合は、詳細な例やテンプレートを `examples.md` に分離し、SKILL.md から参照する形にする。
+長くなる場合は、詳細な例やテンプレートを `examples.md` に分離し、SKILL.mdから参照する形にする。
 
 #### コンテキストがいっぱい
 
@@ -408,7 +408,7 @@ SKILL.md が長すぎると、Claude のコンテキスト（記憶領域）を�
 
 | ポイント | 詳細 |
 |----------|------|
-| 役割分担の効果 | Builder が見逃した問題を Auditor が見つけてくれる |
+| 役割分担の効果 | Builderが見逃した問題をAuditorが見つけてくれる |
 | 任せる姿勢 | 細かく指示するより、要件だけ伝えて任せた方が効率的 |
 | グローバル設定 | 一度作った設定を全プロジェクトで再利用できる |
 
@@ -416,15 +416,15 @@ SKILL.md が長すぎると、Claude のコンテキスト（記憶領域）を�
 
 | 問題 | 解決策 |
 |------|--------|
-| GitHub認証でエラー | Personal Access Token で対応 |
-| ビルドエラー | エラーメッセージをそのまま Claude Code に渡して修正 |
+| GitHub認証でエラー | Personal Access Tokenで対応 |
+| ビルドエラー | エラーメッセージをそのままClaude Codeに渡して修正 |
 | 指示が細かすぎた | 要件だけ伝えて任せる方がうまくいく |
 
 ### 事前に確認しておくとよいこと
 
 | 確認項目 | 例 |
 |----------|----|
-| 環境 | Git の設定は済んでいるか |
+| 環境 | Gitの設定は済んでいるか |
 | 希望 | デプロイ方法、公開/非公開の希望 |
 | 動作確認 | 実際の画面での表示確認方法 |
 
@@ -432,7 +432,7 @@ SKILL.md が長すぎると、Claude のコンテキスト（記憶領域）を�
 
 ## まとめ
 
-Claude Code のサブエージェント機能だけで、追加契約なしに「作る人」と「チェックする人」を分けた状態になった。1つのエージェントでやるより、見逃しは減らせる。
+Claude Codeのサブエージェント機能だけで、追加契約なしに「作る人」と「チェックする人」を分けた状態になった。1つのエージェントでやるより、見逃しは減らせる。
 
 | 方式 | おすすめ度 | 理由 |
 |------|------------|------|
@@ -447,15 +447,15 @@ Claude Code のサブエージェント機能だけで、追加契約なしに�
 
 ### 自動レビューの仕組み
 
-GitHub Actions と連携すると、PR を作成するたびに自動で Claude Code がレビューを実行してくれる。
+GitHub Actionsと連携すると、PRを作成するたびに自動でClaude Codeがレビューを実行してくれる。
 
-- PR 作成 → 自動でレビューコメントが付く
+- PR作成 → 自動でレビューコメントが付く
 - `@claude` とメンションすると追加の指示ができる
-- レビュー完了まで 3〜4 分程度
+- レビュー完了まで3〜4分程度
 
-### カスタムコマンド /review の作成
+### カスタムコマンド /reviewの作成
 
-`.claude/commands/review.md` を作成すると、`/review 123` で PR #123 をレビューできるようになる。
+`.claude/commands/review.md` を作成すると、`/review 123` でPR #123をレビューできるようになる。
 
 ```markdown
 PR #$ARGUMENTS をレビューしてください。
@@ -466,12 +466,12 @@ PR #$ARGUMENTS をレビューしてください。
 4. 結果を出力
 ```
 
-**補足：$ARGUMENTS とは**
+**補足：$ARGUMENTSとは**
 `/review 123` と入力すると、`$ARGUMENTS` の部分が `123` に置き換わる。
 
 ### 詳細な設定方法
 
-GitHub Actions 連携の詳細な設定手順は、以下の記事が参考になる。
+GitHub Actions連携の詳細な設定手順は、以下の記事が参考になる。
 
 - [Claude Code "skills"でレビュー自動化を仕組み化してみた - Zenn](https://zenn.dev/neurostack_0001/articles/claude-code-skills-review-automation)
 
@@ -479,15 +479,15 @@ GitHub Actions 連携の詳細な設定手順は、以下の記事が参考に�
 
 ---
 
-## 参考 Codex CLI方式
+## 参考Codex CLI方式
 
-:::details Codex CLI 方式の詳細（クリックで展開）
+:::details Codex CLI方式の詳細（クリックで展開）
 
-GPT系モデルの視点も取り入れたい場合や、既に ChatGPT Plus/Pro を契約している場合の代替手段。
+GPT系モデルの視点も取り入れたい場合や、既にChatGPT Plus/Proを契約している場合の代替手段。
 
 ### しくみ
 
-Claude Code（Builder）と OpenAI Codex CLI（Auditor）を2つのターミナルで並行実行する。
+Claude Code（Builder）とOpenAI Codex CLI（Auditor）を2つのターミナルで並行実行する。
 
 ```
 ┌──────────────────┐      ┌──────────────────┐
@@ -502,23 +502,23 @@ Claude Code（Builder）と OpenAI Codex CLI（Auditor）を2つのターミナ�
 
 | ツール | 必要な契約 |
 |--------|------------|
-| Claude Code | Claude Pro または Max |
-| Codex CLI | ChatGPT Plus または Pro |
+| Claude Code | Claude ProまたはMax |
+| Codex CLI | ChatGPT PlusまたはPro |
 
 ### セットアップの流れ
 
-1. WSL2 をインストール
-2. WSL 内で Node.js をインストール
-3. Codex CLI をインストール
-4. ChatGPT アカウントで認証
+1. WSL2をインストール
+2. WSL内でNode.jsをインストール
+3. Codex CLIをインストール
+4. ChatGPTアカウントで認証
 
-### WSL2 のインストール
+### WSL2のインストール
 
 WSL2のセットアップが済んでいない場合は、[Microsoft公式の手順](https://learn.microsoft.com/ja-jp/windows/wsl/install)でWSL2とUbuntuを入れておく。
 
 WSL2のセットアップ完了後、以下に進む。
 
-### Codex CLI のインストール
+### Codex CLIのインストール
 
 **WSL内:**
 ```bash
@@ -550,9 +550,9 @@ codex
 
 ### 注意点
 
-- ChatGPT Plus/Pro の契約が別途必要
+- ChatGPT Plus/Proの契約が別途必要
 - ブラウザ認証でエラー（ERR_CONNECTION_REFUSED）が出ることがある
-- その場合は Personal Access Token 方式で対応
+- その場合はPersonal Access Token方式で対応
 
 :::
 
@@ -560,7 +560,7 @@ codex
 
 ## 参考リンク
 
-- [Claude Code 公式ドキュメント](https://docs.anthropic.com/en/docs/claude-code)
+- [Claude Code公式ドキュメント](https://docs.anthropic.com/en/docs/claude-code)
 - [OpenAI Codex CLI](https://github.com/openai/codex)
 - [Claude Code "skills"でレビュー自動化を仕組み化してみた - Zenn](https://zenn.dev/neurostack_0001/articles/claude-code-skills-review-automation)
 

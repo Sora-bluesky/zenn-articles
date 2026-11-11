@@ -17,10 +17,10 @@ published: true
 :::message
 **シリーズ構成**
 - **ObsidianをAIの「司令塔」にする**（この記事）
-- [Obsidian CLI セットアップ完全ガイド](obsidian-cli-setup-guide)
+- [Obsidian CLIセットアップ完全ガイド](obsidian-cli-setup-guide)
 
 **関連記事**
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
+- [Claude Code × Obsidian連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
 :::
 
 :::message alert
@@ -46,19 +46,19 @@ OpenAI、Google、Anthropicなど主要AI企業は、API、アプリ、研究論
 
 使うのは以下の3つだけだ：
 - **Obsidian**（ノートアプリ。無料）
-- **Claude Code**（AIコーディングツール。Pro $20/月 または Max $100/月〜）
+- **Claude Code**（AIコーディングツール。Pro $20/月 またはMax $100/月〜）
 - **MCP**（Model Context Protocol。AIとアプリをつなぐ標準規格。無料）
 
 :::message
 **料金について**
 - Obsidian: **無料**（Sync等の有料機能は不要）
-- Claude Code: **Pro（月額$20 / 約3,000円）** 以上が必要。頻繁に使うなら Max（月額$100〜 / 約15,000円〜）が安心
+- Claude Code: **Pro（月額$20 / 約3,000円）** 以上が必要。頻繁に使うならMax（月額$100〜 / 約15,000円〜）が安心
 - Node.js: **無料**
 :::
 
 ## MCPとは何か
 
-**MCP（Model Context Protocol）** は、AIツールと外部アプリケーションを接続するための標準規格である。Anthropic（Claude の開発元）が策定し、オープンソース（誰でも無料で使える形式）で公開されている。
+**MCP（Model Context Protocol）** は、AIツールと外部アプリケーションを接続するための標準規格である。Anthropic（Claudeの開発元）が策定し、オープンソース（誰でも無料で使える形式）で公開されている。
 
 従来、AIツールからObsidianのノートを読み書きするには、専用のプラグイン（拡張機能）やAPI（外部連携の窓口）を個別に設定する必要があった。MCPはこの「接続」を標準化し、**一度設定すれば、どのAIツールからでも同じ方法でObsidianを操作できる**ようにする。
 
@@ -226,14 +226,14 @@ Claude Codeで `/ai-news`（自作のカスタムコマンド）を実行する�
 | 項目 | 必要なもの | 費用 |
 |------|-----------|------|
 | Obsidian | デスクトップ版（v1.0以上） | 無料 |
-| Claude Code | CLI版 or VS Code拡張 | Pro $20/月〜 |
+| Claude Code | CLI版or VS Code拡張 | Pro $20/月〜 |
 | Node.js | v18以上 | 無料 |
 
 :::message
 Node.js（ノードジェイエス）はプログラムの実行環境。MCPサーバーの起動に必要。[公式サイト](https://nodejs.org/ja)からダウンロードしてインストールする。
 :::
 
-### Step 1: Obsidian MCP プラグインの導入
+### Step 1: Obsidian MCPプラグインの導入
 
 1. Obsidian → 設定 → コミュニティプラグイン
 2. 「**Local REST API**」を検索してインストール・有効化
@@ -241,7 +241,7 @@ Node.js（ノードジェイエス）はプログラムの実行環境。MCPサ�
 
 ![Local REST API設定画面](/images/obsidian-mcp/rest-api-settings.png)
 
-### Step 2: Claude Code にMCPサーバーを登録
+### Step 2: Claude CodeにMCPサーバーを登録
 
 **Windows** の場合、PowerShellで以下のコマンドを実行する：
 
@@ -261,7 +261,7 @@ claude mcp add obsidian -e OBSIDIAN_API_KEY=$apikey --scope user -- cmd /c npx -
 - `cmd /c npx -y obsidian-mcp`: Windows環境でMCPサーバーを起動するコマンド
 :::
 
-:::details macOS / Linux の場合
+:::details macOS / Linuxの場合
 
 ```bash
 claude mcp add obsidian \
@@ -327,9 +327,9 @@ claude mcp list
 
 ## まとめ
 
-ObsidianとClaude Codeを MCP でつなぎ、ノートの読み書きと39ソースの日次収集（約3分）が動く状態になった。
+ObsidianとClaude CodeをMCPでつなぎ、ノートの読み書きと39ソースの日次収集（約3分）が動く状態になった。
 
-- **MCP** を使えば、Obsidianのノートを AIツールから読み書きできる
+- **MCP** を使えば、ObsidianのノートをAIツールから読み書きできる
 - **39ソース** をLayer別に分類し、最適な取得方法で並列収集
 - **重複排除** で同じ記事が何度も出てこない
 - **3段構成の要約** で、流し読みから深掘りまで対応
@@ -339,15 +339,15 @@ ObsidianとClaude Codeを MCP でつなぎ、ノートの読み書きと39ソー
 
 1. **まずMCP接続を試す**: 本記事のStep 1〜3で、ObsidianとClaude Codeが繋がる
 2. **ノート操作を試す**: 「新しいノートを作って」「既存のノートを検索して」と指示してみる
-3. **CLIも追加する**: Obsidian 1.12.0で追加された公式CLIを組み合わせると、さらに強力な自動化が可能になる → [Obsidian CLI セットアップ完全ガイド](obsidian-cli-setup-guide)
+3. **CLIも追加する**: Obsidian 1.12.0で追加された公式CLIを組み合わせると、さらに強力な自動化が可能になる → [Obsidian CLIセットアップ完全ガイド](obsidian-cli-setup-guide)
 
 ---
 
 ## 参考
 
-- [Model Context Protocol 公式サイト](https://modelcontextprotocol.io/)
-- [Obsidian Local REST API プラグイン](https://github.com/coddingtonbear/obsidian-local-rest-api)
-- [Claude Code MCP ドキュメント](https://code.claude.com/docs/en/mcp)
+- [Model Context Protocol公式サイト](https://modelcontextprotocol.io/)
+- [Obsidian Local REST APIプラグイン](https://github.com/coddingtonbear/obsidian-local-rest-api)
+- [Claude Code MCPドキュメント](https://code.claude.com/docs/en/mcp)
 - [obsidian-mcp（npm）](https://www.npmjs.com/package/obsidian-mcp)
 
 ※公式ドキュメントは英語。ブラウザの翻訳機能で日本語に変換して読める。
@@ -356,4 +356,4 @@ ObsidianとClaude Codeを MCP でつなぎ、ノートの読み書きと39ソー
 
 ## 関連記事
 
-- [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
+- [Claude Code × Obsidian連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順

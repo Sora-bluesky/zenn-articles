@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -376,7 +376,7 @@ botに、順に送ってみる。
 | 欄 | 入れる値 |
 |---|---|
 | 名前 | `hermes-watch` |
-| プロンプト | 「@Teknium と @NousResearch の直近24時間のHermes関連の投稿をx_searchで取得し、summarize-to-japaneseの手順で日本語要約して。投稿URLも添えて」 |
+| プロンプト | 「@Tekniumと @NousResearchの直近24時間のHermes関連の投稿をx_searchで取得し、summarize-to-japaneseの手順で日本語要約して。投稿URLも添えて」 |
 | スケジュール(CRON式) | `0 7 * * *`(毎朝7時。第9回の「毎日」モードで時刻を選べば自動生成される) |
 | 配信先 | Telegram |
 | SKILLS | `summarize-to-japanese`にチェック |
@@ -437,7 +437,7 @@ botに、順に送ってみる。
 
 本記事はv0.16.0時点の画面で撮影したが、2026-06-19公開の**v0.17.0**「The Reach Release」でSkills Hubがブラウザ側で大きく刷新された。
 
-- **Featured セクション**=OpenAI/Anthropic/HuggingFace/NVIDIAのtrusted tapからオススメSkillが目立つ位置に並ぶ
+- **Featuredセクション**=OpenAI/Anthropic/HuggingFace/NVIDIAのtrusted tapからオススメSkillが目立つ位置に並ぶ
 - **Full Skill Preview**=インストール前に各SkillのSKILL.md全文と説明を読める
 - **Security Scan**=各Skillにセキュリティスキャンが追加された(prompt injection等の検出)
 - **Connected Hubs**=複数のSkill Hubを横断ブラウズ

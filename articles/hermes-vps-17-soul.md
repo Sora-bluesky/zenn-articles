@@ -22,7 +22,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -292,7 +292,7 @@ systemctl --user restart hermes-gateway
 
 | 項目 | 引用元 |
 |---|---|
-| SOUL.mdの使い方(公式ガイド。システムプロンプトの先頭に入ることは、公式ドキュメントでは`slot #1`と書かれている) | [English: Use SOUL.md with Hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes) / [日本語訳: SOUL.md を使う](https://wiki.winsmux.dev/hermes/docs/guides/use-soul-with-hermes/) |
+| SOUL.mdの使い方(公式ガイド。システムプロンプトの先頭に入ることは、公式ドキュメントでは`slot #1`と書かれている) | [English: Use SOUL.md with Hermes](https://hermes-agent.nousresearch.com/docs/guides/use-soul-with-hermes) / [日本語訳: SOUL.mdを使う](https://wiki.winsmux.dev/hermes/docs/guides/use-soul-with-hermes/) |
 | プロジェクトの指示ファイルの優先順位(公式ドキュメント) | [English: Context Files](https://hermes-agent.nousresearch.com/docs/user-guide/features/context-files) / [日本語訳: コンテキストファイル](https://wiki.winsmux.dev/hermes/docs/user-guide/features/context-files/) |
 | 根拠(Hermes本体のコード) | システムプロンプトを組み立てる順番は`agent/system_prompt.py`。手を入れていないSOUL.mdを新しい英文に置き換える処理は`hermes_cli/default_soul.py`と`hermes_cli/config.py`の`_ensure_default_soul_md`。定時配信でSOUL.mdを必ず読む指定は`cron/scheduler.py`の`load_soul_identity=True` |
 | 版の注記 | 画面はHermes v0.21.5+8509(2026-10-07)で撮影した |

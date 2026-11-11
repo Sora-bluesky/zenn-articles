@@ -24,7 +24,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -423,7 +423,7 @@ Telegramの報告は流れて消えるが、log.mdに残った記録はVaultに�
 
 本回のlintと、第19回で扱うCuratorは別レイヤーで、重複しない。
 
-| 項目 | 本回のlint | 第19回 Curator |
+| 項目 | 本回のlint | 第19回Curator |
 |---|---|---|
 | 実行する側 | 人がlintレポートを読んで判断する | Hermesがバックグラウンドで自動実行する |
 | 対象 | llm-wikiが書いたwikiページ(entities/concepts/queries) | Skills(使われなくなったskill自体) |
@@ -471,7 +471,7 @@ Source列が`local`になっている。最初から同梱されているbundled
 
 成果は2026-08-12から167件になった(2026-10-14朝の同期時点)。中身は、朝のAIツールの速報、セールの見張り、Xの読み取りの試験などだ。
 
-Grok Botには、作業を始める前にVaultの`SCHEMA.md`・`index.md`・`log.md`の末尾を読む決まりがある。2026-10-13の成果にも「Hermes-Vault 着手前読了: SCHEMA.md / index.md / log.md(末尾)」という記録が残っている。
+Grok Botには、作業を始める前にVaultの`SCHEMA.md`・`index.md`・`log.md`の末尾を読む決まりがある。2026-10-13の成果にも「Hermes-Vault着手前読了: SCHEMA.md / index.md / log.md(末尾)」という記録が残っている。
 
 ## コラム:入出力履歴から使い道・苛立ち・検索を拾う方針にした
 

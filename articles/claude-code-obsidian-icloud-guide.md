@@ -54,8 +54,8 @@ Obsidian公式フォーラムには次の記述があります：
 
 :::message
 **シリーズ構成**
-- [Claude Code でAIにコードを書かせてAIにレビューさせる](claude-code-ai-review-workflow)
-- **Claude Code × Obsidian 連携ガイド**（この記事）
+- [Claude CodeでAIにコードを書かせてAIにレビューさせる](claude-code-ai-review-workflow)
+- **Claude Code × Obsidian連携ガイド**（この記事）
 :::
 
 ---
@@ -74,7 +74,7 @@ Obsidian公式フォーラムには次の記述があります：
 
 **できるようになること**:
 
-- Claude Code に「Obsidian のメモを検索して」と指示できる
+- Claude Codeに「Obsidianのメモを検索して」と指示できる
 - iPhoneで書いたメモを、Claude Codeが分析できる
 - 「先週の会議内容をまとめて」と頼んで、Obsidian内のメモから要約を作れる
 
@@ -95,9 +95,9 @@ Obsidian公式フォーラムには次の記述があります：
 | 価格 | ◎ 無料 | ○ 無料枠あり | ○ 無料枠あり |
 | データ所有権 | ◎ ローカル保存 | △ クラウド | △ クラウド |
 
-- **Craft** はモバイル最強だが Windows 非対応
+- **Craft** はモバイル最強だがWindows非対応
 - **Notion** はデータベース機能が強いがオフラインに弱い
-- **Obsidian** は Windows + iPhone で無料かつローカル保存
+- **Obsidian** はWindows + iPhoneで無料かつローカル保存
 
 ---
 
@@ -105,11 +105,11 @@ Obsidian公式フォーラムには次の記述があります：
 
 | 用語 | 説明 |
 |------|------|
-| **MCP** | Model Context Protocol の略。Claude が外部ツール（Obsidianなど）と連携するための仕組み |
+| **MCP** | Model Context Protocolの略。Claudeが外部ツール（Obsidianなど）と連携するための仕組み |
 | **API Key** | ソフトウェア同士が通信するときに使う認証用の文字列。この記事ではLocal REST APIプラグインが発行するもの |
 | **Vault** | Obsidianでメモを保存するフォルダのこと。「金庫」の意味 |
 | **プラグイン** | ソフトウェアに機能を追加する拡張パーツ |
-| **iCloud Drive** | Apple のクラウドストレージ。iPhone と Windows で自動同期できる |
+| **iCloud Drive** | Appleのクラウドストレージ。iPhoneとWindowsで自動同期できる |
 | **JSON** | 設定ファイルによく使われる形式。`{ "key": "value" }` のような書き方 |
 | **cmd** | Windowsのコマンドプロンプト。プログラムを実行するための黒い画面 |
 
@@ -119,7 +119,7 @@ Obsidian公式フォーラムには次の記述があります：
 
 以下が必要です：
 
-- [ ] Claude Code がインストール済み（[公式の導入手順](https://code.claude.com/docs/ja/setup)）
+- [ ] Claude Codeがインストール済み（[公式の導入手順](https://code.claude.com/docs/ja/setup)）
 - [ ] iPhone（iCloud同期に必要）
 - [ ] Apple ID（iPhoneを使っていればすでに持っているはず）
 
@@ -253,7 +253,7 @@ PCを再起動してみてください。それでも表示されない場合は
 iPhoneでVaultを作成すると、iCloud経由でWindowsに同期されます。
 
 1. **5〜10分待つ**（同期に時間がかかることがあります）
-2. エクスプローラーで iCloud Drive を開く
+2. エクスプローラーでiCloud Driveを開く
 3. 「**iCloud~md~obsidian**」フォルダが表示されるか確認
 
 :::message
@@ -362,7 +362,7 @@ Obsidianのデフォルトは英語です。日本語で操作したい場合は
 
 | プラグイン | 特徴 |
 |-----------|------|
-| Local REST API | オープンソース、GitHub 約3,000 Star（2026年10月時点）、活発にメンテナンス |
+| Local REST API | オープンソース、GitHub約3,000 Star（2026年10月時点）、活発にメンテナンス |
 | MCP Tools | オープンソース、GitHub 800 Star超（2026年10月時点）、活発にメンテナンス |
 
 Star数の出典: [obsidian-local-rest-api](https://github.com/coddingtonbear/obsidian-local-rest-api)、[obsidian-mcp-tools](https://github.com/jacksteamdev/obsidian-mcp-tools)
@@ -370,20 +370,20 @@ Star数の出典: [obsidian-local-rest-api](https://github.com/coddingtonbear/ob
 両プラグインとも**ソースコードが公開**されており、コミュニティで広く利用されています。不安な場合は、記事末尾のGitHubリンクからコードを確認できます。
 :::
 
-### 3-2. Local REST API をインストール
+### 3-2. Local REST APIをインストール
 
 1. 「コミュニティプラグイン」の画面で「閲覧」をクリック
 2. 検索欄に「Local REST API」と入力
 3. 「Local REST API」を見つけたらクリック
 4. 「インストール」→「有効化」をクリック
 
-### 3-3. MCP Tools をインストール
+### 3-3. MCP Toolsをインストール
 
 1. 再び「閲覧」をクリック
 2. 検索欄に「MCP Tools」と入力
 3. 「MCP Tools for Obsidian」を見つけたらクリック
 4. 「インストール」→「有効化」をクリック
-5. 設定 → コミュニティプラグイン → MCP Tools の右側にある **歯車アイコン** をクリック
+5. 設定 → コミュニティプラグイン → MCP Toolsの右側にある **歯車アイコン** をクリック
 6. 設定画面で「Install server」ボタンをクリック
 
 :::message
@@ -425,7 +425,7 @@ API Keyが漏洩すると、第三者がObsidianのメモを読み取れる可�
 
 ## 手順4：Claude CodeにMCPサーバーを登録する
 
-### 4-1. mcp-server.exe のパスを確認する
+### 4-1. mcp-server.exeのパスを確認する
 
 パスは環境によって異なるため、PowerShellで確認します：
 
@@ -463,7 +463,7 @@ $apikey = "【手順3-4でコピーしたAPI Key】"
 claude mcp add obsidian $path -e OBSIDIAN_API_KEY=$apikey --scope user
 ```
 
-**設定例（ユーザー名が tanaka、Vault名が MainVault の場合）：**
+**設定例（ユーザー名がtanaka、Vault名がMainVaultの場合）：**
 
 ```powershell
 $path = "C:\Users\tanaka\iCloudDrive\iCloud~md~obsidian\MainVault\.obsidian\plugins\mcp-tools\bin\mcp-server.exe"
@@ -527,7 +527,7 @@ MCP接続には**Obsidianが起動している必要があります**。
 
 ### 5-3. 接続テスト
 
-Claude Code で以下を入力してみてください：
+Claude Codeで以下を入力してみてください：
 
 ```
 Obsidianに接続できるか確認して
@@ -707,7 +707,7 @@ Windows + iCloudの組み合わせで問題が続く場合は、以下の代替�
 **API Keyを再生成する方法：**
 
 1. Obsidianを開く
-2. 設定 → コミュニティプラグイン → Local REST API の歯車アイコン
+2. 設定 → コミュニティプラグイン → Local REST APIの歯車アイコン
 3. 「Regenerate API Key」をクリック
 4. 新しいAPI Keyをコピー
 5. PowerShellで以下を実行：
@@ -811,7 +811,7 @@ iPhoneで書いたObsidianのメモを、iCloud経由でWindowsに同期し、Cl
 
 **構築した環境でできること**：
 
-- iPhoneで書いたメモを Claude Code で検索・分析
+- iPhoneで書いたメモをClaude Codeで検索・分析
 - 「Obsidianのメモを参照して」の一言で、Claude Codeがメモを取得
 - 外出先でiPhoneにメモ → 帰宅後にClaude Codeで整理
 
@@ -822,13 +822,13 @@ iPhoneで書いたObsidianのメモを、iCloud経由でWindowsに同期し、Cl
 ## 関連記事
 
 - [ObsidianをAIの「司令塔」にする（MCP連携で39ソース自動収集の全貌）](obsidian-mcp-integration)
-- [Obsidian CLI セットアップ完全ガイド（Windows環境でハマった全記録）](obsidian-cli-setup-guide)
+- [Obsidian CLIセットアップ完全ガイド（Windows環境でハマった全記録）](obsidian-cli-setup-guide)
 
 ---
 
 ## 参考リンク
 
-- [Obsidian 公式サイト](https://obsidian.md/)
-- [Local REST API プラグイン](https://github.com/coddingtonbear/obsidian-local-rest-api)
-- [MCP Tools プラグイン](https://github.com/jacksteamdev/obsidian-mcp-tools)
+- [Obsidian公式サイト](https://obsidian.md/)
+- [Local REST APIプラグイン](https://github.com/coddingtonbear/obsidian-local-rest-api)
+- [MCP Toolsプラグイン](https://github.com/jacksteamdev/obsidian-mcp-tools)
 - [iCloud for Windows](https://www.microsoft.com/store/productId/9PKTQ5699M62)

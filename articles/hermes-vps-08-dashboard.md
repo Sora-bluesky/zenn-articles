@@ -52,7 +52,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - [第3回](https://zenn.dev/sora_biz/articles/hermes-vps-03-1password) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -110,7 +110,7 @@ v0.16.0(コードネーム"Surface Release")でWeb Dashboardが大きく進化�
 
 第7回のHermes Desktopと、この回のWeb Dashboardは、どちらも同じVPSのHermesにつながる別の窓だ。役割が違うので「両方ある」ことに意味がある。
 
-| 観点 | 第7回 Hermes Desktop | この回 Web Dashboard |
+| 観点 | 第7回Hermes Desktop | この回Web Dashboard |
 |---|---|---|
 | 正体 | パソコン側で動くネイティブアプリ | ブラウザで開く管理画面 |
 | 主な用途 | 日常の会話・ファイル投下・モデル切替 | 設定・Cron・スキル・記憶・MCP・窓口の管理 |
@@ -843,8 +843,8 @@ Hermes本体は1つのまま、窓が増えただけだ。設定もキーもジ�
 | MCP追加 | MCPペイン+「ADD SERVER」または「Catalog」のINSTALL |
 | Telegram/Discord有効化 | チャンネルペイン+CONFIGURE+SAVE & ENABLE |
 | Webhook作成 | チャンネルペインでWebhook有効化→Webhooksペインで「+ NEW SUBSCRIPTION」 |
-| Hermes本体を更新 | サイドバー下部「Hermesを更新」 or SYSTEMの🖥 Host+Update now |
-| ゲートウェイ再起動 | サイドバー下部「ゲートウェイを再起動」 or SYSTEMの⏻ Gateway+RESTART |
+| Hermes本体を更新 | サイドバー下部「Hermesを更新」or SYSTEMの🖥 Host+Update now |
+| ゲートウェイ再起動 | サイドバー下部「ゲートウェイを再起動」or SYSTEMの⏻ Gateway+RESTART |
 | 障害報告用ダンプ生成 | SYSTEMの🔗 Share debug report+Generate share link |
 | 過去のセッションを再開 | セッションペインで該当行の▶ボタン |
 | 公式docsを読む | ドキュメントペイン |
@@ -881,7 +881,7 @@ Hermes本体は1つのまま、窓が増えただけだ。設定もキーもジ�
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第7回 Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) | [第9回 いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
+| [第7回Hermes AgentがMicrosoft Storeに来た。Windowsアプリで入れてVPSにつなぐ（旧版からの入れ替えも）](https://zenn.dev/sora_biz/articles/hermes-vps-07-desktop) | [第9回 いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

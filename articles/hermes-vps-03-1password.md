@@ -47,7 +47,7 @@ APIキーやトークンを設定ファイルに直接書いて動かすのは�
 
 :::details シリーズのもくじ(タップで開く)
 
-**第I部 VPSで24時間動かす**
+**第I部VPSで24時間動かす**
 - [第1回](https://zenn.dev/sora_biz/articles/hermes-vps-01-deploy) サーバー代は月1,800円で足りる。Hermes AgentはVPSで24時間動き続ける
 - [第2回](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる
 - **第3回**(本記事) APIキーをそのまま書くな。Hermes Agentの秘密は1Passwordが預かる
@@ -740,7 +740,7 @@ Hermes本体は`python-dotenv`で`.env`を読む実装(systemdの`EnvironmentFil
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第2回 パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) | [第4回 Hermes AgentをDockerで隔離して動かす方法](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) |
+| [第2回 パスワードはもう打つな。Hermes AgentへのSSHは鍵一発で入れる](https://zenn.dev/sora_biz/articles/hermes-vps-02-tailscale) | [第4回Hermes AgentをDockerで隔離して動かす方法](https://zenn.dev/sora_biz/articles/hermes-vps-04-install) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 
