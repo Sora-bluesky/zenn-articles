@@ -23,12 +23,6 @@ Codex CLI との組み合わせ方法は「[参考 Codex CLI方式](#参考-code
 :::
 
 :::message
-**シリーズ構成**
-- **Claude Code でAIにコードを書かせてAIにレビューさせる**（この記事）
-- [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
-:::
-
-:::message
 **検証環境**: Windows 11 / Claude Code（2026年1月時点）
 :::
 

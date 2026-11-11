@@ -55,7 +55,6 @@ Obsidian公式フォーラムには次の記述があります：
 :::message
 **シリーズ構成**
 - [Claude Code でAIにコードを書かせてAIにレビューさせる](claude-code-ai-review-workflow)
-- [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
 - **Claude Code × Obsidian 連携ガイド**（この記事）
 :::
 
