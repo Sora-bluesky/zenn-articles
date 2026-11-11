@@ -357,4 +357,3 @@ ObsidianとClaude Codeを MCP でつなぎ、ノートの読み書きと39ソー
 ## 関連記事
 
 - [Claude Code × Obsidian 連携ガイド：iPhoneのメモをAIが読み取れるようにする](claude-code-obsidian-icloud-guide)：iCloud経由のVault同期手順
-- [Claude Code 実践Tips 1：コンテキスト管理が全ての土台](claude-code-context-management)

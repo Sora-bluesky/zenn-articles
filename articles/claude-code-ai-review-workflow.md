@@ -24,11 +24,7 @@ Codex CLI との組み合わせ方法は「[参考 Codex CLI方式](#参考-code
 
 :::message
 **シリーズ構成**
-- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
-- [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
-- [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
 - **Claude Code でAIにコードを書かせてAIにレビューさせる**（この記事）
-- [Claude Code への引っ越しガイド：Web版の知識を移行する](claude-code-migration-guide)
 - [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
 :::
 
@@ -100,7 +96,7 @@ Claude Code には「サブエージェント」という機能がある。
 
 | 項目 | 要件 |
 |------|------|
-| Claude Code | インストール済み（[記事1](claude-code-windows-install-guide)参照） |
+| Claude Code | インストール済み |
 | 契約 | Claude Pro または Max |
 
 #### Step 1: フォルダを作成
@@ -426,7 +422,7 @@ SKILL.md が長すぎると、Claude のコンテキスト（記憶領域）を�
 
 | 問題 | 解決策 |
 |------|--------|
-| GitHub認証でエラー | Personal Access Token で対応（[記事3](claude-code-windows-troubleshoot)参照） |
+| GitHub認証でエラー | Personal Access Token で対応 |
 | ビルドエラー | エラーメッセージをそのまま Claude Code に渡して修正 |
 | 指示が細かすぎた | 要件だけ伝えて任せる方がうまくいく |
 
@@ -524,9 +520,7 @@ Claude Code（Builder）と OpenAI Codex CLI（Auditor）を2つのターミナ�
 
 ### WSL2 のインストール
 
-WSL2のセットアップが済んでいない場合は、以下の記事を参照：
-
-- [Linux（Ubuntu）インストールガイド](wsl2-windows-install-guide)
+WSL2のセットアップが済んでいない場合は、[Microsoft公式の手順](https://learn.microsoft.com/ja-jp/windows/wsl/install)でWSL2とUbuntuを入れておく。
 
 WSL2のセットアップ完了後、以下に進む。
 
@@ -579,13 +573,3 @@ codex
 :::message
 リンク切れの場合は各公式サイトで検索する。
 :::
-
----
-
-## 関連記事
-
-- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
-- [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
-- [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
-- [Claude Code への引っ越しガイド：Web版の知識を移行する](claude-code-migration-guide)
-- [Google Antigravity × Codex CLI でデュアルエージェント開発](antigravity-codex-dual-agent-guide)（Google AI + OpenAI の組み合わせ）

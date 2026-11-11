@@ -8,10 +8,7 @@ published: true
 
 :::message
 **前提知識**
-この記事は Claude Code を日常的に使っていて、設定ファイル（JSON）と bash スクリプトを自分で編集できる人向け。以下の記事を先に読んでおくとスムーズに理解できる。
-1. [ポンコツになる原因はコンテキスト](claude-code-context-management)：コンテキスト管理の基本
-2. [「昨日の続き」を一瞬で再開](claude-code-session-management)：セッション管理の基本（本記事はこの発展版）
-3. [保存したら自動でフォーマット](claude-code-auto-format-hooks)：Hooks の基本解説
+この記事は Claude Code を日常的に使っていて、設定ファイル（JSON）と bash スクリプトを自分で編集できる人向け。
 :::
 
 :::message
@@ -639,14 +636,6 @@ Issue #25695 が提案する「完全自動のセッションブランチング�
 いずれ eikiyo が Issue #25695 で提案したセッションブランチング（構造化された引き継ぎ付きで新セッションに自動分岐する仕組み）が公式機能として実装される日も来るかもしれない。そのとき、この Hook は不要になるだろう。でも、「公式に欲しい機能がないなら、今ある API で自分で作る」という経験自体が、ツールとの付き合い方を一段深くしてくれた。機能をねだる側から、足りないものを自分で埋める側に回る。その感覚を知れたのが、僕にとっては Hook の設定そのものより大きい収穫だった。
 
 公式の自動メモリ（auto memory）と併用するとさらに効果的だ。自動メモリがプロジェクトの知識（ビルドコマンド、テスト方法、アーキテクチャ決定）を蓄積し、この記事のシステムが作業状態（進捗、次のタスク、判断の経緯）を引き継ぐ。両方があって、初めて「昨日の続き」から本当に再開できる。
-
----
-
-## 関連記事
-
-- [Claude Codeが急にポンコツになる原因はコンテキストだった](https://zenn.dev/sora_biz/articles/claude-code-context-management) - コンテキスト管理の基本
-- [Claude Codeの「昨日の続き」を一瞬で再開する技](https://zenn.dev/sora_biz/articles/claude-code-session-management) - セッション管理の基本（本記事はこの発展版）
-- [Claude Codeに「保存したら自動でフォーマット」を仕込んだら快適すぎた](https://zenn.dev/sora_biz/articles/claude-code-auto-format-hooks) - Hooks の基本解説
 
 ---
 

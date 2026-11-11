@@ -54,11 +54,7 @@ Obsidian公式フォーラムには次の記述があります：
 
 :::message
 **シリーズ構成**
-- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
-- [Claude Code 便利機能まとめ：使いこなすためのTips](claude-code-tips-and-features)
-- [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
 - [Claude Code でAIにコードを書かせてAIにレビューさせる](claude-code-ai-review-workflow)
-- [Claude Code への引っ越しガイド：Web版の知識を移行する](claude-code-migration-guide)
 - [Claude Cowork Windows版ガイド：ターミナルなしでAIエージェントを使う](claude-cowork-windows-guide)
 - **Claude Code × Obsidian 連携ガイド**（この記事）
 :::
@@ -124,14 +120,14 @@ Obsidian公式フォーラムには次の記述があります：
 
 以下が必要です：
 
-- [ ] Claude Code がインストール済み（[未導入の方はこちら](claude-code-windows-install-guide)）
+- [ ] Claude Code がインストール済み（[公式の導入手順](https://code.claude.com/docs/ja/setup)）
 - [ ] iPhone（iCloud同期に必要）
 - [ ] Apple ID（iPhoneを使っていればすでに持っているはず）
 
 :::message
 **料金について**
 - **Obsidian**: 基本無料。今回使うiCloud同期も無料（iCloud無料枠5GB内で十分）
-- **Claude Code**: Anthropicの料金プランが必要（詳細は[インストールガイド](claude-code-windows-install-guide)参照）
+- **Claude Code**: Anthropicの料金プランが必要
 - **Obsidian公式のSync機能**（月額課金）は不要。iCloud経由で無料同期できます
 :::
 
@@ -500,8 +496,7 @@ claude mcp list
 **エラーが出る場合**
 
 **「command not found」エラー**
-Claude Codeがインストールされていないか、PATHが通っていません。
-[インストールガイド](claude-code-windows-install-guide)を参照してください。
+Claude Codeがインストールされていないか、PATHが通っていません。[公式の導入手順](https://code.claude.com/docs/ja/setup)を確認してください。
 
 **パスにスペースが含まれる場合**
 パス全体をダブルクォートで囲んでください（上の例のように）。
@@ -827,9 +822,6 @@ iPhoneで書いたObsidianのメモを、iCloud経由でWindowsに同期し、Cl
 
 ## 関連記事
 
-- [Claude Code インストールガイド（Windows）](claude-code-windows-install-guide)
-- [Claude Code 便利機能まとめ](claude-code-tips-and-features)
-- [Claude Code が動かない時に見るページ（Windows）](claude-code-windows-troubleshoot)
 - [ObsidianをAIの「司令塔」にする（MCP連携で39ソース自動収集の全貌）](obsidian-mcp-integration)
 - [Obsidian CLI セットアップ完全ガイド（Windows環境でハマった全記録）](obsidian-cli-setup-guide)
 
