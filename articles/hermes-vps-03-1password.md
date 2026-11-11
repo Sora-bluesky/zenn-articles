@@ -129,37 +129,46 @@ Telegramは第3回で実際にbotを発行して値を入れる。Discordは第5
 
 完成後の構成はこうなる。
 
-![第3回終了時点の構成図(1Password Service Accountとop runでSecrets管理)](/images/hermes-vps/hermes-vps-03-architecture.png)
-
-ファイル単位の関係性は次のとおり。
-
-![1Passwordクラウド側とVPS側のファイル構成図](/images/hermes-vps/hermes-vps-03-files.png)
-
-テキスト表記でも見ておく(コピペ参照用)。
-
+```html-embed
+<div class="d">
+  <div class="step">
+    <p class="head"><span class="n">1</span>1Password：実際の値はここにだけある</p>
+    <p>保管庫 Hermes-Prod に、Telegram の bot token などを入れておく。</p>
+  </div>
+  <div class="arrow">↓ サービスアカウントの鍵で、読み取り専用につなぐ</div>
+  <div class="step">
+    <p class="head"><span class="n">2</span>VPS：置くのは鍵と参照だけ</p>
+    <ul>
+      <li class="new">★ <code>op</code>：1Password のコマンド</li>
+      <li class="new">★ <code>service-account.env</code>：つなぐ鍵</li>
+      <li class="new">★ <code>secrets.env</code>：値ではなく <code>op://</code> の参照</li>
+    </ul>
+  </div>
+  <div class="arrow">↓ <code>op run</code> がコマンドを実行する瞬間に、参照を値へ置き換える</div>
+  <div class="step">
+    <p class="head"><span class="n">3</span>Hermes：値は環境変数として渡るだけ</p>
+    <p>ディスクには平文が残らない。</p>
+  </div>
+  <p class="key">★はこの回で追加するもの</p>
+</div>
+<style>
+.d{--bg:#f5fbff;--fg:#1f2937;--line:#3ea8ff;--new:#b45309;--sub:#6b7280;padding:12px;background:var(--bg);color:var(--fg);font:13px/1.5 sans-serif}
+[data-theme="dark"] .d{--bg:#10202e;--fg:#e5e7eb;--new:#fbbf24;--sub:#9ca3af}
+.step{border:2px solid var(--line);border-radius:8px;padding:8px 10px}
+.step p{margin:0}
+.step .head{font-weight:700}
+.step p+p,.step ul{margin-top:4px}
+.step ul{margin:4px 0 0;padding:0;list-style:none}
+.step li{padding:1px 0}
+.n{display:inline-block;width:18px;height:18px;margin-right:6px;border-radius:9px;background:var(--line);color:#fff;font-size:12px;line-height:18px;text-align:center}
+.step code,.arrow code{font:12px/1.5 monospace}
+.new{color:var(--new);font-weight:600}
+.arrow{margin:4px 0;text-align:center;color:var(--line);font-size:12px}
+.key{margin:8px 0 0;color:var(--new);font-weight:600}
+</style>
 ```
-┌──────────────────────────────────────────────────────────────┐
-│   1Password.com                                              │
-│   ├── Hermes-Prod 保管庫                                     │
-│   │   ├── アイテム:Telegram bot token(認証情報フィールド)    │
-│   │   ├── アイテム:Discord bot token(将来用、空)             │
-│   │   └── アイテム:Hermes Service Account token              │
-│   └── サービスアカウント(scope: Hermes-Prod read-only)       │
-└──────────────────┬───────────────────────────────────────────┘
-                   │ HTTPS + OP_SERVICE_ACCOUNT_TOKEN
-                   ▼
-┌──────────────────────────────────────────────────────────────┐
-│   VPS(Ubuntu 26.04 / admin)                                  │
-│   ├── /usr/bin/op (1Password CLI)                            │
-│   ├── ~/.hermes/                                             │
-│   │   ├── service-account.env(SAトークン本体、chmod 600)     │
-│   │   ├── secrets.env(op://参照のみ、平文値なし)             │
-│   │   └── auth.json(Codex/Grok OAuth、Hermes自動管理)        │
-│   └── ~/.config/systemd/user/hermes-gateway.service(第4回)   │
-│       └── ExecStart=op run --env-file=... --                 │
-│              hermes gateway run                              │
-└──────────────────────────────────────────────────────────────┘
-```
+
+Telegram bot tokenのアイテムは認証情報フィールドに入れ、Discord bot tokenは第5回で入れるので今は空にしてある。サービスアカウントのscopeはHermes-Prodで読み取り専用、`service-account.env`はchmod 600にする。VPSには`auth.json`(Codex/Grok OAuth。Hermesが自動管理する)もある。`hermes-gateway.service`は`~/.config/systemd/user/`に置いて第4回で作り、ExecStartは`op run --env-file=... -- hermes gateway run`になる。
 
 VPS側の`secrets.env`には、実値が1つも書かれない。中身は`TELEGRAM_BOT_TOKEN=op://Hermes-Prod/...`のような**1Passwordへの参照URL**だけ。`op run`がコマンド実行の瞬間にこの参照を解決し、子プロセスに環境変数として注入する。ディスクには平文が出ない。
 
