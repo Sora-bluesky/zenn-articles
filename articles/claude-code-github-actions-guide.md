@@ -3,7 +3,7 @@ title: "Claude CodeをGitHubに住まわせたら、PRレビューが自動化�
 emoji: "🏠"
 type: "tech"
 topics: ["claudecode", "ai", "生成ai", "llm", "github"]
-published: true
+published: false
 ---
 
 ## はじめに
