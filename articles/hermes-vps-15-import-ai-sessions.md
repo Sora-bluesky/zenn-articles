@@ -62,7 +62,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 続けて「次のリリースで取り組むべき優先順位はどう整理する?」と意見を求めると、Hermesは過去の会話を踏まえてP0/P1/P2の3段階で答えた(実際の応答は§7で載せる)。Hermesは、Claude Code・Codexに並ぶ3つ目のエージェントとして議論に加わる。
 
-この回でやらないことは3つある。毎晩の自動変換(cron)にはしない。Hermes自身の会話履歴(第14回のSession Searchが担当)は取り込まない。取り込んだ履歴の要約・整理(第16回のllm-wiki)もしない。この回は、手で1回流して全体がつながるところまでだ。
+この回でやらないことは3つある。自動変換(cron)にはしない。Hermes自身の会話履歴(第14回のSession Searchが担当)は取り込まない。取り込んだ履歴の要約・整理(第16回のllm-wiki)もしない。この回は、手で1回流して全体がつながるところまでだ。
 
 第13回完了時と本回完了後の差分を表にする。
 
@@ -190,7 +190,7 @@ git pushとrsyncを並べる理由は役割が違うからだ。git pushは「�
 :::
 
 :::message
-**未来の自動化**: cronで毎晩の同期と整理まで自動化する話は、連載後半のCurator回で扱う予定だ(連載の回数は前後する可能性がある)。本回は手で持ち込む段階にとどめ、運用が安定してから自動化する道を残す。
+**未来の自動化**: 毎朝の同期の自動化は[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)で扱う。本回は手で持ち込む段階にとどめ、運用が安定してから自動化する道を残す。
 :::
 
 ## 構成図:パソコン側で整え、VPS側で読ませる
@@ -217,7 +217,7 @@ git pushとrsyncを並べる理由は役割が違うからだ。git pushは「�
 前回§11で予告した通り、`~/hermes-vault-repo`(git同期用)と`~/hermes-vault`(コンテナがマウントしているサンドボックスディレクトリへのホスト側symlink・前回§7で作成)はあえて別管理にしてある。今回は両者を「rsync 1コマンド」で手で繋ぐ。まず1回流して、確かに繋がることを目で確認するところまで進める。
 :::
 
-自動化(cron常駐+Curator=履歴を整理する自動化エージェント)は連載後半(第19回予定のCurator+cron回)で本格的に扱う。最初から自動化すると、繋がっていないことに気づくのが3日後になりかねない。まずは手で1回流して、全体がつながることを確かめる。
+同期の自動化は[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)で扱う。最初から自動化すると、繋がっていないことに気づくのが3日後になりかねない。まずは手で1回流して、全体がつながることを確かめる。
 
 図の左半分(パソコン側の仕事)は§5〜§6で扱い、右半分(VPSとHermesの仕事)は§7で扱う。今回`raw/transcripts/`に貯めた履歴は、そのまま次回llm-wikiの入力になる。つまり今回の作業が次回の準備を兼ねる(図の右下の点線)。
 
@@ -276,7 +276,7 @@ ls $env:USERPROFILE\.codex\sessions\$y\$m | Select-Object -First 5
 ここまでで詰まる読者向けの注意。「Vaultが開けない」「ファイルツリーに第13回の成果物が見当たらない」場合は、§6に進む前に第13回まで戻ってVault側を直しておく。本回のスクリプトは「Vaultが正しく開ける状態」を前提にしか動かない。
 :::
 
-ここまでが揃ったら、§6でスクリプトをbinに保存して動かす段に進む。スクリプトは§5で確認したパソコン側のVault実体(`~/Documents/Hermes-Vault`)に `raw/transcripts/` を切って書き込み、§6-6でVPS側(第13回§11で建てた `~/hermes-vault-repo`)へgit push+rsyncで同期する。パソコン側のVaultと、Hermesコンテナが実際に見るVault(`~/hermes-vault`)は別物として管理し、両者をrsync 1コマンドで繋ぐ流れだ(完全自動化は第19回のCuratorで扱う)。
+ここまでが揃ったら、§6でスクリプトをbinに保存して動かす段に進む。スクリプトは§5で確認したパソコン側のVault実体(`~/Documents/Hermes-Vault`)に `raw/transcripts/` を切って書き込み、§6-6でVPS側(第13回§11で建てた `~/hermes-vault-repo`)へgit push+rsyncで同期する。パソコン側のVaultと、Hermesコンテナが実際に見るVault(`~/hermes-vault`)は別物として管理し、両者をrsync 1コマンドで繋ぐ流れだ(毎朝の自動化は[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)で扱う)。
 
 ## 変換スクリプトで作業履歴をVaultに取り込む
 
@@ -285,7 +285,7 @@ ls $env:USERPROFILE\.codex\sessions\$y\$m | Select-Object -First 5
 :::message
 **このスクリプトが安心して使える3つの根拠**
 
-1. **LLM呼び出しゼロ**=PowerShell組み込みの`ConvertFrom-Json`と文字列処理だけで動く。OpenAI/Claude APIを1回も叩かないので、毎晩動かしても料金がかからない+挙動が予測できる
+1. **LLM呼び出しゼロ**=PowerShell組み込みの`ConvertFrom-Json`と文字列処理だけで動く。OpenAI/Claude APIを1回も叩かないので、毎日動かしても料金がかからない+挙動が予測できる
 2. **jsonl(AIツールが会話を1行=1イベントで貯める形式)のノイズを落とす**=ツール呼び出し等のメタ情報を捨て、user/assistantの本文だけをmd化する
 3. **1ファイル12万文字で打ち切る**=極端に長いセッションでも本文は400KB弱に収まり、Obsidianが重くならない
 
@@ -782,20 +782,20 @@ rsyncは何度叩いても安全だ。2回目以降は差分だけ転送され�
 :::message
 **なぜ今これを自動化しないか**
 
-「git pullしたら即Hermes-Vaultにrsync」を毎晩自動で動かすのは簡単に見える。ただ、自動化するには3つの判断を先に決めておく必要がある。
+「git pullしたら即Hermes-Vaultにrsync」を毎日自動で動かすのは簡単に見える。ただ、自動化するには3つの判断を先に決めておく必要がある。
 
-- 毎晩自動で動かすか(=cronと呼ばれる定期実行の仕組みに乗せるか)
+- 毎日自動で動かすか(=cronと呼ばれる定期実行の仕組みに乗せるか)
 - Hermesが書いたメモも自分のパソコンに戻すか(=双方向同期)
 - 自分のパソコンとHermesが同時に同じファイルを編集した時の優先順位
 
-この3つは「自動保守」のテーマで、第19回予定のCurator(自動保守役)の回でまとめて扱う。本回は手動1コマンドで動作確認まで進めて、自動化は次回以降でやる。
+[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)では毎朝自動で動かし、VPSは読み取り専用の鍵でpullするだけにした(VPSからpushはしない)。本回は手動1コマンドで動作確認まで進める。
 :::
 
 ### 6補足. スクリプトの中身は読まなくていい・3つだけ知っておけば十分
 
 冒頭に書いた3点をもう少し詳しく書く。長期運用で気になる読者向けで、読まずに飛ばしても構わない。
 
-1. **LLM呼び出しゼロ**=スクリプトはPowerShell組み込みの`ConvertFrom-Json`と文字列処理とファイルIOだけで動く。OpenAI/Claude APIは1回も叩かない=毎晩動かしても料金がかからない+挙動が予測可能だ
+1. **LLM呼び出しゼロ**=スクリプトはPowerShell組み込みの`ConvertFrom-Json`と文字列処理とファイルIOだけで動く。OpenAI/Claude APIは1回も叩かない=毎日動かしても料金がかからない+挙動が予測可能だ
 2. **jsonl直接読み(ノイズ除去)**=Claude Code/Codexのjsonlは`tool_use`/`thinking`/`progress`等のメタ情報が全体の80〜90%を占める。スクリプトはuser/assistantの本文ターンだけを抜き出してmd化する=Vaultが肥大化しにくい
 3. **1ファイル12万文字上限(肥大化防止)**=1セッションが極端に長いと変換mdも巨大になる。スクリプトは最大12万文字で切り詰めて末尾に省略マーカーを残す。日本語中心のセッションでも本文は400KB弱に収まり、Obsidianが重くならない+Hermesが読む時のtoken(LLMが入力を処理する単位)消費も抑えられる
 
@@ -807,7 +807,7 @@ rsyncは何度叩いても安全だ。2回目以降は差分だけ転送され�
 
 さらに続けて意見を求めれば、過去会話を踏まえてHermesが自分の判断を述べる。自分のパソコンのClaude Code・Codexに加えて、Hermesが3つ目のエージェントとして議論に加わる形になる。
 
-§6で自分のパソコンからgit pushして、VPSでgit pullして、最後にrsyncで`~/hermes-vault/raw/transcripts/`(他のAIの会話ログを置く、Vault内の「生ログ」フォルダ)まで運び込んだ。第13回§11で建てたとおり、`~/hermes-vault-repo`(git同期側)と`~/hermes-vault`(Hermesコンテナがマウント側)は別管理だ。だからパソコン→VPSの同期だけでは足りず、最後にrsyncで運ぶ手動の一手が要る。この手動rsyncを毎晩自動で回すのは第19回予定のCurator(自動保守)回で扱う。本回はそこまで来た時点で、配下に自分のパソコンのClaude Code 1272件+Codex 2218件=計3490件のmd(マークダウン、Hermesが読みやすい平文形式)が並んでいる。
+§6で自分のパソコンからgit pushして、VPSでgit pullして、最後にrsyncで`~/hermes-vault/raw/transcripts/`(他のAIの会話ログを置く、Vault内の「生ログ」フォルダ)まで運び込んだ。第13回§11で建てたとおり、`~/hermes-vault-repo`(git同期側)と`~/hermes-vault`(Hermesコンテナがマウント側)は別管理だ。だからパソコン→VPSの同期だけでは足りず、最後にrsyncで運ぶ手動の一手が要る。毎朝の同期の自動化は[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)で扱う。本回はそこまで来た時点で、配下に自分のパソコンのClaude Code 1272件+Codex 2218件=計3490件のmd(マークダウン、Hermesが読みやすい平文形式)が並んでいる。
 
 `--resume`(過去セッションを遡るClaude Codeのオプション)で1件ずつ開き直すのが面倒で「またあとで」と放置していた件を、Telegram1行で済ませる。これがやりたかった形だ。
 
@@ -960,12 +960,11 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 
 | 気になる点 | 本回での扱い | 解決の出口 |
 |---|---|---|
-| 古いtranscriptsを月単位でアーカイブしたい | 本回はやらない(手動でフォルダ移動すれば足りる) | 連載後半の自動保守回 |
-| パソコン側の変換+pushを毎晩自動化したい | 本回は手動で1日1回叩く前提 | 連載後半の自動保守回 |
-| パソコン↔VPS↔Hermesが書いたノートの双方向同期 | 本回は片方向(パソコン→VPS→Hermes Vault)のみ | 連載後半の自動保守回 |
+| 古いtranscriptsを月単位でアーカイブしたい | 本回はやらない(手動でフォルダ移動すれば足りる) | 連載ではまだ扱っていない |
+| パソコン側の変換+pushを毎日自動化したい | 本回は手動で1日1回叩く前提 | [第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator) |
+| パソコン↔VPS↔Hermesが書いたノートの双方向同期 | 本回は片方向(パソコン→VPS→Hermes Vault)のみ | 連載ではまだ扱っていない |
 
-3点とも「自動保守」というテーマでひとまとめにできる=連載後半の自動保守回で一気に解決する設計にした。本回は**手動1コマンドで動作確認まで**で止めて、自動化は連載後半に委ねる。「全部自動」を最初から目指すと設定項目が増えて挫折するので、まずは「Hermesから他のAIの作業履歴を引ける」状態を最小手数で完成させる方を優先した。なお双方向同期では、古い記録の整理(prune=刈り取り)や衝突解決も同じ回でまとめて扱う予定だ。
-
+毎日の自動化だけは[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)で扱った。双方向同期・古い記録の整理・衝突解決は、連載ではまだ扱っていない。本回は**手動1コマンドで動作確認まで**で止めた。「全部自動」を最初から目指すと設定項目が増えて挫折するので、まずは「Hermesから他のAIの作業履歴を引ける」状態を最小手数で完成させる方を優先した。
 :::message
 **4層が揃った**
 
@@ -976,7 +975,7 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 - **state.db**(第14回):自分の会話(Hermesと交わした過去)
 - **raw/transcripts/**(本回):他のAIの作業履歴(Claude Code/Codex)
 
-これらの層を第16回以降でどう使い、どう整えていくかは順次扱う。連載の構成は調整中のため、第19回などの数字は最新の目次で確認してほしい。
+これらの層を第16回以降でどう使い、どう整えていくかは順次扱う。最新の目次は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)で確認できる。
 :::
 
 :::message
@@ -1006,7 +1005,7 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 
 「あれ、先週も同じことをやらなかったか」と思ったら、Telegramで「先週のwinsmuxの件を見て」と打てばHermesが`raw/transcripts/`配下のmdを開いてくれる。アラフィフになると昨日の自分が何で唸ってたか覚えていないので、向こうが覚えていてくれるのはありがたい。本回§7で見たように、Hermesは引いてきたmdを踏まえて**P0(最優先)/P1(次点)/P2(後回し)の優先順位提案**まで返してきた。過去の作業履歴をその場で読んで、提案まで返してくれる。検索結果のリンクを並べるだけのチャットでは出てこない応答だ。
 
-次の第16回は、貯めた作業履歴をHermesが「索引付きの百科事典=セカンドブレイン(第二の脳)」に作り変える話だ。元ネタはAndrej Karpathy氏(OpenAI共同創業者・AI教育で著名)が公開したllm-wikiパターンで、Hermesにbundledされているskillとして取り込まれている。Vaultに貯めるだけで終わらせず、llm-wikiが読んで相互リンクされた索引にしていく段階だ。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認する。
+次の第16回は、貯めた作業履歴をHermesが「索引付きの百科事典=セカンドブレイン(第二の脳)」に作り変える話だ。元ネタはAndrej Karpathy氏(OpenAI共同創業者・AI教育で著名)が公開したllm-wikiパターンで、Hermesにbundledされているskillとして取り込まれている。Vaultに貯めるだけで終わらせず、llm-wikiが読んで相互リンクされた索引にしていく段階だ。連載の回数は変わる可能性がある。
 
 ---
 
@@ -1025,7 +1024,7 @@ du -sh ~/hermes-vault/raw/transcripts/codex/
 | 同じセッションのmdが日付違いで複数できる | ファイル名の日付にjsonl(1行1JSON・会話履歴の保存形式)の`LastWriteTime`(ファイルの最終更新日時)を使ってしまった。深夜0時をまたいで会話を続けると別ファイルに分かれる | 本回§6-1のスクリプトどおり、日付はjsonl内**最初のセッション開始時刻**から取る。重複が出たら`raw/transcripts/<agent>/`を空にして再実行 |
 | `git push`後にVPS側で`git pull`しても変化なし | VPS側のclone元とパソコン側のpush先が違うリポを指している | VPS側`git remote -v`とパソコン側`git remote -v`を見比べて同じremote URLか確認。第13回設定が今も生きているか再確認 |
 | Hermesから「該当する会話が見当たらない」と返る | Vault配下に該当mdが無い・git pullが届いていない・第13回Vault接続が切れている | 順番に確認する。(1)VPS側で`ls ~/hermes-vault/raw/transcripts/<agent>/`を実行 → (2)ファイルが無ければ`git pull`+rsync → (3)あれば第13回§7のVault接続確認手順に戻る |
-| 変換mdにAPIキーやトークンが混入していた | Claude Code/Codexの作業中に秘密情報をpasteしていた | 本回では深追いせず、`git push`する前に該当mdを目視して問題があれば手で削除。秘密情報を自動で伏せ字にする仕組みは連載後半のCurator(自動保守の回・予定)で扱う |
+| 変換mdにAPIキーやトークンが混入していた | Claude Code/Codexの作業中に秘密情報をpasteしていた | 本回では深追いせず、`git push`する前に該当mdを目視して問題があれば手で削除。秘密情報を自動で伏せ字にする仕組みは、連載ではまだ扱っていない |
 | 古いjsonlが大量にあって初回実行が遅い | 初回は全件処理 | 初回だけ時間がかかるのは正常。本回で実際に動かすと3490件で数分程度(パソコンのスペックとjsonl総量で変動)。2回目以降は既存スキップで一瞬 |
 | `git commit`時に`warning: in the working copy of 'raw/transcripts/...', LF will be replaced by CRLF`が大量に出る | Windows gitの改行コード自動変換の警告。動作には無害だが大量に流れて見づらい | 抑制したければVault直下に`.gitattributes`を作って`raw/transcripts/** text eol=lf`を1行入れる(LF=Unix系の改行で固定する明示)。何もしなくてもcommit/pushは成功する |
 | `git commit`時に`ERROR: Potential secret detected in raw/transcripts/...`でブロックされる | 変換md内に取り込まれたClaude Code/Codexセッション本文に`password=<value>`/`api_key=<value>`形式の文字列(右辺が一定の長さを超える値)が含まれていた場合、自分のパソコンのglobal pre-commit hook(全リポ共通でcommit前に走るチェックスクリプト・git-guard等)が秘密と誤検知する | **(注意:このVaultリポがプライベートであることが前提。public化するならhookを絶対に切らない。)** プライベートを確認したうえで、このVaultリポだけhook継承(自分のパソコンの他リポで設定したcommit前チェックがこのリポにも自動で適用される仕組み)を切る。手順:(1)`mkdir .git/hooks-empty` (2)`git config --local core.hooksPath .git/hooks-empty`。他リポは影響なし |
@@ -1086,12 +1085,12 @@ du -sh ~/hermes-vault/raw/transcripts/
 ```
 
 :::message
-**rsync(ファイルやフォルダを差分だけコピーするコマンド)の`--include`+`--exclude`の意味**:`~/hermes-vault-repo/`(git管理側)から`~/hermes-vault/`(Hermesコンテナがマウントする側)へ、**`raw/transcripts/`配下だけ**を写す指定だ。第13回§11で「両者は別管理・統合は連載後半」と置いた橋渡しを、本回はこの1コマンドで最小限に繋いだ。安全の根拠は二段構えになっている。(1)`--delete`フラグを付けていないので、source側に無いファイルがdest側で消えることはない。(2)`--include`+`--exclude='*'`でsourceの`shared-ai/`配下(Hermesが書いた側のメモ)は同期対象から外れる。これでHermesが書いたメモは保護される(=安全)。何度叩いても`raw/transcripts/`の中身は同じ結果になる(コピー処理としてべき等)。本格的な双方向自動化は連載後半のCurator+cronの回(予定)で扱う。
+**rsync(ファイルやフォルダを差分だけコピーするコマンド)の`--include`+`--exclude`の意味**:`~/hermes-vault-repo/`(git管理側)から`~/hermes-vault/`(Hermesコンテナがマウントする側)へ、**`raw/transcripts/`配下だけ**を写す指定だ。第13回§11で「両者は別管理・統合は連載後半」と置いた橋渡しを、本回はこの1コマンドで最小限に繋いだ。安全の根拠は二段構えになっている。(1)`--delete`フラグを付けていないので、source側に無いファイルがdest側で消えることはない。(2)`--include`+`--exclude='*'`でsourceの`shared-ai/`配下(Hermesが書いた側のメモ)は同期対象から外れる。これでHermesが書いたメモは保護される(=安全)。何度叩いても`raw/transcripts/`の中身は同じ結果になる(コピー処理としてべき等)。双方向の同期は、連載ではまだ扱っていない。
 
 ※読者が将来この手順をいじって`--delete`を足すと、dest側で`raw/transcripts/`以外が消える危険がある。最初の形のまま使うこと。
 :::
 
-パソコン側の変換+pushの自動化は別記事で扱う。Windowsタスクスケジューラで毎日決まった時刻に走らせたい読者向けの番外編は、本回公開後に独立記事として出す予定だ。パソコンを毎日起動する読者なら、本回§6を手動で叩く運用で十分。Mac/Linux/WSLで読者環境を組む場合は、本文のPowerShell部分を`bash`に置換すれば同じ流れで動く(`$env:USERPROFILE`→`$HOME`、`ls`はそのまま、`powershell.exe ...`→`pwsh ~/bin/sync-ai-transcripts.ps1`または`bash`版に書き直す)。
+パソコン側の変換+pushの自動化は、[第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator)でWindowsのタスクスケジューラを使って扱う。パソコンを毎日起動する読者なら、本回§6を手動で叩く運用で十分。Mac/Linux/WSLで読者環境を組む場合は、本文のPowerShell部分を`bash`に置換すれば同じ流れで動く(`$env:USERPROFILE`→`$HOME`、`ls`はそのまま、`powershell.exe ...`→`pwsh ~/bin/sync-ai-transcripts.ps1`または`bash`版に書き直す)。
 
 ## 引用元と参考
 
@@ -1106,7 +1105,7 @@ du -sh ~/hermes-vault/raw/transcripts/
 | Claude Codeからの乗り換え(日本語) | 公式ドキュメントの日本語訳: [Claude Codeからの乗り換え](https://wiki.winsmux.dev/hermes/from-claude-code/) |
 | 第9回Hermes Cron(本回の任意自動化=別記事側で再利用) | [第9回](https://zenn.dev/sora_biz/articles/hermes-vps-09-cron) いつもの作業を毎回自分でやるな。Hermes Agentが決めた時刻や間隔で自動でこなす |
 
-※連載の回数は変わる可能性がある。次回(llm-wiki)・連載後半のCurator+cronの回番号は、着手時に最新の計画書を確認する。
+※各回は[連載ハブ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)のもくじで確認できる。
 
 Claude Code/Codexのjsonl構造(`type`フィールド・1行1JSON形式)は2026-06-26に自分のパソコン(Windows・Claude Code・Codex 0.142.0)で確認した。Hermes純正llm-wiki skillがVPS上のv0.17.0にbundled(`skills/research/llm-wiki/`・v2.1.0)されていることも2026-06-27に確認済(次回で使用)。
 
