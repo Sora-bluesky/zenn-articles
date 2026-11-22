@@ -3,7 +3,7 @@ title: "【第19回】スキルを増やしっぱなしにするな。Hermes Age
 emoji: "🧹"
 type: "tech"
 topics: ["hermes", "ai", "llm", "claudecode", "個人開発"]
-published: false
+published: true
 ---
 
 :::message
@@ -54,7 +54,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 ## 導入:毎朝06:10に、作業履歴の同期が人の手なしで動く
 
-この回が終わると、第15回で手で打っていた作業履歴の同期が、毎朝自動で動く。自分のパソコン(この連載ではWindows)が06:10に書き出してpushし、VPSのHermes cronが30分ごとにpullする。wikiへの取り込みは、自分のパソコンのタスクスケジューラに任せる(06:40)。使わないスキルは、Curatorがstale(古くなった印)にして、30日たつとアーカイブへ移す。
+この回が終わると、第15回で手で打っていた作業履歴の同期が、毎朝自動で動く。自分のパソコン(この連載ではWindows)が06:10に書き出してpush(GitHubへ送ること)し、VPSのHermes cronが30分ごとにpull(GitHubから受け取ること)する。wikiへの取り込みは、自分のパソコンのタスクスケジューラが06:40に動かす。使わないスキルは、Curatorがstale(古くなった状態)にして、30日たつとアーカイブへ移す。
 
 2026年11月22日の朝は、同期が06:10に始まり、06:13:43にpushが終わった。件数は179件で、タスクの終了コード(成功なら0)は0だった。
 
@@ -81,11 +81,11 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 | 用語 | 意味 |
 |---|---|
-| タスクスケジューラ | Windowsの定時実行の仕組み。この回では「context-hub transcript sync」(06:10)と「context-hub wiki ingest」(06:40)がこれにあたる |
+| タスクスケジューラ | Windowsで、決めた時刻にプログラムを動かす機能。この回では「context-hub transcript sync」(06:10)と「context-hub wiki ingest」(06:40)がこれにあたる |
 | Hermes cron | 第9回の`hermes cron`。決めた間隔でエージェントを動かす。この回では`hermes-vault-git-pull`(30分ごと)がこれにあたる |
-| context-hub | 共有ナレッジのリポジトリ。自分のパソコンでは`~\Documents\context-hub`にある |
+| context-hub | 僕が作業履歴とwikiを置いているリポジトリ。自分のパソコンでは`~\Documents\context-hub`にある。読者は自分のリポジトリの名前に置き換える |
 | Curator | Hermesが自分で作ったスキルの状態を見て、使われないものをstaleにして、アーカイブへ移す機能 |
-| stale | 14日使われなかったスキルにつく印 |
+| stale | 14日使われなかったスキルがなる状態 |
 | アーカイブ | 30日使われなかったスキルを`~/.hermes/skills/.archive/`へ移すこと。消さないので`restore`で戻せる |
 
 ## 毎朝の流れ
@@ -98,9 +98,9 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 
 自分のパソコン側はWindowsのタスクスケジューラ、VPS側はHermes cronが動かす。Curatorだけは時刻で動かず、Hermesのセッションが始まるときに動く(§6)。
 
-## 自分のパソコンの同期をタスクスケジューラに任せる
+## 自分のパソコンの同期をタスクスケジューラで毎朝動かす
 
-第15回で手で打った変換とgit pushを1本にまとめた`sync-and-push.ps1`を、毎朝06:10に動かす。中身は、作業履歴の変換と、`git add`・`git commit`・`git push`だ。
+第15回で手で打った変換とgit pushを1本にまとめた`sync-and-push.ps1`を、毎朝06:10に動かす。中身は、作業履歴の変換と、`git add`・`git commit`(変更を記録すること)・`git push`だ。
 
 ### タスクを登録する
 
@@ -129,7 +129,7 @@ Select-String -Path "$env:LOCALAPPDATA\hermes-vault-sync\sync-$(Get-Date -Format
 
 `total:`の行の`written=179`が、書き出した件数だ。`pushed`の行は、pushが終わった時刻とコミットを表し、`(179 files, scheduled)`のうち`scheduled`はタスクスケジューラから動いたことを表す。
 
-## VPSの同期をHermes cronに任せる
+## VPSのpullをHermes cronで30分ごとに動かす
 
 VPSでは、第9回の`hermes cron`で、30分ごとに`git pull`を1回だけ動かす。cronジョブがエージェントを動かし、ターミナルツールで次のコマンドを打たせる。
 
@@ -169,7 +169,7 @@ hermes cron create "every 30m" --name hermes-vault-git-pull "terminal ツール�
 
 ### ジョブを見る
 
-登録できたかと、最後に動いた結果を見る。`grep -A7`は、一致した行とその後ろ7行を表示する指定だ。`grep -v Deliver`は、通知先の行(chat IDが出る)を外すために付ける。
+登録できたかと、最後に動いた結果を見る。`grep -A7`は、一致した行とその後ろ7行を表示する指定だ。`grep -v Deliver`は、通知先の行(Telegramのチャットを見分ける番号、chat IDが出る)を外すために付ける。
 
 ```bash
 hermes cron list | grep -A7 hermes-vault-git-pull | grep -v Deliver
@@ -179,7 +179,7 @@ hermes cron list | grep -A7 hermes-vault-git-pull | grep -v Deliver
 
 `Last run`に`ok`が出ていれば、直近のpullは成功している。
 
-## wikiへの取り込みを自分のパソコンに任せる
+## wikiへの取り込みを自分のパソコンで毎朝動かす
 
 タスク「context-hub wiki ingest」が、毎朝06:40に`wiki-ingest.ps1`を動かす。前の日に増えた作業履歴をwikiのページに取り込み、commitしてpushするスクリプトだ。
 
@@ -246,11 +246,11 @@ hermes cron list --all | grep -B1 -A4 -E "transcript-wiki-ingest|grok-bot-wiki-i
 
 ## 使わないスキルをCuratorに片付けさせる
 
-Curatorは、Hermesが自分で作ったスキルと、`hermes curator adopt <名前>`で任せたスキルを見る。14日使われないとstale、30日使われないとアーカイブへ移す。アーカイブは削除ではなく、`~/.hermes/skills/.archive/`への移動で、`hermes curator restore`で戻せる。
+Curatorは、Hermesが自分で作ったスキルと、`hermes curator adopt <名前>`でCuratorの管理対象に加えたスキルを見る。14日使われないとstale、30日使われないとアーカイブへ移す。アーカイブは削除ではなく、`~/.hermes/skills/.archive/`への移動で、`hermes curator restore`で戻せる。
 
 Curatorは、cronのように時刻では動かない。Hermesのセッションが始まるときに、前回から7日以上たっていて、2時間以上アイドル(操作がない状態)なら動く(Hermes本体の`hermes_cli/config_defaults.py`のコメント)。
 
-Curatorが扱うのはスキルだけだ。作業履歴とwikiは対象外で、wikiの点検は第16回のlintが受け持つ。
+Curatorが扱うのはスキルだけだ。作業履歴とwikiは対象外で、wikiの点検は第16回のlint(健全性チェック。どこからも参照されないページや、切れたリンクを探す)が受け持つ。
 
 ### 状態を見る
 
@@ -266,7 +266,7 @@ hermes curator status | head -19
 
 ### 前回の報告を読む
 
-Curatorは、動くたびに`~/.hermes/logs/curator/`の下へ報告を残す。`run --dry-run`(次の項)も同じ場所に残るので、最新のフォルダが試運転のことがある。`status`の`last run`の日付に合うフォルダを開く。
+Curatorは、動くたびに`~/.hermes/logs/curator/`の下へ報告を残す。`run --dry-run`(次の項)も同じ場所に残るので、最新のフォルダが`--dry-run`の報告のことがある。`status`の`last run`の日付に合うフォルダを開く。
 
 ```bash
 ls ~/.hermes/logs/curator | tail -4
@@ -279,7 +279,7 @@ cat ~/.hermes/logs/curator/20261112-192943/REPORT.md | head -22
 
 この回の報告は、checked 11、stale 0、archived 0、reactivated 1(staleから使われる状態に戻ったスキルが1つ)だった。`LLM summary: skipped (consolidation off)`とあるとおり、統合がオフなので、LLMは使わずに終わっている。
 
-### 試運転する
+### 何も変えずに試す
 
 何も変えずに、Curatorが何をするかだけ見たいときは、`--dry-run`を付ける。
 
@@ -291,9 +291,9 @@ hermes curator run --dry-run
 
 `DRY-RUN`と`no changes applied`が出て、スキルの状態は変わらない。
 
-### 残したいスキルに印を付ける
+### 残したいスキルを固定する
 
-片付けの対象から外したいスキルには、`pin`で印を付ける。`work-coding-agent-dual-lane`で、pinして、`status`で印を確かめて、`unpin`で戻した。
+片付けの対象から外したいスキルは、`pin`で固定する。`work-coding-agent-dual-lane`で、pinして、`status`で固定されたことを確かめて、`unpin`で戻した。
 
 ```bash
 hermes curator pin work-coding-agent-dual-lane
@@ -305,7 +305,7 @@ hermes curator unpin work-coding-agent-dual-lane
 
 pinしたあとの`status`には、`pinned (1): …`と出る。
 
-Curatorの管理対象でないスキルに`pin`すると、`this skill is unmanaged`と出て、印は付かない。管理対象かどうかは`hermes curator list-unmanaged`で分かる。ここに出ないスキルが管理対象だ。
+Curatorの管理対象でないスキルに`pin`すると、`this skill is unmanaged`と出て、固定されない。管理対象かどうかは`hermes curator list-unmanaged`で分かる。ここに出ないスキルが管理対象だ。
 
 ## 統合(consolidate)はオンにしない
 
@@ -353,7 +353,7 @@ hermes curator restore <スキル名>
 
 - 自分のパソコンのタスクスケジューラが、毎朝06:10に`sync-and-push.ps1`を動かす。2026年11月22日は06:13:43にpushが終わり、179件、終了コード0だった
 - VPSのHermes cronが、30分ごとに`git pull --ff-only`を1回動かす。読み取り専用のdeploy keyを使い、動くたびにモデルを呼ぶ
-- wikiへの取り込みは、自分のパソコンのタスクスケジューラに任せる(06:40)。Claude Codeで失敗したときだけCodexに切り替わる。VPS側の取り込みのcronは止めてある
+- wikiへの取り込みは、自分のパソコンのタスクスケジューラが06:40に動かす。Claude Codeで失敗したときだけCodexに切り替わる。VPS側の取り込みのcronは止めてある
 - Curatorは、Hermesが自分で作ったスキルを14日でstale、30日でアーカイブへ移す。移すだけで消さず、`restore`で戻せる。`--dry-run`は何も変えない
 - 統合(`--consolidate`)はオフのまま使った
 

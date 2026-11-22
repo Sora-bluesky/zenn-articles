@@ -298,13 +298,13 @@ hermes curator ledger --skill <名前> --limit 3
 - 戻したのは、テスト用のスキルplain-japanese-v2のpatch 1件。戻す直前の状態もSafety entryとして記録され、元のpatchの行も台帳に残った
 - 自動の書き直しの対象は、Hermesが自分から作ったスキルと、`hermes curator adopt`で任せたスキルだけで、morning-newsは自動では書き換わらない
 
-次の第19回は、作業履歴を毎晩取り込む話と、使わないスキルを片付ける話(Curator)だ。連載の回数は変わる可能性があるので、着手時に最新の計画書を確認してほしい。
+次の第19回は、作業履歴を毎朝取り込む話と、使わないスキルを片付ける話(Curator)だ。連載の回数は変わる可能性がある。
 
 ---
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第17回](https://zenn.dev/sora_biz/articles/hermes-vps-17-soul) 口調をブレさせるな。Hermes Agentの話し方は実は変えられる | 第19回 取り込みを手でやるな。Hermes Agentは作業履歴を毎晩取り込み、使わないスキルを片付ける。(近日公開) |
+| [第17回](https://zenn.dev/sora_biz/articles/hermes-vps-17-soul) 口調をブレさせるな。Hermes Agentの話し方は実は変えられる | [第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator) スキルを増やしっぱなしにするな。Hermes Agentはcronで作業履歴を毎朝自動同期し、使わないスキルも片付ける。 |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

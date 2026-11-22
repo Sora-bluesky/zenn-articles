@@ -34,7 +34,7 @@ Hermes Agentはここが違う。
 
 ## もくじ
 
-連載は全27回（予定）で、いまは第18回まで公開済みだ。
+連載は全27回（予定）で、いまは第19回まで公開済みだ。
 
 ここでは第27回までのもくじをまとめておく。
 
@@ -77,7 +77,7 @@ Hermes Agentはここが違う。
 | 16 | [同じことを二度調べさせるな。Hermes Agentは作業履歴からセカンドブレインを作る](https://zenn.dev/sora_biz/articles/hermes-vps-16-secondbrain) |
 | 17 | [口調をブレさせるな。Hermes Agentの話し方は実は変えられる](https://zenn.dev/sora_biz/articles/hermes-vps-17-soul) |
 | 18 | [使ったスキルを古いままにするな。Hermes Agentは自分でSKILL.mdを書き直す。](https://zenn.dev/sora_biz/articles/hermes-vps-18-skill-rewrite) |
-| 19 | 取り込みを手でやるな。Hermes Agentは作業履歴を毎晩取り込み、使わないスキルを片付ける。 |
+| 19 | [スキルを増やしっぱなしにするな。Hermes Agentはcronで作業履歴を毎朝自動同期し、使わないスキルも片付ける。](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator) |
 
 ### 第V部　Claude Code・自宅PC・ローカルモデルと分担する
 
@@ -136,7 +136,7 @@ Hermes Agentはここが違う。
     <p>第9〜11回：毎朝7時に自分から動く</p>
   </div>
   <div class="step">
-    <p class="head"><span class="n">IV</span>記憶・話し方・スキルを管理<em class="tag">公開中</em></p>
+    <p class="head"><span class="n">IV</span>記憶・話し方・スキルを管理<em class="tag">公開済み</em></p>
     <p>第12〜19回：前回の続きから進む</p>
   </div>
   <div class="step plan">
@@ -147,7 +147,7 @@ Hermes Agentはここが違う。
     <p class="head"><span class="n">VI</span>長い作業を任せる<em class="tag">予定</em></p>
     <p>第26〜27回：任せない一線を先に決める</p>
   </div>
-  <p class="key">実線は公開済みか公開中、点線は予定</p>
+  <p class="key">実線は公開済み、点線は予定</p>
 </div>
 <style>
 .d{--bg:#f5fbff;--fg:#1f2937;--line:#3ea8ff;--sub:#6b7280;padding:12px;background:var(--bg);color:var(--fg);font:13px/1.5 sans-serif}
@@ -183,7 +183,7 @@ AIモデルとメッセージアプリは、それぞれ2系統ずつ用意し�
 
 第VI部では、長い作業を任せる範囲と、任せない一線を決める。
 
-第I〜III部は公開済みで、第IV部は第18回まで公開済み、第V・VI部は予定だ。
+第I〜IV部は公開済みで、第V・VI部は予定だ。
 
 画像・ブラウザ操作・外部サービス・通知・声・費用と安全の運用は、連載とは別の「応用ガイド」で扱う。
 
