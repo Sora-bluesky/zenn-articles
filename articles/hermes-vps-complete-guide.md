@@ -34,7 +34,7 @@ Hermes Agentはここが違う。
 
 ## もくじ
 
-連載は全27回（予定）で、いまは第19回まで公開済みだ。
+連載は全27回（予定）で、いまは第20回まで公開済みだ。
 
 ここでは第27回までのもくじをまとめておく。
 
@@ -83,7 +83,7 @@ Hermes Agentはここが違う。
 
 | 回 | 見出し |
 |----|--------|
-| 20 | 画面を増やすな。Hermes Desktopは1枚でコードの作業を進める。 |
+| 20 | [バイブコーディングをターミナルでやるな。Hermes Desktopはアプリ1つで、コードレビューとGitのコミットまで済む。](https://zenn.dev/sora_biz/articles/hermes-vps-20-desktop-vibe-coding) |
 | 21 | PCの前に行くな。Hermes Agentは自宅のClaude Codeを触れる。 |
 | 22 | 1つのAIに頼るな。Hermes Agentは自宅GPUのローカルモデルも使い分ける。 |
 | 23 | 全部自分で指示するな。Hermes Agentはタスクを子エージェントに振り分ける。 |
@@ -140,14 +140,14 @@ Hermes Agentはここが違う。
     <p>第12〜19回：前回の続きから進む</p>
   </div>
   <div class="step plan">
-    <p class="head"><span class="n">V</span>Claude Codeや自宅PCと分担<em class="tag">予定</em></p>
+    <p class="head"><span class="n">V</span>Claude Codeや自宅PCと分担<em class="tag">公開中</em></p>
     <p>第20〜25回：コードの作業を分けて任せる</p>
   </div>
   <div class="step plan">
     <p class="head"><span class="n">VI</span>長い作業を任せる<em class="tag">予定</em></p>
     <p>第26〜27回：任せない一線を先に決める</p>
   </div>
-  <p class="key">実線は公開済み、点線は予定</p>
+  <p class="key">実線は公開済み、点線は予定と公開中</p>
 </div>
 <style>
 .d{--bg:#f5fbff;--fg:#1f2937;--line:#3ea8ff;--sub:#6b7280;padding:12px;background:var(--bg);color:var(--fg);font:13px/1.5 sans-serif}
@@ -171,7 +171,7 @@ AIモデルとメッセージアプリは、それぞれ2系統ずつ用意し�
 
 ここまでで「話しかけたら返ってくる」状態になる。
 
-第II部では、黒い画面(ターミナル)だけでなく、デスクトップアプリとブラウザの管理画面からも扱えるようにする。
+第II部では、ターミナルだけでなく、デスクトップアプリとブラウザの管理画面からも扱えるようにする。
 
 第III部では、毎朝7時に動く定時実行と、手順を覚えさせるスキル、ネットで調べるWeb検索を足す。
 
@@ -183,7 +183,7 @@ AIモデルとメッセージアプリは、それぞれ2系統ずつ用意し�
 
 第VI部では、長い作業を任せる範囲と、任せない一線を決める。
 
-第I〜IV部は公開済みで、第V・VI部は予定だ。
+第I〜IV部は公開済みで、第V部は第20回から順に公開している。第VI部は予定だ。
 
 画像・ブラウザ操作・外部サービス・通知・声・費用と安全の運用は、連載とは別の「応用ガイド」で扱う。
 

@@ -363,7 +363,7 @@ hermes curator restore <スキル名>
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第18回](https://zenn.dev/sora_biz/articles/hermes-vps-18-skill-rewrite) 使ったスキルを古いままにするな。Hermes Agentは自分でSKILL.mdを書き直す。 | 第20回(近日公開) |
+| [第18回](https://zenn.dev/sora_biz/articles/hermes-vps-18-skill-rewrite) 使ったスキルを古いままにするな。Hermes Agentは自分でSKILL.mdを書き直す。 | [第20回](https://zenn.dev/sora_biz/articles/hermes-vps-20-desktop-vibe-coding) バイブコーディングをターミナルでやるな。Hermes Desktopはアプリ1つで、コードレビューとGitのコミットまで済む。 |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

@@ -3,7 +3,7 @@ title: "【第20回】バイブコーディングをターミナルでやるな�
 emoji: "🛠️"
 type: "tech"
 topics: ["hermes", "ai", "llm", "claudecode", "個人開発"]
-published: false
+published: true
 ---
 
 :::message
