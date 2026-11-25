@@ -78,7 +78,7 @@ Claude CodeやCodexをターミナルで使うバイブコーディングでは�
 | コードの作業 | 頼む(ターミナル)、変更を見る(エディタ)、コミット(ターミナル)と画面を行き来する | Hermes Desktopの1つのウィンドウで済む |
 | コミット | ターミナルで`git commit`を打つ(第15回) | レビューの画面で「コミット」を押す |
 | 別の作業を同時に開く | - | worktreeで`dark-mode`を作り、`main`と同時に開く |
-| 次の回 | - | 第21回 |
+| 次の回 | - | [第21回](https://zenn.dev/sora_biz/articles/hermes-vps-21-home-claude-code) |
 
 この回で出てくる用語を先に押さえておく。
 
@@ -286,7 +286,7 @@ git log --oneline; git status --short
 
 | ← 前の回 | 次の回 → |
 |---|---|
-| [第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator) スキルを増やしっぱなしにするな。Hermes Agentはcronで作業履歴を毎朝自動同期し、使わないスキルも片付ける。 | 第21回(近日公開) |
+| [第19回](https://zenn.dev/sora_biz/articles/hermes-vps-19-auto-sync-curator) スキルを増やしっぱなしにするな。Hermes Agentはcronで作業履歴を毎朝自動同期し、使わないスキルも片付ける。 | [第21回 PCの前に行くな。スマホからHermes Agentに頼めば、自宅のClaude Codeが答える。](https://zenn.dev/sora_biz/articles/hermes-vps-21-home-claude-code) |
 
 📑 [シリーズのもくじ](https://zenn.dev/sora_biz/articles/hermes-vps-complete-guide)
 

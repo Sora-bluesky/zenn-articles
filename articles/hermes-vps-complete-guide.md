@@ -34,7 +34,7 @@ Hermes Agentはここが違う。
 
 ## もくじ
 
-連載は全27回（予定）で、いまは第20回まで公開済みだ。
+連載は全27回（予定）で、いまは第21回まで公開済みだ。
 
 ここでは第27回までのもくじをまとめておく。
 
@@ -84,7 +84,7 @@ Hermes Agentはここが違う。
 | 回 | 見出し |
 |----|--------|
 | 20 | [バイブコーディングをターミナルでやるな。Hermes Desktopはアプリ1つで、コードレビューとGitのコミットまで済む。](https://zenn.dev/sora_biz/articles/hermes-vps-20-desktop-vibe-coding) |
-| 21 | PCの前に行くな。Hermes Agentは自宅のClaude Codeを触れる。 |
+| 21 | [PCの前に行くな。スマホからHermes Agentに頼めば、自宅のClaude Codeが答える。](https://zenn.dev/sora_biz/articles/hermes-vps-21-home-claude-code) |
 | 22 | 1つのAIに頼るな。Hermes Agentは自宅GPUのローカルモデルも使い分ける。 |
 | 23 | 全部自分で指示するな。Hermes Agentはタスクを子エージェントに振り分ける。 |
 | 24 | 作業を追うな。Hermes AgentはKanbanの1枚で進捗が全部見える。 |

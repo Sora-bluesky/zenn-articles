@@ -3,7 +3,7 @@ title: "【第21回】PCの前に行くな。スマホからHermes Agentに頼�
 emoji: "📱"
 type: "tech"
 topics: ["hermes", "ai", "claudecode", "tailscale", "個人開発"]
-published: false
+published: true
 ---
 
 :::message
