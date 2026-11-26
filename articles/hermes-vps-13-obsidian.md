@@ -89,7 +89,7 @@ https://raw.githubusercontent.com/Sora-bluesky/zenn-articles/main/articles/herme
 | 記憶できる範囲 | 「私のこと」(USER.md 1,375字)+「環境ファクト」(MEMORY.md 2,200字) | +「長く残しておきたい情報」(Obsidian Vault・字数無制限の知識ベース) |
 | 記憶の置き場 | VPS内の`~/.hermes/memories/`のみ | +自分のパソコンのObsidian Vault(VPSとgitで同期) |
 | HermesがVaultを読むか | 読まない | bundled `obsidian` skillでVault内.mdをファイル直アクセスで読み書き |
-| 3エージェント共有 | VaultはClaude Code/Codexの個別管理 | 同じVaultをHermes/Claude Code/Codexの3つで共用(本格実装は第21回予定) |
+| 3エージェント共有 | VaultはClaude Code/Codexの個別管理 | 同じVaultをHermes/Claude Code/Codexの3つで共用(本格実装は[obsidian-skillsの記事](https://zenn.dev/sora_biz/articles/obsidian-skills-agent-shared-vault)で解説) |
 | 配布対象 | USER.md/MEMORY.mdは個人所有で配布除外 | Vaultも同じく個人所有で配布除外(第43回Profile Distributionsで詳述) |
 
 この回で出てくる用語を先に押さえておく。
